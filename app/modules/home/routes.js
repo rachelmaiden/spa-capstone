@@ -14,6 +14,18 @@ router.get('/adminCustomer', (req, res) => {
 
 })
 
+router.get('/adminReservation',(req, res) => {
+    res.render('home/views/adminReservation')
+})
+
+router.get('/bookReservation',(req, res) => {
+    res.render('home/views/bookReservation')
+})
+
+router.get('/selectDate',(req, res) => {
+    res.render('home/views/selectDate')
+})
+
 router.post('/adminAme', (req, res) => {
     console.log('hello')
 })

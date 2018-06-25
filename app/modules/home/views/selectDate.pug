@@ -240,5 +240,9 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script(type='text/javascript').
     $(document).ready(function(){
-    demo.initFullCalendar();
+      $('#fullCalendar').fullCalendar({
+        dayClick: function(date, jsEvent, view) {
+          location.href= `/bookReservation?date=${date}`
+        }
+      })
     });
