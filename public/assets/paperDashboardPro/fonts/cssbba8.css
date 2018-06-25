@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Muli Light'), local('Muli-Light'), url('/paperDashboard/fonts/7Au_p_0qiz-adZnkOCX2yg.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Muli';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Muli Regular'), local('Muli-Regular'), url('/paperDashboard/fonts/7Auwp_0qiz-afTLGKA.ttf') format('truetype');
+}
