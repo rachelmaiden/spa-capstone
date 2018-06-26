@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/', (req, res) => {
-    res.render('home/views/index')
+    res.render('home/views/admindashboard')
 })
 
 router.get('/adminAmenities', (req, res) => {
@@ -11,6 +11,26 @@ router.get('/adminAmenities', (req, res) => {
 
 router.get('/adminCustomer', (req, res) => {
     res.render('home/views/adminCustomer')
+
+})
+
+router.get('/adminPromos', (req, res) => {
+    res.render('home/views/adminPromos')
+
+})
+
+router.get('/adminRooms', (req, res) => {
+    res.render('home/views/adminRooms')
+
+})
+
+router.get('/adminServices', (req, res) => {
+    res.render('home/views/adminServices')
+
+})
+
+router.get('/adminTherapist', (req, res) => {
+    res.render('home/views/adminTherapist')
 
 })
 
