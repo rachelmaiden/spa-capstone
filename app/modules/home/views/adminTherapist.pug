@@ -207,15 +207,39 @@ html(lang='en')
                             center Add New Therapist 
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                         .modal-body
+                          
                           .row
-                            
-                          .form-group.has-default.bmd-form-group
-                            label Name*
-                            input.form-control(type='text', placeholder='First Name, MI, Last Name')
-                            
-                          .form-group.has-default.bmd-form-group
-                            label Address*
-                            input.form-control(type='text', placeholder='Address')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Last Name*
+                                input.form-control(type='text', placeholder='Last Name')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label First Name*
+                                input.form-control(type='text', placeholder='First Name') 
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Middle Name
+                                input.form-control(type='text', placeholder='Middle Name')     
+
+                          
+                          .row
+                            .col-md-3
+                              .form-group.has-default.bmd-form-group
+                                label Address*
+                                input.form-control(type='text', placeholder='House Number')
+                            .col-md-3
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='Street Name')
+                            .col-md-4
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='Barangay/Administrative District')  
+                            .col-md-2
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='City')   
                           .row
                             .col-md-4
                               .form-group.has-default.bmd-form-group
