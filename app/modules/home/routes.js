@@ -38,6 +38,10 @@ router.get('/adminReservation',(req, res) => {
     res.render('home/views/adminReservation')
 })
 
+router.get('/adminQueue',(req, res) => {
+    res.render('home/views/adminQueue')
+})
+
 router.get('/bookReservation',(req, res) => {
     res.render('home/views/bookReservation')
 })

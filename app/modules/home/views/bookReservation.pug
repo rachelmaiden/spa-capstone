@@ -27,13 +27,15 @@ html(lang='en')
         .container
           h1 Book Reservation
     div
-      button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px')
+      button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px' id='back')
         i.fa.fa-arrow-left(aria-hidden='true')
         | Back
     .wrapper
       .main
         .section
           .container
+            h3 Selected Date: June 27, 2018
+            br
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7')
               option(value='s1') Service 1
@@ -64,7 +66,8 @@ html(lang='en')
               option(value='ams10') 10 hours
               option(value='ama11') 11 hours
               option(value='ams12') 12 hours
-            button.btn.btn-fill.btn-info(type='button') Select Room Type, Schedule Date and Time
+            button.btn.btn-fill.btn-info(type='button') Select Room Type and Time
+          
         button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px') Another Guest
     div
       button.btn.btn-fill.btn-danger(type='button', style='margin-left: 190px') Cancel
