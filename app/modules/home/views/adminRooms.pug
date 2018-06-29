@@ -197,36 +197,6 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Room   
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Room
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        .modal-body
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Room Name*
-                                input.form-control(type='text', placeholder='Room Name')
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Room Type*
-                                input.form-control(type='text', placeholder='Room Type')
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Bed Quantity*
-                                input.form-control(type='text', placeholder='Bed Quantity')
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Room Availability*
-                                input.form-control(type='text', placeholder='Room Availability')
-                          .row
-                        .modal-footer
-                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Room
-                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -241,32 +211,35 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Room Name
                                       th Room Type
+                                      th Room Name
                                       th Bed Quantity
                                       th Room Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Room Name
                                       th Room Type
+                                      th Room Name
                                       th Bed Quantity
                                       th Room Availability
                                       th Actions
                                   tbody
-                                    tr
-                                      td Common Room
-                                      td Common
-                                      td 40
-                                      td 10 beds available
-                                      
-                                      td
-                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#')
-                                          i.ti-heart
-                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
-                                          i.ti-pencil-alt
-                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
-                                          i.ti-close
+                                    each room in rooms
+                                      tr
+                                        td= room.room_type
+                                        td= room.room_name 
+                                        td= room.bed_qty
+                                        td
+                                          if(room.room_availability ==0)
+                                            label Available
+                                          else if(room.room_availability ==1)
+                                            label Not Available
+                                        
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${room.room_id}`)
+                                            i.ti-pencil-alt
+                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${room.room_id}`)
+                                            i.ti-close
                                     
                               .row
                                 .col-md-6
@@ -291,6 +264,76 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
+                  //ADD
+                  #addNewService.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Add New Room
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        form(method='POST' action='/adminRooms')
+                          .modal-body
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Room Type*
+                                  select.selectpicker(name='type'  data-style='btn-info')
+                                      option(value='Common') Common Room
+                                      option(value='Private') Private Room
+                                      option(value='Deluxe') Deluxe Room
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Room Name*
+                                  input.form-control(type='text', placeholder='Room Name' name='name')
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Bed Quantity*
+                                  select.selectpicker(name='quantity'  data-style='btn-info')
+                                      option(value='1') 1
+                                      option(value='2') 2
+                                      option(value='3') 3
+                                      option(value='4') 4
+                                      option(value='5') 5
+                                      option(value='6') 6
+                                      option(value='7') 7
+                                      option(value='8') 8
+                                      option(value='9') 9
+                                      option(value='10') 10
+                                      option(value='11') 11
+                                      option(value='12') 12
+                                      option(value='13') 13
+                                      option(value='14') 14
+                                      option(value='15') 15
+                                      option(value='16') 16
+                                      option(value='17') 17
+                                      option(value='18') 18
+                                      option(value='19') 19
+                                      option(value='20') 20
+
+
+                              .col-md-6
+
+                            .row
+                          .modal-footer
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
+                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                  
+                  // DELETE  
+                  #modal-warning.modal.modal-warning.fade
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          h4.modal-title Warning
+                        .modal-body
+                          p Are you sure you?
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminRooms') Yes
+                  
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -356,6 +399,30 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+      $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            console.log(idNow)
+            $('#modal-warning').modal('show');
+            $('#deleteSubmit').css('display', 'block');
+            $('#cancelButton').css('display', 'block');
+                $('#cancelButton').click(function(){
+                  var idNow = 0;
+                });
+                $('#deleteSubmit').click(function(){
+                $.post('/adminRooms/delete',{id:idNow})
+                    .done(data =>{
+                        if(data){
+                          swal('Success', `Service deleted`, 'success')
+                          //- res.redirect("/adminRooms")
+                          $('#modal-warning').modal('hide');
+                        }
+                    });
+            });
+            
+        });
+      });
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

@@ -197,50 +197,6 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Promo Bundle
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Promo Bundle
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        .modal-body
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Promo Bundle Name*
-                                input.form-control(type='text', placeholder='Promo Bundle Name')
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Promo Bundle Price*
-                                input.form-control(type='text', placeholder='Promo Bundle Price')
-                          .form-group.has-default.bmd-form-group
-                            label Services Included
-                            select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7')
-                              option(value='s1') Service 1
-                              option(value='s2') Service 2
-                              option(value='s3') Service 3
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                              label Promo Duration
-                              input.form-control(type='text', placeholder='Promo Duration')
-                            .col-md-6  
-                              .form-group.has-default.bmd-form-group
-                              label Hours of Amenity Usage
-                              input.form-control(type='text', placeholder='Promo Bundle Name')
-                          //
-                            <div class="form-group has-default bmd-form-group">
-                            <label>Promo Bundle Validity</label>
-                            <input type="text" class="form-control" placeholder="Promo Bundle Validity">
-                            </div>
-                          #dp.form-group.has-default.bmd-form-group
-                            label Promo Bundle Valid Until:
-                            .form-group
-                              input#datepicker.form-control(type='text', placeholder='Promo Bundle Validity')
-                        .modal-footer
-                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Promo Bundle
-                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -256,36 +212,36 @@ html(lang='en')
                                   thead
                                     tr
                                       th Promo Name
-                                      th Promo Price
                                       th Services Included
                                       th Promo Duration
                                       th Hours of Amenities Usage
+                                      th Promo Price
                                       th Valid Until
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
                                       th Promo Name
-                                      th Promo Price
                                       th Services Included
                                       th Promo Duration
                                       th Hours of Amenities Usage
+                                      th Promo Price
                                       th Valid Until
                                       th Actions
                                   tbody
-                                    tr
-                                      td Christmas Promo
-                                      td 2000
-                                      td Authentic Shiatsu Massage, Body Scrub
-                                      td 3 hrs
-                                      td 1
-                                      td 2018/07/25
-                                      td
-                                        
-                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
-                                          i.ti-pencil-alt
-                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
-                                          i.ti-close
-                                   
+                                    each promo in promos
+                                      tr
+                                        td= promo.promobundle_name
+                                        td= promo.services_included
+                                        td= promo.duration
+                                        td
+                                        td=promo.promobundle_price
+                                        td=promo.promobundle_valid
+                                        td 2018/07/25
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.promobundle_id}`)
+                                            i.ti-pencil-alt
+                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${promo.promobundle_id}`)
+                                            i.ti-close
                               .row
                                 .col-md-6
                                   .card-header
@@ -309,6 +265,67 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
+                  // ADD
+                  #addNewService.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Add New Promo Bundle
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        form(method='POST' action='/adminPromos')
+                          .modal-body
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Promo Bundle Name*
+                                  input.form-control(type='text', placeholder='Promo Bundle Name' name='name')
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Promo Bundle Price*
+                                  input.form-control(type='text', placeholder='Promo Bundle Price' name='price')
+                            .form-group.has-default.bmd-form-group
+                              label Services Included
+                                select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='promos')
+                                  each service in services
+                                    option(value=`${service.service_name}`)= service.service_name
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                label Promo Duration
+                                input.form-control(type='text', placeholder='Promo Duration' name='duration')
+                              .col-md-6  
+                                .form-group.has-default.bmd-form-group
+                                label Hours of Amenity Usage
+                                input.form-control(type='text', placeholder='Promo Bundle Name' name='amenity')
+                            //
+                              <div class="form-group has-default bmd-form-group">
+                              <label>Promo Bundle Validity</label>
+                              <input type="text" class="form-control" placeholder="Promo Bundle Validity">
+                              </div>
+                            #dp.form-group.has-default.bmd-form-group
+                              label Promo Bundle Valid Until:
+                              .form-group
+                                input#datepicker.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                          .modal-footer
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Promo Bundle
+                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+
+                  // DELETE  
+                  #modal-warning.modal.modal-warning.fade
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          h4.modal-title Warning
+                        .modal-body
+                          p Are you sure you?
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminPromos') Yes
+                  
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -374,6 +391,30 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script(src='/assets/paperDashboardPro/js/bootstrap-datepicker.min.js')
+  script.
+      $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            console.log(idNow)
+            $('#modal-warning').modal('show');
+            $('#deleteSubmit').css('display', 'block');
+            $('#cancelButton').css('display', 'block');
+                $('#cancelButton').click(function(){
+                  var idNow = 0;
+                });
+                $('#deleteSubmit').click(function(){
+                $.post('/adminPromos/delete',{id:idNow})
+                    .done(data =>{
+                        if(data){
+                          swal('Success', `Promo deleted`, 'success')
+                          //- res.redirect("/adminPromos")
+                          $('#modal-warning').modal('hide');
+                        }
+                    });
+            });
+            
+        });
+      });
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

@@ -200,39 +200,6 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service   
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Service
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        .modal-body
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Service Type*
-                                input.form-control(type='text', placeholder='Service Type')
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Service Name*
-                                input.form-control(type='text', placeholder='Service Name')
-                          .form-group.has-default.bmd-form-group
-                            label Service Duration*
-                            input.form-control(type='text', placeholder='Service Duration')
-                          .row
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Service Price*
-                                input.form-control(type='text', placeholder='Service Price')
-                            .col-md-6
-                              .form-group.has-default.bmd-form-group
-                                label Service Availability*
-                                input.form-control(type='text', placeholder='Service Availability')
-                          .row
-                        .modal-footer
-                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
-                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -262,19 +229,22 @@ html(lang='en')
                                       th Availability
                                       th Actions
                                   tbody
-                                    tr
-                                      td Body Massage
-                                      td Authenic Shiatsu Massage
-                                      td 2 hrs
-                                      td 500
-                                      td Available
-                                      td
-                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#')
-                                          i.ti-heart
-                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
-                                          i.ti-pencil-alt
-                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
-                                          i.ti-close
+                                    each service in services
+                                      tr
+                                        td= service.service_desc
+                                        td= service.service_name
+                                        td= service.service_duration
+                                        td= service.service_price
+                                        td
+                                          if(service.service_availability ==0 )
+                                            label Available
+                                          else if(service.service_availability ==1)
+                                            label Not Available
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${service.service_id}`)
+                                            i.ti-pencil-alt
+                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${service.service_id}`)
+                                            i.ti-close
                                     
                               .row
                                 .col-md-6
@@ -299,6 +269,61 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
+                  //ADD  
+                  #addNewService.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Add New Service
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        form(method='POST' action='/adminServices')
+                          .modal-body
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Type*
+                                  input.form-control(type='text', placeholder='Service Type' name='type')
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Name*
+                                  input.form-control(type='text', placeholder='Service Name' name='name')
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Duration*
+                                  select.selectpicker(name='duration'  data-style='btn-info')
+                                    option(value='2 Hours') 2 Hours
+                                    option(value='3 Hours') 3 Hours
+                                    option(value='4 Hours') 4 Hours
+
+
+
+                                  //- input.form-control(type='text', placeholder='Service Duration' name='duration')
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Price*
+                                  input.form-control(type='text', placeholder='Service Price' name='price')
+                            .row
+                          .modal-footer
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
+                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                  
+                  // DELETE  
+                  #modal-warning.modal.modal-warning.fade
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          h4.modal-title Warning
+                        .modal-body
+                          p Are you sure you?
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminServices') Yes
+
+
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
@@ -353,6 +378,30 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+      $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            console.log(idNow)
+            $('#modal-warning').modal('show');
+            $('#deleteSubmit').css('display', 'block');
+            $('#cancelButton').css('display', 'block');
+                $('#cancelButton').click(function(){
+                  var idNow = 0;
+                });
+                $('#deleteSubmit').click(function(){
+                $.post('/adminServices/delete',{id:idNow})
+                    .done(data =>{
+                        if(data){
+                          swal('Success', `Service deleted`, 'success')
+                          //- res.redirect("/adminServices")
+                          $('#modal-warning').modal('hide');
+                        }
+                    });
+            });
+            
+        });
+      });
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

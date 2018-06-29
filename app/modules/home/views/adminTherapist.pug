@@ -199,67 +199,6 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewTher') Add New Therapist
-                  #addNewTher.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog.modal-lg(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Therapist 
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        .modal-body
-                          
-                          .row
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Last Name*
-                                input.form-control(type='text', placeholder='Last Name')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label First Name*
-                                input.form-control(type='text', placeholder='First Name') 
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Middle Name
-                                input.form-control(type='text', placeholder='Middle Name')     
-
-                          
-                          .row
-                            .col-md-3
-                              .form-group.has-default.bmd-form-group
-                                label Address*
-                                input.form-control(type='text', placeholder='House Number')
-                            .col-md-3
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='Street Name')
-                            .col-md-4
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='Barangay/Administrative District')  
-                            .col-md-2
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='City')   
-                          .row
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Age*
-                                input.form-control(type='text', placeholder='Age')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Mobile Number*
-                                input.form-control(type='text', placeholder='Mobile Number')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label E-mail Address*
-                                input.form-control(type='text', placeholder='E-mail')
-                          .form-group.has-default.bmd-form-group
-                            label Specialty*
-                            textarea.form-control(type='text', placeholder='Specialty')
-                        
-                        .modal-footer
-                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Therapist
-                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -342,6 +281,76 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
+
+
+
+                    // ADD
+                  #addNewTher.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Add New Therapist 
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        .modal-body
+                          
+                          .row
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Last Name*
+                                input.form-control(type='text', placeholder='Last Name' name='lastname')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label First Name*
+                                input.form-control(type='text', placeholder='First Name' name='firstname') 
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Middle Name
+                                input.form-control(type='text', placeholder='Middle Name' name='middlename')     
+
+                          
+                          .row
+                            .col-md-3
+                              .form-group.has-default.bmd-form-group
+                                label Address*
+                                input.form-control(type='text', placeholder='House Number' name='house_no')
+                            .col-md-3
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='Street Name' name='street_name')
+                            .col-md-4
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district')  
+                            .col-md-2
+                              .form-group.has.default.bmd-form-group
+                                label
+                                input.form-control(type='text', placeholder='City' name='city')   
+                          .row
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Age*
+                                input.form-control(type='text', placeholder='Age' name='age')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Mobile Number*
+                                input.form-control(type='text', placeholder='Mobile Number' name='contact_no')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label E-mail Address*
+                                input.form-control(type='text', placeholder='E-mail' name='email')
+                          .form-group.has-default.bmd-form-group
+                            label Specialty*
+                            select(name='specialty')
+                              option(value='Hand Massage') Hand Massage
+                              option(value='Foot Massage') Foot Massage
+                              option(value='Body Massage') Body Massage
+                        
+                        .modal-footer
+                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Therapist
+                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
