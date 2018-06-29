@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+var db = require('../../lib/database')();
 
 router.get('/', (req, res) => {
     res.render('home/views/admindashboard')
@@ -43,8 +44,19 @@ router.get('/adminQueue',(req, res) => {
 })
 
 router.get('/bookReservation',(req, res) => {
-    res.render('home/views/bookReservation')
+    console.log(req.query)
+    res.render('home/views/bookReservation',{date: req.query.date})
 })
+
+router.post('/bookReservation',(req, res) => {
+    console.log(req.body) //galing sa form na sinubmit
+    db.query(`select cust_id where username=${req.body.username}`,(err, results, fields) =>{
+        if(err) return console.log(err)
+        db.query('insert into reservation_appointment_tbl values ')
+    })
+})
+
+
 
 router.get('/selectDate',(req, res) => {
     res.render('home/views/selectDate')

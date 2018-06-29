@@ -242,6 +242,7 @@ html(lang='en')
     $(document).ready(function(){
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
+          date= moment(date).format('MM-DD-YYYY')
           location.href= `/bookReservation?date=${date}`
         }
       })
