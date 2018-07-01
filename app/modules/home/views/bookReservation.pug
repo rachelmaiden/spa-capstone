@@ -38,21 +38,19 @@ html(lang='en')
             br
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7')
-              option(value='s1') Service 1
-              option(value='s2') Service 2
-              option(value='s3') Service 3
-              option(value='s4') Service 4
+              each body in bodys
+                option(value=`${body.service_name}`)= body.service_name
+                //- option(value='s2') Service 2
+                //- option(value='s3') Service 3
+                //- option(value='s4') Service 4
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7')
-              option(value='s1') Service 1
-              option(value='s2') Service 2
-              option(value='s3') Service 3
-              option(value='s4') Service 4
+              each scrub in scrubs
+                option(value=`${scrub.service_name}`)= scrub.service_name
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Add-on Massage Service', data-size='7')
-              option(value='ams1') Foot Massage (120 minutes)
-              option(value='ams2') Hand Massage (120 minutes)
-              option(value='ams3') Foot and Hand Massage (120 minutes)
+              each add in adds
+                option(value=`${add.service_name}`)= add.service_name
             select.selectpicker(data-style='btn btn-primary btn-block', title='Number of Hours for Amenities Usage', data-size='7')
               option(value='ams1') 1 hour
               option(value='ams2') 2 hours

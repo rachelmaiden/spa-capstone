@@ -283,7 +283,10 @@ html(lang='en')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Service Type*
-                                  input.form-control(type='text', placeholder='Service Type' name='type')
+                                    select.selectpicker(data-style='btn-info' name='type')
+                                      each typ in typs
+                                        option(value=`${typ.service_type_id}`)= typ.service_desc
+
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Service Name*

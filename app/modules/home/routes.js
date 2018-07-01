@@ -121,10 +121,12 @@ router.post('/adminRooms/delete', (req, res) => {
 router.get('/adminServices', (req, res) => {
     const query = ` select services_tbl.*, service_type.* from services_tbl, service_type 
     where 
-    services_tbl.service_type = service_type.service_type_id`
+    services_tbl.service_type = service_type.service_type_id;
+    select * from service_type`
     db.query(query,(err,out) =>{
       res.render('home/views/adminServices',{
-        services: out
+        services: out[0],
+        typs: out[1]
       })
       console.log(out)
     })
@@ -166,9 +168,19 @@ router.get('/adminReservation',(req, res) => {
 router.get('/adminQueue',(req, res) => {
     res.render('home/views/adminQueue')
 })
-
-router.get('/bookReservation',(req, res) => {
-    res.render('home/views/bookReservation')
+// ***************************************** B O O K  R E S E R V A T I O N *****************************************
+router.get('/bookReservation', (req, res) => {
+  const query = ` select * from services_tbl where service_type ='1';
+  select * from services_tbl where service_type ='2';
+  select * from services_tbl where service_type ='3'`
+  db.query(query,(err,out) =>{
+    res.render('home/views/bookReservation',{
+      bodys: out[0],
+      scrubs: out[1],
+      adds: out[2]
+    })
+    console.log(out)
+  })
 })
 
 router.get('/selectDate',(req, res) => {
