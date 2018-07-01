@@ -236,7 +236,6 @@ html(lang='en')
                                         td
                                         td=promo.promobundle_price
                                         td=promo.promobundle_valid
-                                        td 2018/07/25
                                         td
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.promobundle_id}`)
                                             i.ti-pencil-alt
@@ -326,6 +325,19 @@ html(lang='en')
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
                             a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminPromos') Yes
                   
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Promobundle Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
+                  
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -414,7 +426,90 @@ html(lang='en')
             });
             
         });
-      });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminPromos/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Promo Bundle Name*</label>
+                        <input type="text" placeholder="${data.promobundle_name}" value="${data.promobundle_name}" id="promobundle_name" name="promobundle_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Promo Bundle Price*</label>
+                        <input type="text" placeholder="${data.promobundle_price}" value="${data.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group has-default bmd-form-group">
+                    <label>Services Included
+                      <select multiple="" title="Select Service/s" data-style="btn-info" data-size="7" name="promos" class="selectpicker">
+                        each service in services
+                          option(value="${data.service_name}")= service.service_name
+                      </select>
+                    </label>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group"></div>
+                      <label>Promo Duration</label>
+                      <input type="text" placeholder="${data.duration}" value="${data.duration}" id="duration" name="duration" class="form-control"/>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group"></div>
+                      <label>Hours of Amenity Usage</label>
+                      <input type="text" placeholder="" name="amenity" class="form-control"/>
+                    </div>
+                    <!-- <div class="form-group has-default bmd-form-group">-->
+                    <!-- <label>Promo Bundle Validity</label>-->
+                    <!-- <input type="text" class="form-control" placeholder="Promo Bundle Validity">-->
+                    <!-- </div>-->
+                  </div>
+                  <div id="dp" class="form-group has-default bmd-form-group">
+                    <label>Promo Bundle Valid Until:</label>
+                    <div class="form-group">
+                      <input id="datepicker" type="text" placeholder="${data.promobundle_valid}" value="${data.promobundle_valid}" id="promobundle_valid" name="promobundle_valid" class="form-control"/>
+                    </div>
+                  </div>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/adminPromos/update',{
+                  promobundle_name:$('#promobundle_name').val(),
+                  promobundle_price:$('#promobundle_price').val(),
+                  services_included:$('#services_included').val(),
+                  promobundle_valid:$('#promobundle_valid').val(),
+                  duration:$('#duration').val(),
+                  promobundle_status:$('#promobundle_status').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'service deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

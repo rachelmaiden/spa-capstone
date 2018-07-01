@@ -230,20 +230,19 @@ html(lang='en')
                                       th Specialty
                                       th Actions
                                   tbody
-                                    tr
-                                      td Tiger Nixon
-                                      td Caloocan
-                                      td 33
-                                      td 09786789091
-                                      td nixontiger@gmail.com
-                                      td Shiatsu Massage
-                                      td
-                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#')
-                                          i.ti-heart
-                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
-                                          i.ti-pencil-alt
-                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
-                                          i.ti-close
+                                    each thera in theras
+                                      tr
+                                        td= thera.first_name+" "+thera.middle_name+" "+thera.last_name
+                                        td= thera.house_no+" "+thera.street_name+" "+thera.brgy_district+" "+thera.city
+                                        td= thera.age
+                                        td= thera.contact_no
+                                        td= thera.email
+                                        td= thera.specialty
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
+                                            i.ti-pencil-alt
+                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}`)
+                                            i.ti-close
                                     
                                   
                               #editSample.modal(tabindex='-1', role='dialog')
@@ -292,64 +291,92 @@ html(lang='en')
                           h5.modal-title
                             center Add New Therapist 
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        form(method='POST' action='/adminTherapist')
+                          .modal-body
+                            
+                            .row
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Last Name*
+                                  input.form-control(type='text', placeholder='Last Name' name='lastname')
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label First Name*
+                                  input.form-control(type='text', placeholder='First Name' name='firstname') 
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Middle Name
+                                  input.form-control(type='text', placeholder='Middle Name' name='middlename')     
+
+                            
+                            .row
+                              .col-md-3
+                                .form-group.has-default.bmd-form-group
+                                  label Address*
+                                  input.form-control(type='text', placeholder='House Number' name='house_no')
+                              .col-md-3
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='Street Name' name='street_name')
+                              .col-md-4
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district')  
+                              .col-md-2
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='City' name='city')   
+                            .row
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Age*
+                                  input.form-control(type='text', placeholder='Age' name='age')
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Mobile Number*
+                                  input.form-control(type='text', placeholder='Mobile Number' name='contact_no')
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label E-mail Address*
+                                  input.form-control(type='text', placeholder='E-mail' name='email')
+                            .form-group.has-default.bmd-form-group
+                              label Specialty*
+                                select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='specialty')
+                                  option(value='Hand Massage') Hand Massage
+                                  option(value='Foot Massage') Foot Massage
+                                  option(value='Body Massage') Body Massage
+                          
+                          .modal-footer
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist
+                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+
+                  // DELETE  
+                  #modal-warning.modal.modal-warning.fade
+                    .modal-dialog
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          h4.modal-title Warning
                         .modal-body
-                          
-                          .row
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Last Name*
-                                input.form-control(type='text', placeholder='Last Name' name='lastname')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label First Name*
-                                input.form-control(type='text', placeholder='First Name' name='firstname') 
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Middle Name
-                                input.form-control(type='text', placeholder='Middle Name' name='middlename')     
-
-                          
-                          .row
-                            .col-md-3
-                              .form-group.has-default.bmd-form-group
-                                label Address*
-                                input.form-control(type='text', placeholder='House Number' name='house_no')
-                            .col-md-3
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='Street Name' name='street_name')
-                            .col-md-4
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district')  
-                            .col-md-2
-                              .form-group.has.default.bmd-form-group
-                                label
-                                input.form-control(type='text', placeholder='City' name='city')   
-                          .row
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Age*
-                                input.form-control(type='text', placeholder='Age' name='age')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label Mobile Number*
-                                input.form-control(type='text', placeholder='Mobile Number' name='contact_no')
-                            .col-md-4
-                              .form-group.has-default.bmd-form-group
-                                label E-mail Address*
-                                input.form-control(type='text', placeholder='E-mail' name='email')
-                          .form-group.has-default.bmd-form-group
-                            label Specialty*
-                            select(name='specialty')
-                              option(value='Hand Massage') Hand Massage
-                              option(value='Foot Massage') Foot Massage
-                              option(value='Body Massage') Body Massage
-                        
+                          p Are you sure you?
                         .modal-footer
-                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Therapist
-                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminTherapist') Yes
 
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Service Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
 
                   footer.footer
                     .container-fluid
@@ -405,6 +432,142 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+      $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            console.log(idNow)
+            $('#modal-warning').modal('show');
+            $('#deleteSubmit').css('display', 'block');
+            $('#cancelButton').css('display', 'block');
+                $('#cancelButton').click(function(){
+                  var idNow = 0;
+                });
+                $('#deleteSubmit').click(function(){
+                $.post('/adminTherapist/delete',{id:idNow})
+                    .done(data =>{
+                        if(data){
+                          swal('Success', `Therapist deleted`, 'success')
+                          //- res.redirect("/adminTherapist")
+                          $('#modal-warning').modal('hide');
+                        }
+                    });
+            });
+            
+        });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminTherapist/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Last Name*</label>
+                        <input type="text" name="last_name" placeholder="${data.last_name}" value="${data.last_name}" id="last_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>First Name*</label>
+                        <input type="text" placeholder="${data.first_name}" value="${data.first_name}" name="first_name" id="first_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Middle Name</label>
+                        <input type="text" placeholder="${data.middle_name}" value="${data.middle_name}" name="middle_name" id="middle_name" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Address*</label>
+                        <input type="text" placeholder="${data.house_no}" value="${data.house_no}" id="house_no" name="house_no" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.street_name}" value="${data.street_name}" id="street_name" name="street_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.brgy_district}" value="${data.brgy_district}" id="brgy_district" name="brgy_district" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.city}" value="${data.city}" name="city" id="city" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <input type="text" placeholder="${data.age}" value="${data.age}" name="age" id="age" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Mobile Number*</label>
+                        <input type="text" placeholder="${data.contact_no}" value="${data.contact_no}" id="contact_no" name="contact_no" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>E-mail Address*</label>
+                        <input type="text" placeholder="${data.email}" value="${data.email}" id="email" name="email" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </form>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                  ('#updateAppend').empty();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/adminTherapist/update',{
+                  first_name:$('#first_name').val(),
+                  middle_name:$('#middle_name').val(),
+                  last_name:$('#last_name').val(),
+                  house_no:$('#house_no').val(),
+                  street_name:$('#street_name').val(),
+                  brgy_district:$('#brgy_district').val(),
+                  city:$('#city').val(),
+                  age:$('#age').val(),
+                  contact_no:$('#contact_no').val(),
+                  email:$('#email').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'service deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

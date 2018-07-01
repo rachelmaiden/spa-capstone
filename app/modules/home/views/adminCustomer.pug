@@ -377,6 +377,18 @@ html(lang='en')
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
                             a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminCustomer') Yes
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Customer Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
 
                   
                   
@@ -446,17 +458,129 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminCustomer/delete',{id:idNow})
+                  $.redirect("/adminCustomer")
                     .done(data =>{
                         if(data){
                           swal('Success', `Customer deleted`, 'success')
-                          //- res.redirect("/adminCustomer")
                           $('#modal-warning').modal('hide');
                         }
                     });
             });
             
         });
-      });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminCustomer/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Last Name*</label>
+                        <input type="text" name="cust_lastname" placeholder="${data.cust_lastname}" value="${data.cust_lastname}" id="cust_lastname" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>First Name*</label>
+                        <input type="text" placeholder="${data.cust_firstname}" value="${data.cust_firstname}" name="cust_firstname" id="cust_firstname" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Middle Name</label>
+                        <input type="text" placeholder="${data.cust_middlename}" value="${data.cust_middlename}" name="cust_middlename" id="cust_middlename" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Address*</label>
+                        <input type="text" placeholder="${data.house_no}" value="${data.house_no}" id="house_no" name="house_no" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.street_name}" value="${data.street_name}" id="street_name" name="street_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.brgy_district}" value="${data.brgy_district}" id="brgy_district" name="brgy_district" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.city}" value="${data.city}" name="city" id="city" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <input type="text" placeholder="${data.age}" value="${data.age}" name="age" id="age" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Mobile Number*</label>
+                        <input type="text" placeholder="${data.contact_no}" value="${data.contact_no}" id="contact_no" name="contact_no" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>E-mail Address*</label>
+                        <input type="text" placeholder="${data.cust_email}" value="${data.cust_email}" id="cust_email" name="cust_email" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </form>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/adminCustomer/update',{
+                  cust_firstname:$('#cust_firstname').val(),
+                  cust_middlename:$('#cust_middlename').val(),
+                  cust_lastname:$('#cust_lastname').val(),
+                  house_no:$('#house_no').val(),
+                  street_name:$('#street_name').val(),
+                  brgy_district:$('#brgy_district').val(),
+                  city:$('#city').val(),
+                  age:$('#age').val(),
+                  contact_no:$('#contact_no').val(),
+                  cust_email:$('#cust_email').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'service deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();

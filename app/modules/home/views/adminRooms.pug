@@ -334,6 +334,19 @@ html(lang='en')
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
                             a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminRooms') Yes
                   
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Room Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
+
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -422,7 +435,101 @@ html(lang='en')
             });
             
         });
-      });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminRooms/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Type*</label>
+                        <select title="${data.room_type}" name="room_type" data-style="btn-info" class="selectpicker">
+                          <option value="Common">Common Room</option>
+                          <option value="Private">Private Room</option>
+                          <option value="Deluxe">Deluxe Room</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Name*</label>
+                        <input type="text" placeholder="${data.room_name}" value="${data.room_name}" id="room_name" name="room_name" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Bed Quantity*</label>
+                        <select title="${data.bed_qty}" name="bed_qty" data-style="btn-info" class="selectpicker">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Type*</label>
+                        <select name="type" data-style="btn-info" class="selectpicker">
+                          <option value="Common">Common Room</option>
+                          <option value="Private">Private Room</option>
+                          <option value="Deluxe">Deluxe Room</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/adminRooms/update',{
+                  room_name:$('#room_name').val(),
+                  bed_qty:$('#bed_qty').val(),
+                  room_type:$('#room_type').val(),
+                  room_availability:$('#room_availability').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'service deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
