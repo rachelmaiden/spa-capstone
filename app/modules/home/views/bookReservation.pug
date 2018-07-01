@@ -41,47 +41,49 @@ html(lang='en')
               // value- ${} text- #{}
               input(type='hidden' name='date' value=`${date}`)
               .row
-                .col-md-6
-                  .form-group.has-default.bmd-form-group
-                    label Username
-                    input.form-control(type='text', placeholder='Username' name='username')
-              label Note: You can only choose 1 (one)
-              select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7' name='bodyMassage')
-                option(value='s1') Service 1
-                option(value='s2') Service 2
-                option(value='s3') Service 3
-                option(value='s4') Service 4
-              label Note: You can only choose 1 (one)
-              select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7' name='bodyService')
-                option(value='s1') Service 1
-                option(value='s2') Service 2
-                option(value='s3') Service 3
-                option(value='s4') Service 4
-              label Note: You can only choose 1 (one)
-              select.selectpicker(data-style='btn btn-primary btn-block', title='Select Add-on Massage Service', data-size='7' name='addOnService')
-                option(value='ams1') Foot Massage (120 minutes)
-                option(value='ams2') Hand Massage (120 minutes)
-                option(value='ams3') Foot and Hand Massage (120 minutes)
-              select.selectpicker(data-style='btn btn-primary btn-block', title='Number of Hours for Amenities Usage', data-size='7' name='amenityUsage')
-                option(value='ams1') 1 hour
-                option(value='ams2') 2 hours
-                option(value='ams3') 3 hours
-                option(value='ams4') 4 hours
-                option(value='ams5') 5 hours
-                option(value='ams6') 6 hours
-                option(value='ams7') 7 hours
-                option(value='ams8') 8 hours
-                option(value='ams9') 9 hours
-                option(value='ams10') 10 hours
-                option(value='ama11') 11 hours
-                option(value='ams12') 12 hours
-              button.btn.btn-fill.btn-info(type='button') Select Room Type and Time
-            br
-          button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px') Another Guest
-      div
-        button.btn.btn-fill.btn-danger(type='button', style='margin-left: 190px') Cancel
-        button.btn.btn-fill.btn-success.pull-right#submitButton(type='button', style='margin-right: 190px') Confirm Reservation
-    
+              
+                .form-group.has-default.bmd-form-group
+                  label Username
+                  input.form-control(type='text', placeholder='Username' name='username')           
+                
+                //label Note: You can only choose 1 (one)
+                select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7' name='bodyMassage')
+                  option(value='s1') Service 1
+                  option(value='s2') Service 2
+                  option(value='s3') Service 3
+                  option(value='s4') Service 4               
+                label Note: You can only choose 1 (one)
+                select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7' name='bodyService')
+                  option(value='s1') Service 1
+                  option(value='s2') Service 2
+                  option(value='s3') Service 3
+                  option(value='s4') Service 4          
+                label Note: You can only choose 1 (one)
+                select.selectpicker(data-style='btn btn-primary btn-block', title='Select Add-on Massage Service', data-size='7' name='addOnService')
+                  option(value='ams1') Foot Massage (120 minutes)
+                  option(value='ams2') Hand Massage (120 minutes)
+                  option(value='ams3') Foot and Hand Massage (120 minutes)
+                select.selectpicker(data-style='btn btn-primary btn-block', title='Number of Hours for Amenities Usage', data-size='7' name='amenityUsage')
+                  option(value='ams1') 1 hour
+                  option(value='ams2') 2 hours
+                  option(value='ams3') 3 hours
+                  option(value='ams4') 4 hours
+                  option(value='ams5') 5 hours
+                  option(value='ams6') 6 hours
+                  option(value='ams7') 7 hours
+                  option(value='ams8') 8 hours
+                  option(value='ams9') 9 hours
+                  option(value='ams10') 10 hours
+                  option(value='ama11') 11 hours
+                  option(value='ams12') 12 hours
+                button.btn.btn-fill.btn-info(type='button') Select Room Type and Time
+         
+        button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px') Another Guest
+      
+    div
+      button.btn.btn-fill.btn-danger(type='button', style='margin-left: 190px') Cancel
+      button.btn.btn-fill.btn-success.pull-right#submitButton(type='button', style='margin-right: 190px') Confirm Reservation
+
           
       
   // Core JS Files
