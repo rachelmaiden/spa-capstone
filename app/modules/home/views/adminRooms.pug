@@ -317,7 +317,7 @@ html(lang='en')
 
                             .row
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   
                   // DELETE  
@@ -332,7 +332,7 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminRooms') Yes
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
                   
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
@@ -393,7 +393,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -425,13 +425,18 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminRooms/delete',{id:idNow})
-                    .done(data =>{
-                        if(data){
-                          swal('Success', `Service deleted`, 'success')
-                          //- res.redirect("/adminRooms")
-                          $('#modal-warning').modal('hide');
-                        }
-                    });
+                    .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'Room Deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
             });
             
         });
@@ -444,7 +449,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Room Type*</label>
-                        <select title="${data.room_type}" name="room_type" data-style="btn-info" class="selectpicker">
+                        <select id="room_type" title="${data.room_type} Room" name="room_type" data-style="btn-info" class="selectpicker">
                           <option value="Common">Common Room</option>
                           <option value="Private">Private Room</option>
                           <option value="Deluxe">Deluxe Room</option>
@@ -462,7 +467,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Bed Quantity*</label>
-                        <select title="${data.bed_qty}" name="bed_qty" data-style="btn-info" class="selectpicker">
+                        <select id="bed_qty" title="${data.bed_qty}" name="bed_qty" data-style="btn-info" class="selectpicker">
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
@@ -488,16 +493,18 @@ html(lang='en')
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Room Type*</label>
-                        <select name="type" data-style="btn-info" class="selectpicker">
-                          <option value="Common">Common Room</option>
-                          <option value="Private">Private Room</option>
-                          <option value="Deluxe">Deluxe Room</option>
+                        <label>Room Availability</label>
+                        <select id="room_availability" name="room_availability" title="${data.room_availability}" data-style="btn-info" class="selectpicker">
+                          <option value="Common">Available</option>
+                          <option value="Private">Not Available</option>
                         </select>
                       </div>
                     </div>
                   </div>`)
               $('#updateModal').modal('show')
+              $('#bed_qty').selectpicker();
+              $('#room_type').selectpicker();
+              $('#room_availability').selectpicker();
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
@@ -505,6 +512,8 @@ html(lang='en')
                 $('#updateAppend').remove();
               })
               $('#updateSubmitButton').click(function(){
+                  
+                 
                   $.post('/adminRooms/update',{
                   room_name:$('#room_name').val(),
                   bed_qty:$('#bed_qty').val(),
@@ -517,7 +526,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'service deleted', 
+                          text:'Room Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -545,5 +554,14 @@ html(lang='en')
     search: "_INPUT_",
     searchPlaceholder: "Search records",
     }
+    });
+    $('#add').click(function(){
+    swal({
+      title:'Success', 
+      text:'New Room Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
+    })
     });
     });

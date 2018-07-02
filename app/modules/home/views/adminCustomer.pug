@@ -376,7 +376,7 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminCustomer') Yes
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog.modal-lg(role='document')
@@ -388,7 +388,7 @@ html(lang='en')
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
 
                   
                   
@@ -426,7 +426,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -458,13 +458,18 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminCustomer/delete',{id:idNow})
-                  $.redirect("/adminCustomer")
-                    .done(data =>{
-                        if(data){
-                          swal('Success', `Customer deleted`, 'success')
-                          $('#modal-warning').modal('hide');
-                        }
-                    });
+                  .done(data=>{
+                    if(data){
+                        swal({
+                        title:'Success', 
+                        text:'Customer Deleted', 
+                        icon:'success'
+                        }).then(function(){
+                          location.reload();
+                        })
+                      $('#updateModal').modal('hide');
+                    }
+                  })
             });
             
         });
@@ -568,7 +573,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'service deleted', 
+                          text:'Customer Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -598,6 +603,12 @@ html(lang='en')
     }
     });
     $('#add').click(function(){
-    swal('Success', 'Updated', 'success')
+    swal({
+      title:'Success', 
+      text:'Customer Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
+    })
     });
     });

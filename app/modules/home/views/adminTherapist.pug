@@ -347,7 +347,7 @@ html(lang='en')
                                   option(value='Body Massage') Body Massage
                           
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
 
@@ -413,7 +413,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -445,13 +445,18 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminTherapist/delete',{id:idNow})
-                    .done(data =>{
-                        if(data){
-                          swal('Success', `Therapist deleted`, 'success')
-                          //- res.redirect("/adminTherapist")
-                          $('#modal-warning').modal('hide');
-                        }
-                    });
+                  .done(data=>{
+                    if(data){
+                        swal({
+                        title:'Success', 
+                        text:'Therapist Deleted', 
+                        icon:'success'
+                        }).then(function(){
+                          location.reload();
+                        })
+                      $('#updateModal').modal('hide');
+                    }
+                  })
             });
             
         });
@@ -555,7 +560,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'service deleted', 
+                          text:'Therapist Infromation Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -583,5 +588,15 @@ html(lang='en')
     search: "_INPUT_",
     searchPlaceholder: "Search records",
     }
+    })
+    $('#add').click(function(){
+    swal({
+      title:'Success', 
+      text:'Therapist Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
     });
     });
+    })
+

@@ -40,7 +40,7 @@ router.get('/adminAmenities', (req, res) => {
           "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}","${req.body.email}","${req.body.age}")
             `
       db.query(query, (err, out) => {
-        res.redirect('/adminCustomer')
+        // res.redirect('/adminCustomer')
         console.log(query)
       })
     })
@@ -114,7 +114,7 @@ router.get('/adminAmenities', (req, res) => {
           promo_bundle_tbl(promobundle_name, services_included, duration, promobundle_price,promobundle_valid)
           value("${req.body.name}","${req.body.promos}","${req.body.duration}","${req.body.price}","${req.body.valid}")`
         db.query(query, (err, out) => {
-          res.redirect('/adminPromos')
+          // res.redirect('/adminPromos')
           console.log(query)
         })
       })
@@ -149,9 +149,13 @@ router.get('/adminAmenities', (req, res) => {
     router.post('/adminPromos/query',(req, res) => {
       const query = `select * from promo_bundle_tbl where promobundle_id=?`
       db.query(query,[req.body.id1],(err, out) => {
-          res.send(out[0])
-          console.log(out[0])
-          console.log(req.body.id1)
+        var out1 = out[0]
+        db.query(`select * from services_tbl`,(err,out)=>{
+          return res.send({out1:out1, out2:out})
+        })
+          // res.send(out[0])
+          // console.log(out[0])
+          // console.log(req.body.id1)
       })
     })
 
@@ -181,7 +185,7 @@ router.get('/adminAmenities', (req, res) => {
           room_tbl(room_name, room_type,bed_qty)
           value("${req.body.name}","${req.body.type}","${req.body.quantity}")`
         db.query(query, (err, out) => {
-          res.redirect('/adminRooms')
+          // res.redirect('/adminRooms')
           console.log(query)
         })
       })
@@ -252,7 +256,7 @@ router.get('/adminAmenities', (req, res) => {
           services_tbl(service_name, service_type, service_duration, service_price)
           value("${req.body.name}","${req.body.type}","${req.body.duration}","${req.body.price}")`
         db.query(query, (err, out) => {
-          res.redirect('/adminServices')
+          // res.redirect('/adminServices')
           console.log(query)
         })
       })
@@ -279,13 +283,14 @@ router.get('/adminAmenities', (req, res) => {
       `
       db.query(query,(err,out) =>{
           if(err) return console.log(err)
-          res.redirect("/adminService")
+          res.redirect("/adminServices")
     })
   })
     router.post('/adminServices/query',(req, res) => {
       const query = `select * from services_tbl where service_id=?`
       db.query(query,[req.body.id1],(err, out) => {
-          res.send(out[0])
+          
+          return res.send(out[0])
           console.log(out[0])
           console.log(req.body.id1)
       })
@@ -318,7 +323,7 @@ router.get('/adminAmenities', (req, res) => {
         value("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}","${req.body.age}","${req.body.house_no}",
       "${req.body.street_name}","${req.body.brgy_district}","${req.body.city}","${req.body.contact_no}","${req.body.email}","${req.body.specialty}")`
       db.query(query, (err, out) => {
-        res.redirect('/adminTherapist')
+        // res.redirect('/adminTherapist')
         console.log(query)
       })
     })
