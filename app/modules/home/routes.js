@@ -4,13 +4,31 @@ var db = require('../../lib/database')();
 
 
 
-router.get('/', (req, res) => {
+router.get('/admindashboard', (req, res) => {
     res.render('home/views/admindashboard')
 })
 
 router.get('/adminAmenities', (req, res) => {
     res.render('home/views/adminAmenities')
 })
+
+router.get('/adminQueue', (req, res) => {
+  res.render('home/views/adminQueue')
+})
+
+router.get('/bookService', (req, res) => {
+  const query = ` select * from services_tbl where service_type ='1';
+      select * from services_tbl where service_type ='2';
+      select * from services_tbl where service_type ='3'`
+      db.query(query,(err,out) =>{
+        res.render('home/views/bookService',{
+          bodys: out[0],
+          scrubs: out[1],
+          adds: out[2]
+        })
+        console.log(out)
+      })
+    })
 
 
 

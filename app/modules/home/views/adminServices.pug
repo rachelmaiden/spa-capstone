@@ -88,7 +88,7 @@ html(lang='en')
                       span.sidebar-mini S
                       span.sidebar-normal Services
                   li
-                    a(href='./adminCustomer')
+                    a(href='./adminAmenities')
                       span.sidebar-mini A
                       span.sidebar-normal Amenities
                   li
@@ -241,9 +241,9 @@ html(lang='en')
                                           else if(service.service_availability ==1)
                                             label Not Available
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${service.service_id}`)
+                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${service.service_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${service.service_id}`)
+                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${service.service_id}`)
                                             i.ti-close
                                     
                               .row

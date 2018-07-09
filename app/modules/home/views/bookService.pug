@@ -1,0 +1,128 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='icon', type='image/png', href='/assets/assets/img/favicon.ico')
+    link(rel='apple-touch-icon', sizes='76x76', href='/assets/assets/img/apple-icon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title Paper Kit 2 PRO by Creative Tim
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
+    link(href='/assets/paper-kit-2-pro/assets/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/assets/paper-kit-2-pro/assets/css/paper-kitf066.css', rel='stylesheet')
+    link(href='/assets/paper-kit-2-pro/assets/css/demo.css', rel='stylesheet')
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700', rel='stylesheet', type='text/css')
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/assets/paper-kit-2-pro/assets/css/nucleo-icons.css', rel='stylesheet')
+  body.about-us
+    nav
+    .page-header.page-header-small(style="background-image: url('spaimg.jpg');")
+      .filter.filter-primary
+      .content-center
+        .container
+          h1 Book Service
+    div
+      a.button.btn.btn-fill.btn-info(href='/adminQueue', style='margin-left: 190px' id='back')
+        i.fa.fa-arrow-left(aria-hidden='true')
+        | Back
+    .wrapper
+      .main
+        .section
+          .container
+            h3
+              script.
+                 var objToday = new Date(),
+                  weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+                  dayOfWeek = weekday[objToday.getDay()],
+                  domEnder = function() { var a = objToday; if (/1/.test(parseInt((a + "").charAt(0)))) return "th"; a = parseInt((a + "").charAt(1)); return 1 == a ? "st" : 2 == a ? "nd" : 3 == a ? "rd" : "th" }(),
+                  dayOfMonth = today + ( objToday.getDate() < 10) ? '0' + objToday.getDate() + domEnder : objToday.getDate() + domEnder,
+                  months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
+                  curMonth = months[objToday.getMonth()],
+                  curYear = objToday.getFullYear(),
+                  curHour = objToday.getHours() > 12 ? objToday.getHours() - 12 : (objToday.getHours() < 10 ? "0" + objToday.getHours() : objToday.getHours()),
+                  curMinute = objToday.getMinutes() < 10 ? "0" + objToday.getMinutes() : objToday.getMinutes(),
+                  curSeconds = objToday.getSeconds() < 10 ? "0" + objToday.getSeconds() : objToday.getSeconds(),
+                  curMeridiem = objToday.getHours() > 12 ? "PM" : "AM";
+                  var today = curHour + ":" + curMinute + "." + curSeconds + " "+  curMeridiem + " " + dayOfWeek + " " + dayOfMonth + " of " + curMonth + ", " + curYear;
+
+                  document.getElementsByTagName('h3')[0].textContent = today;
+            br
+            label Note: You can only choose 1 (one)
+            select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7')
+              each body in bodys
+                option(value=`${body.service_name}`)= body.service_name
+                //-  option(value='s2') Service 2
+                //- /option(value='s3') Service 3
+                //- //- option(value='s4') Service 4
+            label Note: You can only choose 1 (one)
+            select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7')
+              each scrub in scrubs
+                option(value=`${scrub.service_name}`)= scrub.service_name
+            label Note: You can only choose 1 (one)
+            select.selectpicker(data-style='btn btn-primary btn-block', title='Select Add-on Massage Service', data-size='7')
+              each add in adds
+                option(value=`${add.service_name}`)= add.service_name
+            select.selectpicker(data-style='btn btn-primary btn-block', title='Number of Hours for Amenities Usage', data-size='7')
+              option(value='ams1') 1 hour
+              option(value='ams2') 2 hours
+              option(value='ams3') 3 hours
+              option(value='ams4') 4 hours
+              option(value='ams5') 5 hours
+              option(value='ams6') 6 hours
+              option(value='ams7') 7 hours
+              option(value='ams8') 8 hours
+              option(value='ams9') 9 hours
+              option(value='ams10') 10 hours
+              option(value='ama11') 11 hours
+              option(value='ams12') 12 hours
+            select.selectpicker(data-style='btn btn-primary btn-block', title=' Select Room Type and Time', data-size='7') 
+              option(value='rmtm') Common Room 
+              option(value='rmtm') Pivate Room (Single)
+              option(value='rmtm') Private Room (For 2)
+            
+          .div
+            button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px; margin-top: 20px') Another Guest
+            button.btn.btn-fill.btn-danger.pull-left(type='button', style='margin-left: 190px; margin-top: 20px') Cancel
+            button.btn.btn-fill.btn-success.pull-right(type='button', style='margin-right: 200px; margin-top: 20px') Confirm Reservation
+          .div
+    footer.footer.footer-big.footer-black
+      .container
+        .row
+          .col-md-2.col-sm-3.col-6.ml-auto.mr-auto
+            .form-group.dropup
+          .col-md-9.ml-auto.mr-auto.col-sm-9.col-12
+            .row
+          hr
+          .copyright
+            .pull-left
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              |  Team M-BAY, made with love
+            .links.pull-right
+              ul
+                li
+                  a(href='#paper-kit')
+                    | Company Policy
+                |                                 |
+                li
+                  a(href='#paper-kit')
+                    | Terms
+                |                                 |
+                li
+                  a(href='#paper-kit')
+                    | Privacy
+  // Core JS Files
+  script(src='/assets/paper-kit-2-pro/assets/js/jquery-3.2.1.min.js', type='text/javascript')
+  script(src='/assets/paper-kit-2-pro/assets/js/jquery-ui-1.12.1.custom.min.js', type='text/javascript')
+  script(src='/assets/paper-kit-2-pro/assets/js/popper.js', type='text/javascript')
+  script(src='/assets/paper-kit-2-pro/assets/js/bootstrap.min.js', type='text/javascript')
+  // Plugins for Select
+  script(src='/assets/paper-kit-2-pro/assets/js/bootstrap-select.js')
+  // Control Center for Paper Kit: parallax effects, scripts for the example pages etc
+  script(src='/assets/paper-kit-2-pro/assets/js/paper-kit.js?v=2.1.0')

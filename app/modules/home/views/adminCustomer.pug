@@ -242,9 +242,9 @@ html(lang='en')
                                         td
                                           button.btn-fill.btn-info View 
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${customer.cust_id}`)
+                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${customer.cust_id}`)
+                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-close
                                     //- tr
                                     //-   td Tiger Nixon
