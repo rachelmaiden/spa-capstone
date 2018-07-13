@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title MBAY Health Spa Front Desk
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -191,7 +191,8 @@ html(lang='en')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
-        .content
+        br
+        .content(style="margin-right:15px; padding:0px")
           .container-fluid
             .row
               .col-md-12
@@ -231,7 +232,7 @@ html(lang='en')
                                   tbody
                                     each service in services
                                       tr
-                                        td= service.service_desc
+                                        td= service.service_type_desc
                                         td= service.service_name
                                         td= service.service_duration
                                         td= service.service_price
@@ -285,7 +286,7 @@ html(lang='en')
                                   label Service Type*
                                     select.selectpicker(data-style='btn-info' name='type')
                                       each typ in typs
-                                        option(value=`${typ.service_type_id}`)= typ.service_desc
+                                        option(value=`${typ.service_type_id}`)= typ.service_type_desc
 
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -296,9 +297,10 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Duration*
                                   select.selectpicker(name='duration'  data-style='btn-info')
-                                    option(value='2 Hours') 2 Hours
-                                    option(value='3 Hours') 3 Hours
-                                    option(value='4 Hours') 4 Hours
+                                    option(value='60 minutes') 60 minutes
+                                    option(value='90 minutes') 90 minutes
+                                    option(value='120 minutes') 120 minutes
+
 
 
 
@@ -349,7 +351,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Creative Tim
+                        a(href='http://www.creative-tim.com') TEAM RJPC
               .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -446,9 +448,9 @@ html(lang='en')
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Duration*</label>
                         <select title="${data.service_duration}" id="service_duration" name="service_duration" data-style="btn-info" class="selectpicker">
-                          <option value="2 Hours">2 Hours</option>
-                          <option value="3 Hours">3 Hours</option>
-                          <option value="4 Hours">4 Hours</option>
+                            <option value="60 minutes">60 minutes</option>
+                            <option value="90 minutes">90 minutes</option>
+                            <option value="120 minutes">120 minutes</option>
                         </select>
                       </div>
                     </div>
@@ -456,6 +458,7 @@ html(lang='en')
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Availability*</label>
                           <select title="Select Availability" id="service_availability" name="service_availability" data-style="btn-info" class="selectpicker">
+                            <option value="${data.service_availability}" selected>asdasd</option>
                             <option value="0">Available</option>
                             <option value="1">Not Available</option>
                           </select>

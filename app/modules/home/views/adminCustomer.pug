@@ -233,10 +233,10 @@ html(lang='en')
                                   tbody
                                     each customer in customers
                                       tr
-                                        td= customer.cust_firstname+" "+customer.cust_middlename+" "+customer.cust_lastname
-                                        td= customer.house_no+" "+customer.street_name+" "+customer.brgy_district+" "+customer.city
-                                        td= customer.age+" "+"y.o"
-                                        td= customer.contact_no
+                                        td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                        td= customer.address_house_no+" "+customer.address_street_name+" "+customer.address_admin_district+" "+customer.address_city
+                                        td= customer.cust_age+" "+"y.o"
+                                        td= customer.cust_contact_no
                                         td= customer.cust_email
                                         td
                                         td
@@ -482,19 +482,19 @@ html(lang='en')
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Last Name*</label>
-                        <input type="text" name="cust_lastname" placeholder="${data.cust_lastname}" value="${data.cust_lastname}" id="cust_lastname" class="form-control"/>
+                        <input type="text" name="cust_lastname" placeholder="${data.cust_lname}" value="${data.cust_lname}" id="cust_lname" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>First Name*</label>
-                        <input type="text" placeholder="${data.cust_firstname}" value="${data.cust_firstname}" name="cust_firstname" id="cust_firstname" class="form-control"/>
+                        <input type="text" placeholder="${data.cust_fname}" value="${data.cust_fname}" name="cust_fname" id="cust_fname" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Middle Name</label>
-                        <input type="text" placeholder="${data.cust_middlename}" value="${data.cust_middlename}" name="cust_middlename" id="cust_middlename" class="form-control"/>
+                        <input type="text" placeholder="${data.cust_mname}" value="${data.cust_mname}" name="cust_mname" id="cust_mname" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -502,25 +502,25 @@ html(lang='en')
                     <div class="col-md-3">
                       <div class="form-group has-default bmd-form-group">
                         <label>Address*</label>
-                        <input type="text" placeholder="${data.house_no}" value="${data.house_no}" id="house_no" name="house_no" class="form-control"/>
+                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.street_name}" value="${data.street_name}" id="street_name" name="street_name" class="form-control"/>
+                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.brgy_district}" value="${data.brgy_district}" id="brgy_district" name="brgy_district" class="form-control"/>
+                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-2">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.city}" value="${data.city}" name="city" id="city" class="form-control"/>
+                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -528,13 +528,13 @@ html(lang='en')
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Age*</label>
-                        <input type="text" placeholder="${data.age}" value="${data.age}" name="age" id="age" class="form-control"/>
+                        <input type="text" placeholder="${data.cust_age}" value="${data.cust_age}" name="cust_age" id="cust_age" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Mobile Number*</label>
-                        <input type="text" placeholder="${data.contact_no}" value="${data.contact_no}" id="contact_no" name="contact_no" class="form-control"/>
+                        <input type="text" placeholder="${data.cust_contact_no}" value="${data.cust_contact_no}" id="cust_contact_no" name="cust_contact_no" class="form-control" minlength="11" maxlength="11" />
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -556,15 +556,15 @@ html(lang='en')
               })
               $('#updateSubmitButton').click(function(){
                   $.post('/adminCustomer/update',{
-                  cust_firstname:$('#cust_firstname').val(),
-                  cust_middlename:$('#cust_middlename').val(),
-                  cust_lastname:$('#cust_lastname').val(),
-                  house_no:$('#house_no').val(),
-                  street_name:$('#street_name').val(),
-                  brgy_district:$('#brgy_district').val(),
-                  city:$('#city').val(),
-                  age:$('#age').val(),
-                  contact_no:$('#contact_no').val(),
+                  cust_fname:$('#cust_fname').val(),
+                  cust_mname:$('#cust_mname').val(),
+                  cust_lname:$('#cust_lname').val(),
+                  address_house_no:$('#address_house_no').val(),
+                  address_street_name:$('#address_street_name').val(),
+                  address_admin_district:$('#address_admin_district').val(),
+                  address_city:$('#address_city').val(),
+                  cust_age:$('#cust_age').val(),
+                  cust_contact_no:$('#cust_contact_no').val(),
                   cust_email:$('#cust_email').val(),
                   
                   id1:idNow

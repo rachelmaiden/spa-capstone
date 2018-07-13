@@ -8659,7 +8659,7 @@ a.pswp__share--download:hover {
   height: 110px;
 }
 .card.card-register {
-  background-color: #FF8F5E;
+  background-color: rgba(26, 26, 26, 0.548);
   border-radius: 8px;
   color: #fff;
   max-width: 350px;

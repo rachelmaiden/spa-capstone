@@ -232,12 +232,12 @@ html(lang='en')
                                   tbody
                                     each thera in theras
                                       tr
-                                        td= thera.first_name+" "+thera.middle_name+" "+thera.last_name
-                                        td= thera.house_no+" "+thera.street_name+" "+thera.brgy_district+" "+thera.city
-                                        td= thera.age
-                                        td= thera.contact_no
-                                        td= thera.email
-                                        td= thera.specialty
+                                        td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                                        td= thera.address_house_no+" "+thera.address_street_name+" "+thera.address_admin_district+" "+thera.address_city
+                                        td= thera.therapist_age
+                                        td= thera.therapist_contact_no
+                                        td= thera.therapist_email
+                                        td= thera.therapist_specialty
                                         td
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
                                             i.ti-pencil-alt
@@ -298,50 +298,50 @@ html(lang='en')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='lastname')
+                                  input.form-control(type='text', placeholder='Last Name' name='therapist_lname')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label First Name*
-                                  input.form-control(type='text', placeholder='First Name' name='firstname') 
+                                  input.form-control(type='text', placeholder='First Name' name='therapist_fname') 
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Middle Name
-                                  input.form-control(type='text', placeholder='Middle Name' name='middlename')     
+                                  input.form-control(type='text', placeholder='Middle Name' name='therapist_mname')     
 
                             
                             .row
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Address*
-                                  input.form-control(type='text', placeholder='House Number' name='house_no')
+                                  input.form-control(type='text', placeholder='House Number' name='address_house_no')
                               .col-md-3
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Street Name' name='street_name')
+                                  input.form-control(type='text', placeholder='Street Name' name='address_street_name')
                               .col-md-4
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district')  
+                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='address_admin_district')  
                               .col-md-2
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='City' name='city')   
+                                  input.form-control(type='text', placeholder='address_city' name='address_city')   
                             .row
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Age*
-                                  input.form-control(type='text', placeholder='Age' name='age')
+                                  input.form-control(type='text', placeholder='Age' name='therapist_age')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Mobile Number*
-                                  input.form-control(type='text', placeholder='Mobile Number' name='contact_no')
+                                  input.form-control(type='text', placeholder='Mobile Number' name='therapist_contact_no')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label E-mail Address*
-                                  input.form-control(type='text', placeholder='E-mail' name='email')
+                                  input.form-control(type='text', placeholder='E-mail' name='therapist_email')
                             .form-group.has-default.bmd-form-group
                               label Specialty*
-                                select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='specialty')
+                                select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='therapist_specialty')
                                   option(value='Hand Massage') Hand Massage
                                   option(value='Foot Massage') Foot Massage
                                   option(value='Body Massage') Body Massage
@@ -469,19 +469,19 @@ html(lang='en')
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Last Name*</label>
-                        <input type="text" name="last_name" placeholder="${data.last_name}" value="${data.last_name}" id="last_name" class="form-control"/>
+                        <input type="text" name="therapist_lname" placeholder="${data.therapist_lname}" value="${data.therapist_lname}" id="therapist_lname" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>First Name*</label>
-                        <input type="text" placeholder="${data.first_name}" value="${data.first_name}" name="first_name" id="first_name" class="form-control"/>
+                        <input type="text" placeholder="${data.therapist_fname}" value="${data.therapist_fname}" name="therapist_fname" id="therapist_fname" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Middle Name</label>
-                        <input type="text" placeholder="${data.middle_name}" value="${data.middle_name}" name="middle_name" id="middle_name" class="form-control"/>
+                        <input type="text" placeholder="${data.therapist_mname}" value="${data.therapist_mname}" name="therapist_mname" id="therapist_mname" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -489,25 +489,25 @@ html(lang='en')
                     <div class="col-md-3">
                       <div class="form-group has-default bmd-form-group">
                         <label>Address*</label>
-                        <input type="text" placeholder="${data.house_no}" value="${data.house_no}" id="house_no" name="house_no" class="form-control"/>
+                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-3">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.street_name}" value="${data.street_name}" id="street_name" name="street_name" class="form-control"/>
+                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.brgy_district}" value="${data.brgy_district}" id="brgy_district" name="brgy_district" class="form-control"/>
+                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-2">
                       <div class="form-group has default bmd-form-group">
                         <label></label>
-                        <input type="text" placeholder="${data.city}" value="${data.city}" name="city" id="city" class="form-control"/>
+                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -515,19 +515,19 @@ html(lang='en')
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Age*</label>
-                        <input type="text" placeholder="${data.age}" value="${data.age}" name="age" id="age" class="form-control"/>
+                        <input type="text" placeholder="${data.therapist_age}" value="${data.therapist_age}" name="therapist_age" id="therapist_age" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Mobile Number*</label>
-                        <input type="text" placeholder="${data.contact_no}" value="${data.contact_no}" id="contact_no" name="contact_no" class="form-control"/>
+                        <input type="text" placeholder="${data.therapist_contact_no}" value="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>E-mail Address*</label>
-                        <input type="text" placeholder="${data.email}" value="${data.email}" id="email" name="email" class="form-control"/>
+                        <input type="text" placeholder="${data.therapist_email}" value="${data.therapist_email}" id="therapist_email" name="therapist_email" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -543,16 +543,16 @@ html(lang='en')
               })
               $('#updateSubmitButton').click(function(){
                   $.post('/adminTherapist/update',{
-                  first_name:$('#first_name').val(),
-                  middle_name:$('#middle_name').val(),
-                  last_name:$('#last_name').val(),
-                  house_no:$('#house_no').val(),
-                  street_name:$('#street_name').val(),
-                  brgy_district:$('#brgy_district').val(),
-                  city:$('#city').val(),
-                  age:$('#age').val(),
-                  contact_no:$('#contact_no').val(),
-                  email:$('#email').val(),
+                  therapist_fname:$('#therapist_fname').val(),
+                  therapist_mname:$('#therapist_mname').val(),
+                  therapist_lname:$('#therapist_lname').val(),
+                  address_house_no:$('#address_house_no').val(),
+                  address_street_name:$('#address_street_name').val(),
+                  address_admin_district:$('#address_admin_district').val(),
+                  address_city:$('#address_city').val(),
+                  therapist_age:$('#therapist_age').val(),
+                  therapist_contact_no:$('#therapist_contact_no').val(),
+                  therapist_email:$('#therapist_email').val(),
                   
                   id1:idNow
                   })

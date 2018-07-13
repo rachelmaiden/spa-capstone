@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title MBAY Health Spa Front Desk
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -231,11 +231,12 @@ html(lang='en')
                                     each promo in promos
                                       tr
                                         td= promo.promobundle_name
-                                        td= promo.services_included
-                                        td= promo.duration
                                         td
-                                        td=promo.promobundle_price
-                                        td=promo.promobundle_valid
+                                          button.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${promo.promobundle_id}`) View Services
+                                        td= promo.promobundle_duration
+                                        td= promo.promobundle_amenity_usage
+                                        td= promo.promobundle_price
+                                        td= promo.promobundle_validity
                                         td
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.promobundle_id}`)
                                             i.ti-pencil-alt
@@ -284,19 +285,27 @@ html(lang='en')
                                   label Promo Bundle Price*
                                   input.form-control(type='text', placeholder='Promo Bundle Price' name='price')
                             .form-group.has-default.bmd-form-group
-                              label Services Included
-                                select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='promos')
-                                  each service in services
-                                    option(value=`${service.service_name}`)= service.service_name
+                              center
+                                label Services Included*
+                                  select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='promos')
+                                    each service in services
+                                      option(value=`${service.service_id}`)= service.service_name
+                              
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                 label Promo Duration
-                                input.form-control(type='text', placeholder='Promo Duration' name='duration')
+                                select.selectpicker(name='duration'  data-style='btn-info')
+                                  option(value='60 minutes') 60 minutes
+                                  option(value='90 minutes') 90 minutes
+                                  option(value='120 minutes') 120 minutes
                               .col-md-6  
                                 .form-group.has-default.bmd-form-group
                                 label Hours of Amenity Usage
-                                input.form-control(type='text', placeholder='Promo Bundle Name' name='amenity')
+                                select.selectpicker(name='amenity'  data-style='btn-info')
+                                  option(value='60 minutes') 60 minutes
+                                  option(value='90 minutes') 90 minutes
+                                  option(value='120 minutes') 120 minutes
                             //
                               <div class="form-group has-default bmd-form-group">
                               <label>Promo Bundle Validity</label>
@@ -305,7 +314,7 @@ html(lang='en')
                             #dp.form-group.has-default.bmd-form-group
                               label Promo Bundle Valid Until:
                               .form-group
-                                input#promobundle_valid.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                                input#promobundle_validity.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Promo Bundle
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -336,8 +345,22 @@ html(lang='en')
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
                   
+                  //VIEW SERVICES INCLUDED
+                  #servicesIncluded.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          h4.modal-title Warning
+                        .modal-body#viewAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                            button.btn.btn-info.btn-fill.pull-right(type='button') Yes
+
+
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -430,6 +453,36 @@ html(lang='en')
             });
             
         });
+
+
+        $('.viewButton').click(function(){
+          var idNow = $(this).val();
+            $.post('adminPromos/query1',{id1:idNow})
+          .done(data=>{
+            console.log(data)
+            $('#viewAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6" id=services_name>
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Services Included</label>
+                      </div>
+                    </div>
+                  </div>
+            `)
+            for(var i=0; i<data.out1.length;i++){
+              console.log(data.out1[i].service_name)
+                $('#services_name').append(`<li>${data.out1[i].service_name}</li>`)
+              }
+            $('#servicesIncluded').modal('show')
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#services_name').remove()
+              });
+          })
+        })
+
+
+
+
         $('.updateButton').click(function(){
           var idNow = $(this).val();
               $.post('/adminPromos/query',{id1:idNow})
@@ -452,7 +505,7 @@ html(lang='en')
                   </div>
                   <div class="form-group has-default bmd-form-group">
                     <label>Services Included
-                      <select id="services_included" multiple="" title="${data.out1.services_included}" data-style="btn-info" data-size="7" name="promos" class="selectpicker">
+                      <select name="services_included" id="services_included" multiple="" title="" data-style="btn-info" data-size="7" class="selectpicker">
                       </select>
                     </label>
                   </div>
@@ -460,12 +513,20 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group"></div>
                       <label>Promo Duration</label>
-                      <input type="text" placeholder="${data.out1.duration}" value="${data.out1.duration}" id="duration" name="duration" class="form-control"/>
+                      <select id="promobundle_duration" title="${data.out1.promobundle_duration}" data-style="btn-info" class="selectpicker">
+                        <option value="60 minutes">60 minutes</option>
+                        <option value="90 minutes">90 minutes</option>
+                        <option value="120 minutes">120 minutes</option>
+                      </select>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group"></div>
                       <label>Hours of Amenity Usage</label>
-                      <input type="text" placeholder="" name="amenity" class="form-control"/>
+                      <select id="promobundle_amenity_usage" title="${data.out1.promobundle_amenity_usage}" data-style="btn-info" class="selectpicker">
+                        <option value="60 minutes">60 minutes</option>
+                        <option value="90 minutes">90 minutes</option>
+                        <option value="120 minutes">120 minutes</option>
+                      </select>
                     </div>
                     <!-- <div class="form-group has-default bmd-form-group">-->
                     <!-- <label>Promo Bundle Validity</label>-->
@@ -475,30 +536,33 @@ html(lang='en')
                   <div id="dp" class="form-group has-default bmd-form-group">
                     <label>Promo Bundle Valid Until:</label>
                     <div class="form-group">
-                      <input id="promobundle_valid" type="text" placeholder="${data.out1.promobundle_valid}" value="${data.out1.promobundle_valid}" name="promobundle_valid" class="form-control"/>
+                      <input id="promobundle_valid" type="text" placeholder="${data.out1.promobundle_validity}" value="${data.out1.promobundle_validity}" class="form-control"/>
                     </div>
                   </div>`)
-              for(var i=0; i<data.out2.length;i++){
+
+                for(var i=0; i<data.out2.length;i++){
                 console.log(data.out2[i].service_name)
                 $('#services_included').append(`<option value="${data.out2[i].service_name}">${data.out2[i].service_name}</option>`)
-              }
-              $('#services_included').selectpicker();
+                }
+
+                $('#services_included').selectpicker();
+                $('#promobundle_duration').selectpicker();
+              $('#promobundle_amenity_usage').selectpicker();
               $('#promobundle_valid').datepicker();
               $('#updateModal').modal('show')
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
-                });
-              $('#cancelButton').click(function(){
-                $('#updateAppend').remove();
-              })
+                })
               $('#updateSubmitButton').click(function(){
                   $.post('/adminPromos/update',{
                   promobundle_name:$('#promobundle_name').val(),
                   promobundle_price:$('#promobundle_price').val(),
+                  promobundle_validity:$('#promobundle_valid').val(),
+                  promobundle_availability:$('#promobundle_availability').val(),
+                  promobundle_duration:$('#promobundle_duration').val(),
+                  promobundle_amenity_usage:$('#promobundle_amenity_usage').val(),
                   services_included:$('#services_included').val(),
-                  promobundle_valid:$('#promobundle_valid').val(),
-                  duration:$('#duration').val(),
-                  promobundle_status:$('#promobundle_status').val(),
+                  
                   
                   id1:idNow
                   })
@@ -515,6 +579,10 @@ html(lang='en')
                       }
                   })
                 })
+                $('#cancelButton').click(function(){
+                  $('#updateAppend').remove();
+                })
+              
               })
 
           })
@@ -538,7 +606,7 @@ html(lang='en')
     });
   script(type='text/javascript').
     $(document).ready(function(){
-    $('#promobundle_valid').datepicker();
+    $('#promobundle_validity').datepicker();
     // Init Sliders
     demo.initFormExtendedSliders();
     // Init DatetimePicker
