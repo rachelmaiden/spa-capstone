@@ -63,7 +63,7 @@ html(lang='en')
               .clearfix
           ul.nav
             li.active
-              a(href='./admindashboard.html')
+              a(href='./admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -76,17 +76,25 @@ html(lang='en')
               #componentsExamples.collapse
                 ul.nav
                   li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
+                    a(href='./adminServices')
+                      span.sidebar-mini S
+                      span.sidebar-normal Services
+                  li
+                    a(href='./adminServiceType')
+                      span.sidebar-mini ST
+                      span.sidebar-normal Service Type
+                  li
+                    a(href='./adminServiceDuration')
+                      span.sidebar-mini SD
+                      span.sidebar-normal Service Duration
                   li
                     a(href='./adminTherapist')
                       span.sidebar-mini T
                       span.sidebar-normal Therapist
                   li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
+                    a(href='./adminSpecialty')
+                      span.sidebar-mini TS
+                      span.sidebar-normal Therapist Specialty    
                   li
                     a(href='./adminAmenities')
                       span.sidebar-mini A
@@ -96,15 +104,15 @@ html(lang='en')
                       span.sidebar-mini P
                       span.sidebar-normal Promos
                   li
-                    a(href='adminRooms')
+                    a(href='./adminRooms')
                       span.sidebar-mini R
                       span.sidebar-normal Rooms
                   li
-                    a(href='adminReservation')
-                      span.sidebar-mini R
-                      span.sidebar-normal Reservations
-                  li
-                    a(href='adminQueue')
+                    a(href='./adminRoomType')
+                      span.sidebar-mini RT
+                      span.sidebar-normal Room Type
+                  //-li
+                    a(href='#')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -116,9 +124,17 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li
                     a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
+                  li
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
                   li
                     a(href='adminQueue')
                       span.sidebar-mini Q

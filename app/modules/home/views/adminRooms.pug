@@ -63,7 +63,7 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='./admindashboard.html')
+              a(href='./admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -76,19 +76,27 @@ html(lang='en')
               #componentsExamples.collapse.in
                 ul.nav
                   li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
+                    a(href='./adminServices')
+                      span.sidebar-mini S
+                      span.sidebar-normal Services
+                  li
+                    a(href='./adminServiceType')
+                      span.sidebar-mini ST
+                      span.sidebar-normal Service Type
+                  li
+                    a(href='./adminServiceDuration')
+                      span.sidebar-mini SD
+                      span.sidebar-normal Service Duration
                   li
                     a(href='./adminTherapist')
                       span.sidebar-mini T
                       span.sidebar-normal Therapist
                   li
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
+                    a(href='./adminSpecialty')
+                      span.sidebar-mini TS
+                      span.sidebar-normal Therapist Specialty    
                   li
-                    a(href='./adminCustomer')
+                    a(href='./adminAmenities')
                       span.sidebar-mini A
                       span.sidebar-normal Amenities
                   li
@@ -99,6 +107,10 @@ html(lang='en')
                     a(href='./adminRooms')
                       span.sidebar-mini R
                       span.sidebar-normal Rooms
+                  li
+                    a(href='./adminRoomType')
+                      span.sidebar-mini RT
+                      span.sidebar-normal Room Type
             li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
@@ -106,13 +118,21 @@ html(lang='en')
                   | Transaction
                   b.caret
               #tablesExamples.collapse
-                ul.nav
+                 ul.nav
                   li
-                    a(href='/adminReservation')
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='/adminQueues')
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -290,34 +310,15 @@ html(lang='en')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Bed Quantity*
-                                  select.selectpicker(name='quantity'  data-style='btn-info')
-                                      option(value='1') 1
-                                      option(value='2') 2
-                                      option(value='3') 3
-                                      option(value='4') 4
-                                      option(value='5') 5
-                                      option(value='6') 6
-                                      option(value='7') 7
-                                      option(value='8') 8
-                                      option(value='9') 9
-                                      option(value='10') 10
-                                      option(value='11') 11
-                                      option(value='12') 12
-                                      option(value='13') 13
-                                      option(value='14') 14
-                                      option(value='15') 15
-                                      option(value='16') 16
-                                      option(value='17') 17
-                                      option(value='18') 18
-                                      option(value='19') 19
-                                      option(value='20') 20
+                                  input.form-control(type='number', placeholder='Bed Quantity' name='name')
+                                 
 
 
                               .col-md-6
 
                             .row
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   
                   // DELETE  
@@ -332,8 +333,21 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminRooms') Yes
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
                   
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Room Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
+
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -380,7 +394,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -412,17 +426,120 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminRooms/delete',{id:idNow})
-                    .done(data =>{
-                        if(data){
-                          swal('Success', `Service deleted`, 'success')
-                          //- res.redirect("/adminRooms")
-                          $('#modal-warning').modal('hide');
-                        }
-                    });
+                    .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'Room Deleted', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
             });
             
         });
-      });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminRooms/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Type*</label>
+                        <select id="room_type" title="${data.room_type} Room" name="room_type" data-style="btn-info" class="selectpicker">
+                          <option value="Common">Common Room</option>
+                          <option value="Private">Private Room</option>
+                          <option value="Deluxe">Deluxe Room</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Name*</label>
+                        <input type="text" placeholder="${data.room_name}" value="${data.room_name}" id="room_name" name="room_name" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Bed Quantity*</label>
+                        <select id="bed_qty" title="${data.bed_qty}" name="bed_qty" data-style="btn-info" class="selectpicker">
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Availability</label>
+                        <select id="room_availability" name="room_availability" title="${data.room_availability}" data-style="btn-info" class="selectpicker">
+                          <option value="Common">Available</option>
+                          <option value="Private">Not Available</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>`)
+              $('#updateModal').modal('show')
+              $('#bed_qty').selectpicker();
+              $('#room_type').selectpicker();
+              $('#room_availability').selectpicker();
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  
+                 
+                  $.post('/adminRooms/update',{
+                  room_name:$('#room_name').val(),
+                  bed_qty:$('#bed_qty').val(),
+                  room_type:$('#room_type').val(),
+                  room_availability:$('#room_availability').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'Room Information Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -438,5 +555,14 @@ html(lang='en')
     search: "_INPUT_",
     searchPlaceholder: "Search records",
     }
+    });
+    $('#add').click(function(){
+    swal({
+      title:'Success', 
+      text:'New Room Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
+    })
     });
     });

@@ -673,8 +673,8 @@ body.swal2-iosfix {
 
 .swal2-icon.swal2-info {
   font-family: 'Open Sans', sans-serif;
-  color: rgb(58, 128, 168);
-  border-color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
+  border-color: rgb(22, 133, 123);
   font-size: 60px;
   line-height: 80px;
   text-align: center;
@@ -3301,10 +3301,10 @@ be a descendant of the grid when it is being dragged.
 }
 
 .ct-series-a .ct-point, .ct-series-a .ct-line, .ct-series-a .ct-bar, .ct-series-a .ct-slice-donut {
-  stroke: rgb(58, 128, 168);
+  stroke: rgb(22, 133, 123);
 }
 .ct-series-a .ct-slice-pie, .ct-series-a .ct-area {
-  fill: rgb(58, 128, 168);
+  fill: rgb(22, 133, 123);
 }
 
 .ct-series-b .ct-point, .ct-series-b .ct-line, .ct-series-b .ct-bar, .ct-series-b .ct-slice-donut {
@@ -4649,14 +4649,14 @@ select.selectpicker {
   content: '';
   display: inline-block;
   border: 0 0 7px 7px solid transparent;
-  border-bottom-color: rgb(58, 128, 168);
+  border-bottom-color: rgb(22, 133, 123);
   border-top-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   bottom: 4px;
   right: 4px;
 }
 .bootstrap-datetimepicker-widget table td.active > div, .bootstrap-datetimepicker-widget table td.active:hover > div {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
   color: #FFFFFF;
 }
 .bootstrap-datetimepicker-widget table td.active.today:before > div {
@@ -4681,7 +4681,7 @@ select.selectpicker {
   background: #E3E3E3;
 }
 .bootstrap-datetimepicker-widget table td span.active {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
   color: #FFFFFF;
 }
 .bootstrap-datetimepicker-widget table td span.old {
@@ -5009,10 +5009,10 @@ select.selectpicker {
 }
 
 .slider.slider-info .noUi-connect, .slider.slider-info.noUi-connect {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
 }
 .slider.slider-info .noUi-handle {
-  border-color: rgb(58, 128, 168);
+  border-color: rgb(22, 133, 123);
 }
 .slider.slider-success .noUi-connect, .slider.slider-success.noUi-connect {
   background-color: #7AC29A;
@@ -5141,7 +5141,7 @@ strong {
 }
 
 .icon-info {
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
 }
 
 .icon-success {
@@ -5160,7 +5160,7 @@ strong {
   color: #7A9E9F;
 }
 .chart-legend .text-info, .chart-legend .text-info:hover {
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
 }
 .chart-legend .text-success, .chart-legend .text-success:hover {
   color: #7AC29A;
@@ -5446,7 +5446,7 @@ strong {
 .off-canvas-sidebar:before,
 .off-canvas-sidebar[data-background-color="white"]:after,
 .off-canvas-sidebar[data-background-color="white"]:before {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
 }
 .sidebar .user, .sidebar[data-background-color="white"] .user,
 .off-canvas-sidebar .user,
@@ -5557,7 +5557,7 @@ strong {
 }
 .sidebar[data-active-color="info"] .nav li.active > a,
 .off-canvas-sidebar[data-active-color="info"] .nav li.active > a {
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
   opacity: 1;
 }
 .sidebar[data-active-color="success"] .nav li.active > a,
@@ -5927,31 +5927,31 @@ strong {
 }
 
 .navbar .navbar-nav > li > a.btn.btn-info, .btn-info {
-  border-color: rgb(58, 128, 168);
-  color: rgb(58, 128, 168);
+  border-color: rgb(22, 133, 123);
+  color: rgb(22, 133, 123);
 }
 .navbar .navbar-nav > li > a.btn.btn-info:hover, .navbar .navbar-nav > li > a.btn.btn-info:focus, .navbar .navbar-nav > li > a.btn.btn-info:active, .navbar .navbar-nav > li > a.btn.btn-info.active, .navbar .navbar-nav > li > a.btn.btn-info:active:focus, .navbar .navbar-nav > li > a.btn.btn-info:active:hover, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle:focus, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle:hover, .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .btn-info:active:focus, .btn-info:active:hover, .open > .btn-info.dropdown-toggle, .open > .btn-info.dropdown-toggle:focus, .open > .btn-info.dropdown-toggle:hover {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
   color: rgba(255, 255, 255, 0.85);
-  border-color: rgb(58, 128, 168);
+  border-color: rgb(22, 133, 123);
 }
 .navbar .navbar-nav > li > a.btn.btn-info:hover .caret, .navbar .navbar-nav > li > a.btn.btn-info:focus .caret, .navbar .navbar-nav > li > a.btn.btn-info:active .caret, .navbar .navbar-nav > li > a.btn.btn-info.active .caret, .navbar .navbar-nav > li > a.btn.btn-info:active:focus .caret, .navbar .navbar-nav > li > a.btn.btn-info:active:hover .caret, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle .caret, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle:focus .caret, .open > .navbar .navbar-nav > li > a.btn.btn-info.dropdown-toggle:hover .caret, .btn-info:hover .caret, .btn-info:focus .caret, .btn-info:active .caret, .btn-info.active .caret, .btn-info:active:focus .caret, .btn-info:active:hover .caret, .open > .btn-info.dropdown-toggle .caret, .open > .btn-info.dropdown-toggle:focus .caret, .open > .btn-info.dropdown-toggle:hover .caret {
   border-top-color: rgba(255, 255, 255, 0.85);
 }
 .navbar .navbar-nav > li > a.btn.btn-info.disabled, .navbar .navbar-nav > li > a.btn.btn-info.disabled:hover, .navbar .navbar-nav > li > a.btn.btn-info.disabled:focus, .navbar .navbar-nav > li > a.btn.btn-info.disabled.focus, .navbar .navbar-nav > li > a.btn.btn-info.disabled:active, .navbar .navbar-nav > li > a.btn.btn-info.disabled.active, .navbar .navbar-nav > li > a.btn.btn-info:disabled, .navbar .navbar-nav > li > a.btn.btn-info:disabled:hover, .navbar .navbar-nav > li > a.btn.btn-info:disabled:focus, .navbar .navbar-nav > li > a.btn.btn-info:disabled.focus, .navbar .navbar-nav > li > a.btn.btn-info:disabled:active, .navbar .navbar-nav > li > a.btn.btn-info:disabled.active, .navbar .navbar-nav > li > a.btn.btn-info[disabled], .navbar .navbar-nav > li > a.btn.btn-info[disabled]:hover, .navbar .navbar-nav > li > a.btn.btn-info[disabled]:focus, .navbar .navbar-nav > li > a.btn.btn-info[disabled].focus, .navbar .navbar-nav > li > a.btn.btn-info[disabled]:active, .navbar .navbar-nav > li > a.btn.btn-info[disabled].active, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info:hover, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info:focus, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info.focus, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info:active, fieldset[disabled] .navbar .navbar-nav > li > a.btn.btn-info.active, .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info:disabled, .btn-info:disabled:hover, .btn-info:disabled:focus, .btn-info:disabled.focus, .btn-info:disabled:active, .btn-info:disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active, fieldset[disabled] .btn-info, fieldset[disabled] .btn-info:hover, fieldset[disabled] .btn-info:focus, fieldset[disabled] .btn-info.focus, fieldset[disabled] .btn-info:active, fieldset[disabled] .btn-info.active {
   background-color: transparent;
-  border-color: rgb(58, 128, 168);
+  border-color: rgb(22, 133, 123);
 }
 .navbar .navbar-nav > li > a.btn.btn-info.btn-fill, .btn-info.btn-fill {
   color: #FFFFFF;
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
   opacity: 1;
   filter: alpha(opacity=100);
 }
 .navbar .navbar-nav > li > a.btn.btn-info.btn-fill:hover, .navbar .navbar-nav > li > a.btn.btn-info.btn-fill:focus, .navbar .navbar-nav > li > a.btn.btn-info.btn-fill:active, .navbar .navbar-nav > li > a.btn.btn-info.btn-fill.active, .open > .navbar .navbar-nav > li > a.btn.btn-info.btn-fill.dropdown-toggle, .btn-info.btn-fill:hover, .btn-info.btn-fill:focus, .btn-info.btn-fill:active, .btn-info.btn-fill.active, .open > .btn-info.btn-fill.dropdown-toggle {
-  background-color: #429cb6;
+  background-color: rgb(73, 131, 122);
   color: #FFFFFF;
-  border-color: #429cb6;
+  border-color: rgb(255, 255, 255);
 }
 .navbar .navbar-nav > li > a.btn.btn-info.btn-fill .caret, .btn-info.btn-fill .caret {
   border-top-color: #FFFFFF;
@@ -5964,7 +5964,7 @@ strong {
   border-top-color: #FFFFFF;
 }
 .navbar .navbar-nav > li > a.btn.btn-info .caret, .btn-info .caret {
-  border-top-color: rgb(58, 128, 168);
+  border-top-color: rgb(22, 133, 123);
 }
 
 .navbar .navbar-nav > li > a.btn.btn-warning, .btn-warning {
@@ -6237,7 +6237,7 @@ body .wrapper:after {
 }
 
 a {
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
 }
 a:hover, a:focus {
   color: #429cb6;
@@ -6590,7 +6590,7 @@ textarea.form-control {
 }
 
 .progress-bar-info {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
 }
 
 .progress-bar-success {
@@ -6733,7 +6733,7 @@ textarea.form-control {
 }
 
 .slider-info .ui-widget-header {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
 }
 
 .slider-success .ui-widget-header {
@@ -7493,20 +7493,20 @@ star {
 .navbar-default .navbar-nav > li > a:not(.btn):focus {
   background-color: transparent;
   border-radius: 3px;
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
   opacity: 1;
   filter: alpha(opacity=100);
 }
 .navbar-default .navbar-nav > .dropdown > a:hover .caret,
 .navbar-default .navbar-nav > .dropdown > a:focus .caret {
-  border-bottom-color: rgb(58, 128, 168);
-  border-top-color: rgb(58, 128, 168);
+  border-bottom-color: rgb(22, 133, 123);
+  border-top-color: rgb(22, 133, 123);
 }
 .navbar-default .navbar-nav > .open > a,
 .navbar-default .navbar-nav > .open > a:hover,
 .navbar-default .navbar-nav > .open > a:focus {
   background-color: transparent;
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
 }
 .navbar-default .navbar-nav .navbar-toggle:hover, .navbar-default .navbar-nav .navbar-toggle:focus {
   background-color: transparent;
@@ -8430,7 +8430,7 @@ star {
 }
 
 .label-info {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
 }
 
 .label-success {
@@ -9043,7 +9043,7 @@ star {
 }
 .dropdown-menu.dropdown-info > li:not(.disabled) > a:hover,
 .dropdown-menu.dropdown-info > li:not(.disabled) > a:focus {
-  background-color: rgb(58, 128, 168);
+  background-color: rrgb(22, 133, 123);
 }
 .dropdown-menu.dropdown-success > li:not(.disabled) > a:hover,
 .dropdown-menu.dropdown-success > li:not(.disabled) > a:focus {
@@ -9788,14 +9788,14 @@ star {
   color: #7A9E9F;
 }
 .bootstrap-tagsinput .tag.tag-info .tag {
-  background-color: rgb(58, 128, 168);
+  background-color: rgb(22, 133, 123);
   color: #FFFFFF;
 }
 .bootstrap-tagsinput .tag.tag-info .tag .tagsinput-remove-link {
   color: #FFFFFF;
 }
 .bootstrap-tagsinput .tag.tag-info .tagsinput-add {
-  color: rgb(58, 128, 168);
+  color: rgb(22, 133, 123);
 }
 .bootstrap-tagsinput .tag.tag-success .tag {
   background-color: #7AC29A;
@@ -10553,8 +10553,8 @@ star {
 .pagination-info > li:first-child > span,
 .pagination-info > li:last-child > a,
 .pagination-info > li:last-child > span {
-  border: 2px solid rgb(58, 128, 168);
-  color: rgb(58, 128, 168);
+  border: 2px solid rgb(22, 133, 123);
+  color: rgb(22, 133, 123);
 }
 
 .nav-pills-info > li.active > a,

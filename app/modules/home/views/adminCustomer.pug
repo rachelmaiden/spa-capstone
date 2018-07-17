@@ -67,26 +67,34 @@ html(lang='en')
                 i.ti-dashboard
                 p
                   | Dashboard
-            li.active
+            li
               a(data-toggle='collapse', href='#componentsExamples')
                 i.ti-clipboard
                 p
                   | Maintenance
                   b.caret
-              #componentsExamples.collapse.in
+              #componentsExamples.collapse
                 ul.nav
-                  li.active
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
+                  li
+                    a(href='./adminServices')
+                      span.sidebar-mini S
+                      span.sidebar-normal Services
+                  li
+                    a(href='./adminServiceType')
+                      span.sidebar-mini ST
+                      span.sidebar-normal Service Type
+                  li
+                    a(href='./adminServiceDuration')
+                      span.sidebar-mini SD
+                      span.sidebar-normal Service Duration
                   li
                     a(href='./adminTherapist')
                       span.sidebar-mini T
                       span.sidebar-normal Therapist
                   li
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
+                    a(href='./adminSpecialty')
+                      span.sidebar-mini TS
+                      span.sidebar-normal Therapist Specialty    
                   li
                     a(href='./adminAmenities')
                       span.sidebar-mini A
@@ -99,22 +107,35 @@ html(lang='en')
                     a(href='./adminRooms')
                       span.sidebar-mini R
                       span.sidebar-normal Rooms
-            li
+                  li
+                    a(href='./adminRoomType')
+                      span.sidebar-mini RT
+                      span.sidebar-normal Room Type
+                  //-li
+            li.active
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
                 p
                   | Transaction
                   b.caret
-              #tablesExamples.collapse
-                ul.nav
+              #tablesExamples.collapse.in
+                 ul.nav
+                  li.active
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
                   li
-                    a(href='/adminReservation')
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='/adminQueue')
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                       span.sidebar-mini Q
-                      span.sidebar-normal Queue
+                      span.sidebar-normal Queue 
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -233,35 +254,35 @@ html(lang='en')
                                   tbody
                                     each customer in customers
                                       tr
-                                        td= customer.cust_firstname+" "+customer.cust_middlename+" "+customer.cust_lastname
-                                        td= customer.house_no+" "+customer.street_name+" "+customer.brgy_district+" "+customer.city
-                                        td= customer.age+" "+"y.o"
-                                        td= customer.contact_no
+                                        td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                        td= customer.address_house_no+" "+customer.address_street_name+" "+customer.address_admin_district+" "+customer.address_city
+                                        td= customer.cust_age+" "+"y.o"
+                                        td= customer.cust_contact_no
                                         td= customer.cust_email
                                         td
                                         td
-                                          button.btn-fill.btn-info View 
+                                          button.btn.btn-fill.btn-info View 
+                                        
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${customer.cust_id}`)
+                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${customer.cust_id}`)
+                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-close
-                                    //- tr
-                                    //-   td Tiger Nixon
-                                    //-   td Marikina
-                                    //-   td 22
-                                    //-   td 09134908756
-                                    //-   td tiger@gmail.com
-                                    //-   td tigernixon
-                                    //-   td
-                                    //-     button.btn.btn-fill.btn-info View 
-                                    //-   td
-                                    //-     a.btn.btn-simple.btn-info.btn-icon.like(href='#')
-                                    //-       i.ti-heart
-                                    //-     a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
-                                    //-       i.ti-pencil-alt
-                                    //-     a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
-                                    //-       i.ti-close
+                                    //tr
+                                     td Tiger Nixon
+                                     td Marikina
+                                     td 22
+                                     td 09134908756
+                                     td tiger@gmail.com
+                                     td tigernixon
+                                     td
+                                       button.btn.btn-fill.btn-info View 
+                                     td
+                                       
+                                       a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
+                                         i.ti-pencil-alt
+                                       a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
+                                         i.ti-close
                                    
                               .row
                                 .col-md-6
@@ -376,7 +397,19 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminCustomer') Yes
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
+                  //UPDATE
+                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5#exampleModalLabel.modal-title Customer Information
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#updateAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
 
                   
                   
@@ -414,7 +447,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -446,17 +479,134 @@ html(lang='en')
                 });
                 $('#deleteSubmit').click(function(){
                 $.post('/adminCustomer/delete',{id:idNow})
-                    .done(data =>{
-                        if(data){
-                          swal('Success', `Customer deleted`, 'success')
-                          //- res.redirect("/adminCustomer")
-                          $('#modal-warning').modal('hide');
-                        }
-                    });
+                  .done(data=>{
+                    if(data){
+                        swal({
+                        title:'Success', 
+                        text:'Customer Deleted', 
+                        icon:'success'
+                        }).then(function(){
+                          location.reload();
+                        })
+                      $('#updateModal').modal('hide');
+                    }
+                  })
             });
             
         });
-      });
+        $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('/adminCustomer/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Last Name*</label>
+                        <input type="text" name="cust_lastname" placeholder="${data.cust_lname}" value="${data.cust_lname}" id="cust_lname" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>First Name*</label>
+                        <input type="text" placeholder="${data.cust_fname}" value="${data.cust_fname}" name="cust_fname" id="cust_fname" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Middle Name</label>
+                        <input type="text" placeholder="${data.cust_mname}" value="${data.cust_mname}" name="cust_mname" id="cust_mname" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-3">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Address*</label>
+                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <input type="text" placeholder="${data.cust_age}" value="${data.cust_age}" name="cust_age" id="cust_age" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Mobile Number*</label>
+                        <input type="text" placeholder="${data.cust_contact_no}" value="${data.cust_contact_no}" id="cust_contact_no" name="cust_contact_no" class="form-control" minlength="11" maxlength="11" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>E-mail Address*</label>
+                        <input type="text" placeholder="${data.cust_email}" value="${data.cust_email}" id="cust_email" name="cust_email" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </form>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/adminCustomer/update',{
+                  cust_fname:$('#cust_fname').val(),
+                  cust_mname:$('#cust_mname').val(),
+                  cust_lname:$('#cust_lname').val(),
+                  address_house_no:$('#address_house_no').val(),
+                  address_street_name:$('#address_street_name').val(),
+                  address_admin_district:$('#address_admin_district').val(),
+                  address_city:$('#address_city').val(),
+                  cust_age:$('#cust_age').val(),
+                  cust_contact_no:$('#cust_contact_no').val(),
+                  cust_email:$('#cust_email').val(),
+                  
+                  id1:idNow
+                  })
+                  .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'Customer Information Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateModal').modal('hide');
+                      }
+                  })
+                })
+              })
+
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -474,6 +624,12 @@ html(lang='en')
     }
     });
     $('#add').click(function(){
-    swal('Success', 'Updated', 'success')
+    swal({
+      title:'Success', 
+      text:'Customer Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
+    })
     });
     });

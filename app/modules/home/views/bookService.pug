@@ -25,24 +25,40 @@ html(lang='en')
       .filter.filter-primary
       .content-center
         .container
-          h1 Book Reservation
+          h1 Book Service
     div
-      button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px' id='back')
+      a.button.btn.btn-fill.btn-info(href='/adminQueue', style='margin-left: 190px' id='back')
         i.fa.fa-arrow-left(aria-hidden='true')
         | Back
     .wrapper
       .main
         .section
           .container
-            h3 Selected Date: June 27, 2018
+            h3
+              script.
+                 var objToday = new Date(),
+                  weekday = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+                  dayOfWeek = weekday[objToday.getDay()],
+                  domEnder = function() { var a = objToday; if (/1/.test(parseInt((a + "").charAt(0)))) return "th"; a = parseInt((a + "").charAt(1)); return 1 == a ? "st" : 2 == a ? "nd" : 3 == a ? "rd" : "th" }(),
+                  dayOfMonth = today + ( objToday.getDate() < 10) ? '0' + objToday.getDate() + domEnder : objToday.getDate() + domEnder,
+                  months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'),
+                  curMonth = months[objToday.getMonth()],
+                  curYear = objToday.getFullYear(),
+                  curHour = objToday.getHours() > 12 ? objToday.getHours() - 12 : (objToday.getHours() < 10 ? "0" + objToday.getHours() : objToday.getHours()),
+                  curMinute = objToday.getMinutes() < 10 ? "0" + objToday.getMinutes() : objToday.getMinutes(),
+                  curSeconds = objToday.getSeconds() < 10 ? "0" + objToday.getSeconds() : objToday.getSeconds(),
+                  curMeridiem = objToday.getHours() > 12 ? "PM" : "AM";
+                  var today = curHour + ":" + curMinute + "." + curSeconds + " "+  curMeridiem + " " + dayOfWeek + " " + dayOfMonth + " of " + curMonth + ", " + curYear;
+
+                  document.getElementsByTagName('h3')[0].textContent = today;
             br
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7')
               each body in bodys
                 option(value=`${body.service_name}`)= body.service_name
-                //- option(value='s2') Service 2
-                //- option(value='s3') Service 3
-                //- option(value='s4') Service 4
+                //-  option(value='s2') Service 2
+                //- /option(value='s3') Service 3
+                //- //- option(value='s4') Service 4
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7')
               each scrub in scrubs
@@ -64,12 +80,16 @@ html(lang='en')
               option(value='ams10') 10 hours
               option(value='ama11') 11 hours
               option(value='ams12') 12 hours
-            button.btn.btn-fill.btn-info(type='button') Select Room Type and Time
-          
-        button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px') Another Guest
-    div
-      button.btn.btn-fill.btn-danger(type='button', style='margin-left: 190px') Cancel
-      button.btn.btn-fill.btn-success.pull-right(type='button', style='margin-right: 190px') Confirm Reservation
+            select.selectpicker(data-style='btn btn-primary btn-block', title=' Select Room Type and Time', data-size='7') 
+              option(value='rmtm') Common Room 
+              option(value='rmtm') Pivate Room (Single)
+              option(value='rmtm') Private Room (For 2)
+            
+          .div
+            button.btn.btn-fill.btn-info(type='button', style='margin-left: 190px; margin-top: 20px') Another Guest
+            button.btn.btn-fill.btn-danger.pull-left(type='button', style='margin-left: 190px; margin-top: 20px') Cancel
+            button.btn.btn-fill.btn-success.pull-right(type='button', style='margin-right: 200px; margin-top: 20px') Confirm Reservation
+          .div
     footer.footer.footer-big.footer-black
       .container
         .row
