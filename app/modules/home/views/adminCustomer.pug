@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title MBAY Health Spa Front Desk
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -214,9 +214,9 @@ html(lang='en')
                                       th Name
                                       th Adress
                                       th Age
+                                      th Gender
                                       th Mobile Number
                                       th Email Address
-                                      th Username
                                       th Medical History
                                       th.disabled-sorting Actions
                                   tfoot
@@ -224,9 +224,9 @@ html(lang='en')
                                       th Name
                                       th Adress
                                       th Age
+                                      th Gender
                                       th Mobile Number
                                       th Email Address
-                                      th Username
                                       th Medical History
                                       th.disabled-sorting Actions
                                     
@@ -236,9 +236,9 @@ html(lang='en')
                                         td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
                                         td= customer.address_house_no+" "+customer.address_street_name+" "+customer.address_admin_district+" "+customer.address_city
                                         td= customer.cust_age+" "+"y.o"
+                                        td= customer.cust_gender
                                         td= customer.cust_contact_no
                                         td= customer.cust_email
-                                        td
                                         td
                                           button.btn-fill.btn-info View 
                                         td
@@ -302,43 +302,49 @@ html(lang='en')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='lastname')
+                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required)
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label First Name*
-                                  input.form-control(type='text', placeholder='First Name' name='firstname') 
+                                  input.form-control(type='text', placeholder='First Name' name='firstname' required) 
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Middle Name
-                                  input.form-control(type='text', placeholder='Middle Name' name='middlename')     
+                                  input.form-control(type='text', placeholder='Middle Name' name='middlename' required)     
                             .row
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Address*
-                                  input.form-control(type='text', placeholder='House Number' name='house_no')
+                                  input.form-control(type='text', placeholder='House Number' name='house_no' required)
                               .col-md-3
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Street Name' name='street_name')
+                                  input.form-control(type='text', placeholder='Street Name' name='street_name' required)
                               .col-md-4
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district')  
+                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district' required)  
                               .col-md-2
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='City' name='city')     
+                                  input.form-control(type='text', placeholder='City' name='city' required)     
                                     
 
                             .row
-                              .col-md-4
+                              .col-md-2
                                 .form-group.has-default.bmd-form-group
                                   label Age*
                                   input.form-control(type='text', placeholder='Age' name='age')
-                              .col-md-4
+                              .col-md-2
+                                .form-group.has-default.bmd-form-group
+                                  label Gender*
+                                  select.selectpicker(name='gender'  data-style='btn-info')
+                                    option(value='Male') Male
+                                    option(value='Female') Female
+                              .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Mobile Number*
-                                  input.form-control(type='text', placeholder='Mobile Number' name='contact_no')
+                                  input.form-control(type='number' placeholder='Mobile Number' name='contact_no' minlength="11" maxlength="11" required)
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label E-mail Address*
@@ -525,16 +531,25 @@ html(lang='en')
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                       <div class="form-group has-default bmd-form-group">
                         <label>Age*</label>
                         <input type="text" placeholder="${data.cust_age}" value="${data.cust_age}" name="cust_age" id="cust_age" class="form-control"/>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <select id="gender" title="${data.cust_gender}" data-style="btn-info" class="selectpicker">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                      </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
                       <div class="form-group has-default bmd-form-group">
                         <label>Mobile Number*</label>
-                        <input type="text" placeholder="${data.cust_contact_no}" value="${data.cust_contact_no}" id="cust_contact_no" name="cust_contact_no" class="form-control" minlength="11" maxlength="11" />
+                        <input type="tel" placeholder="${data.cust_contact_no}" value="${data.cust_contact_no}" id="cust_contact_no" name="cust_contact_no" class="form-control" minlength="11" maxlength="11" />
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -548,6 +563,7 @@ html(lang='en')
                 </div>
               </form>`)
               $('#updateModal').modal('show')
+              $('#gender').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
@@ -564,6 +580,7 @@ html(lang='en')
                   address_admin_district:$('#address_admin_district').val(),
                   address_city:$('#address_city').val(),
                   cust_age:$('#cust_age').val(),
+                  cust_gender:$('#gender').val(),
                   cust_contact_no:$('#cust_contact_no').val(),
                   cust_email:$('#cust_email').val(),
                   

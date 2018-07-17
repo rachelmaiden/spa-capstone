@@ -216,6 +216,7 @@ html(lang='en')
                                       th Name
                                       th Address
                                       th Age
+                                      th Gender
                                       th Mobile Number
                                       th Email Address
                                       th Specialty
@@ -225,6 +226,7 @@ html(lang='en')
                                       th Name
                                       th Address
                                       th Age
+                                      th Gender
                                       th Mobile Number
                                       th Email Address
                                       th Specialty
@@ -235,10 +237,11 @@ html(lang='en')
                                         td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
                                         td= thera.address_house_no+" "+thera.address_street_name+" "+thera.address_admin_district+" "+thera.address_city
                                         td= thera.therapist_age
+                                        td= thera.therapist_gender
                                         td= thera.therapist_contact_no
                                         td= thera.therapist_email
                                         td= thera.therapist_specialty
-                                        td
+                                        td.action.text-center
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
                                             i.ti-pencil-alt
                                           button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}`)
@@ -370,7 +373,7 @@ html(lang='en')
                     .modal-dialog.modal-lg(role='document')
                       .modal-content
                         .modal-header
-                          h5#exampleModalLabel.modal-title Service Information
+                          h5#exampleModalLabel.modal-title Therapist Information
                           button.close(type='button', data-dismiss='modal', aria-label='Close') 
                             span(aria-hidden='true') x
                         .modal-body#updateAppend
@@ -464,6 +467,7 @@ html(lang='en')
           var idNow = $(this).val();
               $.post('/adminTherapist/query',{id1:idNow})
           .done(data=>{
+            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
                     <div class="col-md-4">
@@ -512,10 +516,19 @@ html(lang='en')
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                       <div class="form-group has-default bmd-form-group">
                         <label>Age*</label>
                         <input type="text" placeholder="${data.therapist_age}" value="${data.therapist_age}" name="therapist_age" id="therapist_age" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <select id="gender" title="${data.therapist_gender}" data-style="btn-info" class="selectpicker">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -535,6 +548,7 @@ html(lang='en')
                 </div>
               </form>`)
               $('#updateModal').modal('show')
+              $('#gender').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
@@ -551,6 +565,7 @@ html(lang='en')
                   address_admin_district:$('#address_admin_district').val(),
                   address_city:$('#address_city').val(),
                   therapist_age:$('#therapist_age').val(),
+                  therapist_gender:$('#gender').val(),
                   therapist_contact_no:$('#therapist_contact_no').val(),
                   therapist_email:$('#therapist_email').val(),
                   

@@ -349,17 +349,15 @@ html(lang='en')
                   
                   //VIEW SERVICES INCLUDED
                   #servicesIncluded.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog.modal-lg(role='document')
+                    .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
-                          h4.modal-title Warning
+                          center
+                            h4.modal-title Services Included
                         .modal-body#viewAppend
                         .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right(type='button') Yes
-
 
                   footer.footer
                     .container-fluid
@@ -464,7 +462,7 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-6" id=services_name>
                       <div class="form-group has-default bmd-form-group">
-                        <label>Services Included</label>
+                      
                       </div>
                     </div>
                   </div>
@@ -542,7 +540,7 @@ html(lang='en')
 
                 for(var i=0; i<data.out2.length;i++){
                 console.log(data.out2[i].service_name)
-                $('#services_included').append(`<option value="${data.out2[i].service_name}">${data.out2[i].service_name}</option>`)
+                $('#services_included').append(`<option value="${data.out2[i].service_id}">${data.out2[i].service_name}</option>`)
                 }
 
                 $('#services_included').selectpicker();

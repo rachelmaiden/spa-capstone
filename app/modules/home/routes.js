@@ -88,7 +88,7 @@ router.get('/admindashboard', (req, res) => {
         insert into 
         customer_tbl(cust_fname,cust_mname, cust_lname, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_email, cust_age, cust_gender) 
         values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", 
-          "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}","${req.body.email}","${req.body.age}", "Male")
+          "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}","${req.body.email}","${req.body.age}", "${req.body.gender}")
             `
       db.query(query, (err, out) => {
         // res.redirect('/adminCustomer')
@@ -110,6 +110,8 @@ router.get('/admindashboard', (req, res) => {
     // UPDATE
     router.post('/adminCustomer/update', (req, res) => {
 
+      console.log(req.body);
+
       const query = `UPDATE customer_tbl set 
       cust_fname="${req.body.cust_fname}",
       cust_mname="${req.body.cust_mname}",
@@ -119,6 +121,7 @@ router.get('/admindashboard', (req, res) => {
       address_admin_district="${req.body.address_admin_district}",
       address_city="${req.body.address_city}",
       cust_age="${req.body.cust_age}",
+      cust_gender="${req.body.cust_gender}",
       cust_contact_no="${req.body.cust_contact_no}",
       cust_email="${req.body.cust_email}"
       WHERE cust_id = ${req.body.id1}
@@ -416,7 +419,7 @@ router.get('/admindashboard', (req, res) => {
         address_admin_district, 
         address_city, 
         therapist_contact_no, 
-        therapist_age, 
+        therapist_age,
         therapist_gender, 
         therapist_email, 
         therapist_specialty, 
@@ -431,13 +434,12 @@ router.get('/admindashboard', (req, res) => {
         "${req.body.address_city}", 
         "${req.body.therapist_contact_no}", 
         "${req.body.therapist_age}", 
-        "Male", 
+        "${req.body.therapist_gender}", 
         "${req.body.therapist_email}", 
         "${req.body.therapist_specialty}", 
         0)`
       db.query(query, (err, out) => {
         // res.redirect('/adminTherapist')
-        console.log(query)
       })
     })
     // ===============================================
@@ -453,22 +455,26 @@ router.get('/admindashboard', (req, res) => {
     // ===============================================
     // UPDATE
     router.post('/adminTherapist/update', (req, res) => {
-
+      
+      console.log(req.body)
+      console.log("Galing sa Web")
       const query = `UPDATE therapist_tbl set 
       therapist_fname="${req.body.therapist_fname}",
-      therapist_mname="${req.body.therapist_lname}",
-      therapist_lname="${req.body.therapist_mname}",
+      therapist_mname="${req.body.therapist_mname}",
+      therapist_lname="${req.body.therapist_lname}",
       address_house_no="${req.body.address_house_no}",
       address_street_name="${req.body.address_street_name}",
       address_admin_district="${req.body.address_admin_district}",
       address_city="${req.body.address_city}",
       therapist_age="${req.body.therapist_age}",
+      therapist_gender="${req.body.therapist_gender}",
       therapist_contact_no="${req.body.therapist_contact_no}",
       therapist_email="${req.body.therapist_email}"
       WHERE therapist_id = ${req.body.id1}
       `
       db.query(query,(err,out) =>{
           if(err) return console.log(err)
+          console.log(query)
           res.redirect("/adminCustomer")
     })
   })
