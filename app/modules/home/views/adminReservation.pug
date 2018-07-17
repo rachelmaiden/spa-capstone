@@ -74,7 +74,7 @@ html(lang='en')
                   | Maintenance
                   b.caret
               #componentsExamples.collapse
-                 ul.nav
+                ul.nav
                   li
                     a(href='./adminServices')
                       span.sidebar-mini S
@@ -133,6 +133,7 @@ html(lang='en')
                       span.sidebar-normal Walk-in
                   li
                     a(href='adminQueue')
+                    a(href='/adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -417,4 +418,4 @@ html(lang='en')
     $('#add').click(function(){
     swal('Success', 'Updated', 'success')
     });
-    });
+    })

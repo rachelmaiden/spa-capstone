@@ -30,6 +30,12 @@ router.get('/adminQueue', (req, res) => {
   res.render('home/views/adminQueue')
 })
 
+
+
+router.get('/adminQueue', (req, res) => {
+  res.render('home/views/adminQueue')
+})
+
 router.get('/bookService', (req, res) => {
   const query = ` select * from services_tbl where service_type ='1';
   select * from services_tbl where service_type ='2';
@@ -78,6 +84,14 @@ router.post("/adminFrontDesk",(req, res) => {
 router.get('/admindashboard', (req, res) => {
     res.render('home/views/admindashboard')
 })
+
+
+
+
+// ****************************************************************************************** ||
+// - - - - - - - - - - - - - - - - - - C U S T O M E R - - - - - - - - - - - - - - - - - - -  ||
+// ========================================================================================== ||
+
 
 
 
@@ -151,6 +165,10 @@ router.get('/admindashboard', (req, res) => {
           console.log(req.body.id1)
       })
     })
+
+
+
+
 
 
 
