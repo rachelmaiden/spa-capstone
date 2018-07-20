@@ -87,6 +87,12 @@ $(document).ready(function(){
     $('.switch').bootstrapSwitch({
         onColor:'primary'
     });
+    $('.switch-availability').bootstrapSwitch({
+        onColor:'primary',
+        onText:'Available',
+        offText: 'Unavailable'
+    });
+
 
     $('.switch-plain').bootstrapSwitch({
         onColor:'',

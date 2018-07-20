@@ -41,6 +41,11 @@ Licensed under the MIT license - http://opensource.org/licenses/MIT
 
 Copyright (c) 2015 Daniel Eden
 */
+.form-control::-webkit-inner-spin-button, 
+.form-control::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
 .animated {
   -webkit-animation-duration: 1s;
   animation-duration: 1s;

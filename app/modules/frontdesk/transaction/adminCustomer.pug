@@ -67,31 +67,39 @@ html(lang='en')
                 i.ti-dashboard
                 p
                   | Dashboard
-            li.active
+            li
               a(data-toggle='collapse', href='#componentsExamples')
                 i.ti-clipboard
                 p
                   | Maintenance
                   b.caret
-              #componentsExamples.collapse.in
+              #componentsExamples.collapse
                 ul.nav
-                  li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
-                  li
-                    a(href='./adminTherapist')
-                      span.sidebar-mini T
-                      span.sidebar-normal Therapist
                   li
                     a(href='./adminServices')
                       span.sidebar-mini S
                       span.sidebar-normal Services
                   li
+                    a(href='./adminServiceType')
+                      span.sidebar-mini ST
+                      span.sidebar-normal Service Type
+                  li
+                    a(href='./adminServiceDuration')
+                      span.sidebar-mini SD
+                      span.sidebar-normal Service Duration
+                  li
+                    a(href='./adminTherapist')
+                      span.sidebar-mini T
+                      span.sidebar-normal Therapist
+                  li
+                    a(href='./adminSpecialty')
+                      span.sidebar-mini TS
+                      span.sidebar-normal Therapist Specialty    
+                  li
                     a(href='./adminAmenities')
                       span.sidebar-mini A
                       span.sidebar-normal Amenities
-                  li.active
+                  li
                     a(href='./adminPromos')
                       span.sidebar-mini P
                       span.sidebar-normal Promos
@@ -99,22 +107,35 @@ html(lang='en')
                     a(href='./adminRooms')
                       span.sidebar-mini R
                       span.sidebar-normal Rooms
-            li
+                  li
+                    a(href='./adminRoomType')
+                      span.sidebar-mini RT
+                      span.sidebar-normal Room Type
+                  //-li
+            li.active
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
                 p
                   | Transaction
                   b.caret
-              #tablesExamples.collapse
-                ul.nav
+              #tablesExamples.collapse.in
+                 ul.nav
+                  li.active
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
                   li
-                    a(href='/adminReservation')
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='/assets/tables/extended')
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                       span.sidebar-mini Q
-                      span.sidebar-normal Queue
+                      span.sidebar-normal Queue 
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -196,7 +217,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Promo Bundle
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewCust') Add New Customer
                   .content
                     .container-fluid
                       .row
@@ -211,37 +232,59 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Promo Name
-                                      th Services Included
-                                      th Promo Duration
-                                      th Hours of Amenities Usage
-                                      th Promo Price
-                                      th Valid Until
+                                      th Name
+                                      th Adress
+                                      th Age
+                                      th Gender
+                                      th Mobile Number
+                                      th Email Address
+                                      th Medical History
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Promo Name
-                                      th Services Included
-                                      th Promo Duration
-                                      th Hours of Amenities Usage
-                                      th Promo Price
-                                      th Valid Until
-                                      th Actions
+                                      th Name
+                                      th Adress
+                                      th Age
+                                      th Gender
+                                      th Mobile Number
+                                      th Email Address
+                                      th Medical History
+                                      th.disabled-sorting Actions
+                                    
                                   tbody
-                                    each promo in promos
+                                    each customer in customers
                                       tr
-                                        td= promo.promobundle_name
+                                        td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                        td= customer.address_house_no+" "+customer.address_street_name+" "+customer.address_admin_district+" "+customer.address_city
+                                        td= customer.cust_age+" "+"y.o"
+                                        td= customer.cust_gender
+                                        td= customer.cust_contact_no
+                                        td= customer.cust_email
                                         td
-                                          button.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${promo.promobundle_id}`) View Services
-                                        td= promo.promobundle_duration
-                                        td= promo.promobundle_amenity_usage
-                                        td= promo.promobundle_price
-                                        td= promo.promobundle_validity
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.promobundle_id}`)
+                                          button.btn.btn-fill.btn-info View 
+                                        
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${promo.promobundle_id}`)
+                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${customer.cust_id}`)
                                             i.ti-close
+                                    //tr
+                                     td Tiger Nixon
+                                     td Marikina
+                                     td 22
+                                     td 09134908756
+                                     td tiger@gmail.com
+                                     td tigernixon
+                                     td
+                                       button.btn.btn-fill.btn-info View 
+                                     td
+                                       
+                                       a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
+                                         i.ti-pencil-alt
+                                       a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
+                                         i.ti-close
+                                   
                               .row
                                 .col-md-6
                                   .card-header
@@ -265,62 +308,91 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
-                  // ADD
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
+
+
+                    // ADD
+                  #addNewCust.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog.modal-lg(role='document')
                       .modal-content
                         .modal-header
                           h5.modal-title
-                            center Add New Promo Bundle
+                            center Add New Customer
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminPromos')
+                        form(method='POST' action='/adminCustomer')
                           .modal-body
                             .row
-                              .col-md-6
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label Promo Bundle Name*
-                                  input.form-control(type='text', placeholder='Promo Bundle Name' name='name')
-                              .col-md-6
+                                  label Last Name*
+                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required)
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label Promo Bundle Price*
-                                  input.form-control(type='text', placeholder='Promo Bundle Price' name='price')
+                                  label First Name*
+                                  input.form-control(type='text', placeholder='First Name' name='firstname' required) 
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Middle Name
+                                  input.form-control(type='text', placeholder='Middle Name' name='middlename' required)     
+                            .row
+                              .col-md-3
+                                .form-group.has-default.bmd-form-group
+                                  label Address*
+                                  input.form-control(type='text', placeholder='House Number' name='house_no' required)
+                              .col-md-3
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='Street Name' name='street_name' required)
+                              .col-md-4
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district' required)  
+                              .col-md-2
+                                .form-group.has.default.bmd-form-group
+                                  label
+                                  input.form-control(type='text', placeholder='City' name='city' required)     
+                                    
+
+                            .row
+                              .col-md-2
+                                .form-group.has-default.bmd-form-group
+                                  label Age*
+                                  input.form-control(type='text', placeholder='Age' name='age')
+                              .col-md-2
+                                .form-group.has-default.bmd-form-group
+                                  label Gender*
+                                  select.selectpicker(name='gender'  data-style='btn-info')
+                                    option(value='Male') Male
+                                    option(value='Female') Female
+                              .col-md-3
+                                .form-group.has-default.bmd-form-group
+                                  label Mobile Number*
+                                  input.form-control(type='number' placeholder='Mobile Number' name='contact_no' minlength="11" maxlength="11" required)
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label E-mail Address*
+                                  input.form-control(type='text', placeholder='E-mail' name='email')
                             .form-group.has-default.bmd-form-group
-                              center
-                                label Services Included*
-                                  select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='promos')
-                                    each service in services
-                                      option(value=`${service.service_id}`)= service.service_name
-                              
+                              label Medical History*
+                              textarea.form-control(type='text', placeholder='Medical History')
+                            .form-group.has-default.bmd-form-group
+                              p.category Loyalty Member
+                              input.switch-icon(type='checkbox', checked='')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                label Promo Duration
-                                select.selectpicker(name='duration'  data-style='btn-info')
-                                  option(value='60 minutes') 60 minutes
-                                  option(value='90 minutes') 90 minutes
-                                  option(value='120 minutes') 120 minutes
-                              .col-md-6  
+                                  label Username*
+                                  input.form-control(type='text', placeholder='Username')
+                              .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                label Hours of Amenity Usage
-                                select.selectpicker(name='amenity'  data-style='btn-info')
-                                  option(value='60 minutes') 60 minutes
-                                  option(value='90 minutes') 90 minutes
-                                  option(value='120 minutes') 120 minutes
-                            //
-                              <div class="form-group has-default bmd-form-group">
-                              <label>Promo Bundle Validity</label>
-                              <input type="text" class="form-control" placeholder="Promo Bundle Validity">
-                              </div>
-                            #dp.form-group.has-default.bmd-form-group
-                              label Promo Bundle Valid Until:
-                              .form-group
-                                input#promobundle_validity.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                                  label Password
+                                  input.form-control(type='password', placeholder='Password')
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Promo Bundle
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Customer
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                    
+                  
 
-
-                  // DELETE  
+                    // DELETE  
                   #modal-warning.modal.modal-warning.fade
                     .modal-dialog
                       .modal-content
@@ -333,45 +405,23 @@ html(lang='en')
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
                             button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
-                  
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog.modal-lg(role='document')
                       .modal-content
                         .modal-header
-                          h5#exampleModalLabel.modal-title Promobundle Information
+                          h5#exampleModalLabel.modal-title Customer Information
                           button.close(type='button', data-dismiss='modal', aria-label='Close') 
                             span(aria-hidden='true') x
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                             button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
-                  
-                  //VIEW SERVICES INCLUDED
-                  #servicesIncluded.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                          center
-                            h4.modal-title Services Included
-                        .modal-body#viewAppend
-                        .modal-footer
 
+                  
+                  
                   footer.footer
                     .container-fluid
-                      nav.pull-left
-                        ul
-                          li
-                            a(href='http://www.creative-tim.com')
-                              | Creative Tim
-                          li
-                            a(href='http://blog.creative-tim.com')
-                              | Blog
-                          li
-                            a(href='http://www.creative-tim.com/license')
-                              | Licenses
                       .copyright.pull-right
                         | © 
                         script.
@@ -379,7 +429,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Creative Tim
+                        a(href='http://www.creative-tim.com') Team MBAY
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -423,7 +473,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
-  script(src='/assets/paperDashboardPro/js/bootstrap-datepicker.min.js')
   script.
       $(document).ready(function(){
         $('.deleteButton').click(function(){
@@ -436,131 +485,126 @@ html(lang='en')
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                  $.post('/adminPromos/delete',{id:idNow}).done(data=>{
+                $.post('/adminCustomer/delete',{id:idNow})
+                  .done(data=>{
                     if(data){
                         swal({
                         title:'Success', 
-                        text:'Promo Bundle Deleted', 
+                        text:'Customer Deleted', 
                         icon:'success'
                         }).then(function(){
                           location.reload();
                         })
                       $('#updateModal').modal('hide');
                     }
-                })
+                  })
             });
             
         });
-
-
-        $('.viewButton').click(function(){
-          var idNow = $(this).val();
-            $.post('adminPromos/query1',{id1:idNow})
-          .done(data=>{
-            console.log(data)
-            $('#viewAppend').append(`
-                  <div class="row">
-                    <div class="col-md-6" id=services_name>
-                      <div class="form-group has-default bmd-form-group">
-                      
-                      </div>
-                    </div>
-                  </div>
-            `)
-            for(var i=0; i<data.out1.length;i++){
-              console.log(data.out1[i].service_name)
-                $('#services_name').append(`<li>${data.out1[i].service_name}</li>`)
-              }
-            $('#servicesIncluded').modal('show')
-            $('#servicesIncluded').on('hidden.bs.modal', function (){
-                $('#services_name').remove()
-              });
-          })
-        })
-
-
-
-
         $('.updateButton').click(function(){
           var idNow = $(this).val();
-              $.post('/adminPromos/query',{id1:idNow})
+              $.post('/adminCustomer/query',{id1:idNow})
           .done(data=>{
-            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Promo Bundle Name*</label>
-                        <input type="text" placeholder="${data.out1.promobundle_name}" value="${data.out1.promobundle_name}" id="promobundle_name" name="promobundle_name" class="form-control"/>
+                        <label>Last Name*</label>
+                        <input type="text" name="cust_lastname" placeholder="${data.cust_lname}" value="${data.cust_lname}" id="cust_lname" class="form-control"/>
                       </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Promo Bundle Price*</label>
-                        <input type="text" placeholder="${data.out1.promobundle_price}" value="${data.out1.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
+                        <label>First Name*</label>
+                        <input type="text" placeholder="${data.cust_fname}" value="${data.cust_fname}" name="cust_fname" id="cust_fname" class="form-control"/>
                       </div>
                     </div>
-                  </div>
-                  <div class="form-group has-default bmd-form-group">
-                    <label>Services Included
-                      <select name="services_included" id="services_included" multiple="" title="" data-style="btn-info" data-size="7" class="selectpicker">
-                      </select>
-                    </label>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Middle Name</label>
+                        <input type="text" placeholder="${data.cust_mname}" value="${data.cust_mname}" name="cust_mname" id="cust_mname" class="form-control"/>
+                      </div>
+                    </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group"></div>
-                      <label>Promo Duration</label>
-                      <select id="promobundle_duration" title="${data.out1.promobundle_duration}" data-style="btn-info" class="selectpicker">
-                        <option value="60 minutes">60 minutes</option>
-                        <option value="90 minutes">90 minutes</option>
-                        <option value="120 minutes">120 minutes</option>
-                      </select>
+                    <div class="col-md-3">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Address*</label>
+                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
+                      </div>
                     </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group"></div>
-                      <label>Hours of Amenity Usage</label>
-                      <select id="promobundle_amenity_usage" title="${data.out1.promobundle_amenity_usage}" data-style="btn-info" class="selectpicker">
-                        <option value="60 minutes">60 minutes</option>
-                        <option value="90 minutes">90 minutes</option>
-                        <option value="120 minutes">120 minutes</option>
-                      </select>
+                    <div class="col-md-3">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
+                      </div>
                     </div>
-                    <!-- <div class="form-group has-default bmd-form-group">-->
-                    <!-- <label>Promo Bundle Validity</label>-->
-                    <!-- <input type="text" class="form-control" placeholder="Promo Bundle Validity">-->
-                    <!-- </div>-->
+                    <div class="col-md-4">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
+                      </div>
+                    </div>
+                    <div class="col-md-2">
+                      <div class="form-group has default bmd-form-group">
+                        <label></label>
+                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
+                      </div>
+                    </div>
                   </div>
-                  <div id="dp" class="form-group has-default bmd-form-group">
-                    <label>Promo Bundle Valid Until:</label>
-                    <div class="form-group">
-                      <input id="promobundle_valid" type="text" placeholder="${data.out1.promobundle_validity}" value="${data.out1.promobundle_validity}" class="form-control"/>
+                  <div class="row">
+                    <div class="col-md-2">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <input type="text" placeholder="${data.cust_age}" value="${data.cust_age}" name="cust_age" id="cust_age" class="form-control"/>
+                      </div>
                     </div>
-                  </div>`)
-
-                for(var i=0; i<data.out2.length;i++){
-                console.log(data.out2[i].service_name)
-                $('#services_included').append(`<option value="${data.out2[i].service_id}">${data.out2[i].service_name}</option>`)
-                }
-
-                $('#services_included').selectpicker();
-                $('#promobundle_duration').selectpicker();
-              $('#promobundle_amenity_usage').selectpicker();
-              $('#promobundle_valid').datepicker();
+                    <div class="col-md-2">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Age*</label>
+                        <select id="gender" title="${data.cust_gender}" data-style="btn-info" class="selectpicker">
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                      </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Mobile Number*</label>
+                        <input type="tel" placeholder="${data.cust_contact_no}" value="${data.cust_contact_no}" id="cust_contact_no" name="cust_contact_no" class="form-control" minlength="11" maxlength="11" />
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>E-mail Address*</label>
+                        <input type="text" placeholder="${data.cust_email}" value="${data.cust_email}" id="cust_email" name="cust_email" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+              </form>`)
               $('#updateModal').modal('show')
+              $('#gender').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
-                })
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
               $('#updateSubmitButton').click(function(){
-                  $.post('/adminPromos/update',{
-                  promobundle_name:$('#promobundle_name').val(),
-                  promobundle_price:$('#promobundle_price').val(),
-                  promobundle_validity:$('#promobundle_valid').val(),
-                  promobundle_availability:$('#promobundle_availability').val(),
-                  promobundle_duration:$('#promobundle_duration').val(),
-                  promobundle_amenity_usage:$('#promobundle_amenity_usage').val(),
-                  services_included:$('#services_included').val(),
-                  
+                  $.post('/adminCustomer/update',{
+                  cust_fname:$('#cust_fname').val(),
+                  cust_mname:$('#cust_mname').val(),
+                  cust_lname:$('#cust_lname').val(),
+                  address_house_no:$('#address_house_no').val(),
+                  address_street_name:$('#address_street_name').val(),
+                  address_admin_district:$('#address_admin_district').val(),
+                  address_city:$('#address_city').val(),
+                  cust_age:$('#cust_age').val(),
+                  cust_gender:$('#gender').val(),
+                  cust_contact_no:$('#cust_contact_no').val(),
+                  cust_email:$('#cust_email').val(),
                   
                   id1:idNow
                   })
@@ -568,7 +612,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'Promo Bundle Information Updated', 
+                          text:'Customer Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -577,10 +621,6 @@ html(lang='en')
                       }
                   })
                 })
-                $('#cancelButton').click(function(){
-                  $('#updateAppend').remove();
-                })
-              
               })
 
           })
@@ -601,21 +641,13 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    });
-  script(type='text/javascript').
-    $(document).ready(function(){
-    $('#promobundle_validity').datepicker();
-    // Init Sliders
-    demo.initFormExtendedSliders();
-    // Init DatetimePicker
-    demo.initFormExtendedDatetimepickers();
-    });
     $('#add').click(function(){
     swal({
       title:'Success', 
-      text:'New Promo bundle Added', 
+      text:'Customer Added', 
       icon:'success'})
       .then(function(){
       location.reload();
     })
+    });
     });

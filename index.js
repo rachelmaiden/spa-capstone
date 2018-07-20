@@ -22,6 +22,11 @@ var app = express();
  */
 require('./app')(app);
 
+app.get('/', (req, res) => {
+	res.redirect("/adminFrontDesk")
+})
+
+
 /**
  * This tells the app instance to listen to a certain port for any requests
  */

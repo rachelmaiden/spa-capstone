@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa Front Desk
+    title Paper Dashboard PRO by Creative Tim
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -67,26 +67,34 @@ html(lang='en')
                 i.ti-dashboard
                 p
                   | Dashboard
-            li.active
+            li
               a(data-toggle='collapse', href='#componentsExamples')
                 i.ti-clipboard
                 p
                   | Maintenance
                   b.caret
-              #componentsExamples.collapse.in
+              #componentsExamples.collapse
                 ul.nav
                   li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
+                    a(href='./adminServices')
+                      span.sidebar-mini S
+                      span.sidebar-normal Services
+                  li
+                    a(href='./adminServiceType')
+                      span.sidebar-mini ST
+                      span.sidebar-normal Service Type
+                  li
+                    a(href='./adminServiceDuration')
+                      span.sidebar-mini SD
+                      span.sidebar-normal Service Duration
                   li
                     a(href='./adminTherapist')
                       span.sidebar-mini T
                       span.sidebar-normal Therapist
-                  li.active
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
+                  li
+                    a(href='./adminSpecialty')
+                      span.sidebar-mini TS
+                      span.sidebar-normal Therapist Specialty    
                   li
                     a(href='./adminAmenities')
                       span.sidebar-mini A
@@ -99,25 +107,35 @@ html(lang='en')
                     a(href='./adminRooms')
                       span.sidebar-mini R
                       span.sidebar-normal Rooms
-                  
-                  
-            li
+                  li
+                    a(href='./adminRoomType')
+                      span.sidebar-mini RT
+                      span.sidebar-normal Room Type
+            li.active
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
                 p
                   | Transaction
                   b.caret
-              #tablesExamples.collapse
-                ul.nav
+              #tablesExamples.collapse.in
+                 ul.nav
                   li
-                    a(href='/adminReservation')
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li.active
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                     a(href='/adminQueue')
                       span.sidebar-mini Q
-                      span.sidebar-normal Queue    
-                  
+                      span.sidebar-normal Queue
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -191,16 +209,71 @@ html(lang='en')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
-        br
-        .content(style="margin-right:15px; padding:0px")
+        .content
           .container-fluid
             .row
               .col-md-12
                 .card
                   .row
-                    .col-md-6
+                    .col-md-11
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service   
+                        center
+                          a.btn.btn-info.btn-fill.btn-wd.btn-block(style='margin-left:40px', href='/selectDate') Book Reservation
+                  #addNewCust.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Book Reservation
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        .modal-body
+                          .row
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label First Name*
+                                input.form-control(type='text', placeholder='First Name')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Middle Name
+                                input.form-control(type='text', placeholder='Middle Name')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Last Name*
+                                input.form-control(type='text', placeholder='Last Name')
+                          .form-group.has-default.bmd-form-group
+                            label Address*
+                            input.form-control(type='text', placeholder='Address')
+                          .row
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Age*
+                                input.form-control(type='text', placeholder='Age')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label Mobile Number*
+                                input.form-control(type='text', placeholder='Mobile Number')
+                            .col-md-4
+                              .form-group.has-default.bmd-form-group
+                                label E-mail Address*
+                                input.form-control(type='text', placeholder='E-mail')
+                          .form-group.has-default.bmd-form-group
+                            label Medical History*
+                            textarea.form-control(type='text', placeholder='Medical History')
+                          .form-group.has-default.bmd-form-group
+                            p.category Loyalty Member
+                            input.switch-icon(type='checkbox', checked='')
+                          .row
+                            .col-md-6
+                              .form-group.has-default.bmd-form-group
+                                label Username*
+                                input.form-control(type='text', placeholder='Username')
+                            .col-md-6
+                              .form-group.has-default.bmd-form-group
+                                label Password*
+                                input.form-control(type='password', placeholder='Password')
+                        .modal-footer
+                          button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Customer
+                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -210,42 +283,34 @@ html(lang='en')
                           .card
                             .card-content
                               .toolbar
+                                center
+                                  h2 List Of Reservations
                                 // Here you can write extra buttons/actions for the toolbar
                               .fresh-datatables
-                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                table#datatables.table.table-striped.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Service Type
-                                      th Service Name
-                                      th Service Duration
-                                      th Service Price
-                                      th Availability
+                                      th Name
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th Date
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Service Type
-                                      th Service Name
-                                      th Service Duration
-                                      th Service Price
-                                      th Availability
+                                      th 
+                                      th 
+                                      th 
+                                      th Date
                                       th Actions
                                   tbody
-                                    each service in services
-                                      tr
-                                        td= service.service_type_desc
-                                        td= service.service_name
-                                        td= service.service_duration
-                                        td= service.service_price
-                                        td
-                                          if(service.service_availability ==0 )
-                                            label Available
-                                          else if(service.service_availability ==1)
-                                            label Not Available
-                                        td
-                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${service.service_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${service.service_id}`)
-                                            i.ti-close
+                                    tr
+                                      td Tiger Nixon
+                                      td 
+                                      td 
+                                      td
+                                      td
+                                        span.label.label-info  aa
+                                        
                                     
                               .row
                                 .col-md-6
@@ -270,80 +335,19 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
-                  //ADD  
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Service
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminServices')
-                          .modal-body
-                            .row
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Service Type*
-                                    select.selectpicker(data-style='btn-info' name='type')
-                                      each typ in typs
-                                        option(value=`${typ.service_type_id}`)= typ.service_type_desc
-
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Service Name*
-                                  input.form-control(type='text', placeholder='Service Name' name='name')
-                            .row
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Service Duration*
-                                  select.selectpicker(name='duration'  data-style='btn-info')
-                                    option(value='60 minutes') 60 minutes
-                                    option(value='90 minutes') 90 minutes
-                                    option(value='120 minutes') 120 minutes
-
-
-
-
-                                  //- input.form-control(type='text', placeholder='Service Duration' name='duration')
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Service Price*
-                                  input.form-control(type='text', placeholder='Service Price' name='price')
-                            .row
-                          .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
-                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                  
-                  // DELETE  
-                  #modal-warning.modal.modal-warning.fade
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                          h4.modal-title Warning
-                        .modal-body
-                          p Are you sure you?
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
-
-
-                  //UPDATE
-                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog.modal-lg(role='document')
-                      .modal-content
-                        .modal-header
-                          h5#exampleModalLabel.modal-title Service Information
-                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
-                            span(aria-hidden='true') x
-                        .modal-body#updateAppend
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
-
                   footer.footer
                     .container-fluid
+                      nav.pull-left
+                        ul
+                          li
+                            a(href='http://www.creative-tim.com')
+                              | Creative Tim
+                          li
+                            a(href='http://blog.creative-tim.com')
+                              | Blog
+                          li
+                            a(href='http://www.creative-tim.com/license')
+                              | Licenses
                       .copyright.pull-right
                         | © 
                         script.
@@ -351,8 +355,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') TEAM RJPC
-              .fixed-plugin
+                        a(href='http://www.creative-tim.com') Creative Tim
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -377,7 +380,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -396,110 +399,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
-  script.
-      $(document).ready(function(){
-        $('.deleteButton').click(function(){
-            var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
-                });
-                $('#deleteSubmit').click(function(){
-                $.post('/adminServices/delete',{id:idNow})
-                    .done(data=>{
-                    if(data){
-                        swal({
-                        title:'Success', 
-                        text:'Service Deleted', 
-                        icon:'success'
-                        }).then(function(){
-                          location.reload();
-                        })
-                      $('#updateModal').modal('hide');
-                    }
-                  })
-            });
-            
-        });
-        $('.updateButton').click(function(){
-          var idNow = $(this).val();
-              $.post('/adminServices/query',{id1:idNow})
-          .done(data=>{
-              $('#updateAppend').append(`
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Name*</label>
-                        <input type="text" placeholder="${data.service_name}" value="${data.service_name}" id="service_name" name="service_name" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Price*</label>
-                        <input type="text" placeholder="${data.service_price}" value="${data.service_price}" id="service_price" name="service_price" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Duration*</label>
-                        <select title="${data.service_duration}" id="service_duration" name="service_duration" data-style="btn-info" class="selectpicker">
-                            <option value="60 minutes">60 minutes</option>
-                            <option value="90 minutes">90 minutes</option>
-                            <option value="120 minutes">120 minutes</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Availability*</label>
-                          <select title="Select Availability" id="service_availability" name="service_availability" data-style="btn-info" class="selectpicker">
-                            <option value="0">Available</option>
-                            <option value="1">Not Available</option>
-                          </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>`)
-                $('#service_duration').selectpicker();
-                $('#service_availability').selectpicker();
-              $('#updateModal').modal('show')
-              $('#updateModal').on('hidden.bs.modal', function (){
-                $('#updateAppend').empty()
-                });
-              $('#cancelButton').click(function(){
-                $('#updateAppend').remove();
-              })
-              $('#updateSubmitButton').click(function(){
-                  $.post('/adminServices/update',{
-                  service_name:$('#service_name').val(),
-                  service_price:$('#service_price').val(),
-                  service_duration:$('#service_duration').val(),
-                  service_availability:$('#service_availability').val(),
-                  
-                  id1:idNow
-                  })
-                  .done(data=>{
-                      if(data){
-                          swal({
-                          title:'Success', 
-                          text:'Service Information Updated', 
-                          icon:'success'
-                          }).then(function(){
-                            location.reload();
-                          })
-                        $('#updateModal').modal('hide');
-                      }
-                  })
-                })
-              })
-
-          })
-      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -517,12 +416,6 @@ html(lang='en')
     }
     });
     $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Service Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
+    swal('Success', 'Updated', 'success')
+    });
     })
-    });
-    });

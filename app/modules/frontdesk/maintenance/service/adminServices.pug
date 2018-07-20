@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title MBAY Health Spa Front Desk
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -75,30 +75,73 @@ html(lang='en')
                   b.caret
               #componentsExamples.collapse.in
                 ul.nav
-                  li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
-                  li.active
-                    a(href='./adminTherapist')
-                      span.sidebar-mini T
-                      span.sidebar-normal Therapist
-                  li
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
-                  li
-                    a(href='./adminAmenities')
-                      span.sidebar-mini A
-                      span.sidebar-normal Amenities
-                  li
-                    a(href='./adminPromos')
-                      span.sidebar-mini P
-                      span.sidebar-normal Promos
-                  li
-                    a(href='./adminRooms')
-                      span.sidebar-mini R
-                      span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;").active
+                    a(data-toggle='collapse', href='#services')
+                      p
+                        span.sidebar-mini S
+                        | Services
+                        b(style="margin-right: 30px").caret
+                    #services.collapse.in
+                      ul.nav
+                        li(style="margin-left: 30px").active
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceType')
+                            span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#therapist')
+                      p
+                        span.sidebar-mini T
+                        | Therapist
+                        b(style="margin-right: 30px").caret
+                    #therapist.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
+                        li(style="margin-left: 30px")
+                          a(href='./adminSpecialty')
+                            span.sidebar-normal Therapist Specialty
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#amenities')
+                      p
+                        | Amenities
+                        span.sidebar-mini A
+                        b(style="margin-right: 30px").caret
+                    #amenities.collapse
+                      ul.nav    
+                        li(style="margin-left: 30px")
+                          a(href='./adminAmenities')
+                            span.sidebar-normal Amenities
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#promos')
+                      p
+                        span.sidebar-mini P
+                        | Promos
+                        b(style="margin-right: 30px").caret
+                    #promos.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminPromos')
+                            span.sidebar-normal Promos
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#rooms')
+                      p
+                        span.sidebar-mini R
+                        | Rooms
+                        b(style="margin-right: 30px").caret
+                    #rooms.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminRooms')
+                            span.sidebar-normal Rooms
+                        li(style="margin-left: 30px")
+                          a(href='./adminRoomType')
+                            span.sidebar-normal Room Type
                   
             li
               a(data-toggle='collapse', href='#tablesExamples')
@@ -109,14 +152,22 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='/adminReservation')
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='/adminQueue')
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                       span.sidebar-mini Q
-                      span.sidebar-normal Queue
-                
+                      span.sidebar-normal Queue   
+                  
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -190,7 +241,8 @@ html(lang='en')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
-        .content
+        br
+        .content(style="margin-right:15px; padding:0px")
           .container-fluid
             .row
               .col-md-12
@@ -198,7 +250,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewTher') Add New Therapist
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service   
                   .content
                     .container-fluid
                       .row
@@ -213,53 +265,38 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Name
-                                      th Address
-                                      th Age
-                                      th Gender
-                                      th Mobile Number
-                                      th Email Address
-                                      th Specialty
+                                      th Service Type
+                                      th Service Name
+                                      th Service Duration
+                                      th Service Price
+                                      th Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Name
-                                      th Address
-                                      th Age
-                                      th Gender
-                                      th Mobile Number
-                                      th Email Address
-                                      th Specialty
+                                      th Service Type
+                                      th Service Name
+                                      th Service Duration
+                                      th Service Price
+                                      th Availability
                                       th Actions
                                   tbody
-                                    each thera in theras
+                                    each service in services
                                       tr
-                                        td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
-                                        td= thera.address_house_no+" "+thera.address_street_name+" "+thera.address_admin_district+" "+thera.address_city
-                                        td= thera.therapist_age
-                                        td= thera.therapist_gender
-                                        td= thera.therapist_contact_no
-                                        td= thera.therapist_email
-                                        td= thera.therapist_specialty
-                                        td.action.text-center
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
+                                        td= service.service_type_desc
+                                        td= service.service_name
+                                        td= service.service_duration_desc
+                                        td= service.service_price
+                                        td
+                                          if(service.service_availability ==0 )
+                                            label Available
+                                          else if(service.service_availability ==1)
+                                            label Not Available
+                                        td
+                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${service.service_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}`)
-                                            i.ti-close
+                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${service.service_id}`)
+                                            i.ti-trash
                                     
-                                  
-                              #editSample.modal(tabindex='-1', role='dialog')
-                                .modal-dialog(role='document')
-                                  .modal-content
-                                    .modal-header
-                                      h5.modal-title Modal title
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') ×
-                                    .modal-body
-                                      p Modal body text goes here.
-                                    .modal-footer
-                                      button.btn.btn-primary(type='button') Save changes
-                                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                               .row
                                 .col-md-6
                                   .card-header
@@ -283,77 +320,49 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
-
-
-
-                    // ADD
-                  #addNewTher.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog.modal-lg(role='document')
+                  //ADD  
+                  #addNewService.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           h5.modal-title
-                            center Add New Therapist 
+                            center Add New Service
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminTherapist')
+                        form(method='POST' action='/adminServices')
                           .modal-body
-                            
                             .row
-                              .col-md-4
+                              .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='therapist_lname')
-                              .col-md-4
-                                .form-group.has-default.bmd-form-group
-                                  label First Name*
-                                  input.form-control(type='text', placeholder='First Name' name='therapist_fname') 
-                              .col-md-4
-                                .form-group.has-default.bmd-form-group
-                                  label Middle Name
-                                  input.form-control(type='text', placeholder='Middle Name' name='therapist_mname')     
+                                  label Service Type*
+                                    select.selectpicker(data-style='btn-info' name='type')
+                                      each typ in typs
+                                        option(value=`${typ.service_type_id}`)= typ.service_type_desc
 
-                            
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Name*
+                                  input.form-control(type='text', placeholder='Service Name' name='name')
                             .row
-                              .col-md-3
+                              .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Address*
-                                  input.form-control(type='text', placeholder='House Number' name='address_house_no')
-                              .col-md-3
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='Street Name' name='address_street_name')
-                              .col-md-4
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='address_admin_district')  
-                              .col-md-2
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='address_city' name='address_city')   
+                                  label Service Duration*
+                                    select.selectpicker(data-style='btn-info' name='duration')
+                                      each duration in durations
+                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+
+
+
+
+                                  //- input.form-control(type='text', placeholder='Service Duration' name='duration')
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Price*
+                                  input.form-control(type='text', placeholder='Service Price' name='price')
                             .row
-                              .col-md-4
-                                .form-group.has-default.bmd-form-group
-                                  label Age*
-                                  input.form-control(type='text', placeholder='Age' name='therapist_age')
-                              .col-md-4
-                                .form-group.has-default.bmd-form-group
-                                  label Mobile Number*
-                                  input.form-control(type='text', placeholder='Mobile Number' name='therapist_contact_no')
-                              .col-md-4
-                                .form-group.has-default.bmd-form-group
-                                  label E-mail Address*
-                                  input.form-control(type='text', placeholder='E-mail' name='therapist_email')
-                            .form-group.has-default.bmd-form-group
-                              label Specialty*
-                                select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='therapist_specialty')
-                                  option(value='Hand Massage') Hand Massage
-                                  option(value='Foot Massage') Foot Massage
-                                  option(value='Body Massage') Body Massage
-                          
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-
-
+                  
                   // DELETE  
                   #modal-warning.modal.modal-warning.fade
                     .modal-dialog
@@ -366,20 +375,23 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            a.button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='/adminTherapist') Yes
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
+
 
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog.modal-lg(role='document')
                       .modal-content
                         .modal-header
-                          h5#exampleModalLabel.modal-title Therapist Information
+                          h5#exampleModalLabel.modal-title Service Information
                           button.close(type='button', data-dismiss='modal', aria-label='Close') 
                             span(aria-hidden='true') x
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                             button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
+
+
 
                   footer.footer
                     .container-fluid
@@ -390,7 +402,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Creative Tim
+                        a(href='http://www.creative-tim.com') TEAM RJPC
               .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -441,18 +453,19 @@ html(lang='en')
             var idNow = $(this).val();
             console.log(idNow)
             $('#modal-warning').modal('show');
+            
             $('#deleteSubmit').css('display', 'block');
             $('#cancelButton').css('display', 'block');
                 $('#cancelButton').click(function(){
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                $.post('/adminTherapist/delete',{id:idNow})
-                  .done(data=>{
+                $.post('/adminServices/delete',{id:idNow})
+                    .done(data=>{
                     if(data){
                         swal({
                         title:'Success', 
-                        text:'Therapist Deleted', 
+                        text:'Service Deleted', 
                         icon:'success'
                         }).then(function(){
                           location.reload();
@@ -463,111 +476,66 @@ html(lang='en')
             });
             
         });
+        $('#modal-warning').on('hidden.bs.modal', function (){
+                var idNow = 0;
+                console.log(idNow)
+                });
         $('.updateButton').click(function(){
           var idNow = $(this).val();
-              $.post('/adminTherapist/query',{id1:idNow})
+              $.post('/adminServices/query',{id1:idNow})
           .done(data=>{
-            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Last Name*</label>
-                        <input type="text" name="therapist_lname" placeholder="${data.therapist_lname}" value="${data.therapist_lname}" id="therapist_lname" class="form-control"/>
+                        <label>Service Name*</label>
+                        <input type="text" placeholder="${data.service_name}" value="${data.service_name}" id="service_name" name="service_name" class="form-control"/>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>First Name*</label>
-                        <input type="text" placeholder="${data.therapist_fname}" value="${data.therapist_fname}" name="therapist_fname" id="therapist_fname" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Middle Name</label>
-                        <input type="text" placeholder="${data.therapist_mname}" value="${data.therapist_mname}" name="therapist_mname" id="therapist_mname" class="form-control"/>
+                        <label>Service Price*</label>
+                        <input type="text" placeholder="${data.service_price}" value="${data.service_price}" id="service_price" name="service_price" class="form-control"/>
                       </div>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Address*</label>
-                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Age*</label>
-                        <input type="text" placeholder="${data.therapist_age}" value="${data.therapist_age}" name="therapist_age" id="therapist_age" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Age*</label>
-                        <select id="gender" title="${data.therapist_gender}" data-style="btn-info" class="selectpicker">
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
+                        <label>Service Duration*</label>
+                        <select title="${data.service_duration}" id="service_duration" name="service_duration" data-style="btn-info" class="selectpicker">
+                            <option value="60 minutes">60 minutes</option>
+                            <option value="90 minutes">90 minutes</option>
+                            <option value="120 minutes">120 minutes</option>
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Mobile Number*</label>
-                        <input type="text" placeholder="${data.therapist_contact_no}" value="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>E-mail Address*</label>
-                        <input type="text" placeholder="${data.therapist_email}" value="${data.therapist_email}" id="therapist_email" name="therapist_email" class="form-control"/>
+                        <label>Service Availability*</label>
+                          <select title="Select Availability" id="service_availability" name="service_availability" data-style="btn-info" class="selectpicker">
+                            <option value="0">Available</option>
+                            <option value="1">Not Available</option>
+                          </select>
                       </div>
                     </div>
                   </div>
-                  </div>
-                </div>
-              </form>`)
+                </div>`)
+                $('#service_duration').selectpicker();
+                $('#service_availability').selectpicker();
               $('#updateModal').modal('show')
-              $('#gender').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
               $('#cancelButton').click(function(){
-                  ('#updateAppend').empty();
+                $('#updateAppend').remove();
               })
               $('#updateSubmitButton').click(function(){
-                  $.post('/adminTherapist/update',{
-                  therapist_fname:$('#therapist_fname').val(),
-                  therapist_mname:$('#therapist_mname').val(),
-                  therapist_lname:$('#therapist_lname').val(),
-                  address_house_no:$('#address_house_no').val(),
-                  address_street_name:$('#address_street_name').val(),
-                  address_admin_district:$('#address_admin_district').val(),
-                  address_city:$('#address_city').val(),
-                  therapist_age:$('#therapist_age').val(),
-                  therapist_gender:$('#gender').val(),
-                  therapist_contact_no:$('#therapist_contact_no').val(),
-                  therapist_email:$('#therapist_email').val(),
+                  $.post('/adminServices/update',{
+                  service_name:$('#service_name').val(),
+                  service_price:$('#service_price').val(),
+                  service_duration:$('#service_duration').val(),
+                  service_availability:$('#service_availability').val(),
                   
                   id1:idNow
                   })
@@ -575,7 +543,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'Therapist Infromation Updated', 
+                          text:'Service Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -603,15 +571,14 @@ html(lang='en')
     search: "_INPUT_",
     searchPlaceholder: "Search records",
     }
-    })
+    });
     $('#add').click(function(){
     swal({
       title:'Success', 
-      text:'Therapist Added', 
+      text:'New Service Added', 
       icon:'success'})
       .then(function(){
       location.reload();
-    });
-    });
     })
-
+    });
+    });

@@ -2,8 +2,8 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title Paper Dashboard PRO by Creative Tim
     // Canonical SEO
@@ -56,14 +56,14 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='../paperDashboardPro/img/faces/face-2.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | Front Desk
               .clearfix
           ul.nav
             li
-              a(href='./admindashboard.html')
+              a(href='./admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -75,30 +75,73 @@ html(lang='en')
                   b.caret
               #componentsExamples.collapse.in
                 ul.nav
-                  li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini C
-                      span.sidebar-normal Customer
-                  li
-                    a(href='./adminTherapist')
-                      span.sidebar-mini T
-                      span.sidebar-normal Therapist
-                  li
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
-                  li
-                    a(href='./adminAmenities')
-                      span.sidebar-mini A
-                      span.sidebar-normal Amenities
-                  li
-                    a(href='./adminPromos')
-                      span.sidebar-mini P
-                      span.sidebar-normal Promos
-                  li.active
-                    a(href='./adminRooms')
-                      span.sidebar-mini R
-                      span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;").active
+                    a(data-toggle='collapse', href='#services')
+                      p
+                        span.sidebar-mini S
+                        | Services
+                        b(style="margin-right: 30px").caret
+                    #services.collapse.in
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        li(style="margin-left: 30px").active
+                          a(href='./adminServiceType')
+                            span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#therapist')
+                      p
+                        span.sidebar-mini T
+                        | Therapist
+                        b(style="margin-right: 30px").caret
+                    #therapist.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
+                        li(style="margin-left: 30px")
+                          a(href='./adminSpecialty')
+                            span.sidebar-normal Therapist Specialty
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#amenities')
+                      p
+                        | Amenities
+                        span.sidebar-mini A
+                        b(style="margin-right: 30px").caret
+                    #amenities.collapse
+                      ul.nav    
+                        li(style="margin-left: 30px")
+                          a(href='./adminAmenities')
+                            span.sidebar-normal Amenities
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#promos')
+                      p
+                        span.sidebar-mini P
+                        | Promos
+                        b(style="margin-right: 30px").caret
+                    #promos.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminPromos')
+                            span.sidebar-normal Promos
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#rooms')
+                      p
+                        span.sidebar-mini R
+                        | Rooms
+                        b(style="margin-right: 30px").caret
+                    #rooms.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminRooms')
+                            span.sidebar-normal Rooms
+                        li(style="margin-left: 30px")
+                          a(href='./adminRoomType')
+                            span.sidebar-normal Room Type
             li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
@@ -108,11 +151,19 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='/adminReservation')
+                    a(href='./adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li
+                    a(href='adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='/adminQueues')
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -129,15 +180,15 @@ html(lang='en')
               #sales.collapse
                 ul.nav
                   li
-                    a(href='/assets/tables/regular.html')
+                    a(href='../tables/regular.html')
                       span.sidebar-mini D
                       span.sidebar-normal Daily
                   li
-                    a(href='/assets/tables/datatables.net.html')
+                    a(href='../tables/datatables.net.html')
                       span.sidebar-mini W
                       span.sidebar-normal Weekly
                   li
-                    a(href='/assets/tables/datatables.net.html')
+                    a(href='../tables/datatables.net.html')
                       span.sidebar-mini M
                       span.sidebar-normal Monthly
       .main-panel
@@ -196,7 +247,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Room   
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service Type  
                   .content
                     .container-fluid
                       .row
@@ -211,36 +262,33 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Room Type
-                                      th Room Name
-                                      th Bed Quantity
-                                      th Room Availability
+                                      th Service Type
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th.disabled-sorting
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Room Type
-                                      th Room Name
-                                      th Bed Quantity
-                                      th Room Availability
+                                      th Service Type
+                                      th
+                                      th
+                                      th
+                                      th
                                       th Actions
                                   tbody
-                                    each room in rooms
+                                    each typ in typs
                                       tr
-                                        td= room.room_type
-                                        td= room.room_name 
-                                        td= room.bed_qty
+                                        td= typ.service_type_desc
                                         td
-                                          if(room.room_availability ==0)
-                                            label Available
-                                          else if(room.room_availability ==1)
-                                            label Not Available
-                                        
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${room.room_id}`)
+                                        td
+                                        td
+                                        td
+                                          button.btn.btn-simple.btn-warning.btn-icon.updateButton(rel='tooltip', title='Edit', data-toggle='modal' value=`${typ.service_type_id}`)
                                             i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${room.room_id}`)
-                                            i.ti-close
-                                    
+                                          button.btn.btn-simple.btn-danger.btn-icon.deleteButton(rel='tooltip', title='Delete', data-toggle='modal' value=`${typ.service_type_id}`)
+                                            i.ti-trash
                               .row
                                 .col-md-6
                                   .card-header
@@ -263,112 +311,66 @@ html(lang='en')
                                   .col-md-12
                                 .row
                                   .col-md-12
-                                .row
-                  //ADD
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Room
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminRooms')
-                          .modal-body
-                            .row
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Room Type*
-                                  select.selectpicker(name='type'  data-style='btn-info')
-                                      option(value='Common') Common Room
-                                      option(value='Private') Private Room
-                                      option(value='Deluxe') Deluxe Room
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Room Name*
-                                  input.form-control(type='text', placeholder='Room Name' name='name')
-                            .row
-                              .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Bed Quantity*
-                                  select.selectpicker(name='quantity'  data-style='btn-info')
-                                      option(value='1') 1
-                                      option(value='2') 2
-                                      option(value='3') 3
-                                      option(value='4') 4
-                                      option(value='5') 5
-                                      option(value='6') 6
-                                      option(value='7') 7
-                                      option(value='8') 8
-                                      option(value='9') 9
-                                      option(value='10') 10
-                                      option(value='11') 11
-                                      option(value='12') 12
-                                      option(value='13') 13
-                                      option(value='14') 14
-                                      option(value='15') 15
-                                      option(value='16') 16
-                                      option(value='17') 17
-                                      option(value='18') 18
-                                      option(value='19') 19
-                                      option(value='20') 20
+                                .row 
+                          //- UPDATE
+                          #updateModal.modal.fade(tabindex='-1', role='dialog')
+                            .modal-dialog(role='document')
+                              .modal-content
+                                .modal-header
+                                  h5.modal-title
+                                    center Edit Service Type
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                .modal-body#updateAppend
+                                  
 
+                                .modal-footer
+                                  button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd#updateSubmitButton(type='button') Update
+                                  button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd#cancelButton(type='button', data-dismiss='modal') Cancel
+                          
+                          // DELETE  
+                          #modal-warning.modal.modal-warning.fade
+                            .modal-dialog
+                              .modal-content
+                                .modal-header
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                                  h4.modal-title Warning
+                                .modal-body
+                                  p Are you sure you?
+                                .modal-footer
+                                    button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                                    button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
 
-                              .col-md-6
+                          //- ADD
+                          #addNewService.modal.fade(tabindex='-1', role='dialog')
+                            .modal-dialog(role='document')
+                              .modal-content
+                                .modal-header
+                                  h5.modal-title
+                                    center Add New Service Type
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                form(method='POST' action='/adminServiceType')
+                                  .modal-body
+                                    .row
+                                      .col-md-12
+                                        .form-group.has-default.bmd-form-group
+                                          label Service Type
+                                          input.form-control(type='text', placeholder='Service Type' name="service_type_desc")
+                                  .modal-footer
+                                    button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service Type
+                                    button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
-                            .row
-                          .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
-                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                  
-                  // DELETE  
-                  #modal-warning.modal.modal-warning.fade
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                          h4.modal-title Warning
-                        .modal-body
-                          p Are you sure you?
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
-                  
-                  //UPDATE
-                  #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog.modal-lg(role='document')
-                      .modal-content
-                        .modal-header
-                          h5#exampleModalLabel.modal-title Room Information
-                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
-                            span(aria-hidden='true') x
-                        .modal-body#updateAppend
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
-
-                  footer.footer
-                    .container-fluid
-                      nav.pull-left
-                        ul
-                          li
-                            a(href='http://www.creative-tim.com')
-                              | Creative Tim
-                          li
-                            a(href='http://blog.creative-tim.com')
-                              | Blog
-                          li
-                            a(href='http://www.creative-tim.com/license')
-                              | Licenses
-                      .copyright.pull-right
-                        | © 
-                        script.
-                          document.write(new Date().getFullYear())
-                        | , made with 
-                        i.fa.fa-heart.heart
-                        |  by 
-                        a(href='http://www.creative-tim.com') Team MBAY
-            
+                          footer.footer
+                            .container-fluid
+                              .copyright.pull-right
+                                | © 
+                                script.
+                                  document.write(new Date().getFullYear())
+                                | , made with 
+                                i.fa.fa-heart.heart
+                                |  by 
+                                a(href='#') Team MBAY
+                      .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -418,93 +420,49 @@ html(lang='en')
             var idNow = $(this).val();
             console.log(idNow)
             $('#modal-warning').modal('show');
+            
             $('#deleteSubmit').css('display', 'block');
             $('#cancelButton').css('display', 'block');
                 $('#cancelButton').click(function(){
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                $.post('/adminRooms/delete',{id:idNow})
+                $.post('/adminServiceType/delete',{id:idNow})
                     .done(data=>{
-                      if(data){
-                          swal({
-                          title:'Success', 
-                          text:'Room Deleted', 
-                          icon:'success'
-                          }).then(function(){
-                            location.reload();
-                          })
-                        $('#updateModal').modal('hide');
-                      }
+                    if(data){
+                        swal({
+                        title:'Success', 
+                        text:'Service Deleted', 
+                        icon:'success'
+                        }).then(function(){
+                          location.reload();
+                        })
+                      $('#updateModal').modal('hide');
+                    }
                   })
             });
             
         });
+        $('#modal-warning').on('hidden.bs.modal', function (){
+                var idNow = 0;
+                console.log(idNow)
+                });
         $('.updateButton').click(function(){
           var idNow = $(this).val();
-              $.post('/adminRooms/query',{id1:idNow})
+          console.log(idNow)
+              $.post('/adminServiceType/query',{id1:idNow})
           .done(data=>{
               $('#updateAppend').append(`
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Room Type*</label>
-                        <select id="room_type" title="${data.room_type} Room" name="room_type" data-style="btn-info" class="selectpicker">
-                          <option value="Common">Common Room</option>
-                          <option value="Private">Private Room</option>
-                          <option value="Deluxe">Deluxe Room</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Room Name*</label>
-                        <input type="text" placeholder="${data.room_name}" value="${data.room_name}" id="room_name" name="room_name" class="form-control"/>
-                      </div>
-                    </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group has-default bmd-form-group">
+                    <label>Service Type</label>
+                    <input type="text" id="service_type_desc" placeholder="${data.service_type_desc}" class="form-control"/>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Bed Quantity*</label>
-                        <select id="bed_qty" title="${data.bed_qty}" name="bed_qty" data-style="btn-info" class="selectpicker">
-                          <option value="1">1</option>
-                          <option value="2">2</option>
-                          <option value="3">3</option>
-                          <option value="4">4</option>
-                          <option value="5">5</option>
-                          <option value="6">6</option>
-                          <option value="7">7</option>
-                          <option value="8">8</option>
-                          <option value="9">9</option>
-                          <option value="10">10</option>
-                          <option value="11">11</option>
-                          <option value="12">12</option>
-                          <option value="13">13</option>
-                          <option value="14">14</option>
-                          <option value="15">15</option>
-                          <option value="16">16</option>
-                          <option value="17">17</option>
-                          <option value="18">18</option>
-                          <option value="19">19</option>
-                          <option value="20">20</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Room Availability</label>
-                        <select id="room_availability" name="room_availability" title="${data.room_availability}" data-style="btn-info" class="selectpicker">
-                          <option value="Common">Available</option>
-                          <option value="Private">Not Available</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>`)
+                </div>
+              </div>
+              `)
               $('#updateModal').modal('show')
-              $('#bed_qty').selectpicker();
-              $('#room_type').selectpicker();
-              $('#room_availability').selectpicker();
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
@@ -512,13 +470,8 @@ html(lang='en')
                 $('#updateAppend').remove();
               })
               $('#updateSubmitButton').click(function(){
-                  
-                 
-                  $.post('/adminRooms/update',{
-                  room_name:$('#room_name').val(),
-                  bed_qty:$('#bed_qty').val(),
-                  room_type:$('#room_type').val(),
-                  room_availability:$('#room_availability').val(),
+                  $.post('/adminServiceType/update',{
+                  service_type_desc:$('#service_type_desc').val(),
                   
                   id1:idNow
                   })
@@ -526,7 +479,7 @@ html(lang='en')
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'Room Information Updated', 
+                          text:'Service Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -558,10 +511,11 @@ html(lang='en')
     $('#add').click(function(){
     swal({
       title:'Success', 
-      text:'New Room Added', 
+      text:'New Service Type Added', 
       icon:'success'})
       .then(function(){
       location.reload();
     })
     });
     });
+
