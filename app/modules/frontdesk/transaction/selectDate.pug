@@ -64,58 +64,93 @@ html(lang='en')
                 p
                   | Maintenance
                   b.caret
-              #componentsExamples.collapse.in
+              #componentsExamples.collapse
                 ul.nav
-                  li
-                    a(href='./adminServices')
-                      span.sidebar-mini S
-                      span.sidebar-normal Services
-                  li
-                    a(href='./adminServiceType')
-                      span.sidebar-mini ST
-                      span.sidebar-normal Service Type
-                  li
-                    a(href='./adminServiceDuration')
-                      span.sidebar-mini SD
-                      span.sidebar-normal Service Duration
-                  li
-                    a(href='./adminTherapist')
-                      span.sidebar-mini T
-                      span.sidebar-normal Therapist
-                  li
-                    a(href='./adminSpecialty')
-                      span.sidebar-mini TS
-                      span.sidebar-normal Therapist Specialty    
-                  li
-                    a(href='./adminAmenities')
-                      span.sidebar-mini A
-                      span.sidebar-normal Amenities
-                  li
-                    a(href='./adminPromos')
-                      span.sidebar-mini P
-                      span.sidebar-normal Promos
-                  li
-                    a(href='./adminRooms')
-                      span.sidebar-mini R
-                      span.sidebar-normal Rooms
-                  li
-                    a(href='./adminRoomType')
-                      span.sidebar-mini RT
-                      span.sidebar-normal Room Type
-            li.active
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#services')
+                      p
+                        span.sidebar-mini S
+                        | Services
+                        b(style="margin-right: 30px").caret
+                    #services.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceType')
+                            span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#therapist')
+                      p
+                        span.sidebar-mini T
+                        | Therapist
+                        b(style="margin-right: 30px").caret
+                    #therapist.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
+                        li(style="margin-left: 30px")
+                          a(href='./adminSpecialty')
+                            span.sidebar-normal Therapist Specialty
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#amenities')
+                      p
+                        | Amenities
+                        span.sidebar-mini A
+                        b(style="margin-right: 30px").caret
+                    #amenities.collapse
+                      ul.nav    
+                        li(style="margin-left: 30px")
+                          a(href='./adminAmenities')
+                            span.sidebar-normal Amenities
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#promos')
+                      p
+                        span.sidebar-mini P
+                        | Promos
+                        b(style="margin-right: 30px").caret
+                    #promos.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminPromos')
+                            span.sidebar-normal Promos
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#rooms')
+                      p
+                        span.sidebar-mini R
+                        | Rooms
+                        b(style="margin-right: 30px").caret
+                    #rooms.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminRooms')
+                            span.sidebar-normal Rooms
+                        li(style="margin-left: 30px")
+                          a(href='./adminRoomType')
+                            span.sidebar-normal Room Type
+                  //-li
+                    a(href='#')
+                      span.sidebar-mini Q
+                      span.sidebar-normal Queue
+            li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
                 p
                   | Transaction
                   b.caret
-              #tablesExamples.collapse.in
+              #tablesExamples.collapse
                 ul.nav
-                  li.active
+                  li
                     a(href='./adminCustomer')
                       span.sidebar-mini R
                       span.sidebar-normal Registration
                   li
-                    a(href='adminReservation')
+                    a(href='./adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
@@ -123,7 +158,7 @@ html(lang='en')
                       span.sidebar-mini W
                       span.sidebar-normal Walk-in
                   li
-                    a(href='adminQueue')
+                    a(href='./adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li

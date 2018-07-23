@@ -766,6 +766,14 @@ router.get('/selectDate',(req, res) => {
     res.render('frontdesk/transaction/selectDate')
 })
 
+router.get('/bookService',(req, res) => {
+  res.render('frontdesk/transaction/bookService')
+})
+
+router.get('/adminWalkin',(req, res) => {
+  res.render('frontdesk/transaction/adminWalkin')
+})
+
 router.post('/adminAme', (req, res) => {
     console.log('hello')
 })

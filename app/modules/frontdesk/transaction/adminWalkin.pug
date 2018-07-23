@@ -147,12 +147,12 @@ html
                       span.sidebar-mini R
                       | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
                       span.sidebar-normal Reservations
-                  li
+                  li.active
                     a(href='./adminWalkin')
                       span.sidebar-mini W
                       span.sidebar-normal Walk-in
                   
-                  li.active
+                  li
                     a(href='./adminQueue')
                       span.sidebar-mini Q
                       | &#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;&#x9;
@@ -270,7 +270,7 @@ html
                     .col-md-11
                       .card-content
                         center
-                          //a.btn.btn-info.btn-fill.btn-wd.btn-block(style='margin-left:40px', data-toggle='modal' data-target='#custInfo' href='/bookService') Book Services
+                          a.btn.btn-info.btn-fill.btn-wd.btn-block(style='margin-left:40px', data-toggle='modal' data-target='#custInfo' href='/bookService') Book Services
                   |                                 
                   .modal.fade(tabindex='-1', role='dialog' id='custInfo')
                     .modal-dialog.modal-lg(role='document')
@@ -369,10 +369,10 @@ html
                           |                         
                           |                                                     
                           .card
-                            .card-content
+                            //.card-content
                               .toolbar
                                 center
-                                  h2 Queue
+                                  h2 List Of Reservations
                                 // Here you can write extra buttons/actions for the toolbar
                               |                                                             
                               .fresh-datatables
@@ -381,30 +381,30 @@ html
                                     tr
                                       th Name
                                       |                                                                         
-                                      th.disabled-sorting
+                                      th Position
                                       |                                                                         
-                                      th Time of Service
+                                      th Office
                                       |                                                                         
-                                      th.disabled-sorting Reservation Details
+                                      th Age
                                       |                                                                         
-                                      th.disabled-sorting
+                                      th Start date
                                       |                                                                         
-                                      th.disabled-sorting 
-                                      th.disabled-sorting  Reservation Status
+                                      th.disabled-sorting Actions
+                                      th Reservation Status
                                   |                                                                 
                                   tfoot
                                     tr
                                       th Name
                                       |                                                                         
-                                      th 
+                                      th Position
                                       |                                                                         
-                                      th Time of Service
+                                      th Office
                                       |                                                                         
-                                      th Reservation Details
+                                      th Age
                                       |                                                                         
-                                      th 
+                                      th Start date
                                       |                                                                         
-                                      th 
+                                      th Actions
                                       th Reservation Status
 
                                   |                                                                 
@@ -412,30 +412,52 @@ html
                                     tr
                                       td Tiger Nixon
                                       |                                                                         
-                                      td 
+                                      td System Architect
                                       |                                                                         
-                                      td 1:00pm-3:00 pm
+                                      td Edinburgh
+                                      |                                                                         
+                                      td 61
+                                      |                                                                         
+                                      td 2011/04/25
                                       |                                                                         
                                       td
-                                         button.btn.btn-fill.btn-info View Reservation Details
-                                      |                                                                         
-                                      td 
-                                      |                                                                         
-                                      td
-                                        //a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tool-tip', title='View Reservation Detail')
+                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tool-tip', title='View Reservation Detail')
                                           i.ti-eye
                                         |                                                                             
-                                        //a.btn.btn-simple.btn-warning.btn-icon.edit(href='#' )
+                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#' )
                                           i.ti-pencil-alt
                                         |                                                                             
-                                        //  a.btn.btn-simple.btn-danger.btn-icon.remove(href='#' )
+                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#' )
                                           i.ti-close
                                       td
                                         .col-md-4
                                         p.category
                                         input.switch-icon(type="checkbox")
                                     |                                                                     
-                                   
+                                    tr
+                                      td Garrett Winters
+                                      |                                                                         
+                                      td Accountant
+                                      |                                                                         
+                                      td Tokyo
+                                      |                                                                         
+                                      td 63
+                                      |                                                                         
+                                      td 2011/07/25
+                                      |                                                                         
+                                      td
+                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tool-tip', title='View Reservation Detail')
+                                          i.ti-eye
+                                        |                                                                             
+                                        a.btn.btn-simple.btn-warning.btn-icon.edit(href='#')
+                                          i.ti-pencil-alt
+                                        |                                                                             
+                                        a.btn.btn-simple.btn-danger.btn-icon.remove(href='#')
+                                          i.ti-close
+                                      td
+                                        .col-md-4
+                                        p.category
+                                        input.switch-icon(type="checkbox")  
 
                                                      
                               | &#x9;                            
