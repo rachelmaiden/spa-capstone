@@ -8539,7 +8539,7 @@ a.pswp__share--download:hover {
   -ms-transform: translateY(-10px);
   -moz-transform: translateY(-10px);
 }
-.card.no-transition:hover, .card.page-carousel:hover, .card.card-refine:hover, .card.card-register:hover {
+.card.no-transition:hover, .card.page-carousel:hover, .card.card-refine:hover, .card.card-register:hover, .card.card-table:hover {
   box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
   transform: none;
   -webkit-transform: none;
@@ -8660,6 +8660,15 @@ a.pswp__share--download:hover {
 }
 .card.card-register {
   background-color: rgba(26, 26, 26, 0.548);
+  border-radius: 8px;
+  color: #fff;
+  max-width: 350px;
+  margin: 20px 0 70px;
+  min-height: 400px;
+  padding: 30px;
+}
+.card.card-table {
+  background-color: rgba(73, 69, 69, 0.548);
   border-radius: 8px;
   color: #fff;
   max-width: 350px;

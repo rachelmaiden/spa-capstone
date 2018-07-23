@@ -34,23 +34,24 @@ html(lang='en')
       .main
         .section
           .container
-            h3 Selected Date: June 27, 2018
+            h3 Selected Date: 
+              spa= {$date}
             br
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Massage Service', data-size='7')
-              each body in bodys
-                option(value=`${body.service_name}`)= body.service_name
+              //- each body in bodys
+              //-   option(value=`${body.service_name}`)= body.service_name
                 //- option(value='s2') Service 2
                 //- option(value='s3') Service 3
                 //- option(value='s4') Service 4
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Body Scrub Service', data-size='7')
-              each scrub in scrubs
-                option(value=`${scrub.service_name}`)= scrub.service_name
+              //- each scrub in scrubs
+              //-   option(value=`${scrub.service_name}`)= scrub.service_name
             label Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-primary btn-block', title='Select Add-on Massage Service', data-size='7')
-              each add in adds
-                option(value=`${add.service_name}`)= add.service_name
+              //- each add in adds
+              //-   option(value=`${add.service_name}`)= add.service_name
             select.selectpicker(data-style='btn btn-primary btn-block', title='Number of Hours for Amenities Usage', data-size='7')
               option(value='ams1') 1 hour
               option(value='ams2') 2 hours

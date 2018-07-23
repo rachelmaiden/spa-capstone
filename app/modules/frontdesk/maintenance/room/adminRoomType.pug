@@ -151,19 +151,19 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='./adminCustomer')
+                    a(href='/adminCustomer')
                       span.sidebar-mini R
                       span.sidebar-normal Registration
                   li
-                    a(href='adminReservation')
+                    a(href='/adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='#')
+                    a(href='/adminWalkin')
                       span.sidebar-mini W
                       span.sidebar-normal Walk-in
                   li
-                    a(href='adminQueue')
+                    a(href='/adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -213,9 +213,8 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
+                  a.dropdown-toggle.btn-magnify(href='/frontdeskHome')
+                    p HOME
                 li.dropdown
                   a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
                     i.ti-bell

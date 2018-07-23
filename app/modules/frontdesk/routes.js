@@ -26,7 +26,7 @@ router.post("/adminFrontDesk",(req, res) => {
 			else {
 				delete out[0].admin_password
 				req.session.user = out[0]	
-				return res.redirect("/admindashboard")
+				return res.redirect("/frontdeskHome")
 			}
 		}
 
@@ -686,6 +686,9 @@ router.post('/adminCustomer/query',(req, res) => {
 
 
 
+router.get('/frontdeskHome', (req, res) => {
+  res.render('frontdesk/transaction/frontdeskHome')
+})
 
 
 router.get('/adminQueue', (req, res) => {
@@ -696,20 +699,6 @@ router.get('/adminQueue', (req, res) => {
 
 router.get('/adminQueue', (req, res) => {
   res.render('frontdesk/transaction/adminQueue')
-})
-
-router.get('/bookService', (req, res) => {
-  const query = ` select * from services_tbl where service_type ='1';
-  select * from services_tbl where service_type ='2';
-  select * from services_tbl where service_type ='3'`
-  db.query(query,(err,out) =>{
-    res.render('frontdesk/maintenance/bookService',{
-      bodys: out[0],
-      scrubs: out[1],
-      adds: out[2]
-    })
-    console.log(out)
-  })
 })
 
 
@@ -748,20 +737,10 @@ router.get('/adminQueue',(req, res) => {
 // ========================================================================================================= ||
 
     //READ
-    router.get('/bookReservation', (req, res) => {
-      const query = ` select * from services_tbl where service_type ='1';
-      select * from services_tbl where service_type ='2';
-      select * from services_tbl where service_type ='3'`
-      db.query(query,(err,out) =>{
-        res.render('frontdesk/transaction/bookReservation',{
-          bodys: out[0],
-          scrubs: out[1],
-          adds: out[2]
-        })
-        console.log(out)
-      })
-    })
-
+router.get('/bookReservation',(req, res) => {
+  res.render('frontdesk/transaction/bookReservation')
+})
+  
 router.get('/selectDate',(req, res) => {
     res.render('frontdesk/transaction/selectDate')
 })
@@ -771,7 +750,7 @@ router.get('/bookService',(req, res) => {
 })
 
 router.get('/adminWalkin',(req, res) => {
-  res.render('frontdesk/transaction/adminWalkin')
+  res.render('frontdesk/transaction/adminWalkin') 
 })
 
 router.post('/adminAme', (req, res) => {
