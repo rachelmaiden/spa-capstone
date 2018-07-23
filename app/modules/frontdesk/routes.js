@@ -689,13 +689,13 @@ router.post('/adminCustomer/query',(req, res) => {
 
 
 router.get('/adminQueue', (req, res) => {
-  res.render('frontdesk/maintenance/adminQueue')
+  res.render('frontdesk/transaction/adminQueue')
 })
 
 
 
 router.get('/adminQueue', (req, res) => {
-  res.render('frontdesk/maintenance/adminQueue')
+  res.render('frontdesk/transaction/adminQueue')
 })
 
 router.get('/bookService', (req, res) => {
@@ -737,11 +737,11 @@ router.get('/bookService', (req, res) => {
 // ================================================================================================ ||
 
 router.get('/adminReservation',(req, res) => {
-    res.render('frontdesk/maintenance/adminReservation')
+    res.render('frontdesk/transaction/adminReservation')
 })
 
 router.get('/adminQueue',(req, res) => {
-    res.render('frontdesk/maintenance/adminQueue')
+    res.render('frontdesk/transaction/adminQueue')
 })
 // ********************************************************************************************************* ||
 // - - - - - - - - - - - - - - - - - - B O O K  R E S E R V A T I O N - - - - - - - - - - - - - - - - - - -  ||
@@ -753,7 +753,7 @@ router.get('/adminQueue',(req, res) => {
       select * from services_tbl where service_type ='2';
       select * from services_tbl where service_type ='3'`
       db.query(query,(err,out) =>{
-        res.render('frontdesk/maintenance/bookReservation',{
+        res.render('frontdesk/transaction/bookReservation',{
           bodys: out[0],
           scrubs: out[1],
           adds: out[2]
@@ -763,7 +763,7 @@ router.get('/adminQueue',(req, res) => {
     })
 
 router.get('/selectDate',(req, res) => {
-    res.render('frontdesk/maintenance/selectDate')
+    res.render('frontdesk/transaction/selectDate')
 })
 
 router.post('/adminAme', (req, res) => {
