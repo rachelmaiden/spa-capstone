@@ -701,6 +701,10 @@ router.get('/adminQueue', (req, res) => {
   res.render('frontdesk/transaction/adminQueue')
 })
 
+router.get('/bookReserve', (req, res) => {
+  res.render('frontdesk/transaction/bookReserve')
+})
+
 
 
 
