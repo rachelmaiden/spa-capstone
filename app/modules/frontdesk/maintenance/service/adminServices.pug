@@ -240,8 +240,7 @@ html(lang='en')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
-        br
-        .content(style="margin-right:15px; padding:0px")
+        .content
           .container-fluid
             .row
               .col-md-12
@@ -347,7 +346,7 @@ html(lang='en')
                                   label Service Duration*
                                     select.selectpicker(data-style='btn-info' name='duration')
                                       each duration in durations
-                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc
 
 
 
@@ -379,7 +378,7 @@ html(lang='en')
 
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog.modal-lg(role='document')
+                    .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           h5#exampleModalLabel.modal-title Service Information
@@ -388,21 +387,21 @@ html(lang='en')
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Update
 
 
 
-              footer.footer
-                .container-fluid
-                  .copyright.pull-right
-                    | © 
-                    script.
-                      document.write(new Date().getFullYear())
-                    | , made with 
-                    i.fa.fa-heart.heart
-                    |  by 
-                    a(href='http://www.creative-tim.com') TEAM RJPC
-              .fixed-plugin
+                  footer.footer
+                    .container-fluid
+                      .copyright.pull-right
+                        | © 
+                        script.
+                          document.write(new Date().getFullYear())
+                        | , made with 
+                        i.fa.fa-heart.heart
+                        |  by 
+                        a(href='http://www.creative-tim.com') TEAM RJPC
+                  .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -483,45 +482,52 @@ html(lang='en')
           var idNow = $(this).val();
               $.post('/adminServices/query',{id1:idNow})
           .done(data=>{
+            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
+                        <label>Service Type*
+                          <select id="service_type" title="${data.out1.service_type_desc}" data-style="btn-info" name="type" class="selectpicker">
+                          </select>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
                         <label>Service Name*</label>
-                        <input type="text" placeholder="${data.service_name}" value="${data.service_name}" id="service_name" name="service_name" class="form-control"/>
+                        <input type="text" id="service_name" placeholder="${data.out1.service_name}" name="name" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Service Duration*
+                          <select id="service_duration" title="${data.out1.service_duration_desc}" data-style="btn-info" name="duration" class="selectpicker">
+                          </select>
+                        </label>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Price*</label>
-                        <input type="text" placeholder="${data.service_price}" value="${data.service_price}" id="service_price" name="service_price" class="form-control"/>
+                        <input type="text" id="service_price" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Duration*</label>
-                        <select title="${data.service_duration}" id="service_duration" name="service_duration" data-style="btn-info" class="selectpicker">
-                            <option value="60 minutes">60 minutes</option>
-                            <option value="90 minutes">90 minutes</option>
-                            <option value="120 minutes">120 minutes</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Availability*</label>
-                          <select title="Select Availability" id="service_availability" name="service_availability" data-style="btn-info" class="selectpicker">
-                            <option value="0">Available</option>
-                            <option value="1">Not Available</option>
-                          </select>
-                      </div>
-                    </div>
-                  </div>
-                </div>`)
+                  `)
+
+                for(var i=0; i<data.out2.length;i++){
+                console.log(data.out2[i].service_type_desc)
+                $('#service_type').append(`<option value="${data.out2[i].service_type_id}">${data.out2[i].service_type_desc}</option>`)
+                }
+                for(var i=0; i<data.out3.length;i++){
+                console.log(data.out3[i].service_duration_desc)
+                $('#service_duration').append(`<option value="${data.out3[i].service_duration_id}">${data.out3[i].service_duration_desc}</option>`)
+                }
+                $('#service_type').selectpicker();
                 $('#service_duration').selectpicker();
-                $('#service_availability').selectpicker();
               $('#updateModal').modal('show')
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
@@ -531,6 +537,7 @@ html(lang='en')
               })
               $('#updateSubmitButton').click(function(){
                   $.post('/adminServices/update',{
+                  service_type:$('#service_type').val(),
                   service_name:$('#service_name').val(),
                   service_price:$('#service_price').val(),
                   service_duration:$('#service_duration').val(),

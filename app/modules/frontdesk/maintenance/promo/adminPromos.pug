@@ -361,10 +361,18 @@ html(lang='en')
                               <label>Promo Bundle Validity</label>
                               <input type="text" class="form-control" placeholder="Promo Bundle Validity">
                               </div>
-                            #dp.form-group.has-default.bmd-form-group
-                              label Promo Bundle Valid Until:
-                              .form-group
-                                input#promobundle_validity.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                            .row
+                              .col-md-6
+
+                                #dp.form-group.has-default.bmd-form-group
+                                  label Promo Bundle Valid From:
+                                  .form-group
+                                    input#promobundle_validity.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                              .col-md-6
+                                #dp.form-group.has-default.bmd-form-group
+                                  label Promo Bundle Valid Until:
+                                  .form-group
+                                    input#promobundle_validity_until.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Promo Bundle
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -655,6 +663,8 @@ html(lang='en')
   script(type='text/javascript').
     $(document).ready(function(){
     $('#promobundle_validity').datepicker();
+    $('#promobundle_validity_until').datepicker();
+    
     // Init Sliders
     demo.initFormExtendedSliders();
     // Init DatetimePicker

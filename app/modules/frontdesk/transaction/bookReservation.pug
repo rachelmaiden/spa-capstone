@@ -58,7 +58,7 @@ html(lang='en')
         .container
           h1 Book Reservation
     div
-      a.btn.btn-fill.btn-info(style='margin-left: 190px', href='selectDate.html')
+      a.btn.btn-fill.btn-info(style='margin-left: 190px', href='/selectDate')
         i.fa.fa-arrow-left(aria-hidden='true')
         | Back
     .wrapper
@@ -66,34 +66,31 @@ html(lang='en')
         .section
           .container
             label
+              h3= `${date}`
               h3 Body Massage
               |  Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-info btn-block', title='Select Body Massage Service', data-size='7')
-              option(value='s1') Service 1
-              option(value='s2') Service 2
-              option(value='s3') Service 3
-              option(value='s4') Service 4
+              each bmsg in bmsgs  
+                option(value=`${bmsg.service_id}`)= bmsg.service_name+" ("+bmsg.service_duration_desc+")"
+              
             label
               h3 Body Scrub
               |  Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-info btn-block', title='Select Body Scrub Service', data-size='7')
-              option(value='s1') Service 1
-              option(value='s2') Service 2
-              option(value='s3') Service 3
-              option(value='s4') Service 4
+              each bscrub in bscrubs  
+                option(value=`${bscrub.service_id}`)= bscrub.service_name+" ("+bscrub.service_duration_desc+")"
+              
             label
               h3 Add-on Massage
               |  Note: You can only choose 1 (one)
             select.selectpicker(data-style='btn btn-info btn-block', title='Select Add-on Massage Service', data-size='7')
-              option(value='ams1') Foot Massage (120 minutes)
-              option(value='ams2') Hand Massage (120 minutes)
-              option(value='ams3') Foot and Hand Massage (120 minutes)
+             each addons in addonss  
+                option(value=`${addons.service_id}`)= addons.service_name+" ("+addons.service_duration_desc+")"
             label
               h3 Promo
             select.selectpicker(data-style='btn btn-info btn-block', title='Select Promo', data-size='7')
-              option(value='ams1') Promo 1 
-              option(value='ams2') Promo 2
-              option(value='ams3') Promo 3
+              each promo in promos  
+                option(value=`${promo.promobunlde_id}`)= promo.promobundle_name+" ("+promo.promobundle_duration+")"
             label
               h3 Amenity Usage
             select.selectpicker(data-style='btn btn-info btn-block', title='Number of Hours for Amenities Usage', data-size='7')
@@ -112,18 +109,8 @@ html(lang='en')
             label
               h3 Room Type
             select.selectpicker(data-style='btn btn-info btn-block', title='Select Room Type', data-size='7')
-              option(value='rm1') Private Room 1
-              option(value='rm2') Common Room (Boys)
-              option(value='rm3') Common Room (Girls)
-              option(value='rm4') Room 4
-              option(value='rm5') Room 5
-              option(value='rm6') Room 6
-              option(value='rm7') Room 7
-              option(value='rm8') Room 8
-              option(value='rm9') Room 9
-              option(value='rm10') Room 10
-              option(value='rm11') Room 11
-              option(value='rm12') Room 12
+              each room in rooms
+                option(value=`${room.room_id}`)= room.room_name
           div
             .section
               .container.tim-container

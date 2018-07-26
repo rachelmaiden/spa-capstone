@@ -131,8 +131,9 @@ router.post('/adminPromos/update', (req, res) => {
     }
       res.redirect("/adminPromos")
     if(err) return console.log(err)
+  })
 })
-})
+
 router.post('/adminPromos/query',(req, res) => {
   const query = `select * from promo_bundle_tbl where promobundle_id=?`
   db.query(query,[req.body.id1],(err, out) => {
@@ -311,8 +312,9 @@ router.post('/adminServices/update', (req, res) => {
 
   const query = `UPDATE services_tbl set
   service_name="${req.body.service_name}",
-  service_duration="${req.body.service_duration}",
+  service_duration_id="${req.body.service_duration}",
   service_price="${req.body.service_price}",
+  service_type_id="${req.body.service_type}",
   service_availability="${req.body.service_availability}"
   WHERE service_id = ${req.body.id1}
   `
@@ -322,13 +324,21 @@ router.post('/adminServices/update', (req, res) => {
 })
 })
 router.post('/adminServices/query',(req, res) => {
-  const query = `select * from services_tbl where service_id=?`
+  const query = `select services_tbl.*, service_duration_tbl.*, service_type_tbl.* from services_tbl join service_duration_tbl
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.service_id=?`
   db.query(query,[req.body.id1],(err, out) => {
-      
-      return res.send(out[0])
-      console.log(out[0])
-      console.log(req.body.id1)
+    var out1 = out[0]
+    db.query(`select * from service_type_tbl where delete_stats= 0`,(err,out)=>{
+      var out2 = out
+      db.query(`select * from service_duration_tbl where delete_stats= 0`,(err,out)=>{
+      return res.send({out1:out1, out2:out2, out3:out})
+    })
+      // res.send(out[0])
+      // console.log(out[0])
+      // console.log(req.body.id1)
   })
+})
 })
 
 // ^UNDER OF SERVICE
@@ -398,7 +408,7 @@ router.post('/adminServiceDuration',(req, res) => {
   const query = `
     insert into 
     service_duration_tbl(service_duration_desc, delete_stats)
-    value("${req.body.service_duration_desc}", 0)`
+    value("${req.body.service_duration_desc} minutes", 0)`
   db.query(query, (err, out) => {
     console.log(query)
   })
@@ -448,7 +458,6 @@ router.get('/adminTherapist', (req, res) => {
       theras: out[0],
       specialtys: out[1]
     })
-    console.log(out)
   })
 })
 //          > C R E A T E (ADD)
@@ -486,8 +495,6 @@ router.post('/adminTherapist',(req, res) => {
         aydi=out.insertId;
         for(var i=0;i<req.body.therapist_specialty.length;i++){
           db.query(`insert into therapist_specialty_tbl(therapist_id, specialty_id) value("${aydi}","${req.body.therapist_specialty[i]}")`,(err,out)=>{
-            console.log(query)
-            console.log(req.body.therapist_specialty)
           })
         }
 
@@ -519,9 +526,8 @@ router.post('/adminTherapist/update', (req, res) => {
   address_city="${req.body.address_city}",
   therapist_age="${req.body.therapist_age}",
   therapist_gender="${req.body.therapist_gender}",
-  therapist_contact_no="${req.body.therapist_contact_no}",
-  therapist_email="${req.body.therapist_email}"
-  WHERE therapist_id = ${req.body.id1}
+  therapist_contact_no="${req.body.therapist_contact_no}"
+  WHERE therapist_id = ${req.body.id1};
   `
   db.query(query,(err,out) =>{
       if(err) return console.log(err)
@@ -533,23 +539,47 @@ router.post('/adminTherapist/update', (req, res) => {
 router.post('/adminTherapist/query',(req, res) => {
   const query = `select * from therapist_tbl where therapist_id=?`
   db.query(query,[req.body.id1],(err, out) => {
-    res.send(out[0])
-    // console.log(out[0])
-    // console.log(req.body.id1)
+      return res.send(out[0])
+    })
   })
-})
 
 router.post('/adminTherapist/query1',(req, res) => {
-  const query = `SELECT specialty_tbl.specialty_desc, therapist_specialty_tbl.specialty_id 
+  var id2 = req.body.id1
+  const query = `SELECT specialty_tbl.specialty_desc, therapist_specialty_tbl.specialty_id
   from specialty_tbl join therapist_specialty_tbl on specialty_tbl.specialty_id = therapist_specialty_tbl.specialty_id 
   where therapist_specialty_tbl.therapist_id =?`
   db.query(query,[req.body.id1],(err, out) => {
-    return res.send({out1:out})
-    console.log(out1)
+    var out1= out
+    db.query(`select * from therapist_tbl where delete_stats= 0 and therapist_id= ${id2}`,(err,out)=>{
+      return res.send({out1:out1, out2:out[0], id2})
+      console.log(out[0])
+    })
   })
 })
 
+router.post('/adminTherapist/query2',(req,res)=>{
+  console.log(req.body.id1)
+  const query =`SELECT * FROM specialty_tbl where delete_stats=0`
+  db.query(query,[req.body.id1],(err, out) => {
+    return res.send(out)
+  })
+})
 
+router.post('/adminTherapist/updateTherapistSpecialty',(req,res)=>{
+  console.log(req.body.id1)
+  const query =`DELETE from therapist_specialty_tbl where therapist_id=${req.body.id1}`
+
+  db.query(query,(err,out)=>{
+    aydi= req.body.id1;
+    for(var i=0;i<req.body.specialty.length;i++)
+    {
+      db.query(`INSERT INTO therapist_specialty_tbl(specialty_id, therapist_id)value("${req.body.specialty[i]}","${aydi}")`,(err,out)=>{
+        if(err) return console.log(err)
+        res.redirect("/adminTherapist")
+      })
+    }
+  })
+})
 
 // ^UNDER OF THERAPIST
 // [THERIST SPECIALTY]
@@ -697,12 +727,6 @@ router.get('/adminQueue', (req, res) => {
 
 
 
-router.get('/adminQueue', (req, res) => {
-  res.render('frontdesk/transaction/adminQueue')
-})
-
-
-
 
 
 
@@ -735,9 +759,32 @@ router.get('/adminQueue',(req, res) => {
 // ========================================================================================================= ||
 
     //READ
-router.get('/bookReservation',(req, res) => {
-  res.render('frontdesk/transaction/bookReservation')
-})
+router.get('/bookReservation', (req, res) => {
+  date = req.query.date
+  const query = ` SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
+  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
+  SELECT * FROM room_tbl where delete_stats=0`
+  db.query(query,(err,out) =>{
+      res.render('frontdesk/transaction/bookReservation',{
+        bmsgs: out[0],
+        bscrubs: out[1],
+        addonss: out[2],
+        promos: out[3],
+        rooms: out[4],
+        date
+      })
+      console.log(out)
+      console.log(date)
+    })
+  })
   
 router.get('/selectDate',(req, res) => {
     res.render('frontdesk/transaction/selectDate')

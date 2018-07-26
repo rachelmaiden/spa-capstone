@@ -303,41 +303,7 @@ html(lang='en')
                                             i.ti-close
                                     
                                   
-                              #editSample.modal(tabindex='-1', role='dialog')
-                                .modal-dialog(role='document')
-                                  .modal-content
-                                    .modal-header
-                                      h5.modal-title Modal title
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') ×
-                                    .modal-body
-                                      p Modal body text goes here.
-                                    .modal-footer
-                                      button.btn.btn-primary(type='button') Save changes
-                                      button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
+                              
 
 
 
@@ -446,7 +412,47 @@ html(lang='en')
                           center
                             h4.modal-title Specialty
                         .modal-body#viewAppend
+                        .modal-footer#footerAppend
+                          center
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateSpecialty(data-toggle='modal') Update
+
+
+                  //UPDATE THERAPIST SPECIALTY
+                  #updateSpecialty.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          center
+                            h4.modal-title Specialty
+                        .modal-body#viewUpdateSpecialtyAppend
                         .modal-footer
+                          button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                          button.btn.btn-info.btn-fill.pull-right#updateSpecialtyButton(type='button') Submit
+                .row
+                  .col-md-6
+                    .card-header
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .row
+                  .col-md-6
+                    .card-header
+                      h4.card-title
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .card-header
+                  h4.card-title
+                .card-content
+                  .row
+                    .col-md-12
+                  .row
+                    .col-md-12
+                  .row
 
                   footer.footer
                     .container-fluid
@@ -536,15 +542,21 @@ html(lang='en')
             $.post('adminTherapist/query1',{id1:idNow})
           .done(data=>{
             console.log(data)
+            console.log(data)
             $('#viewAppend').append(`
                   <div class="row">
                     <div class="col-md-6" id="specialty_desc">
+                      <label> ${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}</label>
                       <div class="form-group has-default bmd-form-group">
                       
                       </div>
                     </div>
                   </div>
             `)
+            $('#footerAppend').append(`
+              <center>
+                <input type="hidden" id="inputId" value="${data.id2}"> </input>`)
+
             for(var i=0; i<data.out1.length;i++){
               console.log(data.out1[i].specialty_desc)
                 $('#specialty_desc').append(`<li>${data.out1[i].specialty_desc}</li>`)
@@ -553,8 +565,61 @@ html(lang='en')
             $('#therapistSpecialty').on('hidden.bs.modal', function (){
                 $('#specialty_desc').remove()
               });
+            $('#therapistSpecialty').on('hidden.bs.modal', function (){
+                $('#inputId').remove()
+              });
           })
         })
+
+
+        $('.updateSpecialty').click(function(){
+          var idNow = $('#inputId').val();
+          console.log(idNow)
+            $.post('adminTherapist/query2',{id1:idNow})
+          .done(data=>{
+            console.log(data)
+            $('#viewUpdateSpecialtyAppend').append(`
+                  <div class="form-group has-default bmd-form-group">
+                    <label>Therapist Specialty
+                      <select name="specialty" id="specialty" multiple="" title="aaa" data-style="btn-info" data-size="7" class="selectpicker">
+                      </select>
+                    </label>
+                  </div>
+            `)
+
+            for(var i=0; i<data.length;i++){
+              console.log("ETO YUNG ANO SPECIALTY")
+              console.log(data[i].specialty_desc)
+                $('#specialty').append(`<option value="${data[i].specialty_id}"> ${data[i].specialty_desc} </option>`)
+              }
+                $('#specialty').selectpicker()
+            $('#updateSpecialty').modal('show')
+            $('#therapistSpecialty').modal('hide')
+            $('#updateSpecialty').on('hidden.bs.modal', function (){
+                $('#specialtyUpdate').remove()
+              });
+            $('#updateSpecialtyButton').click(function(){
+              $.post('/adminTherapist/updateTherapistSpecialty',{
+                  specialty:$('#specialty').val(),
+                  
+                  id1: idNow
+                })
+                .done(data=>{
+                      if(data){
+                          swal({
+                          title:'Success', 
+                          text:'Therapist Specialty Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                        $('#updateSpecialty').modal('hide');
+                      }
+              })
+          })
+        })
+      })      
+
 
 
 
@@ -631,7 +696,7 @@ html(lang='en')
                         </select>
                       </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                       <div class="form-group has-default bmd-form-group">
                         <label>Mobile Number*</label>
                         <input type="text" placeholder="${data.therapist_contact_no}" value="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" class="form-control"/>
@@ -641,8 +706,20 @@ html(lang='en')
                   </div>
                 </div>
               </form>`)
-              $('#updateModal').modal('show')
+                    //- <div class="col-md-2">
+                    //-   <div class="form-group has-default bmd-form-group">
+                    //-     <label>Specialty*</label>
+                    //-     <select multiple="" id="therapist_specialty" title="Specialty" data-style="btn-info" class="selectpicker">
+                    //-     </select>
+                    //-   </div>
+                    //- </div>
+              //- for(var i=0; i<data.out2.length;i++){
+              //-   console.log(data.out2[i].specialty_desc)
+              //-   $('#therapist_specialty').append(`<option value="${data.out2[i].specialty_id}">${data.out2[i].specialty_desc}</option>`)
+              //-   }
+              $('#updateModal').modal('show') 
               $('#gender').selectpicker()
+              $('#therapist_specialty').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
@@ -661,9 +738,10 @@ html(lang='en')
                   therapist_age:$('#therapist_age').val(),
                   therapist_gender:$('#gender').val(),
                   therapist_contact_no:$('#therapist_contact_no').val(),
-                  
+                  therapist_specialty:$('#therapist_specialty').val(),
+
                   id1:idNow
-                  })
+                  }) 
                   .done(data=>{
                       if(data){
                           swal({
