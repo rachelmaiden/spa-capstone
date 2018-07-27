@@ -410,7 +410,7 @@ html(lang='en')
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
                           center
-                            h4.modal-title Specialty
+                            h4.modal-title#title
                         .modal-body#viewAppend
                         .modal-footer#footerAppend
                           center
@@ -510,6 +510,7 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
+        // DELETE THERAPIST INFORMATION
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)
@@ -537,16 +538,16 @@ html(lang='en')
             
         });
 
+        // VIEW THERAPIST SPECIALTY/SPECIALTIES
         $('.viewButton').click(function(){
           var idNow = $(this).val();
             $.post('adminTherapist/query1',{id1:idNow})
           .done(data=>{
-            console.log(data)
-            console.log(data)
+            $('#title').append(`${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}`)
             $('#viewAppend').append(`
                   <div class="row">
                     <div class="col-md-6" id="specialty_desc">
-                      <label> ${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}</label>
+                      <label> Specialty </label>
                       <div class="form-group has-default bmd-form-group">
                       
                       </div>
@@ -558,7 +559,6 @@ html(lang='en')
                 <input type="hidden" id="inputId" value="${data.id2}"> </input>`)
 
             for(var i=0; i<data.out1.length;i++){
-              console.log(data.out1[i].specialty_desc)
                 $('#specialty_desc').append(`<li>${data.out1[i].specialty_desc}</li>`)
               }
             $('#therapistSpecialty').modal('show')
@@ -566,12 +566,15 @@ html(lang='en')
                 $('#specialty_desc').remove()
               });
             $('#therapistSpecialty').on('hidden.bs.modal', function (){
-                $('#inputId').remove()
+                $('#inputId').empty()
+              });
+               $('#therapistSpecialty').on('hidden.bs.modal', function (){
+                $('#title').empty()
               });
           })
         })
 
-
+        // UPDATE THERAPIST SPECIALTY
         $('.updateSpecialty').click(function(){
           var idNow = $('#inputId').val();
           console.log(idNow)
@@ -588,15 +591,16 @@ html(lang='en')
             `)
 
             for(var i=0; i<data.length;i++){
-              console.log("ETO YUNG ANO SPECIALTY")
-              console.log(data[i].specialty_desc)
                 $('#specialty').append(`<option value="${data[i].specialty_id}"> ${data[i].specialty_desc} </option>`)
               }
                 $('#specialty').selectpicker()
             $('#updateSpecialty').modal('show')
             $('#therapistSpecialty').modal('hide')
             $('#updateSpecialty').on('hidden.bs.modal', function (){
-                $('#specialtyUpdate').remove()
+                $('#viewUpdateSpecialtyAppend').empty()
+              });
+            $('#updateSpecialty').on('hidden.bs.modal', function (){
+                $('#specialty').empty()
               });
             $('#updateSpecialtyButton').click(function(){
               $.post('/adminTherapist/updateTherapistSpecialty',{
@@ -604,30 +608,23 @@ html(lang='en')
                   
                   id1: idNow
                 })
-                .done(data=>{
-                      if(data){
+                .done(
+
                           swal({
                           title:'Success', 
                           text:'Therapist Specialty Updated', 
                           icon:'success'
                           }).then(function(){
-                            location.reload();
+                            
+                            location.href='/adminTherapist';
                           })
-                        $('#updateSpecialty').modal('hide');
-                      }
-              })
+              )
           })
         })
       })      
 
 
-
-
-
-
-
-
-
+        // UPDATE THERAPIST INFORMATION
         $('.updateButton').click(function(){
           var idNow = $(this).val();
               $.post('/adminTherapist/query',{id1:idNow})

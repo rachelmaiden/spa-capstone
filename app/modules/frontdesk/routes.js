@@ -137,25 +137,49 @@ router.post('/adminPromos/update', (req, res) => {
 router.post('/adminPromos/query',(req, res) => {
   const query = `select * from promo_bundle_tbl where promobundle_id=?`
   db.query(query,[req.body.id1],(err, out) => {
-    var out1 = out[0]
-    db.query(`select * from services_tbl where delete_stats= 0`,(err,out)=>{
-      return res.send({out1:out1, out2:out})
+      return res.send(out[0])
     })
       // res.send(out[0])
       // console.log(out[0])
       // console.log(req.body.id1)
-  })
-}) 
+})
+
 router.post('/adminPromos/query1',(req, res) => {
+  var id2= req.body.id1
   const query = `SELECT services_tbl.service_name, service_in_promo_tbl.service_id 
   from services_tbl join service_in_promo_tbl on services_tbl.service_id = service_in_promo_tbl.service_id 
   where service_in_promo_tbl.promobundle_id =?`
   db.query(query,[req.body.id1],(err, out) => {
-    return res.send({out1:out})
-    console.log(out1)
+    var out1= out
+    db.query(`select * from promo_bundle_tbl where promobundle_id= ${id2} and delete_stats= 0`,(err,out)=>{
+      return res.send({out1:out1, out2:out[0], id2})
+    })
   })
 })
 
+router.post('/adminPromos/query2',(req, res) => {
+  const query = `SELECT * FROM services_tbl WHERE delete_stats=0`
+  db.query(query,[req.body.id1],(err, out) => {
+    return res.send({out1:out})
+  })
+})
+
+router.post('/adminTherapist/updateServicesInPromo',(req,res)=>{
+  console.log(req.body.id1)
+  const query =`DELETE from service_in_promo_tbl where promobundle_id=${req.body.id1}`
+
+  db.query(query,(err,out)=>{
+    aydi= req.body.id1;
+    for(var i=0;i<req.body.nameOfservice.length;i++)
+    {
+      db.query(`INSERT INTO service_in_promo_tbl(service_id, promobundle_id)value("${req.body.nameOfservice[i]}","${aydi}")`,(err,out)=>{
+        if(err) return console.log(err)
+        console.log(query)
+      })
+      console.log(query)
+    }
+  })
+})
   
 // [ROOM]
 //          > R E A D
@@ -575,7 +599,7 @@ router.post('/adminTherapist/updateTherapistSpecialty',(req,res)=>{
     {
       db.query(`INSERT INTO therapist_specialty_tbl(specialty_id, therapist_id)value("${req.body.specialty[i]}","${aydi}")`,(err,out)=>{
         if(err) return console.log(err)
-        res.redirect("/adminTherapist")
+
       })
     }
   })
