@@ -113,22 +113,8 @@ router.post('/adminPromos/update', (req, res) => {
   promobundle_duration="${req.body.promobundle_duration}",
   promobundle_amenity_usage="${req.body.promobundle_amenity_usage}"
   WHERE promobundle_id = ${req.body.id1};
-  delete from service_in_promo_tbl where promobundle_id= ${req.body.id1}
   `
   db.query(query,(err,out) =>{
-    console.log(req.body.services_included)
-    console.log(query)
-    aydi=req.body.id1;
-    console.log("DITO ID"),console.log(aydi)
-    for(var i=0;i<req.body.services_included.length;i++)
-    {
-      db.query(`insert into service_in_promo_tbl(promobundle_id, service_id) value("${aydi}","${req.body.services_included[i]}")`, (err,out)=>{
-        console.log(req.body.services_included[i])
-        console.log("QUERY1")
-        console.log(query)
-        if(err) return console.log(err)
-      })
-    }
       res.redirect("/adminPromos")
     if(err) return console.log(err)
   })

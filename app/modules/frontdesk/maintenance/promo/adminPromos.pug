@@ -615,13 +615,13 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Promo Bundle Name*</label>
-                        <input type="text" placeholder="${data.out1.promobundle_name}" value="${data.out1.promobundle_name}" id="promobundle_name" name="promobundle_name" class="form-control"/>
+                        <input type="text" placeholder="${data.promobundle_name}" value="${data.promobundle_name}" id="promobundle_name" name="promobundle_name" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Promo Bundle Price*</label>
-                        <input type="text" placeholder="${data.out1.promobundle_price}" value="${data.out1.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
+                        <input type="text" placeholder="${data.promobundle_price}" value="${data.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -629,7 +629,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group"></div>
                       <label>Promo Duration</label>
-                      <select id="promobundle_duration" title="${data.out1.promobundle_duration}" data-style="btn-info" class="selectpicker">
+                      <select id="promobundle_duration" title="${data.promobundle_duration}" data-style="btn-info" class="selectpicker">
                         <option value="60 minutes">60 minutes</option>
                         <option value="90 minutes">90 minutes</option>
                         <option value="120 minutes">120 minutes</option>
@@ -638,7 +638,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group"></div>
                       <label>Hours of Amenity Usage</label>
-                      <select id="promobundle_amenity_usage" title="${data.out1.promobundle_amenity_usage}" data-style="btn-info" class="selectpicker">
+                      <select id="promobundle_amenity_usage" title="${data.promobundle_amenity_usage}" data-style="btn-info" class="selectpicker">
                         <option value="60 minutes">60 minutes</option>
                         <option value="90 minutes">90 minutes</option>
                         <option value="120 minutes">120 minutes</option>
@@ -652,20 +652,9 @@ html(lang='en')
                   <div id="dp" class="form-group has-default bmd-form-group">
                     <label>Promo Bundle Valid Until:</label>
                     <div class="form-group">
-                      <input id="promobundle_valid" type="text" placeholder="${data.out1.promobundle_validity}" value="${data.out1.promobundle_validity}" class="form-control"/>
+                      <input id="promobundle_valid" type="text" placeholder="${data.promobundle_validity}" value="${data.promobundle_validity}" class="form-control"/>
                     </div>
                   </div>`)
-
-                  //- <div class="form-group has-default bmd-form-group">
-                  //-   <label>Services Included
-                  //-     <select name="services_included" id="services_included" multiple="" title="" data-style="btn-info" data-size="7" class="selectpicker">
-                  //-     </select>
-                  //-   </label>
-                  //- </div>
-                //- for(var i=0; i<data.out2.length;i++){
-                //- console.log(data.out2[i].service_name)
-                //- $('#services_included').append(`<option value="${data.out2[i].service_id}">${data.out2[i].service_name}</option>`)
-                //- }
 
                 $('#promobundle_duration').selectpicker();
               $('#promobundle_amenity_usage').selectpicker();
