@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title Online Booking and Spa Management System
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -84,11 +84,11 @@ html(lang='en')
                     #services.collapse
                       ul.nav
                         li(style="margin-left: 30px")
-                          a(href='./adminServices')
-                            span.sidebar-normal Services
-                        li(style="margin-left: 30px")
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
                         li(style="margin-left: 30px")
                           a(href='./adminServiceDuration')
                             span.sidebar-normal Service Duration
@@ -100,12 +100,12 @@ html(lang='en')
                         b(style="margin-right: 30px").caret
                     #therapist.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px").active
-                          a(href='./adminTherapist')
-                            span.sidebar-normal Therapist
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
                             span.sidebar-normal Therapist Specialty
+                        li(style="margin-left: 30px").active
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#amenities')
                       p
@@ -292,9 +292,10 @@ html(lang='en')
                                         td
                                           button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${thera.therapist_id}`) View Specialty
                                         td
-                                          input.switch-availability(type='checkbox', checked='')
-
-                                          
+                                          if(thera.therapist_availability==0)
+                                            input.switch-availability(type='checkbox' checked)
+                                          else if(thera.therapist_availability==1)
+                                            input.switch-availability(type='checkbox')
 
                                         td.action.text-center
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
@@ -566,7 +567,7 @@ html(lang='en')
                 $('#specialty_desc').remove()
               });
             $('#therapistSpecialty').on('hidden.bs.modal', function (){
-                $('#inputId').empty()
+                $('#inputId').remove()
               });
                $('#therapistSpecialty').on('hidden.bs.modal', function (){
                 $('#title').empty()
@@ -584,7 +585,7 @@ html(lang='en')
             $('#viewUpdateSpecialtyAppend').append(`
                   <div class="form-group has-default bmd-form-group">
                     <label>Therapist Specialty
-                      <select name="specialty" id="specialty" multiple="" title="aaa" data-style="btn-info" data-size="7" class="selectpicker">
+                      <select name="specialty" id="specialty" multiple="" title="Choose Specialty" data-style="btn-info" data-size="7" class="selectpicker">
                       </select>
                     </label>
                   </div>
@@ -687,9 +688,7 @@ html(lang='en')
                     <div class="col-md-2">
                       <div class="form-group has-default bmd-form-group">
                         <label>Gender*</label>
-                        <select id="gender" title="${data.therapist_gender}" data-style="btn-info" class="selectpicker">
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
+                        <select id="gender" value="${data.therapist_gender}" data-style="btn-info" class="selectpicker">
                         </select>
                       </div>
                     </div>
@@ -714,6 +713,16 @@ html(lang='en')
               //-   console.log(data.out2[i].specialty_desc)
               //-   $('#therapist_specialty').append(`<option value="${data.out2[i].specialty_id}">${data.out2[i].specialty_desc}</option>`)
               //-   }
+              if(data.therapist_gender == 'Male'){
+                $('#gender').append(`<option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>`
+                )
+              }
+              if(data.therapist_gender == 'Female'){
+                $('#gender').append(`<option value="Male">Male</option>
+                    <option value="Female" selected>Female</option>`
+                )
+              }
               $('#updateModal').modal('show') 
               $('#gender').selectpicker()
               $('#therapist_specialty').selectpicker()

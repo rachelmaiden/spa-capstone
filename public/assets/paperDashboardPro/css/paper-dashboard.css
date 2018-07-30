@@ -10279,6 +10279,9 @@ star {
 .full-page[data-image]:after, .full-page.has-image:after {
   opacity: .7;
 }
+.full-page[data-color="none"]:after {
+  background-color: rgba(0, 0, 0, 0);
+}
 .full-page[data-color="blue"]:after {
   background-color: rgba(96, 133, 134, 0.7);
 }

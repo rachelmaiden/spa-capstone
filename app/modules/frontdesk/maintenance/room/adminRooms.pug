@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title Online Booking and Spa Management System
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -84,11 +84,11 @@ html(lang='en')
                     #services.collapse
                       ul.nav
                         li(style="margin-left: 30px")
-                          a(href='./adminServices')
-                            span.sidebar-normal Services
-                        li(style="margin-left: 30px")
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
                         li(style="margin-left: 30px")
                           a(href='./adminServiceDuration')
                             span.sidebar-normal Service Duration
@@ -101,11 +101,11 @@ html(lang='en')
                     #therapist.collapse
                       ul.nav
                         li(style="margin-left: 30px")
-                          a(href='./adminTherapist')
-                            span.sidebar-normal Therapist
-                        li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
                             span.sidebar-normal Therapist Specialty
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#amenities')
                       p
@@ -265,7 +265,7 @@ html(lang='en')
                                       th Room Name
                                       th Bed Quantity
                                       th Rate
-                                      th Room Availability
+                                      th Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
@@ -273,7 +273,7 @@ html(lang='en')
                                       th Room Name
                                       th Bed Quantity
                                       th Rate
-                                      th Room Availability
+                                      th Availability
                                       th Actions
                                   tbody
                                     each room in rooms
@@ -283,10 +283,10 @@ html(lang='en')
                                         td= room.bed_qty
                                         td= room.room_rate
                                         td
-                                          if(room.room_availability ==0)
-                                            label Available
-                                          else if(room.room_availability ==1)
-                                            label Not Available
+                                          if(room.room_availability==0)
+                                            input.switch-availability(type='checkbox' checked)
+                                          else if(room.room_availability==1)
+                                            input.switch-availability(type='checkbox')
                                         
                                         td
                                           button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${room.room_id}`)
@@ -294,29 +294,6 @@ html(lang='en')
                                           button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${room.room_id}`)
                                             i.ti-close
                                     
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
                   //ADD
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')
@@ -373,7 +350,7 @@ html(lang='en')
                   
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog.modal-lg(role='document')
+                    .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           h5#exampleModalLabel.modal-title Room Information
@@ -384,6 +361,29 @@ html(lang='en')
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                             button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
 
+                .row
+                  .col-md-6
+                    .card-header
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .row
+                  .col-md-6
+                    .card-header
+                      h4.card-title
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .card-header
+                  h4.card-title
+                .card-content
+                  .row
+                    .col-md-12
+                  .row
+                    .col-md-12
+                  .row
                   footer.footer
                     .container-fluid
                       nav.pull-left
@@ -506,11 +506,8 @@ html(lang='en')
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Room Availability</label>
-                        <select id="room_availability" name="room_availability" title="${data.out1.room_availability}" data-style="btn-info" class="selectpicker">
-                          <option value="Common">Available</option>
-                          <option value="Private">Not Available</option>
-                        </select>
+                        <label>Room Rate*</label>
+                        <input type="number" placeholder="${data.out1.room_rate}" value="${data.out1.room_rate}" id="bed_qty" class="form-control"/>
                       </div>
                     </div>
                   </div>`)

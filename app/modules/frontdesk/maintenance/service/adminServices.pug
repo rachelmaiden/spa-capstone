@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa Front Desk
+    title Online Booking and Spa Management System
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -83,12 +83,12 @@ html(lang='en')
                         b(style="margin-right: 30px").caret
                     #services.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px").active
-                          a(href='./adminServices')
-                            span.sidebar-normal Services
                         li(style="margin-left: 30px")
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
+                        li(style="margin-left: 30px").active
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
                         li(style="margin-left: 30px")
                           a(href='./adminServiceDuration')
                             span.sidebar-normal Service Duration
@@ -101,11 +101,11 @@ html(lang='en')
                     #therapist.collapse
                       ul.nav
                         li(style="margin-left: 30px")
-                          a(href='./adminTherapist')
-                            span.sidebar-normal Therapist
-                        li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
                             span.sidebar-normal Therapist Specialty
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#amenities')
                       p
@@ -265,16 +265,16 @@ html(lang='en')
                                     tr
                                       th Service Type
                                       th Service Name
-                                      th Service Duration
-                                      th Service Price
+                                      th Duration
+                                      th Price
                                       th Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
                                       th Service Type
                                       th Service Name
-                                      th Service Duration
-                                      th Service Price
+                                      th Duration
+                                      th Price
                                       th Availability
                                       th Actions
                                   tbody
@@ -285,39 +285,16 @@ html(lang='en')
                                         td= service.service_duration_desc
                                         td= service.service_price
                                         td
-                                          if(service.service_availability ==0 )
-                                            label Available
-                                          else if(service.service_availability ==1)
-                                            label Not Available
+                                          if(service.service_availability==0)
+                                            input.switch-availability(type='checkbox' checked)
+                                          else if(service.service_availability==1)
+                                            input.switch-availability(type='checkbox')
                                         td
                                           button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${service.service_id}`)
                                             i.ti-pencil-alt
                                           button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${service.service_id}`)
                                             i.ti-trash
                                     
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
                   //ADD  
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')
@@ -391,6 +368,29 @@ html(lang='en')
 
 
 
+                .row
+                  .col-md-6
+                    .card-header
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .row
+                  .col-md-6
+                    .card-header
+                      h4.card-title
+                    .card-content
+                  .col-md-6
+                    .card-header
+                    .card-content
+                .card-header
+                  h4.card-title
+                .card-content
+                  .row
+                    .col-md-12
+                  .row
+                    .col-md-12
+                  .row
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
@@ -496,7 +496,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Name*</label>
-                        <input type="text" id="service_name" placeholder="${data.out1.service_name}" name="name" class="form-control"/>
+                        <input type="text" id="service_name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -512,7 +512,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Price*</label>
-                        <input type="text" id="service_price" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
+                        <input type="text" id="service_price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
                       </div>
                     </div>
                   </div>

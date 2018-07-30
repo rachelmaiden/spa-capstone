@@ -144,6 +144,7 @@ router.post('/adminPromos/query1',(req, res) => {
 })
 
 router.post('/adminPromos/query2',(req, res) => {
+  console.log(req.body.id1)
   const query = `SELECT * FROM services_tbl WHERE delete_stats=0`
   db.query(query,[req.body.id1],(err, out) => {
     return res.send({out1:out})
@@ -286,7 +287,7 @@ router.get('/adminServices', (req, res) => {
   const query = ` select services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc 
   from services_tbl join service_duration_tbl on services_tbl.service_duration_id = service_duration_tbl.service_duration_id
   join service_type_tbl on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats = 0;
-  select * from service_type_tbl where delete_stats=0;
+  select * from service_type_tbl where delete_stats=0 and service_type_availability= 0;
   select * from service_duration_tbl where delete_stats=0`
   db.query(query,(err,out) =>{
     res.render('frontdesk/maintenance/service/adminServices',{
@@ -366,8 +367,8 @@ router.get('/adminServiceType', (req, res) => {
 router.post('/adminServiceType',(req, res) => {
   const query = `
     insert into 
-    service_type_tbl(service_type_desc, delete_stats)
-    value("${req.body.service_type_desc}",0)`
+    service_type_tbl(service_type_desc, service_type_availability ,delete_stats)
+    value("${req.body.service_type_desc}",0,0)`
   db.query(query, (err, out) => {
     console.log(query)
   })
