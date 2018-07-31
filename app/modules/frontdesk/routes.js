@@ -762,6 +762,10 @@ router.get('/adminReservation',(req, res) => {
     res.render('frontdesk/transaction/adminReservation')
 })
 
+router.get('/reservation',(req, res) => {
+  res.render('frontdesk/transaction/reservation')
+})
+
 router.get('/adminQueue',(req, res) => {
     res.render('frontdesk/transaction/adminQueue')
 })
