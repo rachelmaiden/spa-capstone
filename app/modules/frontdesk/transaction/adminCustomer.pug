@@ -41,7 +41,8 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
-    link(href='/assets/paperDashboardPro/css/bootstrap-datepicker.css')
+
+    link(href='/assets/datetimepicker/bootstrap-datetimepicker-solo.css', rel='stylesheet')
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -334,9 +335,10 @@ html(lang='en')
                           .modal-body
                             .row
                               .col-md-4
-                                .form-group.has-default.bmd-form-group
+                                .form-group.has-default.bmd-form-group#allInputsFormValidation(action='', method='post', novalidate='')
+
                                   label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required)
+                                  input.form-control(type='text', placeholder='Last Name' name='required' required='required')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label First Name*
@@ -344,7 +346,7 @@ html(lang='en')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Middle Name
-                                  input.form-control(type='text', placeholder='Middle Name' name='middlename' required)     
+                                  input.form-control(type='text', placeholder='Middle Name' name='middlename' )     
                             .row
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
@@ -365,18 +367,17 @@ html(lang='en')
                                     
 
                             .row
-                              .col-md-3
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label Birthday:
-                                    input#birthday.form-control(type='text')
-
-                              .col-md-2
+                                  label Birthday*
+                                  input.form-control.datepicker(type='date', placeholder='Age' name='age')
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Gender*
                                   select.selectpicker(name='gender'  data-style='btn-info')
                                     option(value='Male') Male
                                     option(value='Female') Female
-                              .col-md-3
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Mobile Number*
                                   input.form-control(type='number' placeholder='Mobile Number' name='contact_no' minlength="11" maxlength="11" required)
@@ -486,7 +487,9 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
-  script(src='/assets/paperDashboardPro/js/bootstrap-datepicker.min.js')
+  
+  script(src='/assets/bootstrap-datetimepicker.min')
+
   script.
       $(document).ready(function(){
         $('.deleteButton').click(function(){
@@ -633,6 +636,20 @@ html(lang='en')
 
           })
       })
+      $('.datepicker').datetimepicker({
+          format: 'YYYY-MM-DD',
+          icons: {
+            time: "fa fa-clock-o",
+            date: "fa fa-calendar",
+            up: "fa fa-chevron-up",
+            down: "fa fa-chevron-down",
+            previous: 'fa fa-chevron-left',
+            next: 'fa fa-chevron-right',
+            today: 'fa fa-screenshot',
+            clear: 'fa fa-trash',
+            close: 'fa fa-remove'
+        }
+      });
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -659,8 +676,11 @@ html(lang='en')
     })
     });
     });
+   
   script(type='text/javascript').
-    $(document).ready(function(){
-    $('#birthday').datepicker()
+    $().ready(function(){
+    $('#registerFormValidation').validate();
+    $('#loginFormValidation').validate();
+    $('#allInputsFormValidation').validate();
     });
-    
+ 
