@@ -41,6 +41,7 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/bootstrap-datepicker.css')
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -364,10 +365,11 @@ html(lang='en')
                                     
 
                             .row
-                              .col-md-2
+                              .col-md-3
                                 .form-group.has-default.bmd-form-group
-                                  label Birthay*
-                                  input.form-control(type='text', placeholder='Age' name='age')
+                                  label Birthday:
+                                    input#birthday.form-control(type='text')
+
                               .col-md-2
                                 .form-group.has-default.bmd-form-group
                                   label Gender*
@@ -484,6 +486,7 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script(src='/assets/paperDashboardPro/js/bootstrap-datepicker.min.js')
   script.
       $(document).ready(function(){
         $('.deleteButton').click(function(){
@@ -656,3 +659,8 @@ html(lang='en')
     })
     });
     });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    $('#birthday').datepicker()
+    });
+    

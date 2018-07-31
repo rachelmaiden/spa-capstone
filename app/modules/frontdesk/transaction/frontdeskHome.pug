@@ -10,7 +10,7 @@ html(lang='en')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     meta(name='viewport', content='width=device-width')
     link(href='/assets/paperkit/assets/css/bootstrap.min.css', rel='stylesheet')
-    link(href='/assets/paperkit/assets/css/paper-kitf066.css?v=2.1.0', rel='stylesheet')
+    link(href='/assets/paperkit/assets/css/paper-kit.css', rel='stylesheet')
     link(href='/assets/paperkit/assets/css/demo.css', rel='stylesheet')
     // Fonts and icons
     link(href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700', rel='stylesheet', type='text/css')
@@ -23,7 +23,7 @@ html(lang='en')
           span.navbar-toggler-bar
           span.navbar-toggler-bar
           span.navbar-toggler-bar
-        a.navbar-brand(href='#') M-BAY Health Spa | Front Desk  
+        a.navbar-brand(href='#') Online Booking and Spa Management System | Front Desk  
         #navbar-transparent.collapse.navbar-collapse
           ul.navbar-nav.ml-auto
             li.nav-item
@@ -45,7 +45,7 @@ html(lang='en')
           .row
             .col-md-5
             .col-md-4
-              button.btn.btn-secondary.btn.btn-primary.btn-fill.btn-wd(data-toggle='modal', data-target='#chooseDate') Book Reservation
+              button.btn.btn-secondary.btn.btn-primary.btn-fill.btn-wd(data-toggle='modal', data-target='#SearchCustomer') Book Reservation
             .col-md-5
           br
           .row
@@ -92,378 +92,42 @@ html(lang='en')
                         td 2:30 PM
            
 
-
-
-
-
-
-
-
-          // BOOK RESERVATION[choose date]
-          #chooseDate.modal.fade(tabindex='-1', role='dialog')
+          //[search customer]
+          #SearchCustomer.modal.fade(tabindex='-1', role='dialog')
             .modal-dialog(role='document')
               .modal-content
                 .modal-header
                   h5.modal-title
-                    center Choose Date
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .col-md-1
-                    .col-md-6
-                      button.btn.btn-info(data-toggle='modal', data-target='#chooseNow', data-dismiss='modal') Book Now
-                    .col-md-5
-                      button.btn.btn-info(data-toggle='modal', data-target='#chooseOtherDay', data-dismiss='modal') Book Other Day
+                    center Customer Name
+                  button.close(type='button', data-dismiss='modal', aria-label='Close') X 
                 
-          // BOOK RESERVATION [now]
-          #chooseNow.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Book Reservation
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .col-md-3
-                      button.btn.btn-info(data-toggle='modal', data-target='#amenityNow', data-dismiss='modal') amenity
-                    .col-md-3
-                      button.btn.btn-info(data-toggle='modal', data-target='#massageNow', data-dismiss='modal') massage
-                    .col-md-4
-                      button.btn.btn-info(data-toggle='modal', data-target='#bothNow', data-dismiss='modal') massage & amenity
-                    .col-md-2
-                      button.btn.btn-info(data-toggle='modal', data-target='#promoNow', data-dismiss='modal') promo
-                .modal-footer
-                  button.btn.btn-danger.btn-link(data-dismiss='modal',data-target='#chooseDate' data-toggle='modal' style="left:50px") Back
-          //- AMENITY (now)
-          //[time]
-          #amenityNow.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center A M E N I T Y
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
                 .modal-body
                   .row
                     .input-group
-                      p SELECT TIME
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#chooseNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#amenityNow1', data-toggle='modal') Next
-          //[customer search]
-          #amenityNow1.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center A M E N I T Y
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .input-group
-                      input.form-control(type='text', placeholder='Customer Name', aria-describedby='basic-addon1')
+                      input.form-control(type='text', placeholder='Customer Name' id='searchBar' name="searchBar")
                       span#basic-addon1.input-group-addon
                         i.fa.fa-search(aria-hidden='true')
                     .input-group
                       center
-                        i New Customer? Click Here
+                      i
+                        a(href="/adminCustomer" ) New Customer? Click Here
                 .modal-footer
                   .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#amenityNow', data-toggle='modal') Back
+                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='SearchCustomer', data-toggle='modal') Back
                   .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#amenityNowSummary', data-toggle='modal') Next
-          //[summary]
-          #amenityNowSummary.modal.fade(tabindex='-1', role='dialog')
+                    button.btn.btn-success.btn-link.searchButton(data-toggle='modal') Search
+          //VIEW SEARCH RESULT
+          #searchResult.modal.fade(tabindex='-1', role='dialog')
             .modal-dialog(role='document')
               .modal-content
                 .modal-header
                   h5.modal-title
-                    center A M E N I T Y
+                    center Results
                   button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .input-group
-                      p SUMMARY
+                .modal-body#viewAppend
                 .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#amenityNow1', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(type='button') Next
-          //- MASSAGE (now)
-          //[time]
-          #massageNow.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X 
-                .modal-body
-                  .row
-                    .col-md-3
-                      p SELECT TIME
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#chooseNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#massageNowServices', data-toggle='modal') Next
-          //[select services]
-          #massageNowServices.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X 
-                .modal-body
-                  .row
-                    .col-md-3
-                      p SELECT SERVICES
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#massageNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#massageNowSearchCust', data-toggle='modal') Next
-          //[search customer]
-          #massageNowSearchCust.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X 
-                .modal-body
-                  .row
-                    .input-group
-                      input.form-control(type='text', placeholder='Customer Name', aria-describedby='basic-addon1')
-                      span#basic-addon1.input-group-addon
-                        i.fa.fa-search(aria-hidden='true')
-                    .input-group
-                      center
-                        i New Customer? Click Here
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#massageNowServices', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#massageNowSummary', data-toggle='modal') Next
-          //[summary]
-          #massageNowSummary.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X 
-                .modal-body
-                  .row
-                    .col-md-3
-                      p MASSAGE SUMMARY
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#massageNowSearchCust', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='', data-toggle='modal') Next
-          //- BOTH(AMENITY AND MASSAGE) (now)
-          //[time]
-          #bothNow.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity and Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    p SELECT TIME
-                   
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#chooseNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#bothNowServices', data-toggle='modal') Next
-          //[choose services]
-          #bothNowServices.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity and Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    p SELECT SERVICES
-                   
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#bothNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#bothNowSearchCust', data-toggle='modal') Next
-          //[search customer]
-          #bothNowSearchCust.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity and Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .input-group
-                      input.form-control(type='text', placeholder='Customer Name', aria-describedby='basic-addon1')
-                      span#basic-addon1.input-group-addon
-                        i.fa.fa-search(aria-hidden='true')
-                    .input-group
-                      center
-                        i New Customer? Click Here
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#bothNowServices', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#bothNowSummary', data-toggle='modal') Next
-          //[summary]
-          #bothNowSummary.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity and Massage
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  p SUMMARY
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#bothNowSearchCust', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='', data-toggle='modal') Next
-          //- PROMO(now)
-          //[time]
-          #promoNow.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Promo
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    p SELECT TIME
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#chooseNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#promoNowChoosePromo', data-toggle='modal') Next
-          //[choose promo]
-          #promoNowChoosePromo.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Promo
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    p SELECT PROMO
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#promoNow', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#promoNowSearchCust', data-toggle='modal') Next
-          //[search customer]
-          #promoNowSearchCust.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Promo
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .input-group
-                      input.form-control(type='text', placeholder='Customer Name', aria-describedby='basic-addon1')
-                      span#basic-addon1.input-group-addon
-                        i.fa.fa-search(aria-hidden='true')
-                    .input-group
-                      center
-                        i New Customer? Click Here
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#promoNowChoosePromo', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#promoNowSummary', data-toggle='modal') Next
-          //[summary]
-          #promoNowSummary.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog.modal-lg(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Promo
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  p SUMMARY
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#promoNowSearchCust', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#', data-toggle='modal') Next
-          
-          
-          
-          // AMENITY OTHER DATE [select time and date]
-          #amenityOtherDate.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  p SELECT DATE AND TIME
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#amenity', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#amenityOtherDate1', data-toggle='modal') Next
-          // AMENITY OTHER DATE [choose customer]
-          #amenityOtherDate1.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  .row
-                    .input-group
-                      input.form-control(type='text', placeholder='Customer Name', aria-describedby='basic-addon1')
-                      span#basic-addon1.input-group-addon
-                        i.fa.fa-search(aria-hidden='true')
-                    .input-group
-                      center
-                        i New Customer? Click Here
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#amenityOtherDate', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='#amenityOtherDateSummary', data-toggle='modal') Next  
-          // AMENITY OTHER DATE [summary]
-          #amenityOtherDateSummary.modal.fade(tabindex='-1', role='dialog')
-            .modal-dialog(role='document')
-              .modal-content
-                .modal-header
-                  h5.modal-title
-                    center Amenity
-                  button.close(type='button', data-dismiss='modal', aria-label='Close') X
-                .modal-body
-                  p SUMMARY
-                .modal-footer
-                  .left-side
-                    button.btn.btn-danger.btn-link(data-dismiss='modal', data-target='#amenityOtherDate1', data-toggle='modal') Back
-                  .right-side
-                    button.btn.btn-success.btn-link(data-dismiss='modal', data-target='', data-toggle='modal') Next  
-          
+                  center
+                    button.btn.btn-danger.btn-link(data-dismiss='modal' data-target="searchResult") Cancel
           .demo-footer.text-center  
 
   // Core JS Files
@@ -480,11 +144,39 @@ html(lang='en')
   script(src='/assets/paperkit/assets/js/bootstrap-datetimepicker.min.js')
   // Paper Kit Initialization and functons
   script(src='/assets/paperkit/assets/js/paper-kit.js?v=2.1.0')
-  script(type='text/javascript').
+  script.
     $(document).ready(function(){
-    $('#datepicker').datepicker();
-    // Init Sliders
-    demo.initFormExtendedSliders();
-    // Init DatetimePicker
-    demo.initFormExtendedDatetimepickers();
-    });
+        // VIEW SEARCH RESULT
+        $('.searchButton').click(function(){
+          var searchBar = $('#searchBar').val();
+            console.log(searchBar)
+            $.post('frontdeskHome/search',{searchBar:searchBar})
+          .done(data=>{
+            $('#viewAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6" id="resultField">
+                      <div class="form-group has-default bmd-form-group">
+                      
+                      </div>
+                    </div>
+                  </div>
+            `)
+            if(data.out.length >0){
+              for(var i=0; i<data.out.length;i++){
+                console.log()
+                $('#resultField').append(`<a href='selectDate/${data.out[i].cust_id}'>${data.out[i].cust_fname} ${data.out[i].cust_mname} ${data.out[i].cust_lname}<a>`)
+                
+              }
+            }
+            else{
+              console.log("WALANG RESULTS")
+             $('#resultField').append(`<li>record not found</li>`)
+            }
+            $('#searchResult').modal('show')
+            $('#SearchCustomer').modal('hide')
+            $('#searchResult').on('hidden.bs.modal', function (){
+                $('#resultField').remove()
+              });
+          })
+        })
+    })

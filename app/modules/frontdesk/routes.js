@@ -730,7 +730,21 @@ router.post('/adminCustomer/query',(req, res) => {
 router.get('/frontdeskHome', (req, res) => {
   res.render('frontdesk/transaction/frontdeskHome')
 })
-
+// [SEARCH]
+router.post('/frontdeskHome/search', (req, res) => {
+  console.log(req.body.searchBar)
+  const query= `SELECT * FROM customer_tbl WHERE
+  cust_fname LIKE '%${req.body.searchBar}%' OR
+  cust_mname LIKE '%${req.body.searchBar}%' OR
+  cust_lname LIKE '%${req.body.searchBar}%' OR
+  CONCAT(cust_fname," ",cust_lname)  = '${req.body.searchBar}' AND delete_stats=0
+  `
+  db.query(query, (err,out)=>{
+    res.send({out:out})
+    console.log(query)
+    console.log(out)
+  })
+})
 
 router.get('/adminQueue', (req, res) => {
   res.render('frontdesk/transaction/adminQueue')
@@ -800,9 +814,27 @@ router.get('/bookReservation', (req, res) => {
       console.log(date)
     })
   })
-  
-router.get('/selectDate',(req, res) => {
-    res.render('frontdesk/transaction/selectDate')
+
+
+router.get('/reservation', (req, res) => {
+  res.render('frontdesk/transaction/reservation')
+})
+
+
+router.get('/selectDate',(req,res)=>{
+  res.render('frontdesk/transaction/selectDate')
+})
+
+
+router.get('/selectDate/:cust_id',(req, res) => {
+  console.log(req.params.cust_id)
+  const query = `SELECT * FROM customer_tbl where cust_id= ${req.params.cust_id}`
+  db.query(query,(err,out) =>{
+		res.render("frontdesk/transaction/selectDate",{
+			customers: out
+		})
+		console.log("HI")
+	})
 })
 
 router.get('/bookService',(req, res) => {

@@ -93,7 +93,6 @@ html(lang='en')
                   label
                     h3
                       strong Guest Name:
-                      |  Rachel Maiden Flores
             .row
               .col-md-3
                 .form-group
@@ -101,22 +100,14 @@ html(lang='en')
                     strong Guest Number
                   select.selectpicker(data-style='btn btn-info', title='Number of Guest(s)')
                     option(value='1') 1 
-                    option(value='1') 2
-                    option(value='1') 3
-                    option(value='1') 4
-                    option(value='1') 5 
-                    option(value='1') 6
+                    option(value='2') 2
+                    option(value='3') 3
+                    option(value='4') 4
+                    option(value='5') 5 
+                    option(value='6') 6
               .col-md-3
                 label &nbsp
-                //
-                  <select class="selectpicker" title="Number of Guest(s)">
-                  <option value="1">1 </option>
-                  <option value="1">2</option>
-                  <option value="1">3</option>
-                  <option value="1">4</option>
-                  <option value="1">5 </option>
-                  <option value="1">6</option>
-                  </select>
+
             hr
             br
             br
@@ -131,8 +122,8 @@ html(lang='en')
                         span(aria-hidden='true') ×
                       h5#exampleModalLabel.modal-title.text-center Select Service(s)
                     .modal-body
-                      .col-sm-6
-                        select.selectpicker(multiple='', title='Multiple Select', data-style='btn-info btn-fill btn-block', data-size='7')
+                      .col-md-6
+                        select.selectpicker(multiple='', title='Multiple Select', data-style='btn-info btn-fill btn-block', data-size='10')
                           option(value='ARS') Shiatsu Massage (60 minutes)
                           option(value='AUD') Ventosa (60 minutes)
                     .modal-footer
