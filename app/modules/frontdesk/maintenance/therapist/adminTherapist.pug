@@ -41,6 +41,15 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -267,7 +276,7 @@ html(lang='en')
                                       th Address
                                       th Age
                                       th Gender
-                                      th Mobile Number
+                                      th Contact No
                                       th Specialty
                                       th Availability
                                       th.disabled-sorting Actions
@@ -277,7 +286,7 @@ html(lang='en')
                                       th Address
                                       th Age
                                       th Gender
-                                      th Mobile Number
+                                      th Contact No
                                       th Specialty
                                       th Availability
                                       th Actions
@@ -297,11 +306,21 @@ html(lang='en')
                                           else if(thera.therapist_availability==1)
                                             input.switch-availability(type='checkbox')
 
-                                        td.action.text-center
-                                          button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}`)
-                                            i.ti-close
+                                        td
+                                          .dropdown.pull-right(style="right: 25px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                                     
                                   
                               
@@ -729,6 +748,9 @@ html(lang='en')
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
+               $('#updateModal').on('hidden.bs.modal', function (){
+                $('#gender').empty()
+               }) 
               $('#cancelButton').click(function(){
                   ('#updateAppend').empty();
               })

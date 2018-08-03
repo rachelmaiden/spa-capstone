@@ -10263,7 +10263,7 @@ star {
   z-index: 4;
 }
 .full-page > .content {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 0px);
 }
 .full-page .full-page-background {
   position: absolute;
@@ -10278,6 +10278,9 @@ star {
 }
 .full-page[data-image]:after, .full-page.has-image:after {
   opacity: .7;
+}
+.full-page[data-color="gray"]:after {
+  background-color: rgba(97, 97, 97, 0.39);
 }
 .full-page[data-color="none"]:after {
   background-color: rgba(0, 0, 0, 0);

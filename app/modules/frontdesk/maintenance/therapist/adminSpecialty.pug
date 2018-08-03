@@ -41,6 +41,15 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -151,25 +160,21 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='./adminCustomer.html')
+                    a(href='./adminCustomer')
                       span.sidebar-mini R
                       span.sidebar-normal Registration
                   li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini RT
-                      span.sidebar-normal Regular Tables
+                    a(href='adminReservation')
+                      span.sidebar-mini R
+                      span.sidebar-normal Reservations
                   li
-                    a(href='../tables/extended.html')
-                      span.sidebar-mini ET
-                      span.sidebar-normal Extended Tables
+                    a(href='#')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
                   li
-                    a(href='../tables/bootstrap-table.html')
-                      span.sidebar-mini BT
-                      span.sidebar-normal Bootstrap Table
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini DT
-                      span.sidebar-normal DataTables.net
+                    a(href='adminQueue')
+                      span.sidebar-mini Q
+                      span.sidebar-normal Queue
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -306,10 +311,20 @@ html(lang='en')
                                         td
                                         td
                                         td
-                                          button.btn.btn-simple.btn-warning.btn-icon.updateButton(rel='tooltip', title='Edit', data-toggle='modal' value=`${specialty.specialty_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.btn-icon.deleteButton(rel='tooltip', title='Delete', data-toggle='modal' value=`${specialty.specialty_id}`)
-                                            i.ti-trash
+                                          .dropdown.pull-right(style="right: 138px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${specialty.specialty_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${specialty.specialty_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                               // UPDATE
                               #updateModal.modal.fade(tabindex='-1', role='dialog')
                                 .modal-dialog(role='document')

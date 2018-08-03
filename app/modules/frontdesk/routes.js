@@ -658,7 +658,7 @@ router.post('/adminSpecialty/delete', (req, res) => {
 // [CUSTOMER]
 //          > R E A D 
 router.get('/adminCustomer', (req, res) => {
-  const query = ` select * from customer_tbl`
+  const query = ` select * from customer_tbl where delete_stats=0`
   db.query(query,(err,out) =>{
       res.render('frontdesk/transaction/adminCustomer',{
         customers: out
@@ -670,20 +670,17 @@ router.get('/adminCustomer', (req, res) => {
 router.post('/adminCustomer',(req, res) => {
   const query = `
   insert into 
-  customer_tbl(cust_fname,cust_mname, cust_lname, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_email, cust_age, cust_gender) 
+  customer_tbl(cust_fname,cust_mname, cust_lname, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
   values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", 
-  "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}","${req.body.email}","${req.body.age}", "${req.body.gender}")
+  "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
   `
   db.query(query, (err, out) => {
-    // res.redirect('/adminCustomer')
-    console.log(query)
-    console.log(out.insertId)
   })
 })
 //          > D E L E T E
 router.post('/adminCustomer/delete', (req, res) => {
   console.log(req.body.id)
-  const query = `delete from customer_tbl where cust_id = ${req.body.id}`
+  const query = `UPDATE customer_tbl SET delete_stats= 1 where cust_id = ${req.body.id}`
   
   db.query(query,(err,out)=>{
     res.redirect('/adminCustomer')
@@ -702,14 +699,13 @@ router.post('/adminCustomer/update', (req, res) => {
   address_street_name="${req.body.address_street_name}",
   address_admin_district="${req.body.address_admin_district}",
   address_city="${req.body.address_city}",
-  cust_age="${req.body.cust_age}",
   cust_gender="${req.body.cust_gender}",
-  cust_contact_no="${req.body.cust_contact_no}",
-  cust_email="${req.body.cust_email}"
+  cust_contact_no="${req.body.cust_contact_no}"
   WHERE cust_id = ${req.body.id1}
   `
   db.query(query,(err,out) =>{
     res.redirect("/adminCustomer")
+    console.log(query)
     if(err) return console.log(err)
   })
 })
@@ -721,7 +717,14 @@ router.post('/adminCustomer/query',(req, res) => {
     console.log(req.body.id1)
   })
 })
-
+router.post('/adminCustomer/medicalHistory',(req, res) => {
+  const query = `select * from customer_tbl where cust_id=?`
+  db.query(query,[req.body.id1],(err, out) => {
+    res.send({out:out[0]})
+    console.log(out[0])
+    console.log(req.body.id1)
+  })
+})
 
 
 
@@ -817,7 +820,12 @@ router.get('/bookReservation', (req, res) => {
 
 
 router.get('/reservation', (req, res) => {
-  res.render('frontdesk/transaction/reservation')
+  const query = `SELECT * FROM customer_tbl where cust_id= ${customerId}`
+  db.query(query,(err,out)=>{
+    res.render('frontdesk/transaction/reservation',{
+      customers: out
+    })
+  })
 })
 
 
@@ -827,13 +835,14 @@ router.get('/selectDate',(req,res)=>{
 
 
 router.get('/selectDate/:cust_id',(req, res) => {
-  console.log(req.params.cust_id)
+  customerId = req.params.cust_id
+  console.log(customerId)
   const query = `SELECT * FROM customer_tbl where cust_id= ${req.params.cust_id}`
   db.query(query,(err,out) =>{
 		res.render("frontdesk/transaction/selectDate",{
-			customers: out
+      customers: out,
+      customerId
 		})
-		console.log("HI")
 	})
 })
 

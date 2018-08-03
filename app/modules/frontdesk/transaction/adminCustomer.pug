@@ -43,6 +43,15 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
 
     link(href='/assets/datetimepicker/bootstrap-datetimepicker-solo.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -95,12 +104,12 @@ html(lang='en')
                           a(href='./adminServiceDuration')
                             span.sidebar-normal Service Duration
                   li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#therapist')
+                    a(data-toggle='collapse', href='#cust')
                       p
                         span.sidebar-mini T
                         | Therapist
                         b(style="margin-right: 30px").caret
-                    #therapist.collapse
+                    #cust.collapse
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
@@ -290,13 +299,26 @@ html(lang='en')
                                         td= customer.cust_gender
                                         td= customer.cust_contact_no
                                         td
-                                          button.btn.btn-fill.btn-info View 
+                                          button.btn.btn-wd.btn-fill.btn-info.btn-magnify.medicalHistoryButton(data-toggle="dropdown", value=`${customer.cust_id}`) 
+                                            span.btn-label
+                                            i.ti-eye 
+                                            |  View 
                                         
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${customer.cust_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${customer.cust_id}`)
-                                            i.ti-trash
+                                          .dropdown.pull-right(style="right: 15px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                                    
                               .row
                                 .col-md-6
@@ -338,7 +360,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group#allInputsFormValidation(action='', method='post', novalidate='')
 
                                   label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='required' required='required')
+                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required)
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label First Name*
@@ -387,7 +409,7 @@ html(lang='en')
                               //-     input.form-control(type='text', placeholder='E-mail' name='email')
                             .form-group.has-default.bmd-form-group
                               label Medical History*
-                              textarea.form-control(type='text', placeholder='Medical History')
+                              textarea.form-control(type='text', placeholder='Medical History' name="medical_history")
                             //- .form-group.has-default.bmd-form-group
                             //-   p.category Loyalty Member
                             //-   input.switch-icon(type='checkbox', checked='')
@@ -431,6 +453,19 @@ html(lang='en')
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                             button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
+                  
+                  //MEDICAL HISTORY
+                  #medicalHistoryModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog.modal-lg(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title#title 
+                          | Medical History
+                          button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                            span(aria-hidden='true') x
+                        .modal-body#medicalAppend
+                        .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 
                   
                   
@@ -518,6 +553,32 @@ html(lang='en')
             });
             
         });
+        // VIEW CUSTOMER MEDICAL HISTORY
+        $('.medicalHistoryButton').click(function(){
+          var idNow = $(this).val();
+            $.post('adminCustomer/medicalHistory',{id1:idNow})
+          .done(data=>{
+            console.log(data)
+            $('#title').append(`${data.out.cust_fname} ${data.out.cust_mname} ${data.out.cust_lname}`)
+            $('#medicalAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6" id="medical_history">
+                      <div class="form-group has-default bmd-form-group">
+                      
+                      </div>
+                    </div>
+                  </div>
+            `)
+            $('#medical_history').append(`<p> ${data.out.medical_history}</p>`)
+            $('#medicalHistoryModal').modal('show')
+            $('#medicalHistoryModal').on('hidden.bs.modal', function (){
+                $('#medical_history').remove()
+              });
+               $('#medicalHistoryModal').on('hidden.bs.modal', function (){
+                $('#title').empty()
+              });
+          })
+        })
         $('.updateButton').click(function(){
           var idNow = $(this).val();
               $.post('/adminCustomer/query',{id1:idNow})
@@ -595,6 +656,16 @@ html(lang='en')
                   </div>
                 </div>
               </form>`)
+              if(data.cust_gender == 'Male'){
+                $('#gender').append(`<option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>`
+                )
+              }
+              if(data.cust_gender == 'Female'){
+                $('#gender').append(`<option value="Male">Male</option>
+                    <option value="Female" selected>Female</option>`
+                )
+              }
               $('#updateModal').modal('show')
               $('#gender').selectpicker()
               $('#updateModal').on('hidden.bs.modal', function (){
@@ -612,10 +683,8 @@ html(lang='en')
                   address_street_name:$('#address_street_name').val(),
                   address_admin_district:$('#address_admin_district').val(),
                   address_city:$('#address_city').val(),
-                  cust_age:$('#cust_age').val(),
                   cust_gender:$('#gender').val(),
                   cust_contact_no:$('#cust_contact_no').val(),
-                  cust_email:$('#cust_email').val(),
                   
                   id1:idNow
                   })

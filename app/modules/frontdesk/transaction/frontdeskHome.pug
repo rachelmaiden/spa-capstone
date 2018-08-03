@@ -154,7 +154,7 @@ html(lang='en')
           .done(data=>{
             $('#viewAppend').append(`
                   <div class="row">
-                    <div class="col-md-6" id="resultField">
+                    <div class="col-md-8" id="resultField">
                       <div class="form-group has-default bmd-form-group">
                       
                       </div>
@@ -164,8 +164,12 @@ html(lang='en')
             if(data.out.length >0){
               for(var i=0; i<data.out.length;i++){
                 console.log()
-                $('#resultField').append(`<a href='selectDate/${data.out[i].cust_id}'>${data.out[i].cust_fname} ${data.out[i].cust_mname} ${data.out[i].cust_lname}<a>`)
-                
+                $('#resultField').append(`
+                <ul style="list-style-type:none">
+                <li>
+                <a href='selectDate/${data.out[i].cust_id}'>${data.out[i].cust_fname} ${data.out[i].cust_mname} ${data.out[i].cust_lname}<a>
+                </li>
+                <ul>`)
               }
             }
             else{

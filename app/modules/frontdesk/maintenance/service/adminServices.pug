@@ -41,6 +41,15 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -286,14 +295,24 @@ html(lang='en')
                                         td= service.service_price
                                         td
                                           if(service.service_availability==0)
-                                            input.switch-availability(type='checkbox' checked)
+                                            input.switch-icon(type='checkbox' checked)
                                           else if(service.service_availability==1)
-                                            input.switch-availability(type='checkbox')
+                                            input.switch-icon(type='checkbox')
                                         td
-                                          button.btn.btn-simple.btn-warning.updateButton(rel="tooltip" title="Edit" data-toggle='modal', value=`${service.service_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.deleteButton(rel="tooltip" title="Delete" data-toggle='modal', value=`${service.service_id}`)
-                                            i.ti-trash
+                                          .dropdown.pull-right(style="right: 20px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${service.service_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${service.service_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                                     
                   //ADD  
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
@@ -303,25 +322,28 @@ html(lang='en')
                           h5.modal-title
                             center Add New Service
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminServices')
+                        form#allInputsFormValidation(method='POST' action='/adminServices')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Type*
-                                    select.selectpicker(data-style='btn-info' name='type')
+                                  label Service Type
+                                  star *
+                                    select.selectpicker(data-style='btn-info' name='type' required='true', aria-required='true')
                                       each typ in typs
                                         option(value=`${typ.service_type_id}`)= typ.service_type_desc
 
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Name*
-                                  input.form-control(type='text', placeholder='Service Name' name='name')
+                                  label Service Name
+                                  star *
+                                  input.form-control(type='text', placeholder='Service Name' name='name' required='true', aria-required='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Duration*
-                                    select.selectpicker(data-style='btn-info' name='duration')
+                                  label Service Duration
+                                  star *
+                                    select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
                                       each duration in durations
                                         option(value=`${duration.service_duration_id}`)= duration.service_duration_desc
 
@@ -331,8 +353,9 @@ html(lang='en')
                                   //- input.form-control(type='text', placeholder='Service Duration' name='duration')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Price*
-                                  input.form-control(type='text', placeholder='Service Price' name='price')
+                                  label Service Price
+                                  star *
+                                  input.form-control(type='text', number="true" placeholder='Service Price' name='price' required='true', aria-required='true')
                             .row
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
@@ -447,6 +470,9 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
+        $('.switch-icon').on('click', function(){
+          alert('hello')
+        });
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)
@@ -564,8 +590,8 @@ html(lang='en')
       })
   script(type='text/javascript').
     $(document).ready(function(){
-    demo.initOverviewDashboard();
-    demo.initCirclePercentage();
+      demo.initOverviewDashboard();
+      demo.initCirclePercentage();
     });
   script(type='text/javascript').
     $(document).ready(function() {
@@ -579,12 +605,22 @@ html(lang='en')
     }
     });
     $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Service Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
+      .done(data=>{
+        if(data){
+          swal({
+            title:'Success', 
+            text:'New Service Added', 
+            icon:'success'})
+            .then(function(){
+            location.reload();
+          })
+        }
+    });
+    });
     })
-    });
-    });
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });

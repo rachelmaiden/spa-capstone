@@ -297,7 +297,7 @@ html(lang='en')
     $(document).ready(function(){
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
-          location.href= `/bookReservation?date=${date}`
+          location.href= `/reservation?date=${date}`
         }
       })
     });

@@ -41,6 +41,15 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -289,10 +298,20 @@ html(lang='en')
                                             input.switch-availability(type='checkbox')
 
                                         td
-                                          button.btn.btn-simple.btn-warning.btn-icon.updateButton(rel='tooltip', title='Edit', data-toggle='modal' value=`${typ.service_type_id}`)
-                                            i.ti-pencil-alt
-                                          button.btn.btn-simple.btn-danger.btn-icon.deleteButton(rel='tooltip', title='Delete', data-toggle='modal' value=`${typ.service_type_id}`)
-                                            i.ti-trash
+                                          .dropdown.pull-right(style="right: 125px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                               .row
                                 .col-md-6
                                   .card-header
