@@ -320,32 +320,33 @@ html(lang='en')
                           h5.modal-title
                             center Add New Room
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminRooms')
+                        form#allInputsFormValidation(method='POST' action='/adminRooms')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Room Type*
+                                  label Room Type
+                                  star *
                                   select.selectpicker(name='room_type'  data-style='btn-info')
                                     each rtyp in rtyps
                                       option(value=`${rtyp.room_type_id}`)= rtyp.room_type_desc
                                       
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Room Name*
-                                  input.form-control(type='text', placeholder='Room Name' name='room_name')
+                                  label Room Name
+                                  star *
+                                  input.form-control(type='text', placeholder='Room Name' name='room_name' required='true' aria-label='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Bed Quantity*
-                                  input.form-control(type='number', placeholder='Bed Quantity' name='bed_qty')
-                                 
-
-
+                                  label Bed Quantity
+                                  star *
+                                  input.form-control(type='number', placeholder='Bed Quantity' name='bed_qty' required='true' aria-label='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Rate*
-                                  input.form-control(type='number', placeholder='Rate' name='room_rate')
+                                  label Rate
+                                  star *
+                                  input.form-control(type='number', placeholder='Rate' name='room_rate' required='true' aria-label='true')
 
                             .row
                           .modal-footer
@@ -586,13 +587,19 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Room Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
-    });
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Room Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+    //- });
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });   

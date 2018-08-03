@@ -353,18 +353,20 @@ html(lang='en')
                           h5.modal-title
                             center Add New Customer
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminCustomer')
+                        form#allInputsFormValidation(method='POST' action='/adminCustomer')
                           .modal-body
                             .row
                               .col-md-4
-                                .form-group.has-default.bmd-form-group#allInputsFormValidation(action='', method='post', novalidate='')
+                                .form-group.has-default.bmd-form-group(action='', method='post', novalidate='')
 
-                                  label Last Name*
-                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required)
+                                  label Last Name
+                                  star *
+                                  input.form-control(type='text', placeholder='Last Name' name='lastname' required='true' aria-label='true')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label First Name*
-                                  input.form-control(type='text', placeholder='First Name' name='firstname' required) 
+                                  label First Name
+                                  star *
+                                  input.form-control(type='text', placeholder='First Name' name='firstname' required='true' aria-label='true') 
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Middle Name
@@ -372,30 +374,33 @@ html(lang='en')
                             .row
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
-                                  label Address*
-                                  input.form-control(type='text', placeholder='House Number' name='house_no' required)
+                                  label Address
+                                  star *
+                                  input.form-control(type='text', placeholder='House Number' name='house_no' required='true' aria-label='true')
                               .col-md-3
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Street Name' name='street_name' required)
+                                  input.form-control(type='text', placeholder='Street Name' name='street_name' required='true' aria-label='true')
                               .col-md-4
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district' required)  
+                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='brgy_district' required='true' aria-label='true')  
                               .col-md-2
                                 .form-group.has.default.bmd-form-group
                                   label
-                                  input.form-control(type='text', placeholder='City' name='city' required)     
+                                  input.form-control(type='text', placeholder='City' name='city' required='true' aria-label='true')     
                                     
 
                             .row
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label Birthday*
-                                  input.form-control.datepicker(type='date', placeholder='Age' name='age')
+                                  label Birthday
+                                  star *
+                                  input.form-control.datepicker(type='date', placeholder='Age' name='age' required='true' aria-label='true')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
-                                  label Gender*
+                                  label Gender
+                                  star *
                                   select.selectpicker(name='gender'  data-style='btn-info')
                                     option(value='Male') Male
                                     option(value='Female') Female
@@ -408,7 +413,7 @@ html(lang='en')
                               //-     label E-mail Address*
                               //-     input.form-control(type='text', placeholder='E-mail' name='email')
                             .form-group.has-default.bmd-form-group
-                              label Medical History*
+                              label Medical History
                               textarea.form-control(type='text', placeholder='Medical History' name="medical_history")
                             //- .form-group.has-default.bmd-form-group
                             //-   p.category Loyalty Member
@@ -735,21 +740,20 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'Customer Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
-    });
-   
-  script(type='text/javascript').
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'Customer Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+    //- });
+  script.
     $().ready(function(){
     $('#registerFormValidation').validate();
     $('#loginFormValidation').validate();
     $('#allInputsFormValidation').validate();
-    });
+      });  
  

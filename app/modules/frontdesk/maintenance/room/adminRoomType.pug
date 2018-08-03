@@ -263,13 +263,14 @@ html(lang='en')
                           h5.modal-title
                             center Add New Room Type
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='post' action='/adminRoomType')
+                        form#allInputsFormValidation(method='post' action='/adminRoomType')
                           .modal-body
                             .row
                               .col-md-12
                                 .form-group.has-default.bmd-form-group
                                   label New Room Type
-                                  input.form-control(type='text', placeholder='Room Type' name="room_type_desc")
+                                  star *
+                                  input.form-control(type='text', placeholder='Room Type' name="room_type_desc" required='true' aria-label='true' ) 
                             
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add New Room Type
@@ -523,12 +524,18 @@ html(lang='en')
     }
     });
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Service Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Service Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });

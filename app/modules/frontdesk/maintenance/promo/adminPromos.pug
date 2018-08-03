@@ -319,17 +319,19 @@ html(lang='en')
                           h5.modal-title
                             center Add New Promo Bundle
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminPromos')
+                        form#allInputsFormValidation(method='POST' action='/adminPromos')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Promo Bundle Name*
-                                  input.form-control(type='text', placeholder='Promo Bundle Name' name='name')
+                                  label Promo Bundle Name
+                                  star *
+                                  input.form-control(type='text', placeholder='Promo Bundle Name' name='name' required='true', aria-required='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Promo Bundle Price*
-                                  input.form-control(type='text', placeholder='Promo Bundle Price' name='price')
+                                  label Promo Bundle Price
+                                  star *
+                                  input.form-control(type='number', placeholder='Promo Bundle Price' name='price' required='true', aria-required='true' )
                             .form-group.has-default.bmd-form-group
                               center
                                 label Services Included*
@@ -741,12 +743,18 @@ html(lang='en')
     // Init DatetimePicker
     demo.initFormExtendedDatetimepickers();
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Promo bundle Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Promo bundle Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });  
