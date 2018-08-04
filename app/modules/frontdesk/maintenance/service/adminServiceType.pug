@@ -372,13 +372,14 @@ html(lang='en')
                                   h5.modal-title
                                     center Add New Service Type
                                   button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                form(method='POST' action='/adminServiceType')
+                                form#allInputsFormValidation(method='POST' action='/adminServiceType')
                                   .modal-body
                                     .row
                                       .col-md-12
                                         .form-group.has-default.bmd-form-group
                                           label Service Type
-                                          input.form-control(type='text', placeholder='Service Type' name="service_type_desc")
+                                          star *
+                                          input.form-control(type='text', placeholder='Service Type' name="service_type_desc" required='true', aria-required='true')
                                   .modal-footer
                                     button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service Type
                                     button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -549,14 +550,22 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Service Type Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
-    });
+    
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Service Type Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+    //- });
+
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });
 

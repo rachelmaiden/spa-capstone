@@ -304,6 +304,72 @@ html(lang='en')
                                         td
                                           a.btn.btn-simple.btn-warning.btn-icon.edit(href='#', rel='tooltip', title='Edit', data-toggle='modal', data-target='#editAmenity')
                                             i.ti-pencil-alt
+                              .card
+                                .card-content
+                                  button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#setExtension') Set Price for Usage Extension
+                                  #setExtension.modal.fade(tabindex='-1', role='dialog')
+                                    .modal-dialog(role='document')
+                                      .modal-content
+                                        .modal-header
+                                          h5.modal-title
+                                            center Set Price for Usage Extension
+                                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        form(method='POST' action='/adminAmenity')
+                                          .modal-body
+                                            .row
+                                              .col-sm-6
+                                                .input-group
+                                                  input.form-control(type='number' name="amenity_usage")
+                                                  span.input-group-addon Hours
+                                              .col-sm-6
+                                                .input-group
+                                                  input.form-control(type='number' name="amenity_usage")
+                                                  span.input-group-addon Price    
+
+                                          .modal-footer
+                                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='Submit') Add 
+                                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel 
+                                  .toolbar
+                                    // Here you can write extra buttons/actions for the toolbar
+                                  .fresh-datatables
+                                    table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th.disabled-sorting Hour/s of Extension
+                                          th.disabled-sorting 
+                                          th.disabled-sorting Price
+                                          th.disabled-sorting 
+                                          th.disabled-sorting
+                                          th.disabled-sorting
+                                          th.disabled-sorting
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Hour/s of Extension
+                                          th
+                                          th Price
+                                          th
+                                          th
+                                          th
+                                          th
+                                          th Actions
+                                      tbody
+                                        tr
+                                          td 6 Hours
+                                          td
+                                          td 300 
+                                          td
+                                          td
+                                          td
+                                          td
+                                          td
+                                            a.btn.btn-simple.btn-warning.btn-icon.edit(href='#', rel='tooltip', title='Edit', data-toggle='modal', data-target='#editExt')
+                                              i.ti-pencil-alt
+
+
+
+
+                                            
                                           //
                                                                                                                         <a href="#" class="btn btn-simple btn-danger btn-icon remove" rel="tooltip" title="Delete"><i class="ti-close"></i></a>
                                 #editAmenity.modal.fade(tabindex='-1', role='dialog')
@@ -329,6 +395,32 @@ html(lang='en')
                                       .modal-footer
                                         button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Submit
                                         button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                                  #editAmenity.modal.fade(tabindex='-1', role='dialog')
+                                    .modal-dialog(role='document')
+                                      .modal-content
+                                        .modal-header
+                                          h5.modal-title
+                                            center Edit Maximum Hours of Amenity Usage
+                                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        .modal-body
+                                          .row
+                                            .col-sm-12
+                                              .input-group
+                                                input.form-control(type='number')
+                                                span.input-group-addon hours
+                                            //
+                                              <div class="col-md-6">
+                                              <div class="form-group has-default bmd-form-group">
+                                              <label>Service Type*</label>
+                                              <input type="text" class="form-control" placeholder="Service Type">
+                                              </div>
+                                              </div>
+                                        .modal-footer
+                                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Submit
+                                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel    
+                                      
+                                    
+                                    
                                     .row
                                       .col-md-6
                                         .card-header

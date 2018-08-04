@@ -263,13 +263,14 @@ html(lang='en')
                           h5.modal-title
                             center Add New Therapist Specialty
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form(method='POST' action='/adminSpecialty')
+                        form#allInputsFormValidation(method='POST' action='/adminSpecialty')
                           .modal-body
                             .row
                               .col-md-12
                                 .form-group.has-default.bmd-form-group
                                   label Therapist Specialty
-                                  input.form-control(type='text', placeholder='Therapist Specialty' name="specialty_desc")
+                                  star *
+                                  input.form-control(type='text', placeholder='Therapist Specialty' number='false' name="specialty_desc" required='true', aria-required='true')
                             .row
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist Specialty
@@ -526,14 +527,20 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    $('#add').click(function(){
-    swal({
-      title:'Success', 
-      text:'New Specialty Added', 
-      icon:'success'})
-      .then(function(){
-      location.reload();
-    })
-    });
-    });
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Specialty Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
+    //- });
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });  
 
