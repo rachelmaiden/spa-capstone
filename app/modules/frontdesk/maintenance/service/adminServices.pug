@@ -295,9 +295,9 @@ html(lang='en')
                                         td= service.service_price
                                         td
                                           if(service.service_availability==0)
-                                            input.switch-icon(type='checkbox' checked)
+                                            input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
                                           else if(service.service_availability==1)
-                                            input.switch-icon(type='checkbox')
+                                            input.switch-icon(type='checkbox' value=`${service.service_id}`)
                                         td
                                           .dropdown.pull-right(style="right: 20px")
                                             button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
@@ -470,8 +470,23 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
-        $('.switch-icon').on('click', function(){
-          alert('hello')
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            var idNow = $(this).val();
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminServices/statusChange',{stats,id1:idNow})
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminServices/statusChange',{stats,id1:idNow})
+          }
         });
         $('.deleteButton').click(function(){
             var idNow = $(this).val();

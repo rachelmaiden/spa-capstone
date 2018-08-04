@@ -293,9 +293,9 @@ html(lang='en')
                                         td
                                         td
                                           if(typ.service_type_availability==0)
-                                            input.switch-availability(type='checkbox' checked)
+                                            input.switch-icon(type='checkbox' checked value=`${typ.service_type_id}`)
                                           else if(typ.service_type_availability==1)
-                                            input.switch-availability(type='checkbox')
+                                            input.switch-icon(type='checkbox' value=`${typ.service_type_id}`)
 
                                         td
                                           .dropdown.pull-right(style="right: 125px")
@@ -439,6 +439,24 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
+          $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            var idNow = $(this).val();
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminServiceType/statusChange',{stats,id1:idNow})
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminServiceType/statusChange',{stats,id1:idNow})
+          }
+        });
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)

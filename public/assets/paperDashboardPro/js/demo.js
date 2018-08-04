@@ -732,13 +732,19 @@ demo = {
                     minlength: 5
     		    },
     		    first_name: {
-    		        required: false,
+    		        required: true,
                     minlength: 5
     		    },
     		    last_name: {
-    		        required: false,
+    		        required: true,
                     minlength: 5
-    		    },
+            },
+            contact_no: {
+              number: true,
+              required: true,
+              minlength: 11,
+              maxlength: 11
+          },
     		    website: {
     		        required: true,
                     minlength: 5,
@@ -747,13 +753,38 @@ demo = {
     		    framework: {
         		    required: false,
         		    minlength: 4
-    		    },
+            },
+            birthday: {
+              required: true
+            },
+            gender: {
+              required: true
+            },
     		    cities: {
         		    required: true
     		    },
     		    price:{
         		    number: true
-    		    }
+            },
+            house_no: {
+              required: true,
+                  minlength: 4
+            },
+            street_name: {
+              required: true,
+                  minlength: 5
+            },
+            brgy_district: {
+              required: true,
+                  minlength: 5
+            },
+            city: {
+              required: true,
+                  minlength: 5
+            },
+        
+
+
     		  }
     		});
 
@@ -786,7 +817,7 @@ demo = {
                 },
                 onTabClick : function(tab, navigation, index){
                     // Disable the posibility to click on tabs
-                    return false;
+                    return true;
                 },
                 onTabShow: function(tab, navigation, index) {
                     var $total = navigation.find('li').length;

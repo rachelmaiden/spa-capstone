@@ -101,7 +101,8 @@ $(document).ready(function(){
     });
 
     $('.switch-icon').bootstrapSwitch({
-        onColor:'',
+        onColor:'info',
+        offColor:'danger',
         onText: '<i class="fa fa-check"></i>',
         offText: '<i class="fa fa-times"></i>'
     });

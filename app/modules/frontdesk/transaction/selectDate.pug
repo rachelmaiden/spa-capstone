@@ -28,7 +28,7 @@ html(lang='en')
       'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
       })(window,document,'script','dataLayer','GTM-NKDMSK6');
     // End Google Tag Manager
-  body
+  body.sidebar-mini
     // Google Tag Manager (noscript)
     noscript
       iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6', height='0', width='0', style='display:none;visibility:hidden')
@@ -239,6 +239,7 @@ html(lang='en')
               .col-md-10.col-md-offset-1
                 .card.card-calendar
                   .card-content
+                    input(type="hidden" value=`${customerId}` id="Id")
                     #fullCalendar
         footer.footer
           .container-fluid
@@ -295,9 +296,12 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script(type='text/javascript').
     $(document).ready(function(){
+        var customerId= $('#Id').val()
+        console.log(customerId)
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
-          location.href= `/reservation?date=${date}`
+          var newDate= date.format('MM-DD-YYYY')
+          location.href= `/reservation?date=${newDate}`
         }
       })
     });

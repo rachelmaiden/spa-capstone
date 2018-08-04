@@ -50,15 +50,10 @@ html(lang='en')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          .navbar-brand Online Booking and Spa Management System
         .collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             li
-              a(href='register.html')
-                | Register
-            li
-              a(href='../dashboard/overview.html')
-                | Dashboard
+              h5(style="color: white") Online Booking and Spa Management System
     .wrapper.wrapper-full-page
       .full-page.login-page(data-color='gray', style=("background-image: url('/assets/paperDashboardPro/img/front.jpg'); background-size: cover; background-repeat: no-repeat"))
         // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
@@ -107,7 +102,18 @@ html(lang='en')
 
                         
 
-                    
+
+        footer.footer.footer-transparent
+          .container
+            .copyright
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='') Team RJPC
+
                        
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')

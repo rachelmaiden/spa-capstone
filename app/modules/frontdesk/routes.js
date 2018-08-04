@@ -61,7 +61,7 @@ router.get('/adminPromos', (req, res) => {
   const query = ` select promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name from promo_bundle_tbl 
   join service_in_promo_tbl on promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id 
   join services_tbl on services_tbl.service_id = service_in_promo_tbl.service_id where promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
-  select * from services_tbl where delete_stats=0`
+  select * from services_tbl where delete_stats=0 and service_availability=0`
   db.query(query,(err,out) =>{
     res.render('frontdesk/maintenance/promo/adminPromos',{
       promos: out[0],
@@ -351,6 +351,14 @@ router.post('/adminServices/query',(req, res) => {
   })
 })
 })
+router.post('/adminServices/statusChange',(req, res) => {
+  const query = `UPDATE services_tbl set service_availability= ${req.body.stats} where service_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    if(err) return console.log(err)
+    res.redirect("/adminServices")
+    console.log(query)
+})
+})
 
 // ^UNDER OF SERVICE
 // [SERVICE TYPE]
@@ -392,6 +400,15 @@ router.post('/adminServiceType/query',(req, res) => {
       console.log(out[0])
       console.log(req.body.id)
   })
+})
+
+router.post('/adminServiceType/statusChange',(req, res) => {
+  const query = `UPDATE service_type_tbl set service_type_availability= ${req.body.stats} where service_type_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    if(err) return console.log(err)
+    res.redirect("/adminServiceType")
+    console.log(query)
+})
 })
 //          > D E L E T E
 router.post('/adminServiceType/delete', (req, res) => {
@@ -668,13 +685,19 @@ router.get('/adminCustomer', (req, res) => {
   })
   //          > C R E A T E (ADD)
 router.post('/adminCustomer',(req, res) => {
+  console.log(req.body.newDate)
+  console.log(req.body.year)
+  console.log(req.body.month)
+  console.log(req.body.date)
+  
   const query = `
   insert into 
-  customer_tbl(cust_fname,cust_mname, cust_lname, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
-  values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", 
+  customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
+  values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
   "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
   `
   db.query(query, (err, out) => {
+    console.log(query)
   })
 })
 //          > D E L E T E
@@ -780,8 +803,38 @@ router.get('/adminReservation',(req, res) => {
 })
 
 router.get('/reservation',(req, res) => {
-  res.render('frontdesk/transaction/reservation')
-})
+  date = req.query.date
+  console.log(date)
+  console.log('ID NI CUSTOMER')
+  console.log(customerId)
+  const query = ` SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
+  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
+  SELECT * FROM room_tbl where delete_stats=0;
+  SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
+  
+  db.query(query,(err,out) =>{
+      res.render('frontdesk/transaction/reservation',{
+        bmsgs: out[0],
+        bscrubs: out[1],
+        addonss: out[2],
+        promos: out[3],
+        rooms: out[4],
+        customers: out[5],
+        date
+      })
+      console.log(out[5])
+      console.log(date)
+    })
+  })
+
 
 router.get('/adminQueue',(req, res) => {
     res.render('frontdesk/transaction/adminQueue')
@@ -792,7 +845,7 @@ router.get('/adminQueue',(req, res) => {
 
     //READ
 router.get('/bookReservation', (req, res) => {
-  date = req.query.date
+  date = req.body.newDate
   const query = ` SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
   on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
   on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
@@ -819,14 +872,7 @@ router.get('/bookReservation', (req, res) => {
   })
 
 
-router.get('/reservation', (req, res) => {
-  const query = `SELECT * FROM customer_tbl where cust_id= ${customerId}`
-  db.query(query,(err,out)=>{
-    res.render('frontdesk/transaction/reservation',{
-      customers: out
-    })
-  })
-})
+
 
 
 router.get('/selectDate',(req,res)=>{
