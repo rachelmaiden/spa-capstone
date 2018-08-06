@@ -84,26 +84,82 @@ html(lang='en')
                             label.control-label
                               | Number of Guest
                               star *
-                            input.form-control(type='text', name='range', range='[0,10]')
+                            input.form-control(type='text', name='range', range='[0,10]' size="10")
                             span.help-block Number of Guest can be 0 to 10
-                        .col-md-5
+                        .col-md-3
                           .form-group
                             label.control-label
-                              | Number of Guest
+                              | Preferred Therapist
                               star *
-                            input.form-control(type='text', name='range', range='[0,10]')
-                            span.help-block Number of Guest can be 0 to 10
+                            select.form-control(name='gender' id="gender")
+                              option(selected='', disabled='') - Gender-
+                              option(value='Male') Male
+                              option(value='Female') Female
+                        .col-md-3
+                          .form-group
+                            label.control-label
+                              | Room Type
+                              star *
+                            select.form-control(name='room' id="room")
+                              option(selected='', disabled='') - Room Type -
+                              each room in rooms
+                                option(value=`${room.room_id}`)= room.room_name
+                         
 
+                      hr
                       .row
-                        .col-md-5 
-                          .form-group
+                        .col-md-12
                             label.control-label
-                              | Password 
+                              | Services
                               star *
-                            input#registerPassword.form-control(name='admin_password', type='password', required='true', aria-required='true')
+                            .card-content
+                              
+                              .toolbar
+                                // Here you can write extra buttons/actions for the toolbar
+                              .fresh-datatables
+                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                  thead
+                                    tr
+                                      th 
+                                      th Service Type
+                                      th Service Name
+                                      th Price
+                                      th
+                                      th Quantity
+                                      th Total
+                                  tfoot
+                                    tr
+                                      th
+                                      th Service Type
+                                      th Service Name
+                                      th Price
+                                      th
+                                      th Quantity
+                                      th Total
+                                  tbody
+                                    each service in services
+                                      tr
+                                        td 
+                                          input(type="checkbox")
+                                        td= service.service_type_desc
+                                        td= service.service_name+ " "+ "(" +service.service_duration_desc+")"
+                                        td= service.service_price
+                                        td 1
+                                        td
+                                          .btn-group
+                                            button.btn.btn-info -
+                                            button.btn.btn-info +
+                                        td 0.00
+                                h4(style="margin-left: 40em") Total: 0.00
+
+
+                      hr
+                      .row
+                                  
+
                     hr
                     .card-footer.text-center
-                      button.btn.btn-info.btn-fill.btn-wd(type='submit') Login
+                      button.btn.btn-info.btn-fill.btn-wd(type='submit') Book
 
 
 
@@ -179,9 +235,14 @@ html(lang='en')
     //- }
     //- });
     //- });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatables').DataTable();
+    });
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
         });
+  

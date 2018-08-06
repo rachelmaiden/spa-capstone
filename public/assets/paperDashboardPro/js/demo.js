@@ -768,7 +768,7 @@ demo = {
             },
             house_no: {
               required: true,
-                  minlength: 4
+                  minlength: 1
             },
             street_name: {
               required: true,
@@ -817,7 +817,7 @@ demo = {
                 },
                 onTabClick : function(tab, navigation, index){
                     // Disable the posibility to click on tabs
-                    return true;
+                    return false;
                 },
                 onTabShow: function(tab, navigation, index) {
                     var $total = navigation.find('li').length;

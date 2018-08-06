@@ -145,12 +145,12 @@ html(lang='en')
                         b(style="margin-right: 30px").caret
                     #rooms.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px").active
-                          a(href='./adminRooms')
-                            span.sidebar-normal Rooms
                         li(style="margin-left: 30px")
                           a(href='./adminRoomType')
                             span.sidebar-normal Room Type
+                        li(style="margin-left: 30px").active
+                          a(href='./adminRooms')
+                            span.sidebar-normal Rooms
             li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
@@ -293,25 +293,30 @@ html(lang='en')
                                         td= room.room_rate
                                         td
                                           if(room.room_availability==0)
-                                            input.switch-availability(type='checkbox' checked)
+                                            input.switch-icon(type='checkbox' checked value=`${room.room_id}`)
                                           else if(room.room_availability==1)
-                                            input.switch-availability(type='checkbox')
+                                            input.switch-icon(type='checkbox' value=`${room.room_id}`)
                                         
                                         td
-                                          .dropdown.pull-right(style="right: 50px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${room.room_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${room.room_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
+                                          if(room.room_availability==1)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${room.room_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-pencil-alt
+                                                    |  Update
+                                                li
+                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${room.room_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-trash
+                                                    |  Delete
+                                          else if(room.room_availability==0)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
                   //ADD
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')
@@ -470,6 +475,28 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
+        $('.bawal').click(function(){
+          alert("Can't Update or Delete ")
+        })
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            var idNow = $(this).val();
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminRooms/statusChange',{stats,id1:idNow})
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/adminRooms/statusChange',{stats,id1:idNow})
+          }
+          location.reload();
+        });
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)

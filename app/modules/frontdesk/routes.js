@@ -224,7 +224,14 @@ router.post('/adminRooms/update', (req, res) => {
         })
     })
   })
-
+  router.post('/adminRooms/statusChange',(req, res) => {
+    const query = `UPDATE room_tbl set room_availability= ${req.body.stats} where room_id= ${req.body.id1}`
+    db.query(query,(err,out) =>{
+      if(err) return console.log(err)
+      res.redirect("/adminServices")
+      console.log(query)
+  })
+  })
 // UNDER OF ROOM
 // ^ROOM TYPE
 //          > R E A D
@@ -305,7 +312,7 @@ router.post('/adminServices',(req, res) => {
       services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, delete_stats)
       value("${req.body.name}","${req.body.type}","${req.body.duration}","${req.body.price}", 0,0)`
     db.query(query, (err, out) => {
-      // res.redirect('/adminServices')
+      res.redirect('/adminServices')
       console.log(query)
     })
   })
@@ -807,27 +814,29 @@ router.get('/reservation',(req, res) => {
   console.log(date)
   console.log('ID NI CUSTOMER')
   console.log(customerId)
-  const query = ` SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
+  const query = `
   SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
   on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
   SELECT * FROM promo_bundle_tbl where delete_stats = 0;
-  SELECT * FROM room_tbl where delete_stats=0;
+  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0;
   SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
   
+  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
+  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
+  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
   db.query(query,(err,out) =>{
       res.render('frontdesk/transaction/reservation',{
-        bmsgs: out[0],
-        bscrubs: out[1],
-        addonss: out[2],
-        promos: out[3],
-        rooms: out[4],
-        customers: out[5],
+        services: out[0],
+        promos: out[1],
+        rooms: out[2],
+        customers: out[3],
         date
       })
       console.log(out[5])
