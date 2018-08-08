@@ -8,4 +8,9 @@ router.get('/custHome',(req, res) => {
   })
 
 
+ router.get('/custProfile',(req, res) => {
+    res.render('customer/custProfile')
+  })
+ 
+
 exports.maintenance = router

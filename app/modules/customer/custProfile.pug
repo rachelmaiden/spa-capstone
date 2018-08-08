@@ -37,11 +37,11 @@ html(lang='en')
     link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700,200', rel='stylesheet')
     link(href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     // CSS Files
-    link(href='./paper-kit-2-pro/assets/css/bootstrap.min.css', rel='stylesheet')
-    link(href='./paper-kit-2-pro/assets/css/paper-kit.css', rel='stylesheet')
-    link(href='./paper-kit-2-pro/assets/css/nucleo-icons', rel='stylesheet')
+    link(href='/assets/paperkit/assets/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/assets/paperkit/assets/css/paper-kit.css', rel='stylesheet')
+    link(href='/assets/paperkit/assets/css/nucleo-icons', rel='stylesheet')
     // CSS Just for demo purpose, don't include it in your project
-    link(href='./paper-kit-2-pro/assets/demo.css', rel='stylesheet')
+    link(href='/assets/paperkit/assets/demo.css', rel='stylesheet')
     // Extra details for Live View on GitHub Pages
     // Google Tag Manager
     script.
@@ -70,7 +70,7 @@ html(lang='en')
     nav.navbar.navbar-expand-lg.nav-down.navbar-absolute.navbar-transparent(color-on-scroll='500')
       .container
         .navbar-translate
-          a.navbar-brand(href='https://demos.creative-tim.com/paper-kit-2-pro/index.html', rel='tooltip', title='Paper Kit 2 PRO', data-placement='bottom', target='_blank')
+          a.navbar-brand(href='/maintenance/custHome',  data-placement='bottom')
             i.fa.fa-home
             | Home
           button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navigation', aria-controls='navigation-index', aria-expanded='false', aria-label='Toggle navigation')
@@ -80,10 +80,10 @@ html(lang='en')
         .collapse.navbar-collapse(data-nav-image='../assets/img/blurred-image-1.jpg', data-color='orange')
           ul.navbar-nav.ml-auto
             li.dropdown.nav-item
-              a.navbar-brand(href='custProfile.html', rel='tooltip', title='Paper Kit 2 PRO', data-placement='bottom', target='_blank')
+              a.navbar-brand(href='/maintenance/custProfile', data-placement='bottom')
                 i.fa.fa-user
-                |  Profile
-              a.navbar-brand(href='custProfile.html', rel='tooltip', title='Paper Kit 2 PRO', data-placement='bottom', target='_blank')
+                | Profile
+              a.navbar-brand(href='', data-placement='bottom')
                 i.fa.fa-sign-out
                 | Logout
               .dropdown-menu.dropdown-menu-right.dropdown-danger
@@ -92,7 +92,7 @@ html(lang='en')
                 a.dropdown-item(href='../docs/1.0/getting-started/introduction.html')
                   | Documentation
     // End Navbar
-    .page-header.page-header-small(style="background-image: url('./paper-kit-2-pro/assets/img/spabg.jpg');")
+    .page-header.page-header-small(style="background-image: url('/assets/paperkit/assets/img/spabg.jpg');")
       .filter
     .wrapper
       .profile-content.section
@@ -101,7 +101,7 @@ html(lang='en')
             .profile-picture
               .fileinput.fileinput-new(data-provides='fileinput')
                 .fileinput-new.img-no-padding
-                  img(src='./paper-kit-2-pro/assets/img/rachel.jpg', alt='...')
+                  img(src='/assets/paperkit/assets/img/rachel.jpg', alt='...')
                 .name
                   h4.title.text-center
                     | Rachel Maiden
