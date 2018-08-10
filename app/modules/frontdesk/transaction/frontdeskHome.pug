@@ -80,7 +80,7 @@ html(lang='en')
             .modal-content
               .modal-header
                 h5.modal-title
-                  center Registratraion 
+                  center Registration 
                 button.close(type='button', data-dismiss='modal', aria-label='Close') X
               .modal-body
                 #wizardCard.card-wizard.nav-pills-blue
@@ -178,11 +178,25 @@ html(lang='en')
                               .form-group.has-default.bmd-form-group
                                 textarea.form-control(type='text', placeholder='Medical History' id="medical_history" name="medical_history")
                         #tab3.tab-pane
-                          h2.text-center.text-space
-                            |LOYALTY MEMBER
-                            br
-                            small
-                              | wala pa laman
+                          .row
+                            .col-md-2
+                              input.switch-plain(type='checkbox')
+                          br
+                          .row
+                            .col-md-3
+                            .col-md-4
+                              .form-group
+                                label.control-label
+                                  | Username
+                                  star *
+                                  input.form-control(type='text', name='username', id="username" required='true' size="20" disabled)
+                            .col-md-4
+                              .form-group
+                                label.control-label
+                                  | Password
+                                  star *
+                                  input.form-control(type='text', name='username', id="password" required='true' size="20" disabled)
+
                     br
                     br
                     .modal-footer
@@ -196,7 +210,7 @@ html(lang='en')
             .modal-content
               .modal-header
                 h5.modal-title
-                  center Customer Name
+                  center Book Reservation
                 button.close(type='button', data-dismiss='modal', aria-label='Close') X 
               
               .modal-body
@@ -204,16 +218,19 @@ html(lang='en')
                   .col-md-2
                   .col-md-8
                     .form-group.has-default.bmd-form-group
-                      input.form-control(type='text', placeholder='Customer Name' id='searchBar' name="searchBar")
-                      .col-md-2
-                      .col-md-9
+                      input.form-control(type='text', placeholder='Enter Name...' id='searchBar' name="searchBar")
+                      
+                      .col-md-8
 
                         h5 New Customer? 
                           i
                             a(data-dismiss="modal",data-toggle="modal" data-target="#registration") Click Here
               .modal-footer
-                button.btn.btn-danger.pull-left.btn-link(data-dismiss='modal', data-target='SearchCustomer', data-toggle='modal') Back
-                button.btn.btn-success.pull-right.btn-link.searchButton(data-toggle='modal') Search
+                button.btn.btn-default.pull-left.btn-fill(data-dismiss='modal', data-target='SearchCustomer', data-toggle='modal') Close
+                button.btn.btn-warning.pull-right.btn-fill.btn-magnify.searchButton(data-toggle='modal') 
+                  span.btn-label
+                  i.ti-search
+                  | Search	     
         
         //VIEW SEARCH RESULT
         #searchResult.modal.fade(tabindex='-1', role='dialog' aria-hidden='true')
@@ -226,7 +243,7 @@ html(lang='en')
               .modal-body#viewAppend
               .modal-footer
                 center
-                  button.btn.btn-danger.btn-link.cancelButton(data-toggle="modal" type='button') Cancel
+                  button.btn.btn-default.btn-fill.cancelButton(data-dismiss="modal",data-toggle="modal" data-target="#SearchCustomer") Back
 
 
         footer.footer.footer-transparent
@@ -307,8 +324,21 @@ html(lang='en')
         })
       })
     })
-  
-  
+  script.
+   $(document).ready(function(){
+        $('.switch-plain').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            $("#username").prop('disabled', true);
+            $("#password").prop('disabled', true);
+          }
+          else if(state==true)
+          {
+            $("#username").prop('disabled', false);
+            $("#password").prop('disabled', false);
+          }
+        });
+   })
   script.
     $(document).ready(function(){
       $('.search').click(function(){

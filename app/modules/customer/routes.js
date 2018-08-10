@@ -13,4 +13,4 @@ router.get('/custHome',(req, res) => {
   })
  
 
-exports.maintenance = router
+exports.customer = router;

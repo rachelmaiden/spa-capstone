@@ -820,6 +820,7 @@ router.get('/reservation',(req, res) => {
   on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
   SELECT * FROM promo_bundle_tbl where delete_stats = 0;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0;
+  SELECT * FROM therapist_tbl where delete_stats=0 and therapist_availability= 0;
   SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
   
   // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
@@ -836,10 +837,10 @@ router.get('/reservation',(req, res) => {
         services: out[0],
         promos: out[1],
         rooms: out[2],
-        customers: out[3],
+        therapists: out[3],
+        customers: out[4],
         date
       })
-      console.log(out[5])
       console.log(date)
     })
   })

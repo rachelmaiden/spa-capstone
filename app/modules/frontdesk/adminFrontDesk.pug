@@ -42,6 +42,9 @@ html(lang='en')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
   body
+    - var is_notfound = typeof notfound !== "undefined"? "Username don\'t exists": ""
+    - var is_incorrect = typeof incorrect !== "undefined"? "Wrong password": ""
+    - var is_noninput = typeof noninput !== "undefined"? "All fields are required": ""
     nav.navbar.navbar-transparent.navbar-absolute
       .container
         .navbar-header

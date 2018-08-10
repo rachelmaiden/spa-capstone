@@ -53,7 +53,7 @@ html(lang='en')
         .collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-left
             li
-              h5(style="color: white") Online Reservation and Spa Management System
+              a.h5(data-toggle="modal" data-target="#Home" style="color: white") Online Reservation and Spa Management System
           ul.nav.navbar-nav.navbar-right
             li
               h5(style="color: white") Current Date: 
@@ -73,37 +73,55 @@ html(lang='en')
                     .card-header
                       each customer in customers
                         center
-                          h4.card-title= `${customer.cust_fname} ${customer.cust_mname} ${customer.cust_lname}`
+                          h4.card-title= `Walkin Customer: ${customer.cust_fname} ${customer.cust_mname} ${customer.cust_lname}`
                       h5 Reservation Date: 
                         span= `${date}`
                       hr 
                     .card-content
                       .row
-                        .col-md-3
+                        .col-md-2
                           .form-group
                             label.control-label
                               | Number of Guest
                               star *
-                            input.form-control(type='text', name='range', range='[0,10]' size="10")
-                            span.help-block Number of Guest can be 0 to 10
+
+                            .input-group
+                              span.input-group-btn
+                                button.btn.btn-info.btn-number(type='button', disabled='disabled', data-type='minus', data-field='quant[1]')
+                                  span.ti-minus
+                              input.form-control.input-number(type='text', name='quant[1]', value='1', min='1', max='6')
+                              span.input-group-btn
+                                button.btn.btn-info.btn-number(type='button', data-type='plus', data-field='quant[1]')
+                                  span.ti-plus
+                          span.help-block Guest can be 1 to 6
                         .col-md-3
                           .form-group
                             label.control-label
                               | Preferred Therapist
                               star *
                             select.form-control(name='gender' id="gender")
-                              option(selected='', disabled='') - Gender-
-                              option(value='Male') Male
-                              option(value='Female') Female
+                              option(selected='', disabled='') - Therapist -
+                              each therapist in therapists
+                                option(value=`${therapist.therapist_id}`)= `${therapist.therapist_fname} ${therapist.therapist_lname}`
+                            span.help-block This will be a remark only
                         .col-md-3
                           .form-group
                             label.control-label
-                              | Room Type
+                              | Room 
                               star *
                             select.form-control(name='room' id="room")
-                              option(selected='', disabled='') - Room Type -
-                              each room in rooms
-                                option(value=`${room.room_id}`)= room.room_name
+                              option(selected='', disabled='') - Room -
+                                each room in rooms
+                                  option(value=`${room.room_id}`)= room.room_name
+                        .col-md-3
+                          .form-group
+                            label.control-label
+                              | Time 
+                              star *
+                            //- select.form-control(name='room' id="room")
+                            //-   option(selected='', disabled='') - Room -
+                            //-   each room in rooms
+                            //-     option(value=`${room.room_id}`)= room.room_name
                          
 
                       hr
@@ -121,36 +139,35 @@ html(lang='en')
                                   thead
                                     tr
                                       th 
-                                      th Service Type
-                                      th Service Name
+                                      th Type
+                                      th Name
                                       th Price
-                                      th
                                       th Quantity
                                       th Total
                                   tfoot
                                     tr
                                       th
-                                      th Service Type
-                                      th Service Name
+                                      th Type
+                                      th Name
                                       th Price
-                                      th
                                       th Quantity
                                       th Total
                                   tbody
                                     each service in services
                                       tr
-                                        td 
-                                          input(type="checkbox")
+                                        td
+                                          input.checkbox(type='checkbox' value=`${service.service_id}`)                             
                                         td= service.service_type_desc
                                         td= service.service_name+ " "+ "(" +service.service_duration_desc+")"
-                                        td= service.service_price
-                                        td 1
                                         td
-                                          .btn-group
-                                            button.btn.btn-info -
-                                            button.btn.btn-info +
-                                        td 0.00
-                                h4(style="margin-left: 40em") Total: 0.00
+                                          input(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                          span= service.service_price
+                                        td 
+                                          span.quantity(service_id=`${service.service_id}`) 0
+
+                                        td 
+                                          span.total(service_id=`${service.service_id}`) 0.00
+                                h4(style="margin-left: 40em" id="grandtotal") Total 0.00
 
 
                       hr
@@ -223,18 +240,50 @@ html(lang='en')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
-    //- <script type="text/javascript">
-    //- $(document).ready(function() {
-    //- $('#datatables').DataTable({
-    //- "pagingType": "full_numbers",
-    //- "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-    //- responsive: true,
-    //- language: {
-    //- search: "_INPUT_",
-    //- searchPlaceholder: "Search records",
-    //- }
-    //- });
-    //- });
+  script.
+   $(document).ready(function(){
+        $('.checkbox').on('change.bootstrapSwitch', function(e){
+          if(e.target.checked==true)
+          {
+            var qnty
+            var y=$(this).val()
+            var price = document.getElementById(y).value
+            var quantity = prompt("Quantity")
+
+            if (quantity==null || quantity=="")
+            {
+              e.target.checked=false;
+            }
+            else
+            {
+              $(`.quantity[service_id='${y}']`).text(quantity)
+              total = quantity * price;
+            }
+              $(`.total[service_id='${y}']`).text(total.toLocaleString())
+              computeGrandTotal()
+          }
+
+
+          else if(e.target.checked==false)
+          {
+            var y=$(this).val()
+            var total = $(`.total[service_id='${y}']`).text()
+            var grandTotal = $('#grandtotal').text()
+            var finalTotal = grandTotal.replace(/,/g,"") - total.replace(/,/g,"")
+            $(`.quantity[service_id='${y}']`).text("0")
+            $(`.total[service_id='${y}']`).text("0.00")
+            $('#grandtotal').text(finalTotal.toLocaleString())
+          }
+        })
+        function computeGrandTotal(){
+          var totals = $('.total')
+          var pinakaTotal = 0;
+          for(var i =0;i<totals.length;i++){
+            pinakaTotal = eval(pinakaTotal+"+"+totals[i].textContent.replace(/,/g,""));
+          }
+          $('#grandtotal').text(pinakaTotal.toLocaleString())
+        }
+   })
   script(type='text/javascript').
     $(document).ready(function() {
     $('#datatables').DataTable();
@@ -246,3 +295,77 @@ html(lang='en')
       $('#allInputsFormValidation').validate();
         });
   
+  script.
+        //plugin bootstrap minus and plus
+    //http://jsfiddle.net/laelitenetwork/puJ6G/
+    $('.btn-number').click(function(e){
+        e.preventDefault();
+        
+        fieldName = $(this).attr('data-field');
+        type      = $(this).attr('data-type');
+        var input = $("input[name='"+fieldName+"']");
+        var currentVal = parseInt(input.val());
+        if (!isNaN(currentVal)) {
+            if(type == 'minus') {
+                
+                if(currentVal > input.attr('min')) {
+                    input.val(currentVal - 1).change();
+                } 
+                if(parseInt(input.val()) == input.attr('min')) {
+                    $(this).attr('disabled', true);
+                }
+
+            } else if(type == 'plus') {
+
+                if(currentVal < input.attr('max')) {
+                    input.val(currentVal + 1).change();
+                }
+                if(parseInt(input.val()) == input.attr('max')) {
+                    $(this).attr('disabled', true);
+                }
+
+            }
+        } else {
+            input.val(0);
+        }
+    });
+    $('.input-number').focusin(function(){
+      $(this).data('oldValue', $(this).val());
+    });
+    $('.input-number').change(function() {
+        
+        minValue =  parseInt($(this).attr('min'));
+        maxValue =  parseInt($(this).attr('max'));
+        valueCurrent = parseInt($(this).val());
+        
+        name = $(this).attr('name');
+        if(valueCurrent >= minValue) {
+            $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the minimum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        if(valueCurrent <= maxValue) {
+            $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the maximum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        
+            
+        });
+        $(".input-number").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                    // Allow: Ctrl+A
+                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        // let it happen, don't do anything
+                        return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+            });

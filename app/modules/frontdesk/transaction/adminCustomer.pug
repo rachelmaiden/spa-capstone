@@ -725,6 +725,10 @@ html(lang='en')
         }
       });
   script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatables').DataTable();
+    });
+  script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
