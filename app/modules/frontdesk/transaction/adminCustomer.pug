@@ -153,6 +153,17 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#freebies')
+                      p
+                        span.sidebar-mini F
+                        | Freebies
+                        b(style="margin-right: 30px").caret
+                    #freebies.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminFreebies')
+                            span.sidebar-normal Freebies            
                   //-li
             li.active
               a(data-toggle='collapse', href='#tablesExamples')
@@ -274,20 +285,22 @@ html(lang='en')
                                   thead
                                     tr
                                       th Name
-                                      th Adress
-                                      th Birthday
+                                      th.disabled-sorting Address
+                                      th.disabled-sorting Birthday
                                       th Gender
-                                      th Contact No
-                                      th Medical History
+                                      th.disabled-sorting Contact No.
+                                      th.disabled-sorting Medical History
+                                      th.disabled-sorting Loyalty Membership
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
                                       th Name
-                                      th Adress
-                                      th Birthday
+                                      th.disabled-sorting Address
+                                      th.disabled-sorting Birthday
                                       th Gender
-                                      th Contact No
+                                      th.disabled-sorting Contact No.
                                       th.disabled-sorting Medical History
+                                      th.disabled-sorting Loyalty Membership
                                       th.disabled-sorting Actions
                                     
                                   tbody
@@ -299,11 +312,15 @@ html(lang='en')
                                         td= customer.cust_gender
                                         td= customer.cust_contact_no
                                         td
-                                          button.btn.btn-wd.btn-fill.btn-info.btn-magnify.medicalHistoryButton(data-toggle="dropdown", value=`${customer.cust_id}`) 
+                                          button.btn.btn-fill.btn-info.btn-magnify.medicalHistoryButton(data-toggle="dropdown", value=`${customer.cust_id}`) 
                                             span.btn-label
                                             i.ti-eye 
                                             |  View 
-                                        
+                                        td     
+                                          button.btn.btn-fill.btn-info.btn-magnify.loyaltyButton(data-toggle="modal", value=`${customer.cust_id}` data-target='#loyalty') 
+                                            span.btn-label
+                                            i.ti-eye 
+                                            |  View 
                                         td
                                           .dropdown.pull-right(style="right: 15px")
                                             button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
@@ -472,6 +489,56 @@ html(lang='en')
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
 
+
+                  // loyalty
+                  #loyalty.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          h5.modal-title
+                            center Loyalty Membership Details
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        form#allInputsFormValidation(method='POST' action='/adminCustomer')
+                          .modal-body
+                            .row
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group(action='', method='post', novalidate='')
+                                label Loyalty Membership 
+                                p.category
+                                input.switch-icon(type="checkbox")
+                            .row
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Membership Starts On:
+                                  .form-group
+                                    input#membership_validity_until.form-control(type='text', placeholder='*date today*' name='')
+
+                              .col-md-4
+                                .form-group.has-default.bmd-form-group
+                                  label Membership Valid Until:
+                                  .form-group
+                                    input#membership_validity_until.form-control(type='text', placeholder='*date*' name='')
+
+                          
+                          .modal-footer
+                            button.btn.btn-danger.btn-fill.pull-right#cancelButton(type='button', data-dismiss='modal') Close
+                            button.btn.btn-info.btn-fill.pull-left#submitButton(type='button', data-dismiss='modal') Submit
+  
+                      
+                  //- LOYALTY MEMBERSHIP
+                  //- #loyalty.modal.fade(tabindex='-1', role='dialog', aria-hidden='true')
+                  //-   .modal-dialog.modal-lg(role='document')
+                  //-     .modal-content
+                  //-       .modal-header
+                  //-         h5.modal-title#title 
+                  //-         | Loyalty Membership Details
+                  //-         button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                  //-           span(aria-hidden='true') x
+                  //-       .modal-body
+
+                  //-       .modal-footer
+                  //-           button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+  
                   
                   
                   footer.footer
@@ -760,4 +827,5 @@ html(lang='en')
     $('#loginFormValidation').validate();
     $('#allInputsFormValidation').validate();
       });  
+      
  

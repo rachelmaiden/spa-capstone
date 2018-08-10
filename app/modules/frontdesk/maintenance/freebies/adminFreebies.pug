@@ -84,15 +84,15 @@ html(lang='en')
                   b.caret
               #componentsExamples.collapse.in
                 ul.nav
-                  li(style="margin-left: 5px;").active
+                  li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#services')
                       p
                         span.sidebar-mini S
                         | Services
                         b(style="margin-right: 30px").caret
-                    #services.collapse.in
+                    #services.collapse
                       ul.nav
-                        li(style="margin-left: 30px").active
+                        li(style="margin-left: 30px")
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
                         li(style="margin-left: 30px")
@@ -151,17 +151,24 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
-                  li(style="margin-left: 5px;")
+                  li(style="margin-left: 5px;").active
                     a(data-toggle='collapse', href='#freebies')
                       p
                         span.sidebar-mini F
                         | Freebies
                         b(style="margin-right: 30px").caret
-                    #freebies.collapse
+                    #freebies.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px")
+                        li(style="margin-left: 30px").active
                           a(href='./adminFreebies')
-                            span.sidebar-normal Freebies  
+                            span.sidebar-normal Freebies
+                        //li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        //li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration 
+
 
             li
               a(data-toggle='collapse', href='#tablesExamples')
@@ -267,7 +274,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service Type  
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Freebie
                   .content
                     .container-fluid
                       .row
@@ -282,22 +289,22 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Service Type
+                                      th Freebie
                                       th.disabled-sorting
                                       th.disabled-sorting
-                                      th.disabled-sorting
+                                      th.disabled-sorting Points Required
                                       th.disabled-sorting Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Service Type
+                                      th Freebie
                                       th
                                       th
-                                      th
+                                      th Points Required
                                       th Availability
                                       th Actions
                                   tbody
-                                    each typ in typs
+                                    //each typ in typs
                                       tr
                                         td= typ.service_type_desc
                                         td
@@ -382,20 +389,25 @@ html(lang='en')
                               .modal-content
                                 .modal-header
                                   h5.modal-title
-                                    center Add New Service Type
+                                    center Add New Freebie
                                   button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                form#allInputsFormValidation(method='POST' action='/adminServiceType')
+                                form#allInputsFormValidation(method='POST' action='/adminFreebie')
                                   .modal-body
                                     .row
-                                      .col-md-12
+                                      .col-md-6
                                         .form-group.has-default.bmd-form-group
-                                          label Service Type
+                                          label Service/s Included
                                           star *
-                                          input.form-control(type='text', placeholder='Service Type' name="service_type_desc" required='true', aria-required='true')
+                                            select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
+                                      .col-md-6
+                                        .form-group.has-default.bmd-form-group
+                                          label Points Required 
+                                          star *
+                                          input.form-control(type='number', placeholder='Points Required' name="" required='true', aria-required='true')            
                                   .modal-footer
-                                    button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service Type
+                                    button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Freebie
                                     button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-
+                                
                           footer.footer
                             .container-fluid
                               .copyright.pull-right
@@ -563,6 +575,7 @@ html(lang='en')
     }
     });
     
+        
     //- $('#add').click(function(){
     //- swal({
     //-   title:'Success', 

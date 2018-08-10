@@ -151,6 +151,17 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#freebies')
+                      p
+                        span.sidebar-mini F
+                        | Freebies
+                        b(style="margin-right: 30px").caret
+                    #freebies.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminFreebies')
+                            span.sidebar-normal Freebies            
                   
             li
               a(data-toggle='collapse', href='#tablesExamples')
@@ -276,6 +287,7 @@ html(lang='en')
                                       th Service Name
                                       th Duration
                                       th Price
+                                      th Points
                                       th Availability
                                       th.disabled-sorting Actions
                                   tfoot
@@ -284,6 +296,7 @@ html(lang='en')
                                       th Service Name
                                       th Duration
                                       th Price
+                                      th Points
                                       th Availability
                                       th Actions
                                   tbody
@@ -293,6 +306,7 @@ html(lang='en')
                                         td= service.service_name
                                         td= service.service_duration_desc
                                         td= service.service_price
+                                        td 
                                         td
                                           if(service.service_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
@@ -352,10 +366,6 @@ html(lang='en')
                                     select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
                                       each duration in durations
                                         option(value=`${duration.service_duration_id}`)= duration.service_duration_desc
-
-
-
-
                                   //- input.form-control(type='text', placeholder='Service Duration' name='duration')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -363,6 +373,14 @@ html(lang='en')
                                   star *
                                   input.form-control(type='text', number="true" placeholder='Service Price' name='price' required='true', aria-required='true')
                             .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Service Point/s
+                                  star *
+                                  input.form-control(type='number', placeholder='Service Point' name='point' required='true', aria-required='true')
+                            
+
+
                           .modal-footer
                             button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel

@@ -671,7 +671,9 @@ router.post('/adminSpecialty/delete', (req, res) => {
 
 
 
-
+router.get('/adminFreebies', (req, res) => {
+  res.render('frontdesk/maintenance/freebies/adminFreebies')
+})
 
 
 
