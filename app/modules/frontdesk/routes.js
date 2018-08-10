@@ -8,6 +8,7 @@ var db = require('../../lib/database')();
 // ||================================================================||
 // ||================================================================||
 
+
 router.get('/adminFrontDesk', (req, res) => {
   res.render('frontdesk/adminFrontDesk')
 })
@@ -42,6 +43,7 @@ router.post("/adminFrontDesk",(req, res) => {
 router.get('/admindashboard', (req, res) => {
   res.render('frontdesk/dashboard/admindashboard')
 })
+
 
 
 // ||====================================================================||  
