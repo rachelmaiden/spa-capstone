@@ -311,8 +311,8 @@ router.get('/adminServices', (req, res) => {
 router.post('/adminServices',(req, res) => {
     const query = `
       insert into 
-      services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, delete_stats)
-      value("${req.body.name}","${req.body.type}","${req.body.duration}","${req.body.price}", 0,0)`
+      services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, service_points, delete_stats)
+      value("${req.body.name}","${req.body.type}","${req.body.duration}","${req.body.price}", 1,"${req.body.points}",0)`
     db.query(query, (err, out) => {
       res.redirect('/adminServices')
       console.log(query)
@@ -335,7 +335,7 @@ router.post('/adminServices/update', (req, res) => {
   service_duration_id="${req.body.service_duration}",
   service_price="${req.body.service_price}",
   service_type_id="${req.body.service_type}",
-  service_availability="${req.body.service_availability}"
+  service_points="${req.body.service_points}"
   WHERE service_id = ${req.body.id1}
   `
   db.query(query,(err,out) =>{
@@ -445,7 +445,7 @@ router.post('/adminServiceDuration',(req, res) => {
   const query = `
     insert into 
     service_duration_tbl(service_duration_desc, delete_stats)
-    value("${req.body.service_duration_desc} minutes", 0)`
+    value("${req.body.service_duration_desc}", 0)`
   db.query(query, (err, out) => {
     console.log(query)
   })
@@ -825,7 +825,8 @@ router.get('/reservation',(req, res) => {
   on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
   on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
   SELECT * FROM promo_bundle_tbl where delete_stats = 0;
-  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0;
+  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
+  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
   SELECT * FROM therapist_tbl where delete_stats=0 and therapist_availability= 0;
   SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
   
@@ -842,14 +843,23 @@ router.get('/reservation',(req, res) => {
       res.render('frontdesk/transaction/reservation',{
         services: out[0],
         promos: out[1],
-        rooms: out[2],
-        therapists: out[3],
-        customers: out[4],
+        crooms: out[2],
+        prooms: out[3],
+        therapists: out[4],
+        customers: out[5],
         date
       })
       console.log(date)
     })
   })
+
+router.post('/reservation/query',(req, res) => {
+  const query = `select * from room_tbl where delete_stats=0 and room_availability=0`
+  db.query(query,(err, out) => {
+    res.send(out)
+  })
+})
+
 
 
 router.get('/adminQueue',(req, res) => {

@@ -37,6 +37,8 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
     // CSS for Demo Purpose, don't include it in your project
     link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
     // Fonts and icons
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
@@ -57,10 +59,10 @@ html(lang='en')
           ul.nav.navbar-nav.navbar-right
             li
               h5(style="color: white") Current Date: 
-                span
-                script.
-                  document.write(date)
-                  var date = new Date().getMonth()
+                a(style="color: white")#date-part
+                  p
+                    a(style="color: white")#time-part
+                
     .wrapper.wrapper-full-page
       .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
         // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
@@ -68,115 +70,257 @@ html(lang='en')
           .container
             .row
               .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
-                .card(style="width: 80em; bottom: 30px")
+                .card(style="width: 80em; bottom: 30px; height: 80em;")
                   form#allInputsFormValidation(action='#', method='#', novalidate='novalidate')
                     .card-header
+                    .card-content
+                      .nav-tabs-navigation
+                        .nav-tabs-wrapper
+                          ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                            li.1st.active
+                              a(href='#home', data-toggle='tab') Therapist & Services
+                            li.2nd
+                              a(href='#profile', data-toggle='tab') Room & Time
+                            li.3rd
+                              a(href='#messages', data-toggle='tab') Messages
                       each customer in customers
                         center
                           h4.card-title= `Walkin Customer: ${customer.cust_fname} ${customer.cust_mname} ${customer.cust_lname}`
-                      h5 Reservation Date: 
-                        span= `${date}`
-                      hr 
-                    .card-content
-                      .row
-                        .col-md-2
-                          .form-group
-                            label.control-label
-                              | Number of Guest
-                              star *
+                      h5 Reservation Date:
+                        - var d = new Date(`${date}`) 
+                        span= d.toString()
+                      hr
+                      #my-tab-content.tab-content.text-center
+                        #home.tab-pane.active
+                          .row
+                            .col-md-2
+                            .col-md-3
+                              .form-group
+                                label.control-label
+                                  | Number of Guest
+                                  star *
 
-                            .input-group
-                              span.input-group-btn
-                                button.btn.btn-info.btn-number(type='button', disabled='disabled', data-type='minus', data-field='quant[1]')
-                                  span.ti-minus
-                              input.form-control.input-number(type='text', name='quant[1]', value='1', min='1', max='6')
-                              span.input-group-btn
-                                button.btn.btn-info.btn-number(type='button', data-type='plus', data-field='quant[1]')
-                                  span.ti-plus
-                          span.help-block Guest can be 1 to 6
-                        .col-md-3
-                          .form-group
-                            label.control-label
-                              | Preferred Therapist
-                              star *
-                            select.form-control(name='gender' id="gender")
-                              option(selected='', disabled='') - Therapist -
-                              each therapist in therapists
-                                option(value=`${therapist.therapist_id}`)= `${therapist.therapist_fname} ${therapist.therapist_lname}`
-                            span.help-block This will be a remark only
-                        .col-md-3
-                          .form-group
-                            label.control-label
-                              | Room 
-                              star *
-                            select.form-control(name='room' id="room")
-                              option(selected='', disabled='') - Room -
-                                each room in rooms
-                                  option(value=`${room.room_id}`)= room.room_name
-                        .col-md-3
-                          .form-group
-                            label.control-label
-                              | Time 
-                              star *
-                            //- select.form-control(name='room' id="room")
-                            //-   option(selected='', disabled='') - Room -
-                            //-   each room in rooms
-                            //-     option(value=`${room.room_id}`)= room.room_name
+                                .input-group
+                                  span.input-group-btn
+                                    button.btn.btn-info.btn-number.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quant[1]')
+                                      span.ti-minus
+                                  input.form-control.input-number(type='text', id="quantity" name='quant[1]', value="0" min='1', max='6')
+                                  span.input-group-btn
+                                    button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quant[1]')
+                                      span.ti-plus
+
+                              span.help-block Guest can be 1 to 6
+                            .col-md-4
+                              .form-group
+                                label.control-label
+                                  | Preferred Therapist
+                                  star *
+                                select.selectpicker.form-control(multiple='', data-style='btn-info',name='therapist' id="therapist" data-max-options='' style="border-radius:10px" )
+                                  option(disabled='') - Therapist -
+                                  each therapist in therapists
+                                    option(value=`${therapist.therapist_id}`)= `${therapist.therapist_fname} ${therapist.therapist_lname}`
+                                span.help-block This will be a remark only
+                          hr
+                          .row
+                            .col-md-12
+                                label.control-label
+                                  | Services
+                                  star *
+                                .card-content
+                                  
+                                  .toolbar
+                                    // Here you can write extra buttons/actions for the toolbar
+                                  .fresh-datatables
+                                    table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th 
+                                          th Type
+                                          th Name
+                                          th Price
+                                          th Quantity
+                                          th Total
+                                      tfoot
+                                        tr
+                                          th
+                                          th Type
+                                          th Name
+                                          th Price
+                                          th Quantity
+                                          th Total
+                                      tbody
+                                        each service in services
+                                          tr
+                                            td
+                                              input.checkbox(type='checkbox' value=`${service.service_id}`)                             
+                                            td= service.service_type_desc
+                                            td= service.service_name+ " "+ "(" +service.service_duration_desc+" "+"minutes"+")"
+                                            td
+                                              input(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                              span= service.service_price
+                                            td 
+                                              span.quantity(service_id=`${service.service_id}`) 0
+
+                                            td 
+                                              span.total(service_id=`${service.service_id}`) 0.00
+                                    h4 Total: 
+                                      a(id="grandtotal") 0.00
+                          hr
+                          .row          
+                            button.btn.btn-default.btn-fill.btnNext1(href="#profile", data-toggle="tab" style="margin-left: 60em; margin-top: 2em") Next
+
+                        #profile.tab-pane
+                          .row
+                            .col-md-3
+                              .form-group
+                                label.control-label
+                                  | Room 
+                                  star *
+                                select.form-control(name='room' id="room")
+                                  option(selected='', disabled='') - Room -
+                                    optgroup(label='Common Room')
+                                      each croom in crooms
+                                        option(value=`${croom.room_id}`)= croom.room_name
+                                    optgroup(label='Private Room' )
+                                      each proom in prooms
+                                        option(value=`${proom.room_id}`)= proom.room_name
+                            .col-md-3
+                              .form-group
+                                label.control-label
+                                  | Time 
+                                  star *
+                                select.form-control(name='time' id="time")
+                                  option(selected='', disabled='') - Time -
+                                    option(value="") 1:00PM to 3:00PM
+                                    option(value="") 3:00PM to 5:00PM
+                                    option(value="") 5:00PM to 7:00PM
+                                    option(value="") 7:00PM to 9:00PM
+                                    option(value="") 9:00PM to 11:00PM
+                                    option(value="") 11:00PM to 1:00AM 
+                          .row
+                            .col-md-10.col-md-offset-1
+                              .card.card-calendar
+                                .card-content
+                                  #calendar
+                          hr
+                          .row
+                            button.btn.btn-default.btn-fill.btnBack2(href="#home", data-toggle="tab" style="margin-right: 60em; margin-top: 2em") Back
+                            button.btn.btn-default.btn-fill.btnNext2(href="#messages", data-toggle="tab" style="margin-left: 60em; margin-top: 2em") Next
+
+                        #messages.tab-pane
+                          .row
+                            button.btn.btn-default.btn-fill.pull-left.btnBack3(href="#profile", data-toggle="tab") Back
+                            button.btn.btn-default.btn-fill.pull-right.btnNext3(href="#", data-toggle="tab") Next
+
+                    //-   .row
+                    //-     .col-md-2
+                    //-     .col-md-3
+                    //-       .form-group
+                    //-         label.control-label
+                    //-           | Number of Guest
+                    //-           star *
+
+                    //-         .input-group
+                    //-           span.input-group-btn
+                    //-             button.btn.btn-info.btn-number.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quant[1]')
+                    //-               span.ti-minus
+                    //-           input.form-control.input-number(type='text', id="quantity" name='quant[1]', value="0" min='1', max='6')
+                    //-           span.input-group-btn
+                    //-             button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quant[1]')
+                    //-               span.ti-plus
+
+                    //-       span.help-block Guest can be 1 to 6
+                    //-     .col-md-4
+                    //-       .form-group
+                    //-         label.control-label
+                    //-           | Preferred Therapist
+                    //-           star *
+                    //-         select.selectpicker.form-control(multiple='', data-style='btn-info',name='therapist' id="therapist" data-max-options='' style="border-radius:10px" )
+                    //-           option(disabled='') - Therapist -
+                    //-           each therapist in therapists
+                    //-             option(value=`${therapist.therapist_id}`)= `${therapist.therapist_fname} ${therapist.therapist_lname}`
+                    //-         span.help-block This will be a remark only
+                        
                          
 
-                      hr
-                      .row
-                        .col-md-12
-                            label.control-label
-                              | Services
-                              star *
-                            .card-content
+                    //-   hr
+                    //-   .row
+                    //-     .col-md-12
+                    //-         label.control-label
+                    //-           | Services
+                    //-           star *
+                    //-         .card-content
                               
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              .fresh-datatables
-                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                  thead
-                                    tr
-                                      th 
-                                      th Type
-                                      th Name
-                                      th Price
-                                      th Quantity
-                                      th Total
-                                  tfoot
-                                    tr
-                                      th
-                                      th Type
-                                      th Name
-                                      th Price
-                                      th Quantity
-                                      th Total
-                                  tbody
-                                    each service in services
-                                      tr
-                                        td
-                                          input.checkbox(type='checkbox' value=`${service.service_id}`)                             
-                                        td= service.service_type_desc
-                                        td= service.service_name+ " "+ "(" +service.service_duration_desc+")"
-                                        td
-                                          input(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
-                                          span= service.service_price
-                                        td 
-                                          span.quantity(service_id=`${service.service_id}`) 0
+                    //-           .toolbar
+                    //-             // Here you can write extra buttons/actions for the toolbar
+                    //-           .fresh-datatables
+                    //-             table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                    //-               thead
+                    //-                 tr
+                    //-                   th 
+                    //-                   th Type
+                    //-                   th Name
+                    //-                   th Price
+                    //-                   th Quantity
+                    //-                   th Total
+                    //-               tfoot
+                    //-                 tr
+                    //-                   th
+                    //-                   th Type
+                    //-                   th Name
+                    //-                   th Price
+                    //-                   th Quantity
+                    //-                   th Total
+                    //-               tbody
+                    //-                 each service in services
+                    //-                   tr
+                    //-                     td
+                    //-                       input.checkbox(type='checkbox' value=`${service.service_id}`)                             
+                    //-                     td= service.service_type_desc
+                    //-                     td= service.service_name+ " "+ "(" +service.service_duration_desc+" "+"minutes"+")"
+                    //-                     td
+                    //-                       input(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                    //-                       span= service.service_price
+                    //-                     td 
+                    //-                       span.quantity(service_id=`${service.service_id}`) 0
 
-                                        td 
-                                          span.total(service_id=`${service.service_id}`) 0.00
-                                h4(style="margin-left: 40em" id="grandtotal") Total 0.00
+                    //-                     td 
+                    //-                       span.total(service_id=`${service.service_id}`) 0.00
+                    //-             h4(style="margin-left: 40em" id="grandtotal") Total 0.00
 
 
-                      hr
-                      .row
-                                  
+                    //-   hr
+                    //-   .row
+                    //-     .col-md-3
+                    //-       .form-group
+                    //-         label.control-label
+                    //-           | Room 
+                    //-           star *
+                    //-         select.form-control(name='room' id="room")
+                    //-           option(selected='', disabled='') - Room -
+                    //-             optgroup(label='Common Room')
+                    //-               each croom in crooms
+                    //-                 option(value=`${croom.room_id}`)= croom.room_name
+                    //-             optgroup(label='Private Room' )
+                    //-               each proom in prooms
+                    //-                 option(value=`${proom.room_id}`)= proom.room_name
+                    //-     .col-md-3
+                    //-       .form-group
+                    //-         label.control-label
+                    //-           | Time 
+                    //-           star *
+                    //-         select.form-control(name='time' id="time")
+                    //-           option(selected='', disabled='') - Time -
+                    //-             option(value="") 1:00PM to 3:00PM
+                    //-             option(value="") 3:00PM to 5:00PM
+                    //-             option(value="") 5:00PM to 7:00PM
+                    //-             option(value="") 7:00PM to 9:00PM
+                    //-             option(value="") 9:00PM to 11:00PM
+                    //-             option(value="") 11:00PM to 1:00AM        
 
-                    hr
-                    .card-footer.text-center
-                      button.btn.btn-info.btn-fill.btn-wd(type='submit') Book
+                    //- hr
+                    //- .card-footer.text-center
+                    //-   button.btn.btn-info.btn-fill.btn-wd(type='submit') Book
 
 
 
@@ -219,8 +363,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/sweetalert2.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -228,7 +370,8 @@ html(lang='en')
   // Plugin for DataTables.net
   script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
   // Full Calendar Plugin
-  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+  script(src='/assets/paperDashboardPro/js/fullcalendar.js')
+  script(src='/assets/paperDashboardPro/js/scheduler.js')
   // Paper Dashboard PRO Core javascript and methods for Demo purpose
   script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
   // Sharrre Library
@@ -286,7 +429,7 @@ html(lang='en')
    })
   script(type='text/javascript').
     $(document).ready(function() {
-    $('#datatables').DataTable();
+    $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
     });
   script.
     $().ready(function(){
@@ -294,6 +437,38 @@ html(lang='en')
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
         });
+  
+  
+  script.
+    $(document).ready(function(){
+      var quantity = $('#quantity').val()
+      if(quantity==0)
+      {
+        $('#therapist').attr("disabled",true)
+      }
+
+        
+      $('.buttonAdd').click(function(){
+        var quantity = $('#quantity').val()
+        $('#therapist').attr("disabled",false)
+        $('#therapist').selectpicker({
+          style: 'btn-info',
+          size: 4,
+          maxOptions: quantity
+      });
+      })
+      $('.buttonMinus').click(function(){
+        var quantity = $('#quantity').val()
+       $('#therapist').selectpicker({
+          style: 'btn-info',
+          size: 4,
+          maxOptions: quantity
+      });
+      })
+    })
+  
+  
+  
   
   script.
         //plugin bootstrap minus and plus
@@ -368,4 +543,85 @@ html(lang='en')
                 if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
                     e.preventDefault();
                 }
-            });
+          });
+  
+  script.
+    $(document).ready(function(){
+      $('.btnNext1').click(function(){
+        $('.1st').removeClass('active')
+        $('.2nd').addClass('active')
+      })
+
+
+
+      $('.btnNext2').click(function(){
+        $('.2nd').removeClass('active')
+        $('.3rd').addClass('active')
+      })
+      $('.btnBack2').click(function(){
+        $('.2nd').removeClass('active')
+        $('.1st').addClass('active')
+      })
+
+
+      $('.btnBack3').click(function(){
+        $('.3rd').removeClass('active')
+        $('.2nd').addClass('active')
+      })
+      $.post('reservation/query').done(data=>{
+                for(var i=0; i<data.length;i++){
+              $('#calendar').fullCalendar('addResource', {
+              id: data[i].room_id,
+              title: data[i].room_name,
+              occupancy: data[i].bed_qty
+                        })
+                }
+       })
+    $('#calendar').fullCalendar({ 
+      themeSystem: 'bootstrap4',
+      height: "auto",
+      nowIndicator: true,
+      schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+      header: {
+      left: 'today prev,next',
+      center: 'title',
+      right: 'timelineDay,timelineWeek'
+    },
+    defaultView: 'timelineDay',
+    resourceColumns: [
+      {
+        labelText: 'Room Name',
+        field: 'title'
+      },
+      {
+        labelText: 'Bed Quantity',
+        field: 'occupancy'
+      }
+    ],
+    resources: 
+       [
+      
+       ],
+    businessHours: {
+        // days of week. an array of zero-based day of week integers (0=Sunday)
+        dow: [ 1, 2, 3, 4, 5, 6, 7 ], // Monday - Thursday
+
+        start: '13:00', // a start time (10am in this example)
+        end: '01:00', // an end time (6pm in this example)
+      }
+    });
+    })
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      });
