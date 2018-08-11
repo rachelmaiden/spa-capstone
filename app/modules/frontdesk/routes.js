@@ -845,7 +845,9 @@ router.get('/adminQueue', (req, res) => {
   res.render('frontdesk/transaction/adminQueue')
 })
 
-
+router.get('/adminPayment', (req, res) => {
+  res.render('frontdesk/transaction/adminPayment')
+})
 
 
 
