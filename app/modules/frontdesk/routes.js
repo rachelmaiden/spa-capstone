@@ -691,26 +691,41 @@ router.get('/adminCustomer', (req, res) => {
       res.render('frontdesk/transaction/adminCustomer',{
         customers: out
       })
-      console.log(out)
     })
   })
   //          > C R E A T E (ADD)
 router.post('/adminCustomer',(req, res) => {
-  console.log(req.body.newDate)
-  console.log(req.body.year)
-  console.log(req.body.month)
-  console.log(req.body.date)
+  const query= `select * from customer_tbl where cust_fname= "${req.body.firstname}" and cust_lname= "${req.body.lastname}" 
+  and cust_birthMonth= "${req.body.month}" and cust_birthDate= "${req.body.date}" and cust_birthYear= "${req.body.year}"`
   
-  const query = `
-  insert into 
-  customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
-  values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
-  "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
-  `
   db.query(query, (err, out) => {
-    console.log(query)
+    if(out== undefined)
+    {
+    const query = `
+    insert into 
+    customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
+    values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
+    "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
+    `
+
+    db.query(query, (err, out) => {
+      res.redirect('/adminCustomer')
+    })
+    }
+    else if(out != undefined)
+    {
+      db.query(query, (err, out) => {
+        res.redirect("/adminCustomer?customeralreadyexist")
+      })
+    }
   })
 })
+// const query = `
+// insert into 
+// customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
+// values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
+// "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
+// `
 //          > D E L E T E
 router.post('/adminCustomer/delete', (req, res) => {
   console.log(req.body.id)
@@ -782,6 +797,49 @@ router.post('/frontdeskHome/search', (req, res) => {
     console.log(out)
   })
 })
+
+//[ADD NEW CUSTOMER]
+router.post('/frontdeskHome/newCustomer',(req, res) => {
+  const query= `select * from customer_tbl where cust_fname LIKE "%${req.body.firstname}%" and cust_lname LIKE "%${req.body.lastname}%" 
+  and cust_birthMonth LIKE "%${req.body.month}%" and cust_birthDate LIKE "%${req.body.date}%" and cust_birthYear LIKE "%${req.body.year}%"`
+  
+  db.query(query, (err, out) => {
+    if(out== undefined || out == 0)
+    {
+    const query = `
+    insert into 
+    customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
+    values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
+    "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
+    `
+
+    db.query(query, (err, out) => {
+      console.log("----------------------------")
+      console.log("CUSTOMER NOT EXIST")
+      console.log("----------------------------")
+      console.log("NAGINSERT CHECK MO PA SA DB")
+      console.log("----------------------------")
+      console.log(query)
+      res.redirect('/frontdeskHome')
+    })
+    }
+    else if(out != undefined) 
+    {
+      db.query(query, (err, out) => {
+        console.log("----------------------------")
+        console.log("CUSTOMER ALREADY EXIST")
+        console.log("----------------------------")
+        console.log("DI NAGINSERT CHECK MO PA SA DB")
+        console.log("----------------------------")
+        return res.redirect("/frontdeskHome?customeralreadyexist?")
+      })
+    }
+  })
+})
+
+
+
+
 
 router.get('/adminQueue', (req, res) => {
   res.render('frontdesk/transaction/adminQueue')
