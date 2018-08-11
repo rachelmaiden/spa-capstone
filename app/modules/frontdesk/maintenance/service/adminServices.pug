@@ -283,8 +283,8 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Service Type
-                                      th Service Name
+                                      th Type
+                                      th Name
                                       th Duration
                                       th Price
                                       th Points
@@ -292,8 +292,8 @@ html(lang='en')
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Service Type
-                                      th Service Name
+                                      th Type
+                                      th Name
                                       th Duration
                                       th Price
                                       th Points
@@ -304,9 +304,12 @@ html(lang='en')
                                       tr
                                         td= service.service_type_desc
                                         td= service.service_name
-                                        td= service.service_duration_desc
-                                        td= service.service_price
-                                        td 
+                                        td= service.service_duration_desc+" "+"minutes"
+                                        td= service.service_price.toLocaleString()
+                                        if(service.service_points==1|| service.service_points==0)
+                                          td= service.service_points+" "+"Point"
+                                        else if(service.service_points > 0)
+                                          td= service.service_points+" "+"Points"
                                         td
                                           if(service.service_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
@@ -365,7 +368,7 @@ html(lang='en')
                                   star *
                                     select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
                                       each duration in durations
-                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc
+                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
                                   //- input.form-control(type='text', placeholder='Service Duration' name='duration')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -377,7 +380,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Point/s
                                   star *
-                                  input.form-control(type='number', placeholder='Service Point' name='point' required='true', aria-required='true')
+                                  input.form-control(type='number', placeholder='Service Point' name='points' required='true', aria-required='true')
                             
 
 
@@ -556,15 +559,15 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Type*
-                          <select id="service_type" title="${data.out1.service_type_desc}" data-style="btn-info" name="type" class="selectpicker">
+                        <label>Service Type
+                          <select id="service_type" value="${data.out1.service_type_id}" title="" data-style="btn-info" name="type" class="selectpicker">
                           </select>
                         </label>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Name*</label>
+                        <label>Service Name</label>
                         <input type="text" id="service_name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
                       </div>
                     </div>
@@ -572,28 +575,40 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Duration*
-                          <select id="service_duration" title="${data.out1.service_duration_desc}" data-style="btn-info" name="duration" class="selectpicker">
+                        <label>Service Duration
+                          <select id="service_duration" value="${data.out1.service_duration_id} "title="${data.out1.service_duration_desc+ "minutes"}" data-style="btn-info" name="duration" class="selectpicker">
                           </select>
                         </label>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Price*</label>
+                        <label>Service Price</label>
                         <input type="text" id="service_price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
                       </div>
                     </div>
                   </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Service Point/s</label>
+                        <input type="number" placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>
                   `)
-
                 for(var i=0; i<data.out2.length;i++){
                 console.log(data.out2[i].service_type_desc)
-                $('#service_type').append(`<option value="${data.out2[i].service_type_id}">${data.out2[i].service_type_desc}</option>`)
+                $('#service_type').append(`
+                <option value="${data.out2[i].service_type_id}">${data.out2[i].service_type_desc}</option>`)
                 }
+                 $('#service_type').append(`
+                <option value="${data.out1.service_type_id}" selected disabled> ${data.out1.service_type_desc} </option>`)
+                
+                $('#service_duration').append(`<option value="${data.out1.service_duration_id}" selected disabled>${data.out1.service_duration_desc} minutes</option>`)
                 for(var i=0; i<data.out3.length;i++){
                 console.log(data.out3[i].service_duration_desc)
-                $('#service_duration').append(`<option value="${data.out3[i].service_duration_id}">${data.out3[i].service_duration_desc}</option>`)
+                $('#service_duration').append(`<option value="${data.out3[i].service_duration_id}">${data.out3[i].service_duration_desc} minutes</option>`)
                 }
                 $('#service_type').selectpicker();
                 $('#service_duration').selectpicker();
@@ -610,8 +625,7 @@ html(lang='en')
                   service_name:$('#service_name').val(),
                   service_price:$('#service_price').val(),
                   service_duration:$('#service_duration').val(),
-                  service_availability:$('#service_availability').val(),
-                  
+                  service_points:$('#service_points').val(),
                   id1:idNow
                   })
                   .done(data=>{
