@@ -226,31 +226,13 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='/frontdeskHome')
-                    p HOME
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
-                li
-                  a.btn-rotate(href='#settings')
+                  a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
+                  ul.dropdown-menu
+                    li
+                      a.logout(style="cursor: pointer;") Log Out
         .content
           .container-fluid
             .row
@@ -304,25 +286,30 @@ html(lang='en')
                                           button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${thera.therapist_id}`) View Specialty
                                         td
                                           if(thera.therapist_availability==0)
-                                            input.switch-availability(type='checkbox' checked)
+                                            input.switch-icon(type='checkbox' checked value=`${thera.therapist_id}`)
                                           else if(thera.therapist_availability==1)
-                                            input.switch-availability(type='checkbox')
+                                            input.switch-icon(type='checkbox' value=`${thera.therapist_id}`)
 
                                         td
-                                          .dropdown.pull-right(style="right: 25px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
+                                          if(thera.therapist_availability==1)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-pencil-alt
+                                                    |  Update
+                                                li
+                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${thera.therapist_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-trash
+                                                    |  Delete
+                                          else if(thera.therapist_availability==0)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
                                     
                                   
                               
@@ -337,7 +324,7 @@ html(lang='en')
                           h5.modal-title
                             center Add New Therapist 
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/adminTherapist')
+                        form#allInputsFormValidation(method='POST' action='/admin/adminTherapist')
                           .modal-body
                             
                             .row
@@ -541,6 +528,24 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
       $(document).ready(function(){
+        $('.logout').click(function(){
+            swal({
+            title: "Are you sure?",
+            text: "Do you want to Log Out?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.post('/admin/admin/logout')
+              location.reload()
+            } 
+          });
+          })
+          $('.bawal').click(function(){
+            alert("Can't Update or Delete ")
+          })
         // DELETE THERAPIST INFORMATION
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
@@ -552,7 +557,7 @@ html(lang='en')
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                $.post('/adminTherapist/delete',{id:idNow})
+                $.post('/admin/adminTherapist/delete',{id:idNow})
                   .done(data=>{
                     if(data){
                         swal({
@@ -572,7 +577,7 @@ html(lang='en')
         // VIEW THERAPIST SPECIALTY/SPECIALTIES
         $('.viewButton').click(function(){
           var idNow = $(this).val();
-            $.post('adminTherapist/query1',{id1:idNow})
+            $.post('/admin/adminTherapist/query1',{id1:idNow})
           .done(data=>{
             $('#title').append(`${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}`)
             $('#viewAppend').append(`
@@ -609,7 +614,7 @@ html(lang='en')
         $('.updateSpecialty').click(function(){
           var idNow = $('#inputId').val();
           console.log(idNow)
-            $.post('adminTherapist/query2',{id1:idNow})
+            $.post('/admin/adminTherapist/query2',{id1:idNow})
           .done(data=>{
             console.log(data)
             $('#viewUpdateSpecialtyAppend').append(`
@@ -634,7 +639,7 @@ html(lang='en')
                 $('#specialty').empty()
               });
             $('#updateSpecialtyButton').click(function(){
-              $.post('/adminTherapist/updateTherapistSpecialty',{
+              $.post('/admin/adminTherapist/updateTherapistSpecialty',{
                   specialty:$('#specialty').val(),
                   
                   id1: idNow
@@ -647,7 +652,7 @@ html(lang='en')
                           icon:'success'
                           }).then(function(){
                             
-                            location.href='/adminTherapist';
+                            location.href='/admin/adminTherapist';
                           })
               )
           })
@@ -658,7 +663,7 @@ html(lang='en')
         // UPDATE THERAPIST INFORMATION
         $('.updateButton').click(function(){
           var idNow = $(this).val();
-              $.post('/adminTherapist/query',{id1:idNow})
+              $.post('/admin/adminTherapist/query',{id1:idNow})
           .done(data=>{
             console.log(data)
               $('#updateAppend').append(`
@@ -766,7 +771,7 @@ html(lang='en')
                   ('#updateAppend').empty();
               })
               $('#updateSubmitButton').click(function(){
-                  $.post('/adminTherapist/update',{
+                  $.post('/admin/adminTherapist/update',{
                   therapist_fname:$('#therapist_fname').val(),
                   therapist_mname:$('#therapist_mname').val(),
                   therapist_lname:$('#therapist_lname').val(),
@@ -814,7 +819,8 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     })
-    //- $('#add').click(function(){
+    $('#add').click(function(){
+      location.reload()
     //- swal({
     //-   title:'Success', 
     //-   text:'Therapist Added', 
@@ -822,8 +828,8 @@ html(lang='en')
     //-   .then(function(){
     //-   location.reload();
     //- });
-    //- });
-    //- })
+    });
+    })
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();

@@ -65,7 +65,7 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='../paperDashboardPro/img/faces/face-2.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | Front Desk
@@ -84,15 +84,15 @@ html(lang='en')
                   b.caret
               #componentsExamples.collapse.in
                 ul.nav
-                  li(style="margin-left: 5px;")
+                  li(style="margin-left: 5px;").active
                     a(data-toggle='collapse', href='#services')
                       p
                         span.sidebar-mini S
                         | Services
                         b(style="margin-right: 30px").caret
-                    #services.collapse
+                    #services.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px")
+                        li(style="margin-left: 30px").active
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
                         li(style="margin-left: 30px")
@@ -101,15 +101,15 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminServiceDuration')
                             span.sidebar-normal Service Duration
-                  li(style="margin-left: 5px;").active
+                  li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#therapist')
                       p
                         span.sidebar-mini T
                         | Therapist
                         b(style="margin-right: 30px").caret
-                    #therapist.collapse.in
+                    #therapist.collapse
                       ul.nav
-                        li(style="margin-left: 30px").active
+                        li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
                             span.sidebar-normal Therapist Specialty
                         li(style="margin-left: 30px")
@@ -151,6 +151,18 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#freebies')
+                      p
+                        span.sidebar-mini F
+                        | Freebies
+                        b(style="margin-right: 30px").caret
+                    #freebies.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminFreebies')
+                            span.sidebar-normal Freebies  
+
             li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
@@ -160,19 +172,19 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='./adminCustomer')
+                    a(href='/adminCustomer')
                       span.sidebar-mini R
                       span.sidebar-normal Registration
                   li
-                    a(href='adminReservation')
+                    a(href='/adminReservation')
                       span.sidebar-mini R
                       span.sidebar-normal Reservations
                   li
-                    a(href='#')
+                    a(href='/adminWalkin')
                       span.sidebar-mini W
                       span.sidebar-normal Walk-in
                   li
-                    a(href='adminQueue')
+                    a(href='/adminQueue')
                       span.sidebar-mini Q
                       span.sidebar-normal Queue
             li
@@ -222,31 +234,13 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='/frontdeskHome')
-                    p HOME
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
-                li
-                  a.btn-rotate(href='#settings')
+                  a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
+                  ul.dropdown-menu
+                    li
+                      a.logout(style="cursor: pointer;") Log Out
         .content
           .container-fluid
             .row
@@ -255,26 +249,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Therapist Specialty  
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog(role='document')
-                      .modal-content
-                        .modal-header
-                          h5.modal-title
-                            center Add New Therapist Specialty
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/adminSpecialty')
-                          .modal-body
-                            .row
-                              .col-md-12
-                                .form-group.has-default.bmd-form-group
-                                  label Therapist Specialty
-                                  star *
-                                  input.form-control(type='text', placeholder='Therapist Specialty' number='false' name="specialty_desc" required='true', aria-required='true')
-                            .row
-                          .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist Specialty
-                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service Type  
                   .content
                     .container-fluid
                       .row
@@ -289,96 +264,125 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Therapist Specialty
+                                      th Service Type
                                       th.disabled-sorting
                                       th.disabled-sorting
                                       th.disabled-sorting
-                                      th.disabled-sorting
+                                      th.disabled-sorting Availability
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Therapist Specialty
+                                      th Service Type
                                       th
                                       th
                                       th
-                                      th
+                                      th Availability
                                       th Actions
                                   tbody
-                                    each specialty in specialtys
+                                    each typ in typs
                                       tr
-                                        td=specialty.specialty_desc
+                                        td= typ.service_type_desc
                                         td
                                         td
                                         td
                                         td
+                                          if(typ.service_type_availability==0)
+                                            input.switch-icon(type='checkbox' checked value=`${typ.service_type_id}`)
+                                          else if(typ.service_type_availability==1)
+                                            input.switch-icon(type='checkbox' value=`${typ.service_type_id}`)
+
                                         td
-                                          .dropdown.pull-right(style="right: 138px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${specialty.specialty_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${specialty.specialty_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
-                              // UPDATE
-                              #updateModal.modal.fade(tabindex='-1', role='dialog')
-                                .modal-dialog(role='document')
-                                  .modal-content
-                                    .modal-header
-                                      h5.modal-title
-                                        center Edit Specialty Description
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                    .modal-body#updateAppend
-                                      
-                                    .modal-footer
-                                      button.btn.btn-info.btn-fill.pull-left#updateSubmitButton(type='button') Update
-                                      button.btn.btn-danger.btn-fill.pull-right#cancelButton(type='button', data-dismiss='modal') Cancel
-                              // DELETE  
-                              #modal-warning.modal.modal-warning.fade
-                                .modal-dialog
-                                  .modal-content
-                                    .modal-header
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') ×
-                                      h4.modal-title Warning
-                                    .modal-body
-                                      p Are you sure you?
-                                    .modal-footer
-                                        button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                                        button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
-                                      
-                                      
-                                      
-                                      
-                                  .row
-                                    .col-md-6
-                                      .card-header
-                                      .card-content
-                                    .col-md-6
-                                      .card-header
-                                      .card-content
-                                  .row
-                                    .col-md-6
-                                      .card-header
-                                        h4.card-title
-                                      .card-content
-                                    .col-md-6
-                                      .card-header
-                                      .card-content
+                                          if(typ.service_type_availability==1)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-pencil-alt
+                                                    |  Update
+                                                li
+                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-trash
+                                                    |  Delete
+                                          else if(typ.service_type_availability==0)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                              .row
+                                .col-md-6
+                                  .card-header
+                                  .card-content
+                                .col-md-6
+                                  .card-header
+                                  .card-content
+                              .row
+                                .col-md-6
                                   .card-header
                                     h4.card-title
                                   .card-content
+                                .col-md-6
+                                  .card-header
+                                  .card-content
+                              .card-header
+                                h4.card-title
+                              .card-content
+                                .row
+                                  .col-md-12
+                                .row
+                                  .col-md-12
+                                .row 
+                          //- UPDATE
+                          #updateModal.modal.fade(tabindex='-1', role='dialog')
+                            .modal-dialog(role='document')
+                              .modal-content
+                                .modal-header
+                                  h5.modal-title
+                                    center Edit Service Type
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                .modal-body#updateAppend
+                                  
+
+                                .modal-footer
+                                  button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd#updateSubmitButton(type='button') Update
+                                  button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd#cancelButton(type='button', data-dismiss='modal') Cancel
+                          
+                          // DELETE  
+                          #modal-warning.modal.modal-warning.fade
+                            .modal-dialog
+                              .modal-content
+                                .modal-header
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    span(aria-hidden='true') ×
+                                  h4.modal-title Warning
+                                .modal-body
+                                  p Are you sure you?
+                                .modal-footer
+                                    button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                                    button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
+
+                          //- ADD
+                          #addNewService.modal.fade(tabindex='-1', role='dialog')
+                            .modal-dialog(role='document')
+                              .modal-content
+                                .modal-header
+                                  h5.modal-title
+                                    center Add New Service Type
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                form#allInputsFormValidation(method='POST' action='/admin/adminServiceType')
+                                  .modal-body
                                     .row
                                       .col-md-12
-                                    .row
-                                      .col-md-12
-                                    .row
+                                        .form-group.has-default.bmd-form-group
+                                          label Service Type
+                                          star *
+                                          input.form-control(type='text', placeholder='Service Type' name="service_type_desc" required='true', aria-required='true')
+                                  .modal-footer
+                                    button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service Type
+                                    button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
                           footer.footer
                             .container-fluid
                               .copyright.pull-right
@@ -434,7 +438,44 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
-    $(document).ready(function(){
+      $(document).ready(function(){
+        $('.logout').click(function(){
+            swal({
+            title: "Are you sure?",
+            text: "Do you want to Log Out?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.post('/admin/admin/logout')
+              location.reload()
+            } 
+          });
+          })
+          $('.bawal').click(function(){
+            alert("Can't Update or Delete ")
+          })
+          $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            var idNow = $(this).val();
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminServiceType/statusChange',{stats,id1:idNow})
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminServiceType/statusChange',{stats,id1:idNow})
+          }
+          location.reload()
+        });
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)
@@ -446,12 +487,12 @@ html(lang='en')
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                $.post('/adminSpecialty/delete',{id:idNow})
+                $.post('/admin/adminServiceType/delete',{id:idNow})
                     .done(data=>{
                     if(data){
                         swal({
                         title:'Success', 
-                        text:'Service Duration Deleted', 
+                        text:'Service Deleted', 
                         icon:'success'
                         }).then(function(){
                           location.reload();
@@ -462,26 +503,25 @@ html(lang='en')
             });
             
         });
-    })
         $('#modal-warning').on('hidden.bs.modal', function (){
                 var idNow = 0;
                 console.log(idNow)
                 });
-
-    $('.updateButton').click(function(){
+        $('.updateButton').click(function(){
           var idNow = $(this).val();
-              console.log(idNow)
-              $.post('/adminSpecialty/query',{id1:idNow})
+          console.log(idNow)
+              $.post('/admin/adminServiceType/query',{id1:idNow})
           .done(data=>{
               $('#updateAppend').append(`
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Therapist Specialty</label>
-                        <input type="text" id="specialty_desc" placeholder="${data.specialty_desc}" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>`)
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group has-default bmd-form-group">
+                    <label>Service Type</label>
+                    <input type="text" id="service_type_desc" placeholder="${data.service_type_desc}" class="form-control"/>
+                  </div>
+                </div>
+              </div>
+              `)
               $('#updateModal').modal('show')
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
@@ -490,16 +530,16 @@ html(lang='en')
                 $('#updateAppend').remove();
               })
               $('#updateSubmitButton').click(function(){
-                  $.post('/adminSpecialty/update',{
-                  specialty_desc:$('#specialty_desc').val(),
+                  $.post('/admin/adminServiceType/update',{
+                  service_type_desc:$('#service_type_desc').val(),
                   
-                  id:idNow
+                  id1:idNow
                   })
                   .done(data=>{
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'Specialty Updated', 
+                          text:'Service Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -510,7 +550,8 @@ html(lang='en')
                 })
               })
 
-          })  
+          })
+      })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -527,20 +568,22 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    //- $('#add').click(function(){
-    //- swal({
-    //-   title:'Success', 
-    //-   text:'New Specialty Added', 
-    //-   icon:'success'})
-    //-   .then(function(){
-    //-   location.reload();
-    //- })
-    //- });
-    //- });
+    
+    $('#add').click(function(){
+    swal({
+      title:'Success', 
+      text:'New Service Type Added', 
+      icon:'success'})
+      .then(function(){
+      location.reload();
+    })
+    });
+    });
+
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
-        });  
+        });
 

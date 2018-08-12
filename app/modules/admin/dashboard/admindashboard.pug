@@ -228,31 +228,14 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='/frontdeskHome')
-                    p HOME
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
-                li
-                  a.btn-rotate(href='#settings')
+                  a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
+                  ul.dropdown-menu
+                    li
+                      a.logout(style="cursor: pointer;") Log Out
+    
         .content
           .container-fluid
             .row
@@ -453,7 +436,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -474,6 +457,21 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script(type='text/javascript').
     $(document).ready(function(){
+      $('.logout').click(function(){
+            swal({
+        title: "Are you sure?",
+        text: "Do you want to Log Out?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.post('/admin/admin/logout')
+          location.reload()
+        } 
+      });
+      })
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });

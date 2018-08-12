@@ -1,4 +1,3 @@
-doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
@@ -80,45 +79,22 @@ html(lang='en')
           ul.navbar-nav.ml-auto
             li.nav-item
               a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
-                | How To Become a Loyalty Member
-            li.nav-item
-              a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
-                | Our Services 
-            li.nav-item
-              a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
-                | Our Facilities   
-            li.nav-item
-              a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
-                | About Us
-                  
-                    
-              
-            //
-              <li class="nav-item">
-              <a class="nav-link" rel="tooltip" title="Follow us on Twitter" data-placement="bottom" href="https://twitter.com/CreativeTim" target="_blank">
-              <i class="fab fa-twitter"></i>
-              <p class="hidden-lg-up">Twitter</p>
-              </a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" rel="tooltip" title="Like us on Facebook" data-placement="bottom" href="https://www.facebook.com/CreativeTim" target="_blank">
-              <i class="fab fa-facebook-square"></i>
-              <p class="hidden-lg-up">Facebook</p>
-              </a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" rel="tooltip" title="Follow us on Instagram" data-placement="bottom" href="https://www.instagram.com/CreativeTimOfficial" target="_blank">
-              <i class="fab fa-instagram"></i>
-              <p class="hidden-lg-up">Instagram</p>
-              </a>
-              </li>
-    // End Navbar
+                | Online Booking and Spa Management System
+            //- li.nav-item
+            //-   a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
+            //-     | Our Services 
+            //- li.nav-item
+            //-   a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
+            //-     | Our Facilities   
+            //- li.nav-item
+            //-   a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
+            //-     | About Us
     .wrapper
-      .page-header(style="background-image: url('/assets/paperkit/assets/img/bluespa.jpg');")
+      .page-header(style="background-image: url('/assets/paperkit/assets/img/front.jpg');")
         .filter
         .container
           .row
-            .col-lg-6.col-md-6.col-sm-7.col-12.ml-auto
+            .col-lg-6.col-md-6.col-sm-5.col-12.ml-auto
               .info.info-horizontal
                 .icon
                   i.fa.fa-umbrella
@@ -139,25 +115,24 @@ html(lang='en')
                 .description
                   h3  We Care For You
                   p We ant to help you relax, so we made reservation arrangement easier for you!
-            .col-lg-6.col-md-6.col-sm-5.col-12.mr-auto
+            .col-lg-6.col-md-6.col-sm-7.col-12.mr-auto
               .card.card-register
                 h3.text-center Login
-                .form-group
-                  hr
-                  label.control-label
-                    | Username
-                    star *
-                  input.form-control(name='admin_username', type='text', required='true', aria-required='true')
-                .form-group
-                  label.control-label
-                    | Password 
-                    star *
-                  input#registerPassword.form-control(name='admin_password', type='password', required='true', aria-required='true')
-                  hr
+                form#loginFormValidation(method='POST', action='frontdesk/login')
+                  .form-group
+                    hr
+                    label.control-label
+                      | Username
+                      star *
+                    input.form-control(name='admin_username', type='text', required='true', aria-required='true' style="color:black; font-weight: bold;")
+                  .form-group
+                    label.control-label
+                      | Password 
+                      star *
+                    input#registerPassword.form-control(name='admin_password', type='password', required='true', aria-required='true' style="font-weight: bold;")
+                    hr
+                    button.btn.btn-info.btn-fill.btn-wd(type='submit') Login
                 
-        br
-        br
-        br
         .demo-footer.text-center
           h6
             | ©
@@ -195,6 +170,12 @@ html(lang='en')
     script(src='/assets/paperkit/assets/js/presentation-page/main.js')
     // Sharrre libray
     script(src='/assets/paperkit/assets/demo/jquery.sharrre.js')
+    script.
+      $().ready(function(){
+        $('#registerFormValidation').validate();
+        $('#loginFormValidation').validate();
+        $('#allInputsFormValidation').validate();
+          });
     script.
       $(document).ready(function() {
       var _gaq = _gaq || [];
@@ -367,3 +348,27 @@ html(lang='en')
       }, 1000);
       });
       });
+
+
+
+                //- form#loginFormValidation(method='POST', action='adminFrontDesk')
+                //-   .card
+                //-     form#loginFormValidation(action='POST', method='/adminFrontDesk', novalidate='novalidate')
+                //-       .card-header.text-center
+                //-         h4.card-title
+                //-           | Login Form
+                //-       .card-content
+                //-         .form-group
+                //-           hr
+                //-           label.control-label
+                //-             | Username
+                //-             star *
+                //-           input.form-control(name='admin_username', type='text', required='true', aria-required='true')
+                //-         .form-group
+                //-           label.control-label
+                //-             | Password 
+                //-             star *
+                //-           input#registerPassword.form-control(name='admin_password', type='password', required='true', aria-required='true')
+                //-           hr
+                //-       .card-footer.text-center
+                //-         button.btn.btn-info.btn-fill.btn-wd(type='submit') Login

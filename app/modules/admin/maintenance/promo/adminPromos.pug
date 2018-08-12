@@ -84,18 +84,18 @@ html(lang='en')
                   b.caret
               #componentsExamples.collapse.in
                 ul.nav
-                  li(style="margin-left: 5px;").active
+                  li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#services')
                       p
                         span.sidebar-mini S
                         | Services
                         b(style="margin-right: 30px").caret
-                    #services.collapse.in
+                    #services.collapse
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminServiceType')
                             span.sidebar-normal Service Type
-                        li(style="margin-left: 30px").active
+                        li(style="margin-left: 30px")
                           a(href='./adminServices')
                             span.sidebar-normal Services
                         li(style="margin-left: 30px")
@@ -126,15 +126,15 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminAmenities')
                             span.sidebar-normal Amenities
-                  li(style="margin-left: 5px;")
+                  li(style="margin-left: 5px;").active
                     a(data-toggle='collapse', href='#promos')
                       p
                         span.sidebar-mini P
                         | Promos
                         b(style="margin-right: 30px").caret
-                    #promos.collapse
+                    #promos.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px")
+                        li(style="margin-left: 30px").active
                           a(href='./adminPromos')
                             span.sidebar-normal Promos
                   li(style="margin-left: 5px;")
@@ -161,8 +161,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminFreebies')
-                            span.sidebar-normal Freebies            
-                  
+                            span.sidebar-normal Freebies               
             li
               a(data-toggle='collapse', href='#tablesExamples')
                 i.ti-panel
@@ -172,7 +171,7 @@ html(lang='en')
               #tablesExamples.collapse
                 ul.nav
                   li
-                    a(href='/adminCustomer')
+                    a(href='./adminCustomer')
                       span.sidebar-mini R
                       span.sidebar-normal Registration
                   li
@@ -186,8 +185,7 @@ html(lang='en')
                   li
                     a(href='/adminQueue')
                       span.sidebar-mini Q
-                      span.sidebar-normal Queue   
-                  
+                      span.sidebar-normal Queue
             li
               a(data-toggle='collapse')
                 i.ti-settings
@@ -235,31 +233,13 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='/frontdeskHome')
-                    p HOME
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
-                li
-                  a.btn-rotate(href='#settings')
+                  a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
+                  ul.dropdown-menu
+                    li
+                      a.logout(style="cursor: pointer;") Log Out
         .content
           .container-fluid
             .row
@@ -268,7 +248,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service   
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Promo Bundle
                   .content
                     .container-fluid
                       .row
@@ -283,111 +263,112 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Type
-                                      th Name
+                                      th Promo Name
+                                      th Services Included
                                       th Duration
+                                      th Hours of Amenities Usage
                                       th Price
-                                      th Points
-                                      th Availability
+                                      th Valid Until
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Type
-                                      th Name
+                                      th Promo Name
+                                      th Services Included
                                       th Duration
+                                      th Hours of Amenities Usage
                                       th Price
-                                      th Points
-                                      th Availability
+                                      th Valid Until
                                       th Actions
                                   tbody
-                                    each service in services
+                                    each promo in promos
                                       tr
-                                        td= service.service_type_desc
-                                        td= service.service_name
-                                        td= service.service_duration_desc+" "+"minutes"
-                                        td= service.service_price.toLocaleString()
-                                        if(service.service_points==1|| service.service_points==0)
-                                          td= service.service_points+" "+"Point"
-                                        else if(service.service_points > 0)
-                                          td= service.service_points+" "+"Points"
+                                        td= promo.promobundle_name
                                         td
-                                          if(service.service_availability==0)
-                                            input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
-                                          else if(service.service_availability==1)
-                                            input.switch-icon(type='checkbox' value=`${service.service_id}`)
+                                          button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${promo.promobundle_id}`) View Services
+                                        td= promo.promobundle_duration
+                                        td= promo.promobundle_amenity_usage
+                                        td= promo.promobundle_price
+                                        td= promo.promobundle_validity
                                         td
-                                          if(service.service_availability==1)
-                                            .dropdown.pull-right(style="right: 20px")
-                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                i.ti-settings
-                                              ul.dropdown-menu
-                                                li
-                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${service.service_id}` stlye="margin-right: 15px")
-                                                    span.btn-label
-                                                    i.ti-pencil-alt
-                                                    |  Update
-                                                li
-                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${service.service_id}` stlye="margin-right: 15px")
-                                                    span.btn-label
-                                                    i.ti-trash
-                                                    |  Delete
-                                          else if(service.service_availability==0)
-                                            .dropdown.pull-right(style="right: 20px")
-                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                i.ti-settings
-
-                                    
-                  //ADD  
+                                          .dropdown.pull-right(style="right: 25px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.promobundle_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${promo.promobundle_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
+                  // ADD
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           h5.modal-title
-                            center Add New Service
+                            center Add New Promo Bundle
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/adminServices')
+                        form#allInputsFormValidation(method='POST' action='/admin/adminPromos')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Type
+                                  label Promo Bundle Name
                                   star *
-                                    select.selectpicker(data-style='btn-info' name='type' required='true', aria-required='true')
-                                      each typ in typs
-                                        option(value=`${typ.service_type_id}`)= typ.service_type_desc
-
+                                  input.form-control(type='text', placeholder='Promo Bundle Name' name='name' required='true', aria-required='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Name
+                                  label Promo Bundle Price
                                   star *
-                                  input.form-control(type='text', placeholder='Service Name' name='name' required='true', aria-required='true')
+                                  input.form-control(type='number', placeholder='Promo Bundle Price' name='price' required='true', aria-required='true' )
+                            .form-group.has-default.bmd-form-group
+                              center
+                                label Services Included*
+                                  select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='promos')
+                                    each service in services
+                                      option(value=`${service.service_id}`)= service.service_name
+                              
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Service Duration
-                                  star *
-                                    select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
-                                      each duration in durations
-                                        option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
-                                  //- input.form-control(type='text', placeholder='Service Duration' name='duration')
-                              .col-md-6
+                                label Promo Duration
+                                select.selectpicker(name='duration'  data-style='btn-info')
+                                  option(value='60 minutes') 60 minutes
+                                  option(value='90 minutes') 90 minutes
+                                  option(value='120 minutes') 120 minutes
+                              .col-md-6  
                                 .form-group.has-default.bmd-form-group
-                                  label Service Price
-                                  star *
-                                  input.form-control(type='text', number="true" placeholder='Service Price' name='price' required='true', aria-required='true')
+                                label Hours of Amenity Usage
+                                select.selectpicker(name='amenity'  data-style='btn-info')
+                                  option(value='60 minutes') 60 minutes
+                                  option(value='90 minutes') 90 minutes
+                                  option(value='120 minutes') 120 minutes
+                            //
+                              <div class="form-group has-default bmd-form-group">
+                              <label>Promo Bundle Validity</label>
+                              <input type="text" class="form-control" placeholder="Promo Bundle Validity">
+                              </div>
                             .row
                               .col-md-6
-                                .form-group.has-default.bmd-form-group
-                                  label Service Point/s
-                                  star *
-                                  input.form-control(type='number', placeholder='Service Point' name='points' required='true', aria-required='true')
-                            
 
-
+                                #dp.form-group.has-default.bmd-form-group
+                                  label Promo Bundle Valid From:
+                                  .form-group
+                                    input#promobundle_validity.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
+                              .col-md-6
+                                #dp.form-group.has-default.bmd-form-group
+                                  label Promo Bundle Valid Until:
+                                  .form-group
+                                    input#promobundle_validity_until.form-control(type='text', placeholder='Promo Bundle Validity' name='valid')
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
+                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Promo Bundle
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                  
+
+
                   // DELETE  
                   #modal-warning.modal.modal-warning.fade
                     .modal-dialog
@@ -400,24 +381,50 @@ html(lang='en')
                           p Are you sure you?
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
-
-
+                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
+                  
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                    .modal-dialog(role='document')
+                    .modal-dialog.modal-lg(role='document')
                       .modal-content
                         .modal-header
-                          h5#exampleModalLabel.modal-title Service Information
+                          h5#exampleModalLabel.modal-title Promobundle Information
                           button.close(type='button', data-dismiss='modal', aria-label='Close') 
                             span(aria-hidden='true') x
                         .modal-body#updateAppend
                         .modal-footer
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
-                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Update
+                            button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
+                  
+                  //VIEW SERVICES INCLUDED
+                  #servicesIncluded.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          center
+                            h4.modal-title#title
+                        .modal-body#viewAppend
+                        .modal-footer#footerAppend
+                          center
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateServicesIncluded(data-toggle='modal') Update
+                  
 
 
-
+                  //UPDATE SERVICES INCLUDED
+                  #updatePromoServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          center
+                            h4.modal-title Services
+                        .modal-body#servicesAppend
+                        .modal-footer
+                          button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                          button.btn.btn-info.btn-fill.pull-right#updateServicesIncludedButton(type='button') Submit
                 .row
                   .col-md-6
                     .card-header
@@ -441,8 +448,11 @@ html(lang='en')
                   .row
                     .col-md-12
                   .row
+
                   footer.footer
                     .container-fluid
+                      nav.pull-left
+                        
                       .copyright.pull-right
                         | © 
                         script.
@@ -450,8 +460,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') TEAM RJPC
-                  .fixed-plugin
+                        a(href='') TEAM MBAY
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -495,144 +504,210 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script(src='/assets/paperDashboardPro/js/bootstrap-datepicker.min.js')
   script.
       $(document).ready(function(){
-        $('.bawal').click(function(){
-          alert("Can't Update or Delete ")
-        })
-        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
-          if(state==false)
-          {
-            var idNow = $(this).val();
-            var stats = 1
-            //- alert(stats)
-            //- alert(idNow)
-            $.post('/adminServices/statusChange',{stats,id1:idNow})
-          }
-          else if(state==true)
-          {
-            var idNow = $(this).val();
-            var stats = 0
-            //- alert(stats)
-            //- alert(idNow)
-            $.post('/adminServices/statusChange',{stats,id1:idNow})
-          }
-          location.reload();
-        });
+        $('.logout').click(function(){
+            swal({
+            title: "Are you sure?",
+            text: "Do you want to Log Out?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.post('/admin/admin/logout')
+              location.reload()
+            } 
+          });
+          })
+        // DELETE PROMO INFORMATION
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
             console.log(idNow)
             $('#modal-warning').modal('show');
-            
             $('#deleteSubmit').css('display', 'block');
             $('#cancelButton').css('display', 'block');
                 $('#cancelButton').click(function(){
                   var idNow = 0;
                 });
                 $('#deleteSubmit').click(function(){
-                $.post('/adminServices/delete',{id:idNow})
-                    .done(data=>{
+                  $.post('/admin/adminPromos/delete',{id:idNow}).done(data=>{
                     if(data){
                         swal({
                         title:'Success', 
-                        text:'Service Deleted', 
+                        text:'Promo Bundle Deleted', 
                         icon:'success'
                         }).then(function(){
                           location.reload();
                         })
                       $('#updateModal').modal('hide');
                     }
-                  })
+                })
             });
             
         });
-        $('#modal-warning').on('hidden.bs.modal', function (){
-                var idNow = 0;
-                console.log(idNow)
-                });
+
+        // VIEW SERVICES INCLUDED
+        $('.viewButton').click(function(){
+          var idNow = $(this).val();
+            $.post('/admin/adminPromos/query1',{id1:idNow})
+          .done(data=>{
+            $('#title').append(`${data.out2.promobundle_name}`)
+            $('#viewAppend').append(`
+                  <div class="row">
+                    <div class="col-md-10" id=services_name>
+                      <label> Services Included </label>
+                      <div class="form-group has-default bmd-form-group">
+                      
+                      </div>
+                    </div>
+                  </div>
+            `)
+            $('#footerAppend').append(`
+              <input type="hidden" id="inputId" value="${data.id2}"></input>`)
+            for(var i=0; i<data.out1.length;i++){
+              console.log(data.out1[i].service_name)
+                $('#services_name').append(`<li>${data.out1[i].service_name}</li>`)
+              }
+            $('#servicesIncluded').modal('show')
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#services_name').remove()
+              });
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#inputId').remove()
+              });
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#title').empty()
+              });
+          })
+        })
+
+
+
+        // UPDATE SERVICES INCLUDED
+        $('.updateServicesIncluded').click(function(){
+          var idNow = $('#inputId').val();
+          console.log(idNow)
+            $.post('/admin/adminPromos/query2',{id1:idNow})
+          .done(data=>{
+            $('#servicesAppend').append(`
+                <div class="form-group has-default bmd-form-group">
+                  <label>Services
+                    <select name="nameOfservice" id="nameOfservice" multiple="" title="Choose Services" data-style="btn-info" data-size="7" class="selectpicker">
+                    </select>
+                  </label>
+                </div>
+            `)
+            for(var i=0; i<data.out1.length;i++){
+
+                $('#nameOfservice').append(`<option value="${data.out1[i].service_id}"> ${data.out1[i].service_name} </option>`)
+              }
+            $('#nameOfservice').selectpicker()
+            $('#updatePromoServices').modal('show')
+            $('#servicesIncluded').modal('hide')
+            $('#updatePromoServices').on('hidden.bs.modal', function (){
+                $('#servicesAppend').empty()
+              });
+         $('#updateServicesIncludedButton').click(function(){
+              $.post('/admin/adminTherapist/updateServicesInPromo',{
+                  nameOfservice:$('#nameOfservice').val(),
+                  
+                  id1: idNow
+                })
+                .done(
+
+                          swal({
+                          title:'Success', 
+                          text:'Services Included Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            
+                            location.href='/admin/adminPromos';
+                          })
+              )
+          })
+        })
+      })      
+
+
+
+        // UPDATE PROMO INFORMATION
         $('.updateButton').click(function(){
           var idNow = $(this).val();
-              $.post('/adminServices/query',{id1:idNow})
+              $.post('/admin/adminPromos/query',{id1:idNow})
           .done(data=>{
             console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Type
-                          <select id="service_type" value="${data.out1.service_type_id}" title="" data-style="btn-info" name="type" class="selectpicker">
-                          </select>
-                        </label>
+                        <label>Promo Bundle Name*</label>
+                        <input type="text" placeholder="${data.promobundle_name}" value="${data.promobundle_name}" id="promobundle_name" name="promobundle_name" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Name</label>
-                        <input type="text" id="service_name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
+                        <label>Promo Bundle Price*</label>
+                        <input type="text" placeholder="${data.promobundle_price}" value="${data.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Duration
-                          <select id="service_duration" value="${data.out1.service_duration_id} "title="${data.out1.service_duration_desc+ "minutes"}" data-style="btn-info" name="duration" class="selectpicker">
-                          </select>
-                        </label>
-                      </div>
+                      <div class="form-group has-default bmd-form-group"></div>
+                      <label>Promo Duration</label>
+                      <select id="promobundle_duration" title="${data.promobundle_duration}" data-style="btn-info" class="selectpicker">
+                        <option value="60 minutes">60 minutes</option>
+                        <option value="90 minutes">90 minutes</option>
+                        <option value="120 minutes">120 minutes</option>
+                      </select>
                     </div>
                     <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Price</label>
-                        <input type="text" id="service_price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
-                      </div>
+                      <div class="form-group has-default bmd-form-group"></div>
+                      <label>Hours of Amenity Usage</label>
+                      <select id="promobundle_amenity_usage" title="${data.promobundle_amenity_usage}" data-style="btn-info" class="selectpicker">
+                        <option value="60 minutes">60 minutes</option>
+                        <option value="90 minutes">90 minutes</option>
+                        <option value="120 minutes">120 minutes</option>
+                      </select>
                     </div>
+                    <!-- <div class="form-group has-default bmd-form-group">-->
+                    <!-- <label>Promo Bundle Validity</label>-->
+                    <!-- <input type="text" class="form-control" placeholder="Promo Bundle Validity">-->
+                    <!-- </div>-->
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Point/s</label>
-                        <input type="number" placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
-                      </div>
+                  <div id="dp" class="form-group has-default bmd-form-group">
+                    <label>Promo Bundle Valid Until:</label>
+                    <div class="form-group">
+                      <input id="promobundle_valid" type="text" placeholder="${data.promobundle_validity}" value="${data.promobundle_validity}" class="form-control"/>
                     </div>
-                  </div>
-                  `)
-                for(var i=0; i<data.out2.length;i++){
-                console.log(data.out2[i].service_type_desc)
-                $('#service_type').append(`
-                <option value="${data.out2[i].service_type_id}">${data.out2[i].service_type_desc}</option>`)
-                }
-                 $('#service_type').append(`
-                <option value="${data.out1.service_type_id}" selected disabled> ${data.out1.service_type_desc} </option>`)
-                
-                $('#service_duration').append(`<option value="${data.out1.service_duration_id}" selected disabled>${data.out1.service_duration_desc} minutes</option>`)
-                for(var i=0; i<data.out3.length;i++){
-                console.log(data.out3[i].service_duration_desc)
-                $('#service_duration').append(`<option value="${data.out3[i].service_duration_id}">${data.out3[i].service_duration_desc} minutes</option>`)
-                }
-                $('#service_type').selectpicker();
-                $('#service_duration').selectpicker();
+                  </div>`)
+
+                $('#promobundle_duration').selectpicker();
+              $('#promobundle_amenity_usage').selectpicker();
+              $('#promobundle_valid').datepicker();
               $('#updateModal').modal('show')
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
-                });
-              $('#cancelButton').click(function(){
-                $('#updateAppend').remove();
-              })
+                })
               $('#updateSubmitButton').click(function(){
-                  $.post('/adminServices/update',{
-                  service_type:$('#service_type').val(),
-                  service_name:$('#service_name').val(),
-                  service_price:$('#service_price').val(),
-                  service_duration:$('#service_duration').val(),
-                  service_points:$('#service_points').val(),
+                  $.post('/admin/adminPromos/update',{
+                  promobundle_name:$('#promobundle_name').val(),
+                  promobundle_price:$('#promobundle_price').val(),
+                  promobundle_validity:$('#promobundle_valid').val(),
+                  promobundle_availability:$('#promobundle_availability').val(),
+                  promobundle_duration:$('#promobundle_duration').val(),
+                  promobundle_amenity_usage:$('#promobundle_amenity_usage').val(),
+                  
                   id1:idNow
                   })
                   .done(data=>{
                       if(data){
                           swal({
                           title:'Success', 
-                          text:'Service Information Updated', 
+                          text:'Promo Bundle Information Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -641,14 +716,18 @@ html(lang='en')
                       }
                   })
                 })
+                $('#cancelButton').click(function(){
+                  $('#updateAppend').remove();
+                })
+              
               })
 
           })
       })
   script(type='text/javascript').
     $(document).ready(function(){
-      demo.initOverviewDashboard();
-      demo.initCirclePercentage();
+    demo.initOverviewDashboard();
+    demo.initCirclePercentage();
     });
   script(type='text/javascript').
     $(document).ready(function() {
@@ -661,23 +740,29 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    $('#add').click(function(){
-      .done(data=>{
-        if(data){
-          swal({
-            title:'Success', 
-            text:'New Service Added', 
-            icon:'success'})
-            .then(function(){
-            location.reload();
-          })
-        }
     });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    $('#promobundle_validity').datepicker();
+    $('#promobundle_validity_until').datepicker();
+    
+    // Init Sliders
+    demo.initFormExtendedSliders();
+    // Init DatetimePicker
+    demo.initFormExtendedDatetimepickers();
     });
-    })
+    //- $('#add').click(function(){
+    //- swal({
+    //-   title:'Success', 
+    //-   text:'New Promo bundle Added', 
+    //-   icon:'success'})
+    //-   .then(function(){
+    //-   location.reload();
+    //- })
+    //- });
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
-        });
+        });  

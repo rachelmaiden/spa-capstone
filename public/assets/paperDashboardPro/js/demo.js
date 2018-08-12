@@ -817,7 +817,7 @@ demo = {
                 },
                 onTabClick : function(tab, navigation, index){
                     // Disable the posibility to click on tabs
-                    return false;
+                    return true;
                 },
                 onTabShow: function(tab, navigation, index) {
                     var $total = navigation.find('li').length;
@@ -828,8 +828,9 @@ demo = {
                     // If it's the last tab then hide the last button and show the finish instead
                     if($current >= $total) {
                         $(wizard).find('.btn-next').hide();
+                        $(wizard).find('.btn-back').show();
                         $(wizard).find('.btn-finish').show();
-                    } else if($current == 1){
+                    } else if($total == 1){
                         $(wizard).find('.btn-back').hide();
                     } else {
                         $(wizard).find('.btn-back').show();

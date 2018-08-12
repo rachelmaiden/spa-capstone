@@ -62,9 +62,11 @@ html(lang='en')
         .collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             li
-              a(href='/adminDashboard') Dashboard
+              a#date-part(style="color: white")
             li
-              a(href='/adminFrontDesk') LogOut
+              a#time-part(style="color: white") 
+            li
+              a.logout Log Out
     .wrapper.wrapper-full-page
       .full-page.login-page(data-color='home', style=("background-image: url('/assets/paperDashboardPro/img/spaimg.jpg'); background-size: cover; background-repeat: no-repeat;"))
         // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
@@ -75,14 +77,14 @@ html(lang='en')
                 button.btn.btn-info.btn-fill.btn-lg.search(data-toggle="modal" data-target="#SearchCustomer" style="border-radius: 5px; background-color: #3faf6c; border-color: #3faf6c; font-weight: 100") Book Reservation
                
         //[registration]
-        #registration.modal.fade(tabindex='-1', role='dialog' aria-hidden='true')
-          .modal-dialog.modal-lg(role='document')
+        #registration.modal.fade(tabindex='-1', role='dialog' aria-hidden='true' )
+          .modal-dialog.modal-lg(role='document' style=" overflow-y: initial !important")
             .modal-content
               .modal-header
                 h5.modal-title
                   center Registration 
                 button.close(type='button', data-dismiss='modal', aria-label='Close') X
-              .modal-body
+              .modal-body(style="overflow-y:auto; height: 500px;")
                 #wizardCard.card-wizard.nav-pills-blue
                   form#wizardForm(method='', action='')
                     .card-content
@@ -90,9 +92,7 @@ html(lang='en')
                         li
                           a(href='#tab1', data-toggle='tab') Basic Information
                         li
-                          a(href='#tab2', data-toggle='tab') Address and Medical History
-                        li
-                          a(href='#tab3', data-toggle='tab') Loyalty Membership
+                          a(href='#tab2', data-toggle='tab') Loyalty Membership
                       .tab-content
                         #tab1.tab-pane
                           br
@@ -140,8 +140,6 @@ html(lang='en')
                                   | Contact Number
                                   star *
                                 input.form-control(type='number', id="contact_no" name='contact_no', minlength='11')
-
-                        #tab2.tab-pane
                           .row
                             .col-md-2
                               h3 Address
@@ -177,25 +175,33 @@ html(lang='en')
                             .col-md-12
                               .form-group.has-default.bmd-form-group
                                 textarea.form-control(type='text', placeholder='Medical History' id="medical_history" name="medical_history")
-                        #tab3.tab-pane
-                          .row
-                            .col-md-2
-                              input.switch-plain(type='checkbox')
-                          br
+
+                        #tab2.tab-pane
                           .row
                             .col-md-3
-                            .col-md-4
+                              input.switch-plain(type='checkbox')
+                              span.help-block Turn on this if the customer will avail the loyalty 
+                          br
+                          .row
+                            .col-md-5
                               .form-group
                                 label.control-label
                                   | Username
                                   star *
-                                  input.form-control(type='text', name='username', id="username" required='true' size="20" disabled)
-                            .col-md-4
+                                  input.form-control(type='text', name='username', id="username" required='true' size="30" disabled)
+                          .row
+                            .col-md-5
                               .form-group
                                 label.control-label
                                   | Password
                                   star *
-                                  input.form-control(type='text', name='username', id="password" required='true' size="20" disabled)
+                                  input.form-control(type='text', name='username', id="password" required='true' size="30" disabled)
+                            .col-md-4
+                              .form-group
+                                label.control-label
+                                  | Re Enter password
+                                  star *
+                                  input.form-control(type='text', name='username', id="password2" required='true' size="30" disabled)
 
                     br
                     br
@@ -209,11 +215,13 @@ html(lang='en')
           .modal-dialog(role='document')
             .modal-content
               .modal-header
-                h5.modal-title
-                  center Book Reservation
                 button.close(type='button', data-dismiss='modal', aria-label='Close') X 
               
               .modal-body
+                .row
+                  .col-md-4
+                  .col-md-8
+                    h5 Search Customer
                 .row
                   .col-md-2
                   .col-md-8
@@ -224,7 +232,7 @@ html(lang='en')
 
                         h5 New Customer? 
                           i
-                            a(data-dismiss="modal",data-toggle="modal" data-target="#registration") Click Here
+                            a(data-dismiss="modal",data-toggle="modal" data-target="#registration" style="cursor:pointer") Click Here
               .modal-footer
                 button.btn.btn-default.pull-left.btn-fill(data-dismiss='modal', data-target='SearchCustomer', data-toggle='modal') Close
                 button.btn.btn-warning.pull-right.btn-fill.btn-magnify.searchButton(data-toggle='modal') 
@@ -245,6 +253,18 @@ html(lang='en')
                 center
                   button.btn.btn-default.btn-fill.cancelButton(data-dismiss="modal",data-toggle="modal" data-target="#SearchCustomer") Back
 
+        //LOG OUT
+        #logout.modal.fade(tabindex='-1', role='dialog' aria-hidden='true')
+          .modal-dialog(role='document')
+            .modal-content
+              .modal-header
+                h5.modal-title
+                  center Results
+                button.close(type='button', data-dismiss='modal', aria-label='Close') X
+              .modal-body#viewAppend
+              .modal-footer
+                center
+                  button.btn.btn-default.btn-fill.cancelButton(data-dismiss="modal",data-toggle="modal" data-target="#SearchCustomer") Back
 
         footer.footer.footer-transparent
           .container
@@ -303,13 +323,28 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
     $(document).ready(function(){
+      $('.logout').click(function(){
+            swal({
+        title: "Are you sure?",
+        text: "Do you want to Log Out?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.post('/frontdesk/logout')
+          location.reload()
+        } 
+      });
+      })
       $('.submitButton').click(function(){
         var newDate= $('#calendar').val()
         var vals = newDate.split('-');
         var year = vals[0];
         var month = vals[1];
         var date = vals[2];
-        $.post('/frontdeskHome/newCustomer',{
+        $.post('/frontdesk/Home/newCustomer',{
           firstname:$('#firstname').val(),
           lastname:$('#lastname').val(),
           middlename:$('#middlename').val(),
@@ -331,11 +366,13 @@ html(lang='en')
           {
             $("#username").prop('disabled', true);
             $("#password").prop('disabled', true);
+            $("#password2").prop('disabled', true);
           }
           else if(state==true)
           {
             $("#username").prop('disabled', false);
             $("#password").prop('disabled', false);
+            $("#password2").prop('disabled', false);
           }
         });
    })
@@ -430,3 +467,17 @@ html(lang='en')
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
         });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      });
