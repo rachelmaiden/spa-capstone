@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var db = require('../../lib/database')();
-var mid = require("../../middlewares")
+//var mid = require("../../middlewares")
 
 // [ADMIN - LOGIN PAGE] 
 router.get('/admin', (req, res) => {
@@ -41,7 +41,7 @@ router.post("/admin/logout", (req, res) => {
 // ||================================================================||
 
 // [DASHBOARD]
-router.get('/admindashboard', mid.adminnauthed,(req, res) => {
+router.get('/admindashboard',(req, res) => {
   res.render('admin/dashboard/admindashboard')
 })
 
@@ -52,7 +52,7 @@ router.get('/admindashboard', mid.adminnauthed,(req, res) => {
 // ||====================================================================||
 
 // [AMENITY]
-router.get('/adminAmenities',mid.adminnauthed, (req, res) => {
+router.get('/adminAmenities', (req, res) => {
   res.render('admin/maintenance/amenity/adminAmenities')
 })
 
@@ -60,7 +60,7 @@ router.get('/adminAmenities',mid.adminnauthed, (req, res) => {
 
 // [PROMO]
 //          > R E A D
-router.get('/adminPromos', mid.adminnauthed,(req, res) => {
+router.get('/adminPromos',(req, res) => {
   const query = ` select promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name from promo_bundle_tbl 
   join service_in_promo_tbl on promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id 
   join services_tbl on services_tbl.service_id = service_in_promo_tbl.service_id where promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
@@ -171,7 +171,7 @@ router.post('/adminTherapist/updateServicesInPromo',(req,res)=>{
 // =========================================================================================================================================================================
 // [ROOM]
 //          > R E A D
-router.get('/adminRooms', mid.adminnauthed,(req, res) => {
+router.get('/adminRooms',(req, res) => {
   const query = ` select room_tbl.*, room_type_tbl.room_type_desc from room_tbl join room_type_tbl 
   on room_tbl.room_type_id = room_type_tbl.room_type_id where room_tbl.delete_stats=0;
   select * from room_type_tbl where delete_stats=0`
@@ -237,7 +237,7 @@ router.post('/adminRooms/update', (req, res) => {
 // UNDER OF ROOM
 // ^ROOM TYPE
 //          > R E A D
-router.get('/adminRoomType', mid.adminnauthed, (req, res) => {
+router.get('/adminRoomType', (req, res) => {
   const query = `
   select * from room_type_tbl where delete_stats=0`
   db.query(query,(err,out) =>{
@@ -292,7 +292,7 @@ router.post('/adminRoomType/update', (req, res) => {
 
 // [SERVICE]
 //          > R E A D
-router.get('/adminServices', mid.adminnauthed,(req, res) => {
+router.get('/adminServices',(req, res) => {
   const query = ` select services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc 
   from services_tbl join service_duration_tbl on services_tbl.service_duration_id = service_duration_tbl.service_duration_id
   join service_type_tbl on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats = 0;
@@ -372,7 +372,7 @@ router.post('/adminServices/statusChange',(req, res) => {
 // ^UNDER OF SERVICE
 // [SERVICE TYPE]
 //          > R E A D
-router.get('/adminServiceType',mid.adminnauthed, (req, res) => {
+router.get('/adminServiceType', (req, res) => {
   const query = ` select * from service_type_tbl where delete_stats= 0`
   db.query(query,(err,out) =>{
     res.render('admin/maintenance/service/adminServiceType',{
@@ -432,7 +432,7 @@ router.post('/adminServiceType/delete', (req, res) => {
 
 // [SERVICE DURATION]
 //          > R E A D
-router.get('/adminServiceDuration',mid.adminnauthed, (req, res) => {
+router.get('/adminServiceDuration', (req, res) => {
   const query = ` select * from service_duration_tbl where delete_stats = 0 `
   db.query(query,(err,out) =>{
     res.render('admin/maintenance/service/adminServiceDuration',{
@@ -487,7 +487,7 @@ router.post('/adminServiceDuration/delete', (req, res) => {
 
 // [THERAPIST]
 //          > R E A D 
-router.get('/adminTherapist', mid.adminnauthed,(req, res) => {
+router.get('/adminTherapist',(req, res) => {
   const query = ` select * from therapist_tbl where delete_stats= 0;
   select * from specialty_tbl where delete_stats= 0`
   db.query(query,(err,out) =>{
@@ -621,7 +621,7 @@ router.post('/adminTherapist/updateTherapistSpecialty',(req,res)=>{
 // ^UNDER OF THERAPIST
 // [THERIST SPECIALTY]
 //        > R E A D
-router.get('/adminSpecialty', mid.adminnauthed,(req, res) => {
+router.get('/adminSpecialty',(req, res) => {
   const query = ` select * from specialty_tbl where delete_stats=0`
   db.query(query,(err,out) =>{
     res.render('admin/maintenance/therapist/adminSpecialty',{
@@ -683,7 +683,7 @@ router.get('/adminFreebies', (req, res) => {
 
 // [CUSTOMER]
 //          > R E A D 
-router.get('/adminCustomer',mid.adminnauthed, (req, res) => {
+router.get('/adminCustomer', (req, res) => {
   const query = ` select * from customer_tbl where delete_stats=0`
   db.query(query,(err,out) =>{
       res.render('admin/transaction/adminCustomer',{

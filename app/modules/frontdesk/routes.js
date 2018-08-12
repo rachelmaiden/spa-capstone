@@ -1,10 +1,10 @@
 var express = require('express')
 var router = express.Router()
 var db = require('../../lib/database')();
-var mid = require("../../middlewares")
+//var mid = require("../../middlewares")
 
 // [FRONTDESK-HOME]
-router.get('/frontdesk/Home',mid.frontdesknauthed,(req,res)=>{
+router.get('/frontdesk/Home',(req,res)=>{
   res.render('frontdesk/Home')
 })
 
@@ -148,7 +148,7 @@ router.post('/reservation/query',(req, res) => {
 
 
 // [BOOK RESERVATION - SELECTING DATE]
-router.get('/selectDate',mid.frontdesknauthed,(req,res)=>{
+router.get('/selectDate',(req,res)=>{
   res.render('frontdesk/selectDate')
 })
 
