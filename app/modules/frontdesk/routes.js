@@ -1,10 +1,10 @@
 var express = require('express')
 var router = express.Router()
 var db = require('../../lib/database')();
-//var mid = require("../../middlewares")
+var mid = require("../../middlewares")
 
 // [FRONTDESK-HOME]
-router.get('/frontdesk/Home',(req,res)=>{
+router.get('/frontdesk/Home',mid.frontdesknauthed,(req,res)=>{
   res.render('frontdesk/Home')
 })
 
@@ -41,7 +41,7 @@ router.post("/frontdesk/logout", (req, res) => {
   
 
 // [SEARCH]
-router.post('/frontdeskHome/search', (req, res) => {
+router.post('/frontdesk/search', (req, res) => {
   console.log(req.body.searchBar)
   const query= `SELECT * FROM customer_tbl WHERE
   cust_fname LIKE '%${req.body.searchBar}%' OR
@@ -99,7 +99,7 @@ router.post('/frontdesk/Home/newCustomer',(req, res) => {
 
 
 // [RESERVATION]
-router.get('/reservation',(req, res) => {
+router.get('/reservation',mid.frontdesknauthed,(req, res) => {
   date = req.query.date
   console.log(date)
   console.log('ID NI CUSTOMER')
@@ -148,12 +148,12 @@ router.post('/reservation/query',(req, res) => {
 
 
 // [BOOK RESERVATION - SELECTING DATE]
-router.get('/selectDate',(req,res)=>{
+router.get('/selectDate',mid.frontdesknauthed,(req,res)=>{
   res.render('frontdesk/selectDate')
 })
 
 // [BOOK RESERVATION - SELECTING DATE]
-router.get('/selectDate/:cust_id',(req, res) => {
+router.get('/selectDate/:cust_id',mid.frontdesknauthed,(req, res) => {
   customerId = req.params.cust_id
   console.log(customerId)
   const query = `SELECT * FROM customer_tbl where cust_id= ${req.params.cust_id}`

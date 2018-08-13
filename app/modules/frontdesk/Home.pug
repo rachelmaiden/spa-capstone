@@ -388,7 +388,7 @@ html(lang='en')
         $('.searchButton').click(function(){
           var searchBar = $('#searchBar').val();
             console.log(searchBar)
-            $.post('frontdeskHome/search',{searchBar:searchBar})
+            $.post('frontdesk/frontdesk/search',{searchBar:searchBar})
           .done(data=>{
             $('#viewAppend').append(`
                   <div class="row">
