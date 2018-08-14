@@ -4,8 +4,8 @@ var db = require('../../lib/database')();
 var mid = require("../../middlewares")
 
 // [FRONTDESK-HOME]
-router.get('/frontdesk/Home',mid.frontdesknauthed,(req,res)=>{
-  res.render('frontdesk/Home')
+router.get('/frontdesk/fdRegistration',mid.frontdesknauthed,(req,res)=>{
+  res.render('frontdesk/fdRegistration')
 })
 
 // [FRONT DESK - LOGIN PAGE] 
@@ -26,7 +26,7 @@ router.post("/frontdesk/login",(req, res) => {
 			else {
 				delete out[0].admin_password
 				req.session.user = out[0]	
-				return res.redirect("frontdesk/Home")
+				return res.redirect("/frontdesk/fdRegistration")
 			}
 		}
 
