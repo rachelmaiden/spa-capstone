@@ -108,8 +108,8 @@ html(lang='en')
                               .form-group
                                 label.control-label
                                   | Middle Name
-                                  star *
-                                input.form-control(type='text', id="middlename" name='middlename', required='true')
+                                 
+                                input.form-control(type='text', id="middlename" name='middlename')
                             .col-md-4
                               .form-group
                                 label.control-label
@@ -388,7 +388,7 @@ html(lang='en')
         $('.searchButton').click(function(){
           var searchBar = $('#searchBar').val();
             console.log(searchBar)
-            $.post('frontdesk/frontdesk/search',{searchBar:searchBar})
+            $.post('/frontdesk/search',{searchBar:searchBar})
           .done(data=>{
             $('#viewAppend').append(`
                   <div class="row">
