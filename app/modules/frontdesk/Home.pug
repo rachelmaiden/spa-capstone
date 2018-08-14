@@ -82,7 +82,7 @@ html(lang='en')
             .modal-content
               .modal-header
                 h5.modal-title
-                  center Registration 
+                  center New Customer 
                 button.close(type='button', data-dismiss='modal', aria-label='Close') X
               .modal-body(style="overflow-y:auto; height: 500px;")
                 #wizardCard.card-wizard.nav-pills-blue
@@ -95,8 +95,9 @@ html(lang='en')
                           a(href='#tab2', data-toggle='tab') Loyalty Membership
                       .tab-content
                         #tab1.tab-pane
-                          br
-                          br
+                          .row
+                            .col-md-2
+                              h3 Personal 
                           .row
                             .col-md-4
                               .form-group
@@ -122,7 +123,7 @@ html(lang='en')
                                 label.control-label
                                   | Birthday
                                   star *
-                                input.form-control.datepicker(type='date' name='birthday' id="calendar")
+                                input.form-control.datepicker(type='text' name='birthday' id="calendar")
                             .col-md-4
                               .form-group
                                 label.control-label
@@ -448,20 +449,38 @@ html(lang='en')
     demo.initCirclePercentage();
     });    
   script.
-    $('.datepicker').datetimepicker({
-      format: 'YYYY-MM-DD',
-      icons: {
-        time: "fa fa-clock-o",
-        date: "fa fa-calendar",
-        up: "fa fa-chevron-up",
-        down: "fa fa-chevron-down",
-        previous: 'fa fa-chevron-left',
-        next: 'fa fa-chevron-right',
-        today: 'fa fa-screenshot',
-        clear: 'fa fa-trash',
-        close: 'fa fa-remove'
-        }
+    $(function () {
+      var date = new Date()
+      var year = date.getFullYear()
+      var year2 = year - "18"
+      var year3 = new Date(year2, 00,01)
+      $('.datepicker').datetimepicker({
+        viewMode: 'years',
+        format: 'MM-DD-YYYY',
+        maxDate: year3,
+        icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+          },
+          widgetPositioning:{"horizontal":"auto",
+          "vertical":"auto"}
+        });
+    })
+
+        
+      $('.datepicker').on('dp.hide', function(event){
+        setTimeout(function(){
+          $('.datepicker').data('DateTimePicker').viewMode('years');
+        },1);
       });
+
     $().ready(function(){
       $('#registerFormValidation').validate();
       $('#loginFormValidation').validate();
@@ -480,4 +499,5 @@ html(lang='en')
       $('#stop-interval').on('click', function() {
           clearInterval(interval);
       });
+      $('#calendar').val('')
       });
