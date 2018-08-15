@@ -19,10 +19,10 @@ router.post("/frontdesk/login",(req, res) => {
 
 		db.query(query, (err, out) => {
  		if(!out[0])
-			return res.redirect("/frontdesk?notfound?")
+			return res.redirect("/frontdesk#notfound")
 		else {
 			if(out[0].admin_password !== req.body.admin_password)
-				return res.redirect("/frontdesk?incorrect")
+				return res.redirect("/frontdesk#incorrect")
 			else {
 				delete out[0].admin_password
 				req.session.user = out[0]	
@@ -64,6 +64,7 @@ router.post('/frontdesk/Home/newCustomer',(req, res) => {
   db.query(query, (err, out) => {
     if(out== undefined || out == 0)
     {
+    var alertSuccess = 1 ;
     const query = `
     insert into 
     customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
@@ -78,7 +79,10 @@ router.post('/frontdesk/Home/newCustomer',(req, res) => {
       console.log("NAGINSERT CHECK MO PA SA DB")
       console.log("----------------------------")
       console.log(query)
-      res.redirect('/frontdesk/Home')
+      console.log(alertSuccess)
+      res.render('frontdesk/Home',{
+        alertSuccess
+      })
     })
     }
     else if(out != undefined) 
