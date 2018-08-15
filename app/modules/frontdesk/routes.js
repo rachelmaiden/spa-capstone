@@ -169,6 +169,13 @@ router.get('/selectDate/:cust_id',mid.frontdesknauthed,(req, res) => {
 	})
 })
 
+router.get('/fdReservation', (req, res) => {
+  res.render('frontdesk/fdReservation')
+})
+
+router.get('/fdBookReservation', (req, res) => {
+  res.render('frontdesk/fdBookReservation')
+})
 
 
 
