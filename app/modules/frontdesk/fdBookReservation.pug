@@ -1,0 +1,338 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title MBAY Health Spa
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
+    // Social tags
+    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
+    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
+    // Schema.org markup for Google+
+    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
+    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
+    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Twitter Card data
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@creativetim')
+    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(name='twitter:creator', content='@creativetim')
+    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Open Graph data
+    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(property='og:type', content='article')
+    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
+    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(property='og:site_name', content='Creative Tim')
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // CSS for Demo Purpose, don't include it in your project
+    link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
+    link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+  body
+    .wrapper
+      .content
+        .col-lg-12.col-md-12
+          .card
+            .card-header
+              h4.card-title
+                strong Name: 
+              h5.category
+                strong Gender:
+              h5.category
+                strong *otherdetails*
+              br
+              br
+              h4.card-title
+                strong Room: 
+              br
+              h4.card-title
+                strong Time: 
+            .card-content
+              .nav-tabs-navigation
+                .nav-tabs-wrapper
+                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                    li.active
+                      a(href='#single', data-toggle='tab') Single
+                    li
+                      a(href='#multiple', data-toggle='tab') Multiple
+                    li
+                      a(href='#packages', data-toggle='tab') Packages
+              #my-tab-content.tab-content.text-center
+                #single.tab-pane.active
+                  .content
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          .card
+                            .card-content
+                              .toolbar
+                                // Here you can write extra buttons/actions for the toolbar
+                              table#bootstrap-table.table
+                                thead
+                                  tr
+                                    th.text-left(data-field='', data-checkbox='true')
+                                    th.text-left(data-field='id')
+                                    th.text-left(data-field='services', data-sortable='true')
+                                      strong  Services 
+                                    th.text-left(data-field='price', data-sortable='true')
+                                      strong Price
+                                    th.text-left(data-field='quantity', data-sortable='true')
+                                      strong Quantity
+                                    th.text-left(data-field='points', data-sortable='true')
+                                      strong Points
+                                    th.text-left.disabled-sorting(data-field='total', data-sortable='true')
+                                      strong Total
+                                    th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                      strong Therapist
+                                tbody
+                                  tr
+                                    td
+                                    td
+                                    td Body Massage (60 mins)
+                                    td ₱ 1,000.00
+                                    td
+                                      .row
+                                        .col-md-6
+                                          .form-group.has-default.bmd-form-group
+                                            input.form-control(type='number', placeholder='3')
+                                    td  3 Points
+                                    td  *total*
+                                    td
+                                      .col-sm-8
+                                        .dropdown
+                                          button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
+                                            | Select Therapist
+                                            b.caret
+                                          ul.dropdown-menu
+                                            li
+                                              a(href='#') Ninya Bolado
+                                            li
+                                              a(href='#') Gramar Lacsina
+                                  tr
+                                    td
+                                    td
+                                    td Foot Massage (60 mins)
+                                    td ₱ 5,000.00
+                                    td
+                                      .row
+                                        .col-md-6
+                                          .form-group.has-default.bmd-form-group
+                                            input.form-control(type='number', placeholder='3')
+                                    td  1 Points
+                                    td  *total*
+                                    td
+                                      .col-sm-4
+                                        .dropdown
+                                          button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
+                                            | Select Therapist
+                                            b.caret
+                                          ul.dropdown-menu
+                                            li
+                                              a(href='#') Ninya Bolado
+                                            li
+                                              a(href='#') Gramar Lacsina
+                                            li
+                                              a(href='#') Something else here
+                                            li.divider
+                                            li
+                                              a(href='#') Separated link
+                                            li.divider
+                                            li
+                                              a(href='#') One more separated link
+                          // end card
+                        // end col-md-12
+                      // end row
+                #multiple.tab-pane
+                  p Here is your profile.
+                #packages.tab-pane
+                  p Here are your messages.
+      #newReservation.modal.fade(tabindex='-1', role='dialog')
+        .modal-dialog.modal-lg(role='document')
+          .modal-content
+            .modal-header
+              h3.modal-title
+                center Select Date
+              button.close(type='button', data-dismiss='modal', aria-label='Close')
+            .modal-body
+              .content
+                .container-fluid
+                  .row
+                    .col-md-10.col-md-offset-1
+                      .card.card-calendar
+                        .card-content
+                          #fullCalendar
+            .modal-footer
+              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
+              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+      .row
+        .col-md-6
+          .card-header
+          .card-content
+        .col-md-6
+          .card-header
+          .card-content
+      .row
+        .col-md-6
+          .card-header
+            h4.card-title
+          .card-content
+        .col-md-6
+          .card-header
+          .card-content
+      .card-header
+        h4.card-title
+      .card-content
+        .row
+          .col-md-12
+        .row
+          .col-md-12
+        .row
+    footer.footer
+      .container-fluid
+        .copyright.pull-right
+          | © 
+          script.
+            document.write(new Date().getFullYear())
+          | , made with 
+          i.fa.fa-heart.heart
+          |  by 
+          a(href='#') TEAM MBAY
+    .fixed-plugin
+    // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+    script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+    // Forms Validations Plugin
+    script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+    // Promise Library for SweetAlert2 working on IE
+    script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+    // Plugin for Date Time Picker and Full Calendar Plugin
+    script(src='/assets/paperDashboardPro/js/moment.min.js')
+    // Date Time Picker Plugin is included in this js file
+    script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+    // Select Picker Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+    // Switch and Tags Input Plugins
+    script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+    // Circle Percentage-chart
+    script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+    // Charts Plugin
+    script(src='/assets/paperDashboardPro/js/chartist.min.js')
+    // Notifications Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+    // Sweet Alert 2 plugin
+    script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+    // Vector Map plugin
+    script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+    // Google Maps Plugin
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+    // Wizard Plugin
+    script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+    // Bootstrap Table Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+    // Plugin for DataTables.net
+    script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+    // Full Calendar Plugin
+    script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+    // Paper Dashboard PRO Core javascript and methods for Demo purpose
+    script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+    // Sharrre Library
+    script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+    // Paper Dashboard PRO DEMO methods, don't include it in your project!
+    script(src='/assets/paperDashboardPro/js/demo.js')
+    script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initOverviewDashboard();
+      demo.initCirclePercentage();
+      });
+    script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initWizard();
+      });
+    script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initFullCalendar();
+      });
+    script(type='text/javascript').
+      var $table = $('#bootstrap-table');
+      function operateFormatter(value, row, index) {
+      return [
+      '<div class="table-icons">',
+      '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
+      '<i class="ti-image"></i>',
+      '</a>',
+      '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
+      '<i class="ti-pencil-alt"></i>',
+      '</a>',
+      '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
+      '<i class="ti-close"></i>',
+      '</a>',
+      '</div>',
+      ].join('');
+      }
+      $().ready(function(){
+      window.operateEvents = {
+      'click .view': function (e, value, row, index) {
+      info = JSON.stringify(row);
+      swal('You click view icon, row: ', info);
+      console.log(info);
+      },
+      'click .edit': function (e, value, row, index) {
+      info = JSON.stringify(row);
+      swal('You click edit icon, row: ', info);
+      console.log(info);
+      },
+      'click .remove': function (e, value, row, index) {
+      console.log(row);
+      $table.bootstrapTable('remove', {
+      field: 'id',
+      values: [row.id]
+      });
+      }
+      };
+      $table.bootstrapTable({
+      toolbar: ".toolbar",
+      clickToSelect: true,
+      showRefresh: true,
+      search: true,
+      showToggle: true,
+      showColumns: true,
+      pagination: true,
+      searchAlign: 'left',
+      pageSize: 8,
+      clickToSelect: false,
+      pageList: [8,10,25,50,100],
+      formatShowingRows: function(pageFrom, pageTo, totalRows){
+      //do nothing here, we don't want to show the text "showing x of y from..."
+      },
+      formatRecordsPerPage: function(pageNumber){
+      return pageNumber + "";
+      },
+      icons: {
+      refresh: 'fa fa-refresh',
+      toggle: 'fa fa-th-list',
+      columns: 'fa fa-columns',
+      detailOpen: 'fa fa-plus-circle',
+      detailClose: 'ti-close'
+      }
+      });
+      //activate the tooltips after the data table is initialized
+      $('[rel="tooltip"]').tooltip();
+      $(window).resize(function () {
+      $table.bootstrapTable('resetView');
+      });
+      });
