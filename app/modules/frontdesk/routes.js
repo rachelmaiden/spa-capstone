@@ -4,9 +4,14 @@ var db = require('../../lib/database')();
 var mid = require("../../middlewares")
 
 // [FRONTDESK-HOME]
-router.get('/frontdesk/fdRegistration',mid.frontdesknauthed,(req,res)=>{
-  res.render('frontdesk/fdRegistration')
-})
+router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
+  const query = ` select * from customer_tbl where delete_stats=0`
+  db.query(query,(err,out) =>{
+      res.render('frontdesk/registration',{
+        customers: out
+      })
+    })
+  })
 
 // [FRONT DESK - LOGIN PAGE] 
 router.get('/frontdesk', (req, res) => {
@@ -26,11 +31,12 @@ router.post("/frontdesk/login",(req, res) => {
 			else {
 				delete out[0].admin_password
 				req.session.user = out[0]	
-				return res.redirect("/frontdesk/fdRegistration")
+				return res.redirect("/frontdesk/home")
 			}
 		}
 
-	})
+  })
+})
 // [LOG OUT]
 router.post("/frontdesk/logout", (req, res) => {
   req.session.destroy(err => {
@@ -40,36 +46,37 @@ router.post("/frontdesk/logout", (req, res) => {
 })
   
 
-// [SEARCH]
-router.post('/frontdesk/search', (req, res) => {
-  console.log(req.body.searchBar)
-  const query= `SELECT * FROM customer_tbl WHERE
-  cust_fname LIKE '%${req.body.searchBar}%' OR
-  cust_mname LIKE '%${req.body.searchBar}%' OR
-  cust_lname LIKE '%${req.body.searchBar}%' OR
-  CONCAT(cust_fname," ",cust_lname)  = '${req.body.searchBar}' AND delete_stats=0
-  `
-  db.query(query, (err,out)=>{
-    res.send({out:out})
-    console.log(query)
-    console.log(out)
-  })
-})
+// // [SEARCH]
+// router.post('/frontdesk/search', (req, res) => {
+//   console.log(req.body.searchBar)
+//   const query= `SELECT * FROM customer_tbl WHERE
+//   cust_fname LIKE '%${req.body.searchBar}%' OR
+//   cust_mname LIKE '%${req.body.searchBar}%' OR
+//   cust_lname LIKE '%${req.body.searchBar}%' OR
+//   CONCAT(cust_fname," ",cust_lname)  = '${req.body.searchBar}' AND delete_stats=0
+//   `
+//   db.query(query, (err,out)=>{
+//     res.send({out:out})
+//     console.log(query)
+//     console.log(out)
+//   })
+// })
 
-//[ADD NEW CUSTOMER]
-router.post('/frontdesk/Home/newCustomer',(req, res) => {
+// [ADD NEW CUSTOMER]
+router.post('/frontdesk/home/newCustomer',(req, res) => {
   const query= `select * from customer_tbl where cust_fname LIKE "%${req.body.firstname}%" and cust_lname LIKE "%${req.body.lastname}%" 
-  and cust_birthMonth LIKE "%${req.body.month}%" and cust_birthDate LIKE "%${req.body.date}%" and cust_birthYear LIKE "%${req.body.year}%"`
+  and cust_birthMonth LIKE "%${req.body.month}%" and cust_birthDate LIKE "%${req.body.date}%" and cust_birthYear LIKE "%${req.body.year}%" and cust_address LIKE "%${req.body.address}%"`
   
   db.query(query, (err, out) => {
     if(out== undefined || out == 0)
     {
     var alertSuccess = 1 ;
+    var notSuccess = 0
     const query = `
     insert into 
-    customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, address_house_no,address_street_name,address_admin_district,address_city, cust_contact_no, cust_gender, medical_history, delete_stats) 
+    customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, cust_address,cust_contact_no, cust_gender, medical_history, delete_stats, cust_type) 
     values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
-    "${req.body.house_no}","${req.body.street_name}","${req.body.brgy_district}","${req.body.city}", "${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0)
+    "${req.body.address}","${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0,0)
     `
 
     db.query(query, (err, out) => {
@@ -80,9 +87,8 @@ router.post('/frontdesk/Home/newCustomer',(req, res) => {
       console.log("----------------------------")
       console.log(query)
       console.log(alertSuccess)
-      res.render('frontdesk/Home',{
-        alertSuccess
-      })
+      // return res.redirect("/frontdesk/home#success")
+      res.send({alertSuccess:alertSuccess})
     })
     }
     else if(out != undefined) 
@@ -93,11 +99,60 @@ router.post('/frontdesk/Home/newCustomer',(req, res) => {
         console.log("----------------------------")
         console.log("DI NAGINSERT CHECK MO PA SA DB")
         console.log("----------------------------")
-        return res.redirect("/frontdesk/Home?customeralreadyexist?")
+
+        res.send({alertSuccess:notSuccess})
+        // return res.redirect("/frontdesk/home#customeralreadyexist")
       })
     }
   })
 })
+
+//[ADD NEW CUSTOMER - LOYALTY]
+router.post('/frontdesk/home/newCustomer/Loyalty',(req, res) => {
+  var cust_id;
+  const query= `select * from customer_tbl where cust_fname LIKE "%${req.body.firstname}%" and cust_lname LIKE "%${req.body.lastname}%" 
+  and cust_birthMonth LIKE "%${req.body.month}%" and cust_birthDate LIKE "%${req.body.date}%" and cust_birthYear LIKE "%${req.body.year}%" and cust_address LIKE "%${req.body.address}%"`
+  
+  db.query(query, (err, out) => {
+    if(out== undefined || out == 0)
+    {
+      const query = `select * from loyalty_tbl where member_username = "${req.body.username}"`
+      db.query(query, (err,out)=>{
+        if(out== undefined || out ==0)
+        {
+          var alertSuccess = 1 ;
+          var notSuccess= 0;
+          const query = `
+          insert into 
+          customer_tbl(cust_fname,cust_mname, cust_lname, cust_birthMonth, cust_birthDate, cust_birthYear, cust_address,cust_contact_no, cust_gender, medical_history, delete_stats,cust_type) 
+          values("${req.body.firstname}","${req.body.middlename}","${req.body.lastname}", "${req.body.month}","${req.body.date}","${req.body.year}", 
+          "${req.body.address}","${req.body.contact_no}", "${req.body.gender}", "${req.body.medical_history}",0,1)
+          `
+      
+          db.query(query, (err, out) => {
+            cust_id= out.insertId;
+            db.query(`insert into loyalty_tbl(cust_id,member_username, member_password) value("${cust_id}","${req.body.username}","${req.body.password}")`, (err,out)=>{
+              
+              // return res.redirect("/frontdesk/home#success")
+              res.send({alertSuccess: alertSuccess})
+            })
+          })
+        }
+        else if(out != undefined)
+        {
+          db.query(query, (err, out) => {
+            res.send({alertSuccess: notSuccess})
+          })
+        }
+      })
+    }
+    else if(out != undefined) 
+    {
+      db.query(query, (err, out) => {
+        res.send({alertSuccess:notSuccess})
+      })
+    }
+  })
 })
 
 
@@ -118,15 +173,6 @@ router.get('/reservation',mid.frontdesknauthed,(req, res) => {
   SELECT * FROM therapist_tbl where delete_stats=0 and therapist_availability= 0;
   SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
   
-  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
-  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
-  // SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  // on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  // on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
   db.query(query,(err,out) =>{
       res.render('frontdesk/reservation',{
         services: out[0],
@@ -173,8 +219,11 @@ router.get('/fdReservation', (req, res) => {
   res.render('frontdesk/fdReservation')
 })
 
-router.get('/fdBookReservation', (req, res) => {
-  res.render('frontdesk/fdBookReservation')
+router.get('/fdHome', (req, res) => {
+  res.render('frontdesk/Home')
+})
+router.get('/bookreservation', (req, res) => {
+  res.render('frontdesk/bookreservation')
 })
 
 

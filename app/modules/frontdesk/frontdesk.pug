@@ -167,16 +167,27 @@ html(lang='en')
     script(src='/assets/paperkit/assets/js/presentation-page/main.js')
     // Sharrre libray
     script(src='/assets/paperkit/assets/demo/jquery.sharrre.js')
+    script(src='/assets/paperkit/assets/js/sweetalert.js')
     script.
       $(document).ready(function() {
         var type = window.location.hash.substr(1);
         if(type == "notfound")
         {
-          alert("USER NOT FOUND")
+          swal({
+              title:'Oooopsss', 
+              text:'User is not found', 
+              icon:'warning'
+              }).then(function(){
+                location.href='/frontdesk'
+              })
         }
         else if(type=="incorrect")
         {
-          alert("INCORRECT PASSWORD")
+          swal({
+              title:'Oooopsss', 
+              text:'Incorrect Password or Username', 
+              icon:'warning'
+              })
         }
       })
     //- script.
