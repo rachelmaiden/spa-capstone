@@ -60,12 +60,6 @@ html(lang='en')
       })(window, document, 'script', 'dataLayer', 'GTM-NKDMSK6');
     // End Google Tag Manager
   body.register-page.full-screen.sidebar-collapse
-    // Extra details for Live View on GitHub Pages
-    // Google Tag Manager (noscript)
-    noscript
-      iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6', height='0', width='0', style='display:none;visibility:hidden')
-    // End Google Tag Manager (noscript)
-    // Navbar
     nav.navbar.navbar-expand-lg.bg-white.fixed-top.nav-down.navbar-transparent(color-on-scroll='500')
       .container
         .navbar-translate
@@ -121,6 +115,9 @@ html(lang='en')
                 form#loginFormValidation(method='POST', action='frontdesk/login')
                   .form-group
                     hr
+                    div(style="color: red")
+                    if is_notfound || is_incorrect || is_noninput
+                      strong #{is_notfound || is_incorrect || is_noninput}
                     label.control-label
                       | Username
                       star *
@@ -170,12 +167,35 @@ html(lang='en')
     script(src='/assets/paperkit/assets/js/presentation-page/main.js')
     // Sharrre libray
     script(src='/assets/paperkit/assets/demo/jquery.sharrre.js')
+    script(src='/assets/paperkit/assets/js/sweetalert.js')
     script.
-      $().ready(function(){
-        $('#registerFormValidation').validate();
-        $('#loginFormValidation').validate();
-        $('#allInputsFormValidation').validate();
-          });
+      $(document).ready(function() {
+        var type = window.location.hash.substr(1);
+        if(type == "notfound")
+        {
+          swal({
+              title:'Oooopsss', 
+              text:'User is not found', 
+              icon:'warning'
+              }).then(function(){
+                location.href='/frontdesk'
+              })
+        }
+        else if(type=="incorrect")
+        {
+          swal({
+              title:'Oooopsss', 
+              text:'Incorrect Password or Username', 
+              icon:'warning'
+              })
+        }
+      })
+    //- script.
+    //-   $().ready(function(){
+    //-     $('#registerFormValidation').validate();
+    //-     $('#loginFormValidation').validate();
+    //-     $('#allInputsFormValidation').validate();
+    //-       });
     script.
       $(document).ready(function() {
       var _gaq = _gaq || [];

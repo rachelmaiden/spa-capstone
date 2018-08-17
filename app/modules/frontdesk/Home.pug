@@ -66,7 +66,7 @@ html(lang='en')
             li
               a#time-part(style="color: white") 
             li
-              a.logout Log Out
+              a.logout(style="cursor: pointer;") Log Out
     .wrapper.wrapper-full-page
       .full-page.login-page(data-color='home', style=("background-image: url('/assets/paperDashboardPro/img/spaimg.jpg'); background-size: cover; background-repeat: no-repeat;"))
         // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
@@ -357,6 +357,9 @@ html(lang='en')
           city:$('#city').val(),
           medical_history:$('#medical_history').val(),
           newDate, year, month, date
+        }).done(function(){
+          var alertSuccess = `${varSuccess}`
+          alert(alertSuccess)
         })
       })
     })
