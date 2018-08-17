@@ -10,27 +10,6 @@ html(lang='en')
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     meta(name='viewport', content='width=device-width')
-    // Social tags
-    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
-    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
-    // Schema.org markup for Google+
-    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
-    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
-    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
-    // Twitter Card data
-    meta(name='twitter:card', content='summary_large_image')
-    meta(name='twitter:site', content='@creativetim')
-    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
-    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
-    meta(name='twitter:creator', content='@creativetim')
-    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
-    // Open Graph data
-    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
-    meta(property='og:type', content='article')
-    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
-    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
-    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
-    meta(property='og:site_name', content='Creative Tim')
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
@@ -43,173 +22,218 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
   body
     .wrapper
-      .content
-        .col-lg-12.col-md-12
-          .card
-            .card-header
-              h4.card-title
-                strong Name: 
-              h5.category
-                strong Gender:
-              h5.category
-                strong *otherdetails*
-              br
-              br
-              h4.card-title
-                strong Room: 
-              br
-              h4.card-title
-                strong Time: 
-            .card-content
-              .nav-tabs-navigation
-                .nav-tabs-wrapper
-                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
-                    li.active
-                      a(href='#single', data-toggle='tab') Single
+      .sidebar(data-active-color='spa', style='color: white')
+        //
+          Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
+          Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        .logo
+          a.simple-text.logo-mini(href='http://www.creative-tim.com')
+            | CT
+          a.simple-text.logo-normal(href='http://www.creative-tim.com')
+            | MBAY Health Spa
+        .sidebar-wrapper
+          .user
+            .info
+              .photo
+                img(src='../paperDashboardPro/img/faces/face-2.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
+                span
+                  | Front Desk
+              .clearfix
+          ul.nav
+            li
+              a(href='./fdRegistration.html')
+                i.ti-pencil
+                p
+                  | Registration
+            li.active
+              a(href='./fdReservation.html')
+                i.ti-calendar
+                p
+                  | Reservation
+      .main-panel
+        nav.navbar.navbar-default
+          .container-fluid
+            .navbar-minimize
+              button#minimizeSidebar.btn.btn-fill.btn-icon
+                i.ti-more-alt
+            .navbar-header
+              button.navbar-toggle(type='button')
+                span.sr-only Toggle navigation
+                span.icon-bar.bar1
+                span.icon-bar.bar2
+                span.icon-bar.bar3
+              a.navbar-brand(href='#Dashboard')
+                | Overview
+            .collapse.navbar-collapse
+              form.navbar-form.navbar-left.navbar-search-form(role='search')
+                .input-group
+                  span.input-group-addon
+                    i.fa.fa-search
+                  input.form-control(type='text', value='', placeholder='Search...')
+              ul.nav.navbar-nav.navbar-right
+                li
+                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
+                    i.ti-panel
+                    p Stats
+                li.dropdown
+                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
+                    i.ti-bell
+                    span.notification 5
+                    p.hidden-md.hidden-lg
+                      | Notifications
+                      b.caret
+                  ul.dropdown-menu
                     li
-                      a(href='#multiple', data-toggle='tab') Multiple
+                      a(href='#not1') Notification 1
                     li
-                      a(href='#packages', data-toggle='tab') Packages
-              #my-tab-content.tab-content.text-center
-                #single.tab-pane.active
-                  .content
-                    .container-fluid
-                      .row
-                        .col-md-12
-                          .card
-                            .card-content
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              table#bootstrap-table.table
-                                thead
-                                  tr
-                                    th.text-left(data-field='', data-checkbox='true')
-                                    th.text-left(data-field='id')
-                                    th.text-left(data-field='services', data-sortable='true')
-                                      strong  Services 
-                                    th.text-left(data-field='price', data-sortable='true')
-                                      strong Price
-                                    th.text-left(data-field='quantity', data-sortable='true')
-                                      strong Quantity
-                                    th.text-left(data-field='points', data-sortable='true')
-                                      strong Points
-                                    th.text-left.disabled-sorting(data-field='total', data-sortable='true')
-                                      strong Total
-                                    th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
-                                      strong Therapist
-                                tbody
-                                  tr
-                                    td
-                                    td
-                                    td Body Massage (60 mins)
-                                    td ₱ 1,000.00
-                                    td
-                                      .row
-                                        .col-md-6
-                                          .form-group.has-default.bmd-form-group
-                                            input.form-control(type='number', placeholder='3')
-                                    td  3 Points
-                                    td  *total*
-                                    td
-                                      .col-sm-8
-                                        .dropdown
-                                          button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
-                                            | Select Therapist
-                                            b.caret
-                                          ul.dropdown-menu
-                                            li
-                                              a(href='#') Ninya Bolado
-                                            li
-                                              a(href='#') Gramar Lacsina
-                                  tr
-                                    td
-                                    td
-                                    td Foot Massage (60 mins)
-                                    td ₱ 5,000.00
-                                    td
-                                      .row
-                                        .col-md-6
-                                          .form-group.has-default.bmd-form-group
-                                            input.form-control(type='number', placeholder='3')
-                                    td  1 Points
-                                    td  *total*
-                                    td
-                                      .col-sm-4
-                                        .dropdown
-                                          button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
-                                            | Select Therapist
-                                            b.caret
-                                          ul.dropdown-menu
-                                            li
-                                              a(href='#') Ninya Bolado
-                                            li
-                                              a(href='#') Gramar Lacsina
-                                            li
-                                              a(href='#') Something else here
-                                            li.divider
-                                            li
-                                              a(href='#') Separated link
-                                            li.divider
-                                            li
-                                              a(href='#') One more separated link
-                          // end card
-                        // end col-md-12
-                      // end row
-                #multiple.tab-pane
-                  p Here is your profile.
-                #packages.tab-pane
-                  p Here are your messages.
-      #newReservation.modal.fade(tabindex='-1', role='dialog')
-        .modal-dialog.modal-lg(role='document')
-          .modal-content
-            .modal-header
-              h3.modal-title
-                center Select Date
-              button.close(type='button', data-dismiss='modal', aria-label='Close')
-            .modal-body
-              .content
-                .container-fluid
-                  .row
-                    .col-md-10.col-md-offset-1
-                      .card.card-calendar
-                        .card-content
-                          #fullCalendar
-            .modal-footer
-              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
-              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-      .row
-        .col-md-6
-          .card-header
-          .card-content
-        .col-md-6
-          .card-header
-          .card-content
-      .row
-        .col-md-6
-          .card-header
-            h4.card-title
-          .card-content
-        .col-md-6
-          .card-header
-          .card-content
-      .card-header
-        h4.card-title
-      .card-content
-        .row
-          .col-md-12
-        .row
-          .col-md-12
-        .row
-    footer.footer
-      .container-fluid
-        .copyright.pull-right
-          | © 
-          script.
-            document.write(new Date().getFullYear())
-          | , made with 
-          i.fa.fa-heart.heart
-          |  by 
-          a(href='#') TEAM MBAY
+                      a(href='#not2') Notification 2
+                    li
+                      a(href='#not3') Notification 3
+                    li
+                      a(href='#not4') Notification 4
+                    li
+                      a(href='#another') Another notification
+                li
+                  a.btn-rotate(href='#settings')
+                    i.ti-settings
+                    p.hidden-md.hidden-lg
+                      | Settings
+        .content
+          .col-lg-12.col-md-12
+            .card
+              .card-header
+                h4.card-title
+                  strong Name: 
+                h5.category
+                  strong Gender:
+                h5.category
+                  strong *otherdetails*
+                br
+                br
+                h4.card-title
+                  strong Room: 
+                br
+                h4.card-title
+                  strong Time: 
+              .card-content
+                .nav-tabs-navigation
+                  .nav-tabs-wrapper
+                    ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                      li.active
+                        a(href='#single', data-toggle='tab') Single
+                      li
+                        a(href='#multiple', data-toggle='tab') Multiple
+                      li
+                        a(href='#packages', data-toggle='tab') Packages
+                #my-tab-content.tab-content.text-center
+                  #single.tab-pane.active
+                    .content
+                      .container-fluid
+                        .row
+                          .col-md-12
+                            .card
+                              .card-content
+                                .toolbar
+                                  // Here you can write extra buttons/actions for the toolbar
+                                table#bootstrap-table.table
+                                  thead
+                                    tr
+                                      th.text-left(data-field='', data-checkbox='true')
+                                      th.text-left(data-field='id')
+                                      th.text-left(data-field='services', data-sortable='true')
+                                        strong  Services 
+                                      th.text-left(data-field='price', data-sortable='true')
+                                        strong Price
+                                      th.text-left(data-field='quantity', data-sortable='true')
+                                        strong Quantity
+                                      th.text-left(data-field='points', data-sortable='true')
+                                        strong Points
+                                      th.text-left.disabled-sorting(data-field='total', data-sortable='true')
+                                        strong Total
+                                      th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                        strong Therapist
+                                  tbody
+                                    tr
+                                      td
+                                      td
+                                      td Body Massage (60 mins)
+                                      td ₱ 1,000.00
+                                      td
+                                        .row
+                                          .col-md-6
+                                            .form-group.has-default.bmd-form-group
+                                              input.form-control(type='number', placeholder='3')
+                                      td  3 Points
+                                      td  *total*
+                                      td
+                                        .col-sm-8
+                                          .dropdown
+                                            button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
+                                              | Select Therapist
+                                              b.caret
+                                            ul.dropdown-menu
+                                              li
+                                                a(href='#') Ninya Bolado
+                                              li
+                                                a(href='#') Gramar Lacsina
+                                    tr
+                                      td
+                                      td
+                                      td Foot Massage (60 mins)
+                                      td ₱ 5,000.00
+                                      td
+                                        .row
+                                          .col-md-6
+                                            .form-group.has-default.bmd-form-group
+                                              input.form-control(type='number', placeholder='3')
+                                      td  1 Points
+                                      td  *total*
+                                      td
+                                        .col-sm-4
+                                          .dropdown
+                                            button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
+                                              | Select Therapist
+                                              b.caret
+                                            ul.dropdown-menu
+                                              li
+                                                a(href='#') Ninya Bolado
+                                              li
+                                                a(href='#') Gramar Lacsina
+                                              li
+                                                a(href='#') Something else here
+                                              li.divider
+                                              li
+                                                a(href='#') Separated link
+                                              li.divider
+                                              li
+                                                a(href='#') One more separated link
+                            // end card
+                          // end col-md-12
+                        // end row
+                  #multiple.tab-pane
+                    p Here is your profile.
+                  #packages.tab-pane
+                    p Here are your messages.
+        #newReservation.modal.fade(tabindex='-1', role='dialog')
+          .modal-dialog.modal-lg(role='document')
+            .modal-content
+              .modal-header
+                h3.modal-title
+                  center Select Date
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+              .modal-body
+                .content
+                  .container-fluid
+                    .row
+                      .col-md-10.col-md-offset-1
+                        .card.card-calendar
+                          .card-content
+                            #fullCalendar
+              .modal-footer
+                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
+                button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+       
     .fixed-plugin
     // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
     script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
