@@ -144,6 +144,7 @@ html(lang='en')
                                             input.checkbox(type='checkbox' value=`${service.service_id}`)
                                             
                                           td= service.service_name
+                                            input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
                                           td= service.service_duration_desc+" minutes"
                                             input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
                                           td
@@ -230,16 +231,8 @@ html(lang='en')
                                 strong  Quantity
                               th
                                 strong Duration 
-                          tbody
+                          tbody#viewServices
                             
-                              tr
-                                td
-                                td
-                                td
-                                td
-                                td
-                                td
-                                td
               .modal-footer
                 button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
                 button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -288,6 +281,22 @@ html(lang='en')
     script(src='/assets/paperDashboardPro/js/demo.js')
     script.
       $('.buttonSummary').click(function(){
+        $('.checkbox:checked').each(function(){
+          var id = $(this).val()
+          var serviceName = $(`.name[id='${id}']`).val()
+          var quantity= $(`.quantity[service_id='${id}'`).text()
+          var total = $(`.total[service_id='${id}']`).text()
+          $('#viewServices').append(`
+            <tr>
+            <td></td>       
+            <td>${serviceName}</td>
+            <td>${quantity}</td>
+            <td>${total}</td>
+            `)
+          $('#reservationSummary').on('hidden.bs.modal', function (){
+            $('#viewServices').empty()
+          })
+        })
         $('#reservationSummary').modal('show')
         var Name = $('#name').text()
         var Gender = $('#gender').text()
@@ -364,13 +373,12 @@ html(lang='en')
 
           function recalculate(){
               var sum = 0;                                                          
+              var duration = 0
             $(".checkbox:checked").each(function(){
               var id= $(this).val()
               var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
               var minutes = $(`.duration[id='${id}']`).val() % 60;
               var points = $(`.points[id='${id}']`).val()
-              var duration = 0
-              alert(duration)
               if(minutes==0)
               {
                 var newDuration = "0"+hours+":"+minutes+"0"
