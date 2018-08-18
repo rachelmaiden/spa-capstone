@@ -6,8 +6,6 @@ html(lang='en')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/assets/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title Online Booking and Spa Management System
-    // Canonical SEO
-    link(rel='canonical', href='https://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     meta(name='viewport', content='width=device-width')
     // Bootstrap core CSS
@@ -20,19 +18,7 @@ html(lang='en')
     link(href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
-    // Google Tag Manager
-    script.
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-      })(window,document,'script','dataLayer','GTM-NKDMSK6');
-    // End Google Tag Manager
   body.sidebar-mini
-    // Google Tag Manager (noscript)
-    noscript
-      iframe(src='https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6', height='0', width='0', style='display:none;visibility:hidden')
-    // End Google Tag Manager (noscript)
     .wrapper
       .sidebar(data-background-color='white', data-active-color='spa')
         //
@@ -54,150 +40,15 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='./admindashboard')
-                i.ti-dashboard
+              a(href='./home')
+                i.ti-pencil
                 p
-                  | Dashboard
-            li
-              a(data-toggle='collapse', href='#componentsExamples')
-                i.ti-clipboard
+                  | Registration
+            li.active
+              a(href='./fdReservation')
+                i.ti-calendar
                 p
-                  | Maintenance
-                  b.caret
-              #componentsExamples.collapse
-                ul.nav
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#services')
-                      p
-                        span.sidebar-mini S
-                        | Services
-                        b(style="margin-right: 30px").caret
-                    #services.collapse
-                      ul.nav
-                        li(style="margin-left: 30px")
-                          a(href='./adminServiceType')
-                            span.sidebar-normal Service Type
-                        li(style="margin-left: 30px")
-                          a(href='./adminServices')
-                            span.sidebar-normal Services
-                        li(style="margin-left: 30px")
-                          a(href='./adminServiceDuration')
-                            span.sidebar-normal Service Duration
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#therapist')
-                      p
-                        span.sidebar-mini T
-                        | Therapist
-                        b(style="margin-right: 30px").caret
-                    #therapist.collapse
-                      ul.nav
-                        li(style="margin-left: 30px")
-                          a(href='./adminTherapist')
-                            span.sidebar-normal Therapist
-                        li(style="margin-left: 30px")
-                          a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#amenities')
-                      p
-                        | Amenities
-                        span.sidebar-mini A
-                        b(style="margin-right: 30px").caret
-                    #amenities.collapse
-                      ul.nav    
-                        li(style="margin-left: 30px")
-                          a(href='./adminAmenities')
-                            span.sidebar-normal Amenities
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#promos')
-                      p
-                        span.sidebar-mini P
-                        | Promos
-                        b(style="margin-right: 30px").caret
-                    #promos.collapse
-                      ul.nav
-                        li(style="margin-left: 30px")
-                          a(href='./adminPromos')
-                            span.sidebar-normal Promos
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#rooms')
-                      p
-                        span.sidebar-mini R
-                        | Rooms
-                        b(style="margin-right: 30px").caret
-                    #rooms.collapse
-                      ul.nav
-                        li(style="margin-left: 30px")
-                          a(href='./adminRoomType')
-                            span.sidebar-normal Room Type
-                        li(style="margin-left: 30px")
-                          a(href='./adminRooms')
-                            span.sidebar-normal Rooms
-                  li(style="margin-left: 5px;")
-                    a(data-toggle='collapse', href='#freebies')
-                      p
-                        span.sidebar-mini F
-                        | Freebies
-                        b(style="margin-right: 30px").caret
-                    #freebies.collapse
-                      ul.nav
-                        li(style="margin-left: 30px")
-                          a(href='./adminFreebies')
-                            span.sidebar-normal Freebies    
-
-                  //-li
-                    a(href='#')
-                      span.sidebar-mini Q
-                      span.sidebar-normal Queue
-            li
-              a(data-toggle='collapse', href='#tablesExamples')
-                i.ti-panel
-                p
-                  | Transaction
-                  b.caret
-              #tablesExamples.collapse
-                ul.nav
-                  li
-                    a(href='./adminCustomer')
-                      span.sidebar-mini R
-                      span.sidebar-normal Registration
-                  li
-                    a(href='./adminReservation')
-                      span.sidebar-mini R
-                      span.sidebar-normal Reservations
-                  li
-                    a(href='#')
-                      span.sidebar-mini W
-                      span.sidebar-normal Walk-in
-                  li
-                    a(href='./adminQueue')
-                      span.sidebar-mini Q
-                      span.sidebar-normal Queue
-            li
-              a(data-toggle='collapse')
-                i.ti-settings
-                p
-                  | Utilities
-            li
-              a(data-toggle='collapse', href='#sales')
-                i.ti-bar-chart-alt
-                p
-                  | Sales
-                  b.caret
-              #sales.collapse
-                ul.nav
-                  li
-                    a(href='/assets/tables/regular.html')
-                      span.sidebar-mini D
-                      span.sidebar-normal Daily
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini M
-                      span.sidebar-normal Monthly
+                  | Reservation
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -219,32 +70,11 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
+                  a#date-part(style="color: black")
                 li
-                  a.btn-rotate(href='#settings')
-                    i.ti-settings
-                    p.hidden-md.hidden-lg
-                      | Settings
+                  a#time-part(style="color: black") 
+                li
+                  a.logout(style="cursor: pointer; color: black") Log Out
         .content
           .container-fluid
             .row
@@ -313,7 +143,22 @@ html(lang='en')
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
           var newDate= date.format('MM-DD-YYYY')
-          location.href= `/reservation?date=${newDate}`
+          location.href= `/selectTime?date=${newDate}`
         }
       })
     });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      //- $('#calendar').val('')
+      });

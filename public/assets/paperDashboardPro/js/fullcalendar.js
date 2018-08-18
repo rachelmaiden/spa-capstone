@@ -14930,6 +14930,7 @@ ViewRegistry_1.defineView('month', {
 /* 261 */
 /***/ (function(module, exports, __webpack_require__) {
 
+    // [CHANGE TIME DISPLAY]
 Object.defineProperty(exports, "__esModule", { value: true });
 var ViewRegistry_1 = __webpack_require__(22);
 var AgendaView_1 = __webpack_require__(226);

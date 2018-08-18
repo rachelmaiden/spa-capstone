@@ -20,7 +20,7 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
-  body
+  body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
         //
@@ -28,7 +28,7 @@ html(lang='en')
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
           a.simple-text.logo-mini(href='http://www.creative-tim.com')
-            | CT
+            | FD
           a.simple-text.logo-normal(href='http://www.creative-tim.com')
             | MBAY Health Spa
         .sidebar-wrapper
@@ -42,12 +42,12 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='./fdRegistration.html')
+              a(href='./frontdesk/home')
                 i.ti-pencil
                 p
                   | Registration
             li.active
-              a(href='./fdReservation.html')
+              a(href='#')
                 i.ti-calendar
                 p
                   | Reservation
@@ -73,49 +73,31 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
+                  a#date-part(style="color: black")
                 li
-                  a.btn-rotate(href='#settings')
-                    i.ti-settings
-                    p.hidden-md.hidden-lg
-                      | Settings
+                  a#time-part(style="color: black") 
+                li
+                  a.logout(style="cursor: pointer; color: black") Log Out
         .content
           .col-lg-12.col-md-12
             .card
               .card-header
-                h4.card-title
-                  strong Name: 
-                h5.category
-                  strong Gender:
-                h5.category
-                  strong *otherdetails*
+                each customer in customers
+                  h4.card-title
+                    strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                  h5.category
+                    strong#gender= "Gender: "+ customer.cust_gender
+                  h5.category
+                    strong= "Medical History: "+customer.medical_history
                 br
                 br
                 h4.card-title
-                  strong Room: 
+                  strong#room= `Room: ${room}` 
                 br
                 h4.card-title
-                  strong Time: 
+                  strong#date= `Date: ${date}`
+                  br
+                  strong#time= `Time: ${time}`
               .card-content
                 .nav-tabs-navigation
                   .nav-tabs-wrapper
@@ -126,7 +108,7 @@ html(lang='en')
                         a(href='#multiple', data-toggle='tab') Multiple
                       li
                         a(href='#packages', data-toggle='tab') Packages
-                #my-tab-content.tab-content.text-center
+                #my-tab-content.tab-content
                   #single.tab-pane.active
                     .content
                       .container-fluid
@@ -136,78 +118,67 @@ html(lang='en')
                               .card-content
                                 .toolbar
                                   // Here you can write extra buttons/actions for the toolbar
-                                table#bootstrap-table.table
-                                  thead
-                                    tr
-                                      th.text-left(data-field='', data-checkbox='true')
-                                      th.text-left(data-field='id')
-                                      th.text-left(data-field='services', data-sortable='true')
-                                        strong  Services 
-                                      th.text-left(data-field='price', data-sortable='true')
-                                        strong Price
-                                      th.text-left(data-field='quantity', data-sortable='true')
-                                        strong Quantity
-                                      th.text-left(data-field='points', data-sortable='true')
-                                        strong Points
-                                      th.text-left.disabled-sorting(data-field='total', data-sortable='true')
-                                        strong Total
-                                      th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
-                                        strong Therapist
-                                  tbody
-                                    tr
-                                      td
-                                      td
-                                      td Body Massage (60 mins)
-                                      td ₱ 1,000.00
-                                      td
-                                        .row
-                                          .col-md-6
-                                            .form-group.has-default.bmd-form-group
-                                              input.form-control(type='number', placeholder='3')
-                                      td  3 Points
-                                      td  *total*
-                                      td
-                                        .col-sm-8
-                                          .dropdown
-                                            button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
-                                              | Select Therapist
-                                              b.caret
-                                            ul.dropdown-menu
-                                              li
-                                                a(href='#') Ninya Bolado
-                                              li
-                                                a(href='#') Gramar Lacsina
-                                    tr
-                                      td
-                                      td
-                                      td Foot Massage (60 mins)
-                                      td ₱ 5,000.00
-                                      td
-                                        .row
-                                          .col-md-6
-                                            .form-group.has-default.bmd-form-group
-                                              input.form-control(type='number', placeholder='3')
-                                      td  1 Points
-                                      td  *total*
-                                      td
-                                        .col-sm-4
-                                          .dropdown
-                                            button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
-                                              | Select Therapist
-                                              b.caret
-                                            ul.dropdown-menu
-                                              li
-                                                a(href='#') Ninya Bolado
-                                              li
-                                                a(href='#') Gramar Lacsina
-                                              li
-                                                a(href='#') Something else here
-                                              li.divider
-                                              li
-                                                a(href='#') Separated link
-                                              li.divider
-                                              li
-                                                a(href='#') One more separated link
+                                .fresh-datatables
+                                  table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                    thead
+                                      tr
+                                        th
+                                        th
+                                          strong  Services 
+                                        th
+                                          strong  Duration
+                                        th
+                                          strong Price
+                                        th
+                                          strong Quantity
+                                        th
+                                          strong Points
+                                        th
+                                          strong Total
+                                        //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                        //-   strong Therapist
+                                    tbody
+                                      each service in services
+                                        tr
+                                          td
+                                            input.checkbox(type='checkbox' value=`${service.service_id}`)
+                                            
+                                          td= service.service_name
+                                          td= service.service_duration_desc+" minutes"
+                                            input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
+                                          td
+                                            input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                            span= service.service_price
+                                          td
+                                            span.quantity(service_id=`${service.service_id}`) 0
+                                          
+                                          input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
+                                          if(service.service_points==1|| service.service_points==0)
+                                            td= service.service_points+" "+"Point"
+                                          else if(service.service_points > 0)
+                                            td= service.service_points+" "+"Points"
+                                          td
+                                            span.total(service_id=`${service.service_id}`) 0.00
+                                          //- td
+                                          //-   .col-sm-8
+                                          //-     .dropdown
+                                          //-       button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
+                                          //-         | Select Therapist
+                                          //-         b.caret
+                                          //-       ul.dropdown-menu
+                                          //-         li
+                                          //-           a(href='#') Ninya Bolado
+                                          //-         li
+                                          //-           a(href='#') Gramar Lacsina
+                                    h4 Total: 
+                                      a(id="grandtotal") 0.00 
+                                    h4 Points: 
+                                      a(id="totalPoints") 0
+                                    h4 End Time:
+                                      a(id='totalDuration') 0  
+                            
+                            button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                            button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
                             // end card
                           // end col-md-12
                         // end row
@@ -215,21 +186,60 @@ html(lang='en')
                     p Here is your profile.
                   #packages.tab-pane
                     p Here are your messages.
-        #newReservation.modal.fade(tabindex='-1', role='dialog')
+        #reservationSummary.modal.fade(tabindex='-1', role='dialog')
           .modal-dialog.modal-lg(role='document')
             .modal-content
               .modal-header
                 h3.modal-title
-                  center Select Date
+                  center Reservation Summary
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
               .modal-body
-                .content
-                  .container-fluid
+                .col-lg-12.col-md-12
+                    h5.category
+                      strong#Name= "Name: "
+                    h5.category
+                      strong#Gender= "Gender: "
+                    h5.category
+                      strong#Room= `Room:` 
+                  
+                    h5.category
+                      strong#Date= `Date:`
                     .row
-                      .col-md-10.col-md-offset-1
-                        .card.card-calendar
-                          .card-content
-                            #fullCalendar
+                      .form-group
+                        .col-md-3
+                          h5.category
+                            strong#Time Start Time:
+                        .col-md-3
+                          h5.category
+                            strong End Time: 
+                  
+                    h5.category
+                        strong Total:
+                .row
+                    .col-md-12
+                      .card-content
+                        .toolbar
+                        .fresh-datatables
+                        table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                          thead
+                            tr
+                              th
+                              th
+                                strong  Services 
+                              th
+                                strong  Quantity
+                              th
+                                strong Duration 
+                          tbody
+                            
+                              tr
+                                td
+                                td
+                                td
+                                td
+                                td
+                                td
+                                td
               .modal-footer
                 button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
                 button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -259,11 +269,9 @@ html(lang='en')
     // Notifications Plugin
     script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
     // Sweet Alert 2 plugin
-    script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+    script(src='/assets/paperDashboardPro/js/sweetalert.js')
     // Vector Map plugin
     script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-    // Google Maps Plugin
-    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
     // Wizard Plugin
     script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
     // Bootstrap Table Plugin
@@ -278,6 +286,142 @@ html(lang='en')
     script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
     // Paper Dashboard PRO DEMO methods, don't include it in your project!
     script(src='/assets/paperDashboardPro/js/demo.js')
+    script.
+      $('.buttonSummary').click(function(){
+        $('#reservationSummary').modal('show')
+        var Name = $('#name').text()
+        var Gender = $('#gender').text()
+        var Room = $('#room').text()
+        var Date = $('#date').text()
+        var Time = $('#time').text()
+        $('#Name').text(Name)
+        $('#Gender').text(Gender)
+        $('#Room').text(Room)
+        $('#Date').text(Date)
+        $('#Time').text(Time)
+      })
+    script.
+      $(document).ready(function(){
+        $('.checkbox').on('change.bootstrapSwitch', function(e){
+          if(e.target.checked==true)
+          {
+            var qnty
+            var y=$(this).val()
+            var price = $(`.price[id='${y}']`).val()
+            //- var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
+            //- var minutes = $(`.duration[id='${y}']`).val() % 60;
+            var points = $(`.points[id='${y}']`).val()
+            //- if(minutes==0)
+            //- {
+            //-   var newDuration = "0"+hours+":"+minutes+"0"
+            //- }
+            //- else
+            //- {
+            //-   var newDuration = "0"+hours+":"+minutes
+            //- }
+            var quantity = prompt("Quantity")
+
+            if (quantity==null || quantity=="")
+            {
+              e.target.checked=false;
+            }
+            else
+            {
+              $(`.quantity[service_id='${y}']`).text(quantity)
+              total = quantity * price;
+            }
+              $(`.total[service_id='${y}']`).text(total.toLocaleString())
+              computeGrandTotal()
+          }
+
+          else if(e.target.checked==false)
+          {
+            var y=$(this).val()
+            var total = $(`.total[service_id='${y}']`).text()
+            var grandTotal = $('#grandtotal').text()
+            var finalTotal = grandTotal.replace(/,/g,"") - total.replace(/,/g,"")
+            $(`.quantity[service_id='${y}']`).text("0")
+            $(`.total[service_id='${y}']`).text("0.00")
+            $('#grandtotal').text(finalTotal.toLocaleString())
+          }
+        })
+        function computeGrandTotal(){
+          var totals = $('.total')
+          var pinakaTotal = 0;
+          for(var i =0;i<totals.length;i++){
+            pinakaTotal = eval(pinakaTotal+"+"+totals[i].textContent.replace(/,/g,""));
+          }
+          $('#grandtotal').text(pinakaTotal.toLocaleString())
+        }
+      })
+
+    script.
+      $(document).ready(function(){
+        $(".checkbox").change(function(){
+            recalculate();
+          });
+
+
+          function recalculate(){
+              var sum = 0;                                                          
+            $(".checkbox:checked").each(function(){
+              var id= $(this).val()
+              var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
+              var minutes = $(`.duration[id='${id}']`).val() % 60;
+              var points = $(`.points[id='${id}']`).val()
+              var duration = 0
+              alert(duration)
+              if(minutes==0)
+              {
+                var newDuration = "0"+hours+":"+minutes+"0"
+                var theFutureTime = moment().hour(hours).minute(minutes).add(duration,'hours').format('hh:mm');
+                var newDuration = theFutureTime + duration
+                $('#totalDuration').text(theFutureTime)
+              }
+              else
+              {
+                var newDuration = "0"+hours+":"+minutes
+              }
+              sum += parseInt(points)
+              alert(theFutureTime)
+            });
+              $('#totalPoints').text(sum)
+              //- sum = sum + checkboxess
+          }
+      })
+    script.
+      $(document).ready(function(){
+        $('.logout').click(function(){
+              swal({
+          title: "Are you sure?",
+          text: "Do you want to Log Out?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.post('/frontdesk/logout')
+            location.reload()
+          } 
+        });
+        })
+      })
+    script.
+      $(document).ready(function() {
+        var interval = setInterval(function() {
+            var momentNow = moment();
+            $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                                + momentNow.format('dddd')
+                                .substring(0,3).toUpperCase());
+            $('#time-part').html(momentNow.format('A hh:mm:ss'));
+        }, 100);
+        
+        $('#stop-interval').on('click', function() {
+            clearInterval(interval);
+        });
+        $('#calendar').val('')
+        });
     script(type='text/javascript').
       $(document).ready(function(){
       demo.initOverviewDashboard();
@@ -292,71 +436,6 @@ html(lang='en')
       demo.initFullCalendar();
       });
     script(type='text/javascript').
-      var $table = $('#bootstrap-table');
-      function operateFormatter(value, row, index) {
-      return [
-      '<div class="table-icons">',
-      '<a rel="tooltip" title="View" class="btn btn-simple btn-info btn-icon table-action view" href="javascript:void(0)">',
-      '<i class="ti-image"></i>',
-      '</a>',
-      '<a rel="tooltip" title="Edit" class="btn btn-simple btn-warning btn-icon table-action edit" href="javascript:void(0)">',
-      '<i class="ti-pencil-alt"></i>',
-      '</a>',
-      '<a rel="tooltip" title="Remove" class="btn btn-simple btn-danger btn-icon table-action remove" href="javascript:void(0)">',
-      '<i class="ti-close"></i>',
-      '</a>',
-      '</div>',
-      ].join('');
-      }
-      $().ready(function(){
-      window.operateEvents = {
-      'click .view': function (e, value, row, index) {
-      info = JSON.stringify(row);
-      swal('You click view icon, row: ', info);
-      console.log(info);
-      },
-      'click .edit': function (e, value, row, index) {
-      info = JSON.stringify(row);
-      swal('You click edit icon, row: ', info);
-      console.log(info);
-      },
-      'click .remove': function (e, value, row, index) {
-      console.log(row);
-      $table.bootstrapTable('remove', {
-      field: 'id',
-      values: [row.id]
-      });
-      }
-      };
-      $table.bootstrapTable({
-      toolbar: ".toolbar",
-      clickToSelect: true,
-      showRefresh: true,
-      search: true,
-      showToggle: true,
-      showColumns: true,
-      pagination: true,
-      searchAlign: 'left',
-      pageSize: 8,
-      clickToSelect: false,
-      pageList: [8,10,25,50,100],
-      formatShowingRows: function(pageFrom, pageTo, totalRows){
-      //do nothing here, we don't want to show the text "showing x of y from..."
-      },
-      formatRecordsPerPage: function(pageNumber){
-      return pageNumber + "";
-      },
-      icons: {
-      refresh: 'fa fa-refresh',
-      toggle: 'fa fa-th-list',
-      columns: 'fa fa-columns',
-      detailOpen: 'fa fa-plus-circle',
-      detailClose: 'ti-close'
-      }
-      });
-      //activate the tooltips after the data table is initialized
-      $('[rel="tooltip"]').tooltip();
-      $(window).resize(function () {
-      $table.bootstrapTable('resetView');
-      });
+      $(document).ready(function() {
+      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
       });

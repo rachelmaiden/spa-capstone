@@ -183,12 +183,11 @@ router.get('/reservation',mid.frontdesknauthed,(req, res) => {
         customers: out[5],
         date
       })
-      console.log(date)
     })
   })
 
 
-router.post('/reservation/query',(req, res) => {
+router.post('/selectTime/query',(req, res) => {
   const query = `select * from room_tbl where delete_stats=0 and room_availability=0`
   db.query(query,(err, out) => {
     res.send(out)
@@ -210,22 +209,59 @@ router.get('/selectDate/:cust_id',mid.frontdesknauthed,(req, res) => {
   db.query(query,(err,out) =>{
 		res.render("frontdesk/selectDate",{
       customers: out,
-      customerId
+      customerId,
 		})
 	})
 })
 
-router.get('/fdReservation', (req, res) => {
-  res.render('frontdesk/fdReservation')
+// [BOOK RESERVATION - CHOOSE SERVICES]
+router.get('/bookreservation',mid.frontdesknauthed, (req, res) => {
+  date = req.query.date
+  time = req.query.time
+  room = req.query.room
+  console.log('ID NI CUSTOMER')
+  console.log(customerId)
+  const query = `
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
+  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
+  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
+  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
+  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
+  SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
+  SELECT * FROM therapist_tbl where delete_stats=0 and therapist_availability= 0;
+  SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
+  
+  db.query(query,(err,out) =>{
+      res.render('frontdesk/fdBookReservation',{
+        services: out[0],
+        promos: out[1],
+        crooms: out[2],
+        prooms: out[3],
+        therapists: out[4],
+        customers: out[5],
+        date, time,room
+      })
+      console.log(date)
+      console.log(time)
+    })
+})
+
+
+router.get('/selectTime',mid.frontdesknauthed,(req,res)=>{
+  res.render('frontdesk/selectTime',{
+    date:req.query
+  })
 })
 
 router.get('/fdHome', (req, res) => {
   res.render('frontdesk/Home')
 })
-router.get('/bookreservation', (req, res) => {
-  res.render('frontdesk/bookreservation')
+router.get('/fdReservation', (req, res) => {
+  res.render('frontdesk/fdReservation')
 })
 
-
+router.get('/summary', (req, res) => {
+  res.render('frontdesk/summary')
+})
 
 exports.frontdesk = router;
