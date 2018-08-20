@@ -147,6 +147,7 @@ html(lang='en')
                                             input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
                                           td= service.service_duration_desc+" minutes"
                                             input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
+                                            input.bagongDuration(typ='hidden' value="" id=`${service.service_id}`)
                                           td
                                             input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
                                             span= service.service_price
@@ -160,17 +161,6 @@ html(lang='en')
                                             td= service.service_points+" "+"Points"
                                           td
                                             span.total(service_id=`${service.service_id}`) 0.00
-                                          //- td
-                                          //-   .col-sm-8
-                                          //-     .dropdown
-                                          //-       button.btn.btn-info.dropdown-toggle(href='#', data-toggle='dropdown')
-                                          //-         | Select Therapist
-                                          //-         b.caret
-                                          //-       ul.dropdown-menu
-                                          //-         li
-                                          //-           a(href='#') Ninya Bolado
-                                          //-         li
-                                          //-           a(href='#') Gramar Lacsina
                                     h4 Total: 
                                       a(id="grandtotal") 0.00 
                                     h4 Points: 
@@ -209,13 +199,13 @@ html(lang='en')
                       .form-group
                         .col-md-3
                           h5.category
-                            strong#Time Start Time:
+                            strong#StartTime 
                         .col-md-3
                           h5.category
-                            strong End Time: 
+                            strong#EndTime 
                   
-                    h5.category
-                        strong Total:
+                    h4.category Final Total: 
+                        a#finalTotal
                 .row
                     .col-md-12
                       .card-content
@@ -230,11 +220,13 @@ html(lang='en')
                               th
                                 strong  Quantity
                               th
-                                strong Duration 
+                                strong Duration
+                              th
+                                strong Total Price 
                           tbody#viewServices
                             
               .modal-footer
-                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
+                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Book Reservation
                 button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
        
     .fixed-plugin
@@ -281,33 +273,47 @@ html(lang='en')
     script(src='/assets/paperDashboardPro/js/demo.js')
     script.
       $('.buttonSummary').click(function(){
-        $('.checkbox:checked').each(function(){
-          var id = $(this).val()
-          var serviceName = $(`.name[id='${id}']`).val()
-          var quantity= $(`.quantity[service_id='${id}'`).text()
-          var total = $(`.total[service_id='${id}']`).text()
-          $('#viewServices').append(`
-            <tr>
-            <td></td>       
-            <td>${serviceName}</td>
-            <td>${quantity}</td>
-            <td>${total}</td>
-            `)
-          $('#reservationSummary').on('hidden.bs.modal', function (){
-            $('#viewServices').empty()
-          })
-        })
+        var table =$('#datatables').DataTable()
+        var pagelength = table.page.info().pages
+          table.page(0).draw()
+        
+          for (var i=1;i<=pagelength;i++){
+            $('.checkbox:checked').each(function(){
+              var id = $(this).val()
+              var serviceName = $(`.name[id='${id}']`).val()
+              var quantity= $(`.quantity[service_id='${id}'`).text()
+              var totalPrice = $(`.total[service_id='${id}']`).text()
+              var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
+              $('#viewServices').append(`
+                <tr>
+                <td></td>       
+                <td>${serviceName}</td>
+                <td>${quantity}</td>
+                <td>${bagongDuration}</td>
+                <td>${totalPrice}</td>
+                `)
+              $('#reservationSummary').on('hidden.bs.modal', function (){
+                $('#viewServices').empty()
+              })
+            })
+            table.page('next').draw('page');
+          }
+
         $('#reservationSummary').modal('show')
         var Name = $('#name').text()
         var Gender = $('#gender').text()
         var Room = $('#room').text()
         var Date = $('#date').text()
-        var Time = $('#time').text()
+        var Time = moment($("#time").text(),"hh:mm A").format('hh:mm A')
+        var EndTime = $('#totalDuration').text()
+        var finalTotal = $('#grandtotal').text()
         $('#Name').text(Name)
         $('#Gender').text(Gender)
         $('#Room').text(Room)
         $('#Date').text(Date)
-        $('#Time').text(Time)
+        $('#StartTime').text("Start Time: "+Time)
+        $('#EndTime').text("End Time: "+EndTime)
+        $('#finalTotal').text(finalTotal)
       })
     script.
       $(document).ready(function(){
@@ -317,9 +323,10 @@ html(lang='en')
             var qnty
             var y=$(this).val()
             var price = $(`.price[id='${y}']`).val()
-            //- var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
-            //- var minutes = $(`.duration[id='${y}']`).val() % 60;
+            var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
+            var minutes = $(`.duration[id='${y}']`).val() % 60;
             var points = $(`.points[id='${y}']`).val()
+            var duration = $(`.duration[id='${y}']`).val()
             //- if(minutes==0)
             //- {
             //-   var newDuration = "0"+hours+":"+minutes+"0"
@@ -338,9 +345,14 @@ html(lang='en')
             {
               $(`.quantity[service_id='${y}']`).text(quantity)
               total = quantity * price;
+             
             }
               $(`.total[service_id='${y}']`).text(total.toLocaleString())
-              computeGrandTotal()
+              var table=$('#datatables').DataTable()
+              table.search('').draw()
+              
+
+              //- alert("Hours"+newHours+" Minutes: "+newMinutes)
           }
 
           else if(e.target.checked==false)
@@ -354,47 +366,59 @@ html(lang='en')
             $('#grandtotal').text(finalTotal.toLocaleString())
           }
         })
-        function computeGrandTotal(){
-          var totals = $('.total')
-          var pinakaTotal = 0;
-          for(var i =0;i<totals.length;i++){
-            pinakaTotal = eval(pinakaTotal+"+"+totals[i].textContent.replace(/,/g,""));
-          }
-          $('#grandtotal').text(pinakaTotal.toLocaleString())
-        }
+        
       })
 
     script.
       $(document).ready(function(){
         $(".checkbox").change(function(){
-            recalculate();
+          recalculate()
+          console.log($(this)[0].checked)
+          if($(this)[0].checked==false)
+          {
+            var aydi = $(this).attr('value')
+            $(`.bagongDuration[id='${aydi}']`).val('')
+          }
+          var test = $(".checkbox:checked");
+          if(test.length == 0){
+            $('#totalDuration').text('0')
+          }
           });
-
-
-          function recalculate(){
+        function recalculate(){
+              var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY- MM-DD HH:mm')
               var sum = 0;                                                          
               var duration = 0
-            $(".checkbox:checked").each(function(){
+              var table =$('#datatables').DataTable()
+              var pagelength = table.page.info().pages
+              table.page(0).draw()
+              var pinakaTotal = 0
+        
+            for (var i=1;i<=pagelength;i++){
+              $(".checkbox:checked").each(function(){
               var id= $(this).val()
+              var quantity =$(`.quantity[service_id='${id}']`).text()
               var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
               var minutes = $(`.duration[id='${id}']`).val() % 60;
+              hours = hours * quantity;
+              var totals = $(`.total[service_id='${id}'`).text()
+              minutes = minutes * quantity;
               var points = $(`.points[id='${id}']`).val()
-              if(minutes==0)
-              {
-                var newDuration = "0"+hours+":"+minutes+"0"
-                var theFutureTime = moment().hour(hours).minute(minutes).add(duration,'hours').format('hh:mm');
-                var newDuration = theFutureTime + duration
-                $('#totalDuration').text(theFutureTime)
-              }
-              else
-              {
-                var newDuration = "0"+hours+":"+minutes
-              }
+              points = points * quantity
+              console.log("Hours: "+hours+ " minutes: "+minutes)
+                pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
+                theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
+              
+                alert(hours)
+                $('#grandtotal').text(pinakaTotal.toLocaleString())
+                $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
               sum += parseInt(points)
-              alert(theFutureTime)
             });
+            table.page('next').draw('page');
+            }
               $('#totalPoints').text(sum)
-              //- sum = sum + checkboxess
+              table.page(0).draw()
+              
           }
       })
     script.

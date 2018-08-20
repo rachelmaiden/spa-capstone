@@ -194,11 +194,11 @@ html(lang='en')
             
           ],
           dayClick: function(date, jsEvent, view, resource) {
-            var timePicked= date.format('hh:mm: A')
+            var timePicked= date.format('hh:mm A')
             var datePicked = !{JSON.stringify(date)}
             console.log(datePicked)
             swal({
-              title: "You Clicked " + date.format('hh:mm: A'),
+              title: "You Clicked " + date.format('hh:mm A'),
               text: "Are You Sure?",
               icon: "info",
               buttons: ["Cancel","Proceed"],
@@ -237,7 +237,7 @@ html(lang='en')
           },
           eventClick: function(eventObj) {
             var dateStart= eventObj.start
-            var newDate = dateStart.format('hh:mm: A')
+            var newDate = dateStart.format('hh:mm A')
             if (eventObj.url) {
               $('#viewDateSchedule').modal('show')
               //- alert(
