@@ -264,4 +264,7 @@ router.get('/summary', (req, res) => {
   res.render('frontdesk/summary')
 })
 
+router.get('/payment', (req, res) => {
+  res.render('frontdesk/payment')
+})
 exports.frontdesk = router;
