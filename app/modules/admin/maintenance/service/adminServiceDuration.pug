@@ -288,15 +288,15 @@ html(lang='en')
                                       th.disabled-sorting Maximum Duration of Service
                                       th.disabled-sorting
                                       th.disabled-sorting
-                                      th.disabled-sorting
+                                      th.disabled-sorting Availability
                                       th.disabled-sorting
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th  Maximum Duration of Service
+                                      th Maximum Duration of Service
                                       th
                                       th
-                                      th
+                                      th Availability
                                       th
                                       th Actions
                                   tbody
@@ -306,6 +306,10 @@ html(lang='en')
                                         td
                                         td
                                         td
+                                          if(duration.service_duration_availability==0)
+                                            input.switch-icon(type='checkbox' checked value=`${duration.service_duration_id}`)
+                                          else if(duration.service_duration_availability==1)
+                                            input.switch-icon(type='checkbox' value=`${duration.service_duration_id}`)
                                         td
                                         td
                                           .dropdown.pull-right(style="right: 115px")
@@ -431,6 +435,28 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script(type='text/javascript')
+  script.
+    $(document).ready(function(){
+      $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          if(state==false)
+          {
+            var idNow = $(this).val();
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminServiceDuration/statusChange',{stats,id1:idNow})
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminServiceDuration/statusChange',{stats,id1:idNow})
+          }
+          location.reload();
+        });
+    })
   script.
     $(document).ready(function(){
       $('.logout').click(function(){

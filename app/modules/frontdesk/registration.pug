@@ -68,7 +68,7 @@ html(lang='en')
                 p
                   | Registration
             li
-              a(href='./fdReservation')
+              a(href='/fdReservation')
                 i.ti-calendar
                 p
                   | Reservation
@@ -288,24 +288,25 @@ html(lang='en')
                                           td Common 
                                         td
                                           .dropdown(style="right: 10px")
-                                                button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                  i.ti-settings
-                                                ul.dropdown-menu
-                                                  li
-                                                    a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
-                                                      span.btn-label
-                                                      i.ti-calendar
-                                                      |  Book Reservation
-                                                  li
-                                                    button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
-                                                      span.btn-label
-                                                      i.ti-pencil-alt
-                                                      |  Update
-                                                  li
-                                                    button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px")
-                                                      span.btn-label
-                                                      i.ti-trash
-                                                      |  Delete
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
+                                                button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-calendar
+                                                  |  Book Reservation
+                                              li
+                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-pencil-alt
+                                                  |  Update
+                                              li
+                                                button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-trash
+                                                  |  Delete
                                        
                               .row
                                 .col-md-6
@@ -330,6 +331,54 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
+
+
+                  #ReservationModal.modal.fade(tabindex='-1', role='dialog')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          h3.modal-title
+                            center Book Reservation
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                        .modal-body.text-center
+                          .row
+                            .col-md-2
+                              .form-group
+                                .radio
+                                  input(type='radio', name='nog', value='single' checked)
+                                  label(for='radio20')
+                                    | Single
+                          .row
+                            .col-md-2
+                              .form-group
+                                .radio
+                                  input(type='radio', name='nog', value='multiple')
+                                  label(for='radio20')
+                                    | Multiple 
+                          .row
+                            .col-md-4  
+                              .input-group
+                                span.input-group-btn
+                                  button.btn.btn-info.btn-numberMale.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quantMale' id="add")
+                                    span.ti-minus
+                                input.form-control.input-number.male(type='text', id="quantity" name='quantMale', value="0" min='0', max='6' disabled)
+                                span.input-group-btn
+                                  button.btn.btn-info.btn-numberMale.buttonAdd(type='button', data-type='plus', data-field='quantMale', disabled id="add")
+                                    span.ti-plus
+                              span.help-block Male
+                            .col-md-4  
+                              .input-group
+                                span.input-group-btn
+                                  button.btn.btn-info.btn-number.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quantFemale' id="add")
+                                    span.ti-minus
+                                input.form-control.input-number.female(type='text', id="quantityFemale" name='quantFemale', value="0" min='0', max='6' disabled)
+                                span.input-group-btn
+                                  button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quantFemale', disabled id="add")
+                                    span.ti-plus
+                              span.help-block Female
+                        .modal-footer#reservationFooter
+                          //- button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button' id="book" href=`selectDate/${customer.cust_id}`) Book Reservation
+                          //- button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
@@ -339,7 +388,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Creative Tim
+                        a(href='#') TEAM MBAY
   .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -368,8 +417,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -384,6 +431,67 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+      $('.reserveButton').click(function(){
+        var id = $(this).val()
+        console.log(id)
+        $('#ReservationModal').modal('show')
+        $('input[type="radio"]').click(function(e){
+        if(e.target.checked)
+        {
+        $('#reservationFooter').empty()
+          if($(this).val() == "single")
+          {
+            $('#reservationFooter').empty()
+          //-  alert("single")
+            $('.buttonAdd').attr('disabled', true)
+            //- $('#reservationFooter').append(`
+            //- <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+            //- <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+          }
+          else if($(this).val()=="multiple")
+          {
+            $('button[id="add"]').click(function(){
+            $('#reservationFooter').empty()
+            var male=$('.male[name="quantMale"]').val()
+            var female=$('.female[name="quantFemale"]').val()
+            console.log("female: "+female)
+            console.log("male: "+male)
+            $('#reservationFooter').append(`
+            <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=multiple&male=${male}&female=${female}" stlye="margin-right: 15px">Next</a>
+            <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+            })
+            $('.buttonAdd').attr('disabled',false)
+          }
+         }
+        $('#reservationFooter').append(`
+        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+        <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+        })
+        $('#reservationFooter').append(`
+        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+        <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+      })
+    })
+  //- script.
+  //-   $(document).ready(function(){
+  //-      $('input[type="radio"]').click(function(e){
+  //-        if(e.target.checked)
+  //-        {
+  //-          if($(this).val() == "single")
+  //-          {
+  //-           //-  alert("single")
+  //-            $('.buttonAdd').attr('disabled', true)
+  //-          }
+  //-          else if($(this).val()=="multiple")
+  //-          {
+  //-           //-  alert("multiple")
+  //-            $('.buttonAdd').attr('disabled',false)
+  //-          }
+  //-        }
+  //-      })
+  //-   })
   script.
     $(document).ready(function(){
       $('.buttonDelete').click(function(){
@@ -443,9 +551,9 @@ html(lang='en')
         {
         var newDate= $('#calendar').val()
         var vals = newDate.split('-');
-        var year = vals[0];
-        var month = vals[1];
-        var date = vals[2];
+        var year = vals[2];
+        var month = vals[0];
+        var date = vals[1];
         $.post('/frontdesk/Home/newCustomer/Loyalty',{
           firstname:$('#firstname').val(),
           lastname:$('#lastname').val(),
@@ -546,6 +654,7 @@ html(lang='en')
         });
     })
 
+
         
       $('.datepicker').on('dp.hide', function(event){
         setTimeout(function(){
@@ -596,3 +705,153 @@ html(lang='en')
     $('#loginFormValidation').validate();
     $('#allInputsFormValidation').validate();
         });
+  script.
+        //plugin bootstrap minus and plus
+    //http://jsfiddle.net/laelitenetwork/puJ6G/
+    $('.btn-numberMale').click(function(e){
+        e.preventDefault();
+        
+        fieldName = $(this).attr('data-field');
+        type      = $(this).attr('data-type');
+        var input = $("input[name='"+fieldName+"']");
+        var currentVal = parseInt(input.val());
+        if (!isNaN(currentVal)) {
+            if(type == 'minus') {
+                
+                if(currentVal > input.attr('min')) {
+                    input.val(currentVal - 1).change();
+                } 
+                if(parseInt(input.val()) == input.attr('min')) {
+                    $(this).attr('disabled', true);
+                }
+
+            } else if(type == 'plus') {
+
+                if(currentVal < input.attr('max')) {
+                    input.val(currentVal + 1).change();
+                }
+                if(parseInt(input.val()) == input.attr('max')) {
+                    $(this).attr('disabled', true);
+                }
+
+            }
+        } else {
+            input.val(0);
+        }
+    });
+    $('.input-number').focusin(function(){
+      $(this).data('oldValue', $(this).val());
+    });
+    $('.input-number').change(function() {
+        
+        minValue =  parseInt($(this).attr('min'));
+        maxValue =  parseInt($(this).attr('max'));
+        valueCurrent = parseInt($(this).val());
+        
+        name = $(this).attr('name');
+        if(valueCurrent >= minValue) {
+            $(".btn-numberMale[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the minimum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        if(valueCurrent <= maxValue) {
+            $(".btn-numberMale[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the maximum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        
+            
+        });
+        $(".input-number").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                    // Allow: Ctrl+A
+                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        // let it happen, don't do anything
+                        return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+          });
+  
+  
+  script.
+        //plugin bootstrap minus and plus
+    //http://jsfiddle.net/laelitenetwork/puJ6G/
+    $('.btn-number').click(function(e){
+        e.preventDefault();
+        
+        fieldName = $(this).attr('data-field');
+        type      = $(this).attr('data-type');
+        var input = $("input[name='"+fieldName+"']");
+        var currentVal = parseInt(input.val());
+        if (!isNaN(currentVal)) {
+            if(type == 'minus') {
+                
+                if(currentVal > input.attr('min')) {
+                    input.val(currentVal - 1).change();
+                } 
+                if(parseInt(input.val()) == input.attr('min')) {
+                    $(this).attr('disabled', true);
+                }
+
+            } else if(type == 'plus') {
+
+                if(currentVal < input.attr('max')) {
+                    input.val(currentVal + 1).change();
+                }
+                if(parseInt(input.val()) == input.attr('max')) {
+                    $(this).attr('disabled', true);
+                }
+
+            }
+        } else {
+            input.val(0);
+        }
+    });
+    $('.input-number').focusin(function(){
+      $(this).data('oldValue', $(this).val());
+    });
+    $('.input-number').change(function() {
+        
+        minValue =  parseInt($(this).attr('min'));
+        maxValue =  parseInt($(this).attr('max'));
+        valueCurrent = parseInt($(this).val());
+        
+        name = $(this).attr('name');
+        if(valueCurrent >= minValue) {
+            $(".btn-number[data-type='minus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the minimum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        if(valueCurrent <= maxValue) {
+            $(".btn-number[data-type='plus'][data-field='"+name+"']").removeAttr('disabled')
+        } else {
+            alert('Sorry, the maximum value was reached');
+            $(this).val($(this).data('oldValue'));
+        }
+        
+            
+        });
+        $(".input-number").keydown(function (e) {
+                // Allow: backspace, delete, tab, escape, enter and .
+                if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 190]) !== -1 ||
+                    // Allow: Ctrl+A
+                    (e.keyCode == 65 && e.ctrlKey === true) || 
+                    // Allow: home, end, left, right
+                    (e.keyCode >= 35 && e.keyCode <= 39)) {
+                        // let it happen, don't do anything
+                        return;
+                }
+                // Ensure that it is a number and stop the keypress
+                if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                    e.preventDefault();
+                }
+          });

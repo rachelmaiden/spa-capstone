@@ -278,8 +278,8 @@ html(lang='en')
                                     each thera in theras
                                       tr
                                         td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
-                                        td= thera.address_house_no+" "+thera.address_street_name+" "+thera.address_admin_district+" "+thera.address_city
-                                        td= thera.therapist_age
+                                        td= thera.therapist_address
+                                        td= thera.therapist_birthMonth+" "+thera.therapist_birthDate+" "+thera.therapist_birthYear
                                         td= thera.therapist_gender
                                         td= thera.therapist_contact_no
                                         td
@@ -324,7 +324,7 @@ html(lang='en')
                           h5.modal-title
                             center Add New Therapist 
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/admin/adminTherapist')
+                        form#allInputsFormValidation(method='' action='')
                           .modal-body
                             
                             .row
@@ -332,64 +332,53 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Last Name
                                   star *
-                                  input.form-control(type='text', placeholder='Last Name' name='therapist_lname' required='true' aria-label='true')
+                                  input.form-control(type='text', placeholder='Last Name' name='therapist_lname' id='therapist_lname' required='true' aria-label='true')
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label First Name
                                   star *
-                                  input.form-control(type='text', placeholder='First Name' name='therapist_fname' required='true' aria-label='true') 
+                                  input.form-control(type='text', placeholder='First Name' name='therapist_fname' id='therapist_fname' required='true' aria-label='true') 
                               .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Middle Name
-                                  input.form-control(type='text', placeholder='Middle Name' name='therapist_mname' required='true' aria-label='true')     
+                                  input.form-control(type='text', placeholder='Middle Name' name='therapist_mname' id='therapist_mname' aria-label='true')     
 
                             
                             .row
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
-                                  label Address
+                                  label Gender
                                   star *
-                                  input.form-control(type='text', placeholder='House Number' name='address_house_no' required='true' aria-label='true')
-                              .col-md-3
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='Street Name' name='address_street_name' required='true' aria-label='true')
-                              .col-md-4
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='Barangay/Administrative District' name='address_admin_district' required='true' aria-label='true')  
-                              .col-md-2
-                                .form-group.has.default.bmd-form-group
-                                  label
-                                  input.form-control(type='text', placeholder='address_city' name='address_city' required='true' aria-label='true')   
-                            .row
+                                  select.selectpicker(name='therapist_gender' id='therapist_gender'  data-style='btn-info' required='true' aria-label='true')
+                                    option(value='Male') Male
+                                    option(value='Female') Female
+                              .col-md-1
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Birthday
                                   star *
-                                input.form-control.datepicker(type='date' name='birthday' id="calendar" required='true' aria-label='true')
-                              .col-md-3
+                                input.form-control.datepicker(type='text' name='therapist_birthday' id="calendar" style='margin-top: -15px')
+                            .row
+                              .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Gender*
+                                  label Address
                                   star *
-                                  select.selectpicker(name='therapist_gender'  data-style='btn-info' required='true' aria-label='true')
-                                    option(value='Male') Male
-                                    option(value='Female') Female
+                                  input.form-control(type='text', placeholder='Address' id='therapist_address' name='therapist_address' required='true' aria-label='true')
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Mobile Number
                                   star *
-                                  input.form-control(type='number', placeholder='Mobile Number' name='therapist_contact_no' required='true' aria-label='true'  minlength='11' maxlength='11')
+                                  input.form-control(type='number', placeholder='Mobile Number' id='therapist_contact_no' name='therapist_contact_no' required='true' aria-label='true'  minlength='11' maxlength='11')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Specialty
                                   star *
-                                    select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='therapist_specialty' required='true' aria-label='true')
+                                    select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='therapist_specialty' id='therapist_specialty' required='true' aria-label='true')
                                       each specialty in specialtys
                                         option(value=`${specialty.specialty_id}`)= specialty.specialty_desc
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
 
@@ -481,7 +470,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Creative Tim
+                        a(href='#') TEAM MBAY
               .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -526,6 +515,46 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+      $('.submitButton').click(function(){
+       var newDate= $('#calendar').val()
+          var vals = newDate.split('-');
+          var year = vals[2];
+          var month = vals[0];
+          var date = vals[1];
+          console.log($('#therapist_specialty').val())
+          $.post('/admin/adminTherapist',{
+            therapist_fname:$('#therapist_fname').val(),
+            therapist_mname:$('#therapist_mname').val(),
+            therapist_lname:$('#therapist_lname').val(),
+            therapist_address:$('#therapist_address').val(),
+            therapist_contact_no:$('#therapist_contact_no').val(),
+            therapist_gender:$('#therapist_gender').val(),
+            therapist_specialty: $('#therapist_specialty').val(),
+            newDate, year, month, date
+          }).done(function(data){
+          if(data.alertDesc == 1)
+          {
+            swal({
+              title:'Success', 
+              text:'New Therapist Inserted', 
+              icon:'success'
+              }).then(function(){
+                location.reload()
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'', 
+                icon:'warning'
+                })
+            }
+        })
+      })
+    })
   script.
       $(document).ready(function(){
         $('.logout').click(function(){
@@ -805,6 +834,7 @@ html(lang='en')
       })
   script(type='text/javascript').
     $(document).ready(function(){
+    $('#calendar').val('')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
@@ -819,8 +849,8 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     })
-    $('#add').click(function(){
-      location.reload()
+    //- $('#add').click(function(){
+    //-   location.reload()
     //- swal({
     //-   title:'Success', 
     //-   text:'Therapist Added', 
@@ -838,19 +868,39 @@ html(lang='en')
         });
   
   script.
-    $('.datepicker').datetimepicker({
-            format: 'YYYY-MM-DD',
-            icons: {
-              time: "fa fa-clock-o",
-              date: "fa fa-calendar",
-              up: "fa fa-chevron-up",
-              down: "fa fa-chevron-down",
-              previous: 'fa fa-chevron-left',
-              next: 'fa fa-chevron-right',
-              today: 'fa fa-screenshot',
-              clear: 'fa fa-trash',
-              close: 'fa fa-remove'
-          }
-        });      
-  
+    $(function () {
+      var date = new Date()
+      var year = date.getFullYear()
+      var year2 = year - "18"
+      var year3 = new Date(year2, 00,01)
+      $('.datepicker').datetimepicker({
+        viewMode: 'years',
+        format: 'MM-DD-YYYY',
+        maxDate: year3,
+        icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+          },
+          widgetPositioning:{"horizontal":"auto",
+          "vertical":"auto"}
+        });
+    })
 
+        
+      $('.datepicker').on('dp.hide', function(event){
+        setTimeout(function(){
+          $('.datepicker').data('DateTimePicker').viewMode('years');
+        },1);
+      });
+  
+  script.
+   $(document).ready(function(){
+    $('#calendar').val('')
+   })

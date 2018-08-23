@@ -297,7 +297,7 @@ router.get('/adminServices',mid.adminnauthed,(req, res) => {
   from services_tbl join service_duration_tbl on services_tbl.service_duration_id = service_duration_tbl.service_duration_id
   join service_type_tbl on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats = 0;
   select * from service_type_tbl where delete_stats=0 and service_type_availability= 0;
-  select * from service_duration_tbl where delete_stats=0`
+  select * from service_duration_tbl where delete_stats=0 and service_duration_availability=0`
   db.query(query,(err,out) =>{
     res.render('admin/maintenance/service/adminServices',{
       services: out[0],
@@ -444,8 +444,8 @@ router.get('/adminServiceDuration', mid.adminnauthed,(req, res) => {
 router.post('/adminServiceDuration',(req, res) => {
   const query = `
     insert into 
-    service_duration_tbl(service_duration_desc, delete_stats)
-    value("${req.body.service_duration_desc}", 0)`
+    service_duration_tbl(service_duration_desc, delete_stats, service_duration_availability)
+    value("${req.body.service_duration_desc}", 0, 1)`
   db.query(query, (err, out) => {
     console.log(query)
   })
@@ -469,6 +469,14 @@ router.post('/adminServiceDuration/query',(req, res) => {
       console.log(out[0])
       console.log(req.body.id)
   })
+})
+router.post('/adminServiceDuration/statusChange',(req, res) => {
+  const query = `UPDATE service_duration_tbl set service_duration_availability= ${req.body.stats} where service_duration_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    if(err) return console.log(err)
+    res.redirect("/adminServiceDuration")
+    console.log(query)
+})
 })
 //          > D E L E T E
 router.post('/adminServiceDuration/delete', (req, res) => {
@@ -501,40 +509,43 @@ router.get('/adminTherapist',mid.adminnauthed,(req, res) => {
 router.post('/adminTherapist',(req, res) => {
   var aydi;
   const query = `
-    insert into 
-    therapist_tbl
-    (therapist_fname, 
-      therapist_mname, 
-      therapist_lname, 
-      address_house_no, 
-      address_street_name, 
-      address_admin_district, 
-      address_city, 
-      therapist_contact_no, 
-      therapist_age,
-      therapist_gender, 
-      therapist_availability,
-      delete_stats)
-      value
-      ("${req.body.therapist_fname}", 
-      "${req.body.therapist_mname}", 
-      "${req.body.therapist_lname}", 
-      "${req.body.address_house_no}", 
-      "${req.body.address_street_name}", 
-      "${req.body.address_admin_district}", 
-      "${req.body.address_city}", 
-      "${req.body.therapist_contact_no}", 
-      "${req.body.therapist_age}", 
-      "${req.body.therapist_gender}", 
-      1,0)`
-      db.query(query, (err, out) => {
+  insert into 
+  therapist_tbl
+  (therapist_fname, 
+    therapist_mname, 
+    therapist_lname, 
+    therapist_address, 
+    therapist_contact_no, 
+    therapist_gender,
+    therapist_birthMonth,
+    therapist_birthDate,
+    therapist_birthYear, 
+    therapist_availability,
+    delete_stats)
+    value
+    ("${req.body.therapist_fname}", 
+    "${req.body.therapist_mname}", 
+    "${req.body.therapist_lname}", 
+    "${req.body.therapist_address}", 
+    "${req.body.therapist_contact_no}",  
+    "${req.body.therapist_gender}", 
+    "${req.body.month}",
+    "${req.body.date}",
+    "${req.body.year}",
+    1,0)`
+    db.query(query, (err, out) => {
+      var alertSuccess = 1 ;
+      var notSuccess= 0;
+        console.log(query)
         console.log(out.insertId)
         aydi=out.insertId;
         for(var i=0;i<req.body.therapist_specialty.length;i++){
-          db.query(`insert into therapist_specialty_tbl(therapist_id, specialty_id) value("${aydi}","${req.body.therapist_specialty[i]}")`,(err,out)=>{
+          const query1= `insert into therapist_specialty_tbl(therapist_id, specialty_id) value("${aydi}","${req.body.therapist_specialty[i]}")`
+          db.query(query1,(err,out)=>{
+            
           })
         }
-        res.redirect("/admin/adminTherapist")
+        res.send({alertDesc: alertSuccess})
       })
     })
 //          > D E L E T E
