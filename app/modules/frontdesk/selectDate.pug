@@ -86,7 +86,10 @@ html(lang='en')
               .col-md-10.col-md-offset-1
                 .card.card-calendar
                   .card-content
-                    input(type="hidden" value=`${customerId}` id="Id")
+                    input(value=`${customerId}` id="Id")
+                    input(value=`${restype}`)
+                    input(value=`Male: ${male}`)
+                    input(value=`Female: ${female}`)
                     #fullCalendar
         footer.footer
           .container-fluid
@@ -122,7 +125,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Google Maps Plugin
@@ -147,8 +150,29 @@ html(lang='en')
         console.log(customerId)
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
-          var newDate= date.format('MM-DD-YYYY')
-          location.href= `/selectTime?date=${newDate}`
+          var now = moment().format('MM-DD-YYYY')
+          var clicked = date.format('MM-DD-YYYY')
+          if(moment(clicked).isSameOrAfter(now)){
+              swal({
+                title: "You Clicked " + date.format('MM-DD-YYYY'),
+                text: "Are You Sure?",
+                icon: "info",
+                buttons: ["Cancel","Proceed"],
+                dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                  var newDate= date.format('MM-DD-YYYY')
+                  location.href= `/selectTime?date=${newDate}`
+                }
+                else
+                {
+
+                }
+                });
+          //- location.href= `/selectTime?date=${newDate}`
+          }
         }
       })
     });

@@ -98,6 +98,10 @@ html(lang='en')
               .card.card-calendar
                 .card-content
                   input(type="hidden" value=`${customerId}` id="Id")
+                  input(value=`${customerId}` id="Id")
+                  input(id="restype" value=`${restype}`)
+                  input(value=`Male: ${male}`)
+                  input(value=`Female: ${female}`)
                   #fullCalendar
         
         //VIEW SPECIFIC SCHEDULE
@@ -164,15 +168,31 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/scheduler.js')
   script(type='text/javascript').
     $(document).ready(function(){
-        $.post('selectTime/query').done(data=>{
-              console.log(data)
-                for(var i=0; i<data.length;i++){
-              $('#fullCalendar').fullCalendar('addResource', {
-              id: data[i].room_id,
-              title: data[i].room_name,
-              occupancy: data[i].bed_qty
-                        })
-                }
+      var restype = $('#restype').val()
+      console.log(restype)
+          if(restype == 'multiple')
+          {
+            $.post('selectTime/query').done(data=>{
+                $('#fullCalendar').fullCalendar('addResource', {
+                id: "1",
+                title: "Time"
+                })
+
+          })
+          }
+          else if (restype == 'single')
+          {
+          $.post('selectTime/query').done(data=>{
+                  for(var i=0; i<data.length;i++){
+                $('#fullCalendar').fullCalendar('addResource', {
+                id: data[i].room_id,
+                title: data[i].room_name,
+                occupancy: data[i].bed_qty
+                          })
+                  }
+          })
+          }
+
               //- $('#fullCalendar').fullcalendar('renderEvent',{
               //-   id: 1,
               //-   resourceId: '9',
@@ -181,10 +201,10 @@ html(lang='en')
               //-   end: '2018-08-17T14:30:00'
               //- },true)
         })
+  script.
+      $(document).ready(function(){
         var customerId= $('#Id').val()
-        console.log(customerId)
         var date = !{JSON.stringify(date)}
-        console.log(date)
         $('#fullCalendar').fullCalendar({
           defaultView: 'agendaDay',
           nowIndicator: true,
@@ -199,26 +219,40 @@ html(lang='en')
             
           ],
           dayClick: function(date, jsEvent, view, resource) {
-            var timePicked= date.format('hh:mm: A')
-            var datePicked = !{JSON.stringify(date)}
-            console.log(datePicked)
-            swal({
-              title: "You Clicked " + date.format('hh:mm: A'),
-              text: "Are You Sure?",
-              icon: "info",
-              buttons: ["Cancel","Proceed"],
-              dangerMode: true
-              
-            }).then((proceed) => {
-              if(proceed)
-              {
-                location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}`
-              }
-              else
-              {
+            var timeNow = moment().format('YYYY-MM-DD HH:mm')
+            //- var businessHours = reqSession.utilities.businessHours
+            var businessHoursDate = moment().format('YYYY-MM-DD')
+            var businessHours = businessHoursDate+' 13:00'
+            var businessHoursTime = '13:00'
+            var kahitano = date.format('YYYY-MM-DD HH:mm')
+            var kahitanotime = date.format('HH:mm')
+            console.log(timeNow)
+            console.log(businessHours)
+            console.log(kahitano)
+            console.log(kahitanotime)
+            console.log(businessHoursTime)
+            if(moment(kahitano).isSameOrAfter(businessHours) && kahitanotime >= businessHoursTime && moment(kahitano).isSameOrAfter(timeNow))
+            {
+              var timePicked= date.format('hh:mm A')
+              var datePicked = !{JSON.stringify(date)}
+              swal({
+                title: "You Clicked " + date.format('hh:mm A'),
+                text: "Are You Sure?",
+                icon: "info",
+                buttons: ["Cancel","Proceed"],
+                dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
+                }
+                else
+                {
 
+                }
+                });
               }
-              });
             //- alert(' you clicked ' + date.format('hh:mm A') + ' from '+ resource.title);
           },
           select: function(startDate, endDate, jsEvent, view, resource) {
@@ -242,7 +276,7 @@ html(lang='en')
           },
           eventClick: function(eventObj) {
             var dateStart= eventObj.start
-            var newDate = dateStart.format('hh:mm: A')
+            var newDate = dateStart.format('hh:mm A')
             if (eventObj.url) {
               $('#viewDateSchedule').modal('show')
               //- alert(
@@ -293,33 +327,7 @@ html(lang='en')
           },
           events:
           [
-          {
-            resourceId: '8',
-            title: 'Remaining Bed(10)',
-            description: 'description for Long Event',
-            start: '2018-08-17T13:30:00',
-            end: '2018-08-17T13:35:00'
-          },
-           {
-            resourceId: '8',
-            title: 'Remaining Bed(0)(FULL)',
-            start: '2018-08-17T14:30:00',
-            end: '2018-08-17T14:35:00',
-            color: 'RED'
-          },
-          {
-            resourceId: '9',
-            title: 'Remaining Bed(8)',
-            start: '2018-08-17T13:00:00',
-            end: '2018-08-17T13:05:00'
-          },
-          {
-            resourceId: '9',
-            title: 'Remaining Bed(8)',
-            start: '2018-08-17T13:30:00',
-            end: '2018-08-17T13:35:00',
-            color: 'green'
-          },
+
           ]
         });
         //- $('#fullCalendar').fullCalendar('gotoDate', date.date )
