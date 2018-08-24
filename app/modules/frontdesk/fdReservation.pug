@@ -106,7 +106,7 @@ html(lang='en')
                               div
                                 .card-content
                                   center
-                                    h2 Reservations
+                                    h2 QUEUE
                                   button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#newReservation', style='margin-left: 20px')
                                     span.btn-label
                                       i.fa.fa-plus
@@ -144,7 +144,7 @@ html(lang='en')
                                             thead
                                               tr
                                                 th Name
-                                                th Service
+                                                th Services
                                                 th Room
                                                 th Date
                                                 th Time
@@ -152,7 +152,7 @@ html(lang='en')
                                             tfoot
                                               tr
                                                 th Name
-                                                th Service
+                                                th Services
                                                 th Room
                                                 th Date
                                                 th Time
@@ -165,7 +165,7 @@ html(lang='en')
                                                   td= walkin.room_name
                                                   td= walkin.walkin_date
                                                   td= walkin.walkin_start_time+" to "+walkin.walkin_end_time
-                                                  
+                                                  td
                                                 
                                         .row
                                           .col-md-6
@@ -199,7 +199,7 @@ html(lang='en')
                                   | , made with 
                                   i.fa.fa-heart.heart
                                   |  by 
-                                  a(href='http://www.creative-tim.com') TEAM MBAY
+                                  a(href='#') TEAM MBAY
   .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -251,16 +251,8 @@ html(lang='en')
     });
   script(type='text/javascript').
     $(document).ready(function() {
-    $('#datatables').DataTable({
-    "pagingType": "full_numbers",
-    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-    responsive: true,
-    language: {
-    search: "_INPUT_",
-    searchPlaceholder: "Search records",
-    }
-    });
-    });
+      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initWizard();

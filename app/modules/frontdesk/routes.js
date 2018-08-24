@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var db = require('../../lib/database')();
 var mid = require("../../middlewares")
+var moment = require ('moment')
 
 // [FRONTDESK-HOME]
 router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
@@ -257,6 +258,8 @@ router.post('/bookreservation/addReservation',(req,res)=>{
   const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date)
   values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${req.body.date}")`
   db.query(query,(err,out)=>{
+    var notSuccess=0;
+    var querySuccess= 1
     walkinId=out.insertId;
     console.log(walkinId)
     for(var i=0;i<req.body.serviceId.length;i++)
@@ -267,7 +270,14 @@ router.post('/bookreservation/addReservation',(req,res)=>{
           console.log(req.body.serviceId[i])
         })
       }
-      console.log(query)
+      if(err)
+      {
+        res.send({alertDesc: notSuccess})
+      }
+      else
+      {
+        res.send({alertDesc:querySuccess})
+      }
   })
 })
 
@@ -281,16 +291,20 @@ router.get('/fdHome', (req, res) => {
   res.render('frontdesk/Home')
 })
 router.get('/fdReservation',mid.frontdesknauthed, (req, res) => {
+  var fullDate = moment(new Date()).format('MM-DD-YYYY')
+
+  console.log(fullDate)
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
   from walkin_queue_tbl 
   join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
   join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id group by walkin_services_tbl.walkin_id`
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date='${fullDate}' group by walkin_services_tbl.walkin_id `
   db.query(query,(err,out)=>{
     res.render('frontdesk/fdReservation',{
       walkins: out
     })
+    console.log(query)
   })
 })
 

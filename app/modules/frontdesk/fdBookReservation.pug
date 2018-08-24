@@ -356,6 +356,25 @@ html(lang='en')
             finalTotal : $('#finalTotal').text(),
             finalPoints : $('#finalPoints').text(),
             roomId :$('#roomId').val()
+           }).done(function(data){
+             if(data.alertDesc==1)
+             {
+            swal({
+              title:'Success', 
+              text:'New Reservation Added', 
+              icon:'success'
+              }).then(function(){
+                location.href='/frontdesk/home'
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'', 
+                icon:'warning'
+                })
+            }
            })
         })
       })
