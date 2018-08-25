@@ -7,15 +7,13 @@ var db = require('../../lib/database')();
       res.render('receptionist/queue')
     })
 
+  router.get('/reservationList',(req, res) => {
+    res.render('receptionist/reservationList')
+  })  
 
-  router.get('/custProfile',(req, res) => {
-      res.render('customer/custProfile')
-    })
-
-  router.get('/custLogin',(req, res) => {
-    res.render('customer/custLogin')
-  })
-
+  router.get('/ongoing',(req, res) => {
+    res.render('receptionist/ongoing')
+  })  
 
   
 

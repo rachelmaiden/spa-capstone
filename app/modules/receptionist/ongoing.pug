@@ -6,7 +6,7 @@ html(lang='en')
     link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title MBAY Health Spa
-    
+   
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
@@ -38,7 +38,7 @@ html(lang='en')
                   | Receptionist
               .clearfix
           ul.nav
-            li.active
+            li
               a(href='/receptionist/queue')
                 i.ti-user
                 p
@@ -48,7 +48,7 @@ html(lang='en')
                 i.ti-calendar
                 p
                   | Reservation
-            li
+            li.active
               a(href='/receptionist/ongoing')
                 i.fa.fa-bed
                 p
@@ -110,8 +110,7 @@ html(lang='en')
                     div
                       .card-content
                         center
-                          h2 Queue
-                        
+                          h2 Ongoing Service
                   .content
                     .container-fluid
                       .row
@@ -130,14 +129,14 @@ html(lang='en')
                                       th.disabled-sorting Gender
                                       th.disabled-sorting Membership Type
                                       th.disabled-sorting Reservation Details
-                                      th.disabled-sorting Actions
+                                      th.disabled-sorting End Time
                                   tfoot
                                     tr
                                       th Name
                                       th Gender
                                       th Membership Type
                                       th Reservation Details
-                                      th Actions
+                                      th End Time
                                   tbody
                                     tr
                                       td Caesar Vance
@@ -149,8 +148,7 @@ html(lang='en')
                                             i.fa.fa-eye
                                           |                                                                                 View  Reservation Details
                                       td
-                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tooltip', title='Proceed To Service')
-                                          i.ti-angle-double-right
+                                        | 3:00 pm
                                     tr
                                       td Doris Wilder
                                       td Female
@@ -161,8 +159,7 @@ html(lang='en')
                                             i.fa.fa-eye
                                           |                                                                                 View  Reservation Details
                                       td
-                                        a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tooltip', title='Proceed To Service')
-                                          i.ti-angle-double-right
+                                        | 5:00 pm
                               #viewDetails.modal.fade(tabindex='-1', role='dialog')
                                 .modal-dialog.modal-lg(role='document')
                                   .modal-content
