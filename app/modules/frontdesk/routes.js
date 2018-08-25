@@ -264,7 +264,8 @@ router.post('/bookreservation/addReservation',(req,res)=>{
     console.log(walkinId)
     for(var i=0;i<req.body.serviceId.length;i++)
       {
-        const query1= `insert into walkin_services_tbl(walkin_id,service_id,room_id) values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}")`
+        const query1= `insert into walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied) values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+          "${req.body.bed_quantity}")`
         db.query(query1,(err,out)=>{
           console.log(query1)
           console.log(req.body.serviceId[i])
@@ -299,12 +300,40 @@ router.get('/fdReservation',mid.frontdesknauthed, (req, res) => {
   join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
   join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date='${fullDate}' group by walkin_services_tbl.walkin_id `
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date='${fullDate}' group by walkin_services_tbl.walkin_id;
+  SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
+  from walkin_queue_tbl 
+  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+  join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+  join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date != '${fullDate}' group by walkin_services_tbl.walkin_id`
   db.query(query,(err,out)=>{
     res.render('frontdesk/fdReservation',{
-      walkins: out
+      walkins: out[0],
+      reservs: out[1]
     })
     console.log(query)
+  })
+})
+
+router.post('/fdReservation/viewServices',(req,res)=>{
+  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
+  customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
+  services_tbl.service_name, services_tbl.service_price, 
+  room_tbl.room_name, room_tbl.room_rate
+    from walkin_queue_tbl 
+    join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+    join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+    join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id where walkin_services_tbl.walkin_id=?`
+  
+  db.query(query,[req.body.id],(err,out)=>{
+    var out1= out;
+    const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl join customer_tbl
+    on walkin_queue_tbl.cust_id = customer_tbl.cust_id where walkin_queue_tbl.walkin_id =?`
+    db.query(query1,[req.body.id],(err,out)=>{
+      return res.send({out1:out1, out2:out[0]})
+    })
   })
 })
 
@@ -312,7 +341,7 @@ router.get('/summary', (req, res) => {
   res.render('frontdesk/summary')
 })
 
-router.get('/payment', (req, res) => {
+router.get('/payment',mid.frontdesknauthed, (req, res) => {
   res.render('frontdesk/payment')
 })
 exports.frontdesk = router;

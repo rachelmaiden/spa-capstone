@@ -17,16 +17,16 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
-  body
+  body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
         //
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
-            | CT
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
+          a.simple-text.logo-mini(href='#')
+            | 
+          a.simple-text.logo-normal(href='#')
             | MBAY Health Spa
         .sidebar-wrapper
           .user
@@ -44,7 +44,7 @@ html(lang='en')
                 p
                   | Registration
             li
-              a(href='#')
+              a(href='/fdReservation')
                 i.ti-calendar
                 p
                   | Reservation
@@ -66,7 +66,7 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Payment
             .collapse.navbar-collapse
               form.navbar-form.navbar-left.navbar-search-form(role='search')
                 .input-group

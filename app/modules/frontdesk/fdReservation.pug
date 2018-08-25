@@ -49,7 +49,7 @@ html(lang='en')
                           i.ti-calendar
                           p
                             | Reservation
-                      li.active
+                      li
                         a(href='/payment')
                           i.ti-credit-card
                           p
@@ -67,7 +67,7 @@ html(lang='en')
                           span.icon-bar.bar2
                           span.icon-bar.bar3
                         a.navbar-brand(href='#Dashboard')
-                          | Overview
+                          | Reservation
                       .collapse.navbar-collapse
                         form.navbar-form.navbar-left.navbar-search-form(role='search')
                           .input-group
@@ -108,32 +108,7 @@ html(lang='en')
                         .col-md-12
                           .card
                             .row
-                              div
-                                .card-content
-                                  center
-                                    h2 QUEUE
-                                  button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#newReservation', style='margin-left: 20px')
-                                    span.btn-label
-                                      i.fa.fa-plus
-                                    |                                                 New Reservation
-                            #newReservation.modal.fade(tabindex='-1', role='dialog')
-                              .modal-dialog.modal-lg(role='document')
-                                .modal-content
-                                  .modal-header
-                                    h3.modal-title
-                                      center Select Date
-                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                  .modal-body
-                                    .content
-                                      .container-fluid
-                                        .row
-                                          .col-md-10.col-md-offset-1
-                                            .card.card-calendar
-                                              .card-content
-                                                #fullCalendar
-                                  .modal-footer
-                                    button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
-                                    button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                             
                             .content
                               .container-fluid
                                 .row
@@ -142,6 +117,8 @@ html(lang='en')
                                     br
                                     .card
                                       .card-content
+                                        h2 Queue
+                                        hr
                                         .toolbar
                                           // Here you can write extra buttons/actions for the toolbar
                                         .fresh-datatables
@@ -149,8 +126,8 @@ html(lang='en')
                                             thead
                                               tr
                                                 th Name
-                                                th Services
-                                                th Room
+                                                th.disabled-sorting Services
+                                                th.disabled-sorting Room
                                                 th Date
                                                 th Time
                                                 th.disabled-sorting Actions
@@ -167,11 +144,56 @@ html(lang='en')
                                                 tr
                                                   td= walkin.cust_fname+" "+walkin.cust_lname+" "+walkin.cust_lname
                                                   td
+                                                    button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${walkin.walkin_id}`) View Services
                                                   td= walkin.room_name
                                                   td= walkin.walkin_date
                                                   td= walkin.walkin_start_time+" to "+walkin.walkin_end_time
                                                   td
-                                                
+                                                  
+                  
+
+                            hr
+                            .content
+                              .container-fluid
+                                .row
+                                  .col-md-12
+                                    p.category  
+                                    br
+                                    .card
+                                      .card-content
+                                        h2 Reservations
+                                        hr
+                                        .toolbar
+                                          // Here you can write extra buttons/actions for the toolbar
+                                        .fresh-datatables
+                                          table#datatablesReservation.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                            thead
+                                              tr
+                                                th Name
+                                                th.disabled-sorting Services
+                                                th.disabled-sorting Room
+                                                th Date
+                                                th Time
+                                                th.disabled-sorting Actions
+                                            tfoot
+                                              tr
+                                                th Name
+                                                th Services
+                                                th Room
+                                                th Date
+                                                th Time
+                                                th Actions
+                                            tbody
+                                              each reserv in reservs
+                                                tr
+                                                  td= reserv.cust_fname+" "+reserv.cust_lname+" "+reserv.cust_lname
+                                                  td
+                                                    button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${reserv.walkin_id}`) View Services
+                                                  td= reserv.room_name
+                                                  td= reserv.walkin_date
+                                                  td= reserv.walkin_start_time+" to "+reserv.walkin_end_time
+                                                  td                              
+                                        
                                         .row
                                           .col-md-6
                                             .card-header
@@ -195,6 +217,36 @@ html(lang='en')
                                           .row
                                             .col-md-12
                                           .row
+                            #viewServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                              .modal-dialog(role='document')
+                                .modal-content
+                                  .modal-header
+                                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                      span(aria-hidden='true') ×
+                                    center
+                                      h4.modal-title#title
+                                  .modal-body 
+                                    .row
+                                      .col-md-12
+                                        .card-content
+                                          .toolbar
+                                          .fresh-datatables
+                                          table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                            thead
+                                              tr
+                                                th
+                                                  strong  Services 
+                                                th
+                                                  strong  Quantity
+                                                th
+                                                  strong Duration
+                                                th
+                                                  strong Total Price 
+                                            tbody#viewServicesAvailed
+                                    //- .modal-footer
+                                    //-   center
+                                    //-     button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateSpecialty(data-toggle='modal') 
+                                            
                             footer.footer
                               .container-fluid
                                 .copyright.pull-right
@@ -233,8 +285,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/sweetalert2.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -249,6 +299,32 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+      $('.viewButton').click(function(){
+        var table =$('#datatables').DataTable()
+        var id = $(this).val()
+        $.post('/fdReservation/viewServices',{id:id})
+          .done(data=>{
+            console.log(data.out2)
+            console.log("NAME^")
+              $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+            for(var i=0; i<data.out1.length;i++){
+                $('#viewServicesAvailed').append(` 
+                <tr>
+                <td>${data.out1[i].service_name}</td>
+                <td>${data.out1[i].service_total_quantity}</td>
+                <td>${data.out1[i].service_total_duration}</td>`)
+              }
+        $('#viewServices').modal('show')
+        $('#viewServices').on('hidden.bs.modal', function (){
+          $('#viewServicesAvailed').empty()
+          $('#title').empty()
+        })
+        })
+        
+      })
+    })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -257,6 +333,7 @@ html(lang='en')
   script(type='text/javascript').
     $(document).ready(function() {
       $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      $('#datatablesReservation').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
       });
   script(type='text/javascript').
     $(document).ready(function(){

@@ -3,18 +3,13 @@ var router = express.Router()
 var db = require('../../lib/database')();
 
 
+router.get('/receptionist', (req, res) => {
+  res.render('receptionist/receptionist')
+})
+
   router.get('/queue',(req, res) => {
       res.render('receptionist/queue')
     })
-
-
-  router.get('/custProfile',(req, res) => {
-      res.render('customer/custProfile')
-    })
-
-  router.get('/custLogin',(req, res) => {
-    res.render('customer/custLogin')
-  })
 
 
   
