@@ -195,6 +195,56 @@ router.post('/selectTime/query',(req, res) => {
   })
 })
 
+router.post('/selectTime/queryRoom',(req,res)=>{
+  const query = `SELECT * FROM room_tbl where delete_stats = 0 AND room_availability=0`
+
+  db.query(query,(err,out)=>{
+    res.send(out)
+  })
+})
+
+router.post('/selectTime/queryCommon',(req, res) => {
+  const query = `SELECT room_tbl.*, room_type_tbl.*
+  FROM room_tbl 
+  JOIN room_type_tbl ON room_tbl.room_type_id = room_type_tbl.room_type_id
+  WHERE room_tbl.room_rate = 0
+  GROUP BY room_tbl.room_type_id
+  `
+
+  db.query(query,(err, out) => {
+    res.send(out)
+  })
+})
+router.post('/selectTime/addResource/Multiple', mid.frontdesknauthed,(err,res)=>{
+  var dateNow = moment().format('MM-DD-YYYY')
+  console.log(dateNow)
+  const query =`SELECT SUM(bed_occupied) AS occupied, walkin_queue_tbl.*, walkin_services_tbl.*, room_tbl.* , room_type_tbl.room_type_desc from walkin_queue_tbl 
+  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id
+  join room_type_tbl on room_tbl.room_type_id = room_type_tbl.room_type_id 
+  where walkin_queue_tbl.walkin_date = '${dateNow}' 
+  group by walkin_queue_tbl.walkin_start_time , room_tbl.room_name
+  ORDER BY walkin_queue_tbl.walkin_start_time`
+
+  db.query(query,(err,out)=>{
+    res.send(out)
+  })
+})
+router.post('/selectTime/addResource', mid.frontdesknauthed,(req,res)=>{
+  var dateNow = moment().format('MM-DD-YYYY')
+  console.log(dateNow)
+  const query =`SELECT walkin_queue_tbl.*, walkin_services_tbl.*, room_tbl.* , room_type_tbl.* from walkin_queue_tbl 
+  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id
+  join room_type_tbl on room_tbl.room_type_id = room_type_tbl.room_type_id 
+  where walkin_queue_tbl.walkin_date = '${dateNow}' AND room_tbl.room_id=?
+  group by walkin_queue_tbl.walkin_start_time , room_tbl.room_name
+  ORDER BY walkin_queue_tbl.walkin_start_time `
+
+  db.query(query,[req.body.id],(err,out)=>{
+    res.send(out)
+  })
+})
 
 
 // // [BOOK RESERVATION - SELECTING DATE]
@@ -255,8 +305,9 @@ router.get('/bookreservation',mid.frontdesknauthed, (req, res) => {
 
 router.post('/bookreservation/addReservation',(req,res)=>{
   var walkinId;
-  const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date)
-  values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${req.body.date}")`
+  console.log(req.body)
+  const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status)
+  values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${req.body.date}",0)`
   db.query(query,(err,out)=>{
     var notSuccess=0;
     var querySuccess= 1
@@ -264,8 +315,8 @@ router.post('/bookreservation/addReservation',(req,res)=>{
     console.log(walkinId)
     for(var i=0;i<req.body.serviceId.length;i++)
       {
-        const query1= `insert into walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied) values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
-          "${req.body.bed_quantity}")`
+        const query1= `insert into walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+          "${req.body.bed_quantity}","${req.body.serviceTotal[i]}")`
         db.query(query1,(err,out)=>{
           console.log(query1)
           console.log(req.body.serviceId[i])
@@ -300,19 +351,19 @@ router.get('/fdReservation',mid.frontdesknauthed, (req, res) => {
   join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
   join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date='${fullDate}' group by walkin_services_tbl.walkin_id;
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND room_tbl.room_type_id= '2' AND walkin_date='${fullDate}' group by walkin_services_tbl.walkin_id;
   SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
   from walkin_queue_tbl 
   join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
   join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND walkin_date != '${fullDate}' group by walkin_services_tbl.walkin_id`
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND room_tbl.room_type_id != '2' AND walkin_date >= '${fullDate}' group by walkin_services_tbl.walkin_id`
   db.query(query,(err,out)=>{
     res.render('frontdesk/fdReservation',{
       walkins: out[0],
       reservs: out[1]
     })
-    console.log(query)
+    console.log(out[0])
   })
 })
 
@@ -342,6 +393,41 @@ router.get('/summary', (req, res) => {
 })
 
 router.get('/payment',mid.frontdesknauthed, (req, res) => {
-  res.render('frontdesk/payment')
+  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*,customer_tbl.*, services_tbl.service_name, room_tbl.room_name
+  FROM walkin_queue_tbl 
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON customer_tbl.cust_id = walkin_queue_tbl.cust_id
+  JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  WHERE walkin_queue_tbl.walkin_payment_status = 0 
+  GROUP BY walkin_services_tbl.walkin_id`
+  db.query(query,(err,out)=>{
+    res.render('frontdesk/payment',{
+      notpaids : out
+    })
+  })
 })
+router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
+  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
+  customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
+  services_tbl.service_name, services_tbl.service_price, 
+  room_tbl.room_name, room_tbl.room_rate
+    from walkin_queue_tbl 
+    join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+    join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+    join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id where walkin_services_tbl.walkin_id=?`
+  
+  db.query(query,[req.body.id],(err,out)=>{
+    var out1= out;
+    const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl join customer_tbl
+    on walkin_queue_tbl.cust_id = customer_tbl.cust_id where walkin_queue_tbl.walkin_id =?`
+    db.query(query1,[req.body.id],(err,out)=>{
+      return res.send({out1:out1, out2:out[0]})
+    })
+  })
+  })
+
+
+  
 exports.frontdesk = router;

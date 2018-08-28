@@ -169,27 +169,243 @@ html(lang='en')
   script(type='text/javascript').
     $(document).ready(function(){
       var restype = $('#restype').val()
-      console.log(restype)
-          if(restype == 'multiple')
-          {
-            $.post('selectTime/query').done(data=>{
-                $('#fullCalendar').fullCalendar('addResource', {
-                id: "1",
-                title: "Time"
-                })
-
+      var room_type_id;
+      if(restype == 'multiple')
+        {
+          $.post('selectTime/queryCommon').done(data=>{
+            room_type_id= data[0].room_type_id
           })
+          $.post('selectTime/queryRoom').done(data=>{
+            for(var i=0; i<data.length;i++)
+              {
+                if(data[i].room_type_id==room_type_id)
+                  {
+                    $('#fullCalendar').fullCalendar('addResource',{
+                    id: 'common',
+                    title: 'common rooms',
+                    })
+                  }
+                else 
+                  {
+                      $('#fullCalendar').fullCalendar('addResource',{
+                      id: data[i].room_id,
+                      title: data[i].room_name,
+                      })
+                  }
+              }
+              $.post('selectTime/addResource/Multiple').done(data=>{
+                var saveArea;
+                var array = [];
+                console.log(array)
+                for(var i=0; i<data.length;i++)
+                  {
+                    var points = 0;
+                    for(var k=0; k<array.length;k++)
+                    {
+                      if(array[k] == data[i].walkin_start_time){
+                        points = 1;
+                      }
+                    }
+                    if(points == 0){
+                      array.push(data[i].walkin_start_time)
+                    }
+                  }
+                //- for(var t=0; t<array.length;t++){
+                //-   for(var r=0; r<data.length; r++){
+                //-     if(data[r].room_type_id==room_type_id){
+                //-       if(array[t] == data[r].walkin_start_time){
+
+                //-       }
+                //-     }
+                //-   }
+                //- }
+                for(var i=0; i<data.length;i++)
+                  {
+                    if(data[i].room_type_id==room_type_id)
+                      {
+                        if(i>0)
+                          {
+                          var TIME = data[i-1].walkin_start_time
+                          }
+                        else{
+                          var TIME = data[0].walkin_start_time
+                        }
+
+                        
+                        if(TIME==data[i].walkin_start_time)
+                          {
+                            var occupied = data[i].occupied
+                            var bed_qnty = data[i].bed_qty
+                            var newQnty = bed_qnty - occupied
+                            var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                            var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+                            var newT = moment(Timeend).add(5,'m').format()
+                            var startTime = moment(Timestart).format()
+                            var endTime= moment(Timeend).format()
+
+                            if(i>0)
+                              {
+                              $('#fullCalendar').fullCalendar('renderEvent',{
+                                resourceId: 'common',
+                                title: "Remaining Bed",
+                                title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
+                                description: data[i].room_type_desc,
+                                start: startTime,
+                                end: newT
+                                },true)
+                              }
+                            console.log(TIME)
+                            if(TIME != data[i].walkin_start_time)
+                              {
+                                alert(TIME)
+                                var occupied = data[i].occupied
+                                var bed_qnty = data[i].bed_qty
+                                var newQnty = bed_qnty - occupied
+                                var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                                var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+                                var newT = moment(Timeend).add(5,'m').format()
+                                var startTime = moment(Timestart).format()
+                                var endTime= moment(Timeend).format()
+
+                                if(i>0)
+                                  {
+                                    $('#fullCalendar').fullCalendar('renderEvent',{
+                                      resourceId: 'common',
+                                      title: "Remaining Bed",
+                                      title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
+                                      description: data[i].room_type_desc,
+                                      start: startTime,
+                                      end: newT
+                                      },true)
+                                  }
+                              }
+                        }
+                      }
+                  }
+              })
+          })
+          //- $.post('selectTime/addResource/Multiple').done(data=>{
+          //-   for(var i=0; i<data.length;i++){
+              
+          //-   var occupied = data[i].occupied
+          //-   var bed_qnty = data[i].bed_qty
+          //-   var newQnty = bed_qnty - occupied
+
+
+          //-   var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+          //-   var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+          //-   var newT = moment(Timeend).add(5,'m').format()
+          //-   var startTime = moment(Timestart).format()
+          //-   var endTime= moment(Timeend).format()
+          //-   $('#fullCalendar').fullCalendar('renderEvent',{
+          //-     resourceId: data[i].room_id,
+          //-     title: "Remaining Bed "+"ID: "+data[i].room_id,
+          //-     title2: data[i].room_name+" "+newQnty+" remainings ",
+          //-     description: data[i].room_type_desc,
+          //-     start: startTime,
+          //-     end: newT
+          //-   },true)
+          //-   }
+          //- })
           }
           else if (restype == 'single')
-          {
-          $.post('selectTime/query').done(data=>{
-                  for(var i=0; i<data.length;i++){
-                $('#fullCalendar').fullCalendar('addResource', {
-                id: data[i].room_id,
-                title: data[i].room_name,
-                occupancy: data[i].bed_qty
-                          })
+            {
+              $.post('selectTime/query').done(data=>{
+                for(var i=0; i<data.length;i++)
+                  {
+                    $('#fullCalendar').fullCalendar('addResource', {
+                    id: data[i].room_id,
+                    title: data[i].room_name,
+                    occupancy: data[i].bed_qty
+                    })
+
+                    $.post('selectTime/addResource',{id:data[i].room_id}).done(data=>{
+                      console.log(data)
+                      for(var i=0; i<data.length;i++)
+                        {
+                          
+                          var occupied = data[i].bed_occupied
+
+                          var bed_qnty = data[i].bed_qty
+
+                          var TIMESTART = data[i].walkin_start_time
+                          var TIMEEND = data[i].walkin_end_time
+                          var newQnty = bed_qnty - occupied
+                          var Tend = data[i].walkin_date +' '+data[i].walkin_end_time
+                          var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                          var Timeend = data[i].walkin_date +' '+data[i].walkin_end_time;
+                          var newT = moment(Timeend).add(5,'m').format()
+                          var startTime = moment(Timestart).format()
+                          var endTime= moment(Timeend).format()
+                      
+                          $('#fullCalendar').fullCalendar('renderEvent',{
+                            resourceId: data[i].room_id,
+                            title: "Remaining Bed "+newQnty,
+                            title2: "Start TIME: "+TIMESTART+" END TIME: "+TIMEEND,
+                            description: data[i].room_name+" ",
+                            start: startTime,
+                            end: newT,
+                            rendering: 'background'
+                          },true)
+                        }
+                      })
+                    $.post('selectTime/addResource',{id:data[i].room_id}).done(data=>{
+                      var newQnty = data[0].bed_qty-1
+                      var color = '#FF232' // kunwari blue
+                      for(var i=0; i<data.length;i++)
+                        {
+                          var occupied = data[i].bed_occupied
+                          var bed_qnty = data[i].bed_qty
+                          var test = data[i].walkin_date+' '+data[i].walkin_start_time;
+                      if(i>0)
+                        {
+                          var test2 = data[i-1].walkin_date+' '+data[i-1].walkin_end_time;
+                          if(moment(test).isSameOrAfter(test2))
+                            {
+                              newQnty = eval(data[0].bed_qty+'-'+occupied)
+                            }
+                          else
+                            {
+                              newQnty = eval(newQnty+'-'+occupied)
+                            }
+                        if(newQnty<=16){
+                          color = '#FFFF50' //kunwari red
+                        }
+                        if(newQnty<=5){
+                          color = '#FFA500' //kunwari red
+                        }
+                        if(newQnty<=0){
+                          color = '#FF0000' //kunwari red
+                        }
+                        }
+                      test = moment(test).format('YYYY-MM-DD HH:mm')
+                      test2 = moment(test2).format('YYYY-MM-DD HH:mm')
+                      var TIMESTART = data[i].walkin_start_time
+                      var TIMEEND = data[i].walkin_end_time
+                      var Tstart = data[i].walkin_date +' '+data[i].walkin_start_time
+                      var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                      var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+                      var newT = moment(Timeend).add(5,'m').format()
+                      var Tnew = moment(endTime).add(5,'m').format()
+                      var startTime = moment(Timestart).format()
+                      var endTime= moment(Timeend).format()
+                      if(TIMESTART == data[i].walkin_start_time)
+                        {
+                          $('#fullCalendar').fullCalendar('renderEvent',{
+                            resourceId: data[i].room_id,
+                            title: "Remaining Bed "+newQnty,
+                            title2: "Start TIME: "+TIMESTART+" END TIME: "+TIMEEND,
+                            title3: newQnty,
+                            description: data[i].room_name+" ",
+                            start: startTime,
+                            end: newT,
+                            color: color
+                          },true)
+                        }
+                      }
+                    })
                   }
+
           })
           }
 
@@ -206,6 +422,11 @@ html(lang='en')
         var customerId= $('#Id').val()
         var date = !{JSON.stringify(date)}
         $('#fullCalendar').fullCalendar({
+          header: {
+              left:   'title',
+              center: '',
+              right:  ''
+          },
           defaultView: 'agendaDay',
           nowIndicator: true,
           groupByResource: true,
@@ -226,17 +447,12 @@ html(lang='en')
             var businessHoursTime = '13:00'
             var kahitano = date.format('YYYY-MM-DD HH:mm')
             var kahitanotime = date.format('HH:mm')
-            console.log(timeNow)
-            console.log(businessHours)
-            console.log(kahitano)
-            console.log(kahitanotime)
-            console.log(businessHoursTime)
             if(moment(kahitano).isSameOrAfter(businessHours) && kahitanotime >= businessHoursTime && moment(kahitano).isSameOrAfter(timeNow))
             {
               var timePicked= date.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + date.format('hh:mm A'),
+                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.titl,
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
@@ -253,6 +469,10 @@ html(lang='en')
                 }
                 });
               }
+              else 
+              {
+
+              }
             //- alert(' you clicked ' + date.format('hh:mm A') + ' from '+ resource.title);
           },
           select: function(startDate, endDate, jsEvent, view, resource) {
@@ -267,68 +487,48 @@ html(lang='en')
           },
           eventRender: function(eventObj, $el) {
             $el.popover({
-              title: eventObj.title,
-              content: eventObj.description,
+              title: eventObj.description,
+              content: eventObj.title2,
               trigger: 'hover',
               placement: 'top',
               container: 'body'
             });
           },
           eventClick: function(eventObj) {
+             var timeNow = moment().format('YYYY-MM-DD HH:mm')
+            //- var businessHours = reqSession.utilities.businessHours
+            var businessHoursDate = moment().format('YYYY-MM-DD')
+            var businessHours = businessHoursDate+' 13:00'
+            var businessHoursTime = '13:00'
+            var kahitano = eventObj.start.format('YYYY-MM-DD HH:mm')
+            var kahitanotime = eventObj.start.format('HH:mm')
             var dateStart= eventObj.start
-            var newDate = dateStart.format('hh:mm A')
-            if (eventObj.url) {
-              $('#viewDateSchedule').modal('show')
-              //- alert(
-              //-   'Clicked ' + eventObj.title + '.\n'
-              //- );
+            if (moment(kahitano).isSameOrAfter(businessHours) && kahitanotime >= businessHoursTime && moment(kahitano).isSameOrAfter(timeNow)) 
+            {
+              var timePicked= eventObj.start.format('hh:mm A')
+              var datePicked = !{JSON.stringify(date)}
+              swal({
+                title: "You Clicked " + eventObj.start.format('hh:mm A')+" From "+eventObj.description+" "+eventObj.title3,
+                text: "Are You Sure?",
+                icon: "info",
+                buttons: ["Cancel","Proceed"],
+                dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
+                }
+                else
+                {
 
-              //- window.open(eventObj.url);
-
-              return false; // prevents browser from following link in current tab.
-            } else {
-              alert(newDate)
-              $('#viewDateSchedule').modal('show');
-              $('#viewAppend').append(`
-                  <table class="table table-no-bordered table-hover" id="datatables" cellspacing="0" width="100%" style="width:100%;">
-                    <thead>
-                      <tr>
-                        <th>Bed</th>
-                        <th></th>
-                        <th></th>
-                        <th>Availability</th>
-                        <th class="disabled-sorting">Actions</th>
-                      </tr>
-                    </thead>
-                    <tfoot>
-                      <tr>
-                        <th>Bed</th>
-                        <th></th>
-                        <th></th>
-                        <th>Availability</th>
-                        <th>Actions</th>
-                      </tr>
-                    </tfoot>
-                    <tbody>
-                      <td>
-                      <td>
-                      <td>
-                      <td>
-                      <td id="BookAppend">
-                      </td>
-                    </tbody>
-                  </table>
-            `)
-            $('#BookAppend').append(` <a href="/bookreservation?time=${newDate}" class="btn btn-simple btn-info" stlye="margin-right: 15px"><span class="btn-label"></span><i class="ti-calendar"></i> Book Reservation</a></li`)
-            $('#viewDateSchedule').on('hidden.bs.modal', function (){
-                $('#viewAppend').empty()
-              });
-            }
+                }
+                });
+            } 
           },
-          events:
-          [
-
-          ]
+          //- events: [
+            
+          //- ]
         });
         //- $('#fullCalendar').fullCalendar('gotoDate', date.date )
     });

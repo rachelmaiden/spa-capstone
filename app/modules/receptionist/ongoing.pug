@@ -17,16 +17,16 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
-  body
+  body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
         //
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
-            | CT
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
+          a.simple-text.logo-mini(href='')
+            | 
+          a.simple-text.logo-normal(href='./home')
             | MBAY Health Spa
         .sidebar-wrapper
           .user
@@ -39,17 +39,17 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='/receptionist/queue')
+              a(href='./home')
                 i.ti-user
                 p
                   | Queue
             li
-              a(href='/receptionist/reservationList')
+              a(href='./reservationList')
                 i.ti-calendar
                 p
                   | Reservation
             li.active
-              a(href='/receptionist/ongoing')
+              a(href='./ongoing')
                 i.fa.fa-bed
                 p
                   | Ongoing Service
@@ -66,41 +66,15 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Ongoing
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
+                  a#date-part(style="color: black")
                 li
-                  a.btn-rotate(href='#settings')
-                    i.ti-settings
-                    p.hidden-md.hidden-lg
-                      | Settings
+                  a#time-part(style="color: black") 
+                li
+                  a.logout(style="cursor: pointer; color: black") Log Out
         .content
           .container-fluid
             .row
@@ -204,69 +178,83 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') TEAM MBAY
-              .fixed-plugin
-              // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
-              script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
-              // Forms Validations Plugin
-              script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
-              // Promise Library for SweetAlert2 working on IE
-              script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
-              // Plugin for Date Time Picker and Full Calendar Plugin
-              script(src='/assets/paperDashboardPro/js/moment.min.js')
-              // Date Time Picker Plugin is included in this js file
-              script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
-              // Select Picker Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
-              // Switch and Tags Input Plugins
-              script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
-              // Circle Percentage-chart
-              script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
-              // Charts Plugin
-              script(src='/assets/paperDashboardPro/js/chartist.min.js')
-              // Notifications Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
-              // Sweet Alert 2 plugin
-              script(src='/assets/paperDashboardPro/js/sweetalert2.js')
-              // Vector Map plugin
-              script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-              // Google Maps Plugin
-              script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
-              // Wizard Plugin
-              script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
-              // Bootstrap Table Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
-              // Plugin for DataTables.net
-              script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
-              // Full Calendar Plugin
-              script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
-              // Paper Dashboard PRO Core javascript and methods for Demo purpose
-              script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
-              // Sharrre Library
-              script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
-              // Paper Dashboard PRO DEMO methods, don't include it in your project!
-              script(src='/assets/paperDashboardPro/js/demo.js')
-              script(type='text/javascript').
-                $(document).ready(function(){
-                demo.initOverviewDashboard();
-                demo.initCirclePercentage();
-                });
-              script(type='text/javascript').
-                $(document).ready(function() {
-                $('#datatables').DataTable({
-                "pagingType": "full_numbers",
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: true,
-                language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
-                }
-                });
-                });
-              script(type='text/javascript').
-                $(document).ready(function(){
-                demo.initWizard();
-                });
+                        a(href='') TEAM MBAY
+  .fixed-plugin
+  // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+  script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+  // Forms Validations Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+  // Promise Library for SweetAlert2 working on IE
+  script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+  // Plugin for Date Time Picker and Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/moment.min.js')
+  // Date Time Picker Plugin is included in this js file
+  script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+  // Select Picker Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+  // Switch and Tags Input Plugins
+  script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+  // Circle Percentage-chart
+  script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+  // Charts Plugin
+  script(src='/assets/paperDashboardPro/js/chartist.min.js')
+  // Notifications Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+  // Sweet Alert 2 plugin
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  // Wizard Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+  // Bootstrap Table Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+  // Plugin for DataTables.net
+  script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+  // Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+  // Paper Dashboard PRO Core javascript and methods for Demo purpose
+  script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+  // Sharrre Library
+  script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+  // Paper Dashboard PRO DEMO methods, don't include it in your project!
+  script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+      $(document).ready(function(){
+        $('.logout').click(function(){
+              swal({
+          title: "Are you sure?",
+          text: "Do you want to Log Out?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.post('/frontdesk/logout')
+            location.reload()
+          } 
+        });
+        })
+      })
+  script(type='text/javascript').
+    $(document).ready(function(){
+    demo.initOverviewDashboard();
+    demo.initCirclePercentage();
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatables').DataTable({
+    "pagingType": "full_numbers",
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    responsive: true,
+    language: {
+    search: "_INPUT_",
+    searchPlaceholder: "Search records",
+    }
+    });
+    });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    demo.initWizard();
+    });

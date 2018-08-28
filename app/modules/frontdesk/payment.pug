@@ -111,147 +111,6 @@ html(lang='en')
                       .card-content
                         center
                           h2 Unpaid Customers
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService', style='margin-left: 20px')
-                          span.btn-label
-                            i.fa.fa-plus
-                          |                                                 New Guest
-                  #addNewService.modal.fade(tabindex='-1', role='dialog')
-                    .modal-dialog.modal-lg(role='document')
-                      .modal-content
-                        .modal-header
-                          h3.modal-title
-                            center New Guest
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        .modal-body
-                          #wizardCard.card-wizard
-                            form#wizardForm(method='', action='')
-                              .card-content
-                                ul.nav
-                                  li
-                                    a(href='#tab1', data-toggle='tab') Personal Information
-                                  li
-                                    a(href='#tab2', data-toggle='tab') Account Information
-                                .tab-content
-                                  #tab1.tab-pane
-                                    .row
-                                      .col-md-4
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | First Name
-                                              star *
-                                          input.form-control(type='text', name='first_name', placeholder='ex: Mike')
-                                      .col-md-4
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Middle Name
-                                          input.form-control(type='text', name='last_name', required='true', placeholder='ex: Andrew')
-                                      .col-md-4
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Last Name
-                                              star *
-                                          input.form-control(type='text', name='last_name', required='true', placeholder='ex: Andrew')
-                                    .row
-                                      .col-md-4
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Gender
-                                              star *
-                                      .col-md-5
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Birthday
-                                              star *
-                                    .row
-                                      .col-md-1
-                                        .form-group
-                                          .radio
-                                            input#radio20(type='radio', name='radio10', value='option20')
-                                            label(for='radio20')
-                                              | Male
-                                      .col-md-3
-                                        .form-group
-                                          .radio
-                                            input#radio20(type='radio', name='radio10', value='option20')
-                                            label(for='radio20')
-                                              | Female
-                                      .col-md-4
-                                        input.form-control(type='text', name='last_name', required='true', placeholder='')
-                                    br
-                                    .row
-                                      .col-md-7
-                                        .form-group
-                                          h3.control-label
-                                            strong
-                                              | Contact Details
-                                    .row
-                                      .col-md-8
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Address
-                                              star *
-                                          input.form-control(type='text', name='first_name', placeholder='Address')
-                                      .col-md-4
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Contact Number
-                                              star *
-                                          input.form-control(type='number', name='first_name', placeholder='Address')
-                                    .row
-                                      .col-md-12
-                                        .form-group
-                                          p.control-label
-                                            strong
-                                              | Medical History
-                                              star *
-                                          input.form-control(type='textfield', name='first_name', placeholder='ex: asthma')
-                                  #tab2.tab-pane
-                                    h5.text-center Please give us more details about your platform.
-                                    .form-group
-                                      .checkbox
-                                        input#checkbox1(type='checkbox')
-                                        label(for='checkbox1')
-                                          | Loyalty Member
-                                    .row
-                                      .col-md-4
-                                        .form-group
-                                          label.control-label Username
-                                          star *
-                                          input.form-control(type='text', name='username', placeholder='username\
-                                          ')
-                                      .col-md-4
-                                        .form-group
-                                          label.control-label Password
-                                          star *
-                                          input.form-control(type='password', name='username', placeholder='username\
-                                          ')
-                                      .col-md-4
-                                        .form-group
-                                          label.control-label Re-enter Password
-                                          star *
-                                          input.form-control(type='password', name='username', placeholder='username\
-                                          ')
-                                    .row
-                                    .row
-                                      .col-md-5
-                                        .form-group
-                                          h3.control-label
-                                            | Fee: 500.00
-                                    .row
-                                      .col-md-5
-                                        .form-group
-                                          h3.control-label
-                                            | Perks: freebies
-                              .modal-footer
-                                button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Add Service
-                                button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -268,28 +127,27 @@ html(lang='en')
                                     tr
                                       th Name
                                       th Membership Type
-                                      th Reservation Details
+                                      th Time
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
                                       th Name
                                       th Membership Type
-                                      th Reservation Details
+                                      th Time
                                       th Actions
                                   tbody
-                                    tr
-                                      td Caesar Vance
-                                      td Ordinary
-                                      td
-                                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#viewDetails')
-                                          span.btn-label
-                                            i.fa.fa-eye
-                                          |                                                                                     View  Reservation Details
-                                      td
-                                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#checkout')
-                                          span.btn-label
-                                            i.fa.fa-arrow-right
-                                          |                                                                                 Checkout
+                                    each notpaid in notpaids
+                                      tr
+                                        td= notpaid.cust_fname+" "+notpaid.cust_lname
+                                        if(notpaid.cust_type==0)
+                                          td Common
+                                        else
+                                          td Loyalty
+                                        td= notpaid.walkin_start_time+" TO "+notpaid.walkin_end_time
+                                        td
+                                          button.btn.btn-info.btn-fill.btn-wd.checkoutButton(type='button' value=`${notpaid.walkin_id}`)
+                                            span.btn-label
+                                            | Checkout
                               #viewDetails.modal.fade(tabindex='-1', role='dialog')
                                 .modal-dialog(role='document')
                                   .modal-content
@@ -307,40 +165,37 @@ html(lang='en')
                                   .modal-content
                                     .modal-header
                                       h5.modal-title
-                                        center Add New Service
+                                        center Summary
                                       button.close(type='button', data-dismiss='modal', aria-label='Close')
                                     .modal-body
                                       div
                                         h5
-                                          strong Customer Name: 
+                                          strong#custName
                                       .fresh-datatables
                                         table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                           thead
                                             tr
                                               th.disabled-sorting
                                                 strong Services Availed 
-                                              th.disabled-sorting Amount
                                               th.disabled-sorting Quantity
+                                              th.disabled-sorting Amount
                                           tfoot
                                             tr
                                               th.disabled-sorting
                                               th
                                               th
-                                          tbody
-                                            tr
-                                              td Special Massage
-                                              td 500
-                                              td 3
+                                          tbody#viewServicesAvailed
+                                              
                                       div
                                         h5
                                           strong Amenity Stay: 
                                         div
                                           h5
-                                            strong Room Rate: 
-                                        div(style='margin-left: 500px')
+                                            strong#Room
+                                            br
+                                            strong#RoomRate
                                           h2
-                                            strong
-                                              | Total:
+                                            strong#TotalPrice
                                         .row
                                           .col-md-4
                                             .form-group.has-default.bmd-form-group
@@ -380,68 +235,105 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row
-              .fixed-plugin
-              // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
-              script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
-              script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
-              // Forms Validations Plugin
-              script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
-              // Promise Library for SweetAlert2 working on IE
-              script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
-              // Plugin for Date Time Picker and Full Calendar Plugin
-              script(src='/assets/paperDashboardPro/js/moment.min.js')
-              // Date Time Picker Plugin is included in this js file
-              script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
-              // Select Picker Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
-              // Switch and Tags Input Plugins
-              script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
-              // Circle Percentage-chart
-              script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
-              // Charts Plugin
-              script(src='/assets/paperDashboardPro/js/chartist.min.js')
-              // Notifications Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
-              // Sweet Alert 2 plugin
-              script(src='/assets/paperDashboardPro/js/sweetalert2.js')
-              // Vector Map plugin
-              script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-              // Google Maps Plugin
-              script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
-              // Wizard Plugin
-              script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
-              // Bootstrap Table Plugin
-              script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
-              // Plugin for DataTables.net
-              script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
-              // Full Calendar Plugin
-              script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
-              // Paper Dashboard PRO Core javascript and methods for Demo purpose
-              script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
-              // Sharrre Library
-              script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
-              // Paper Dashboard PRO DEMO methods, don't include it in your project!
-              script(src='/assets/paperDashboardPro/js/demo.js')
-              script(type='text/javascript').
-                $(document).ready(function(){
-                demo.initOverviewDashboard();
-                demo.initCirclePercentage();
-                });
-              script(type='text/javascript').
-                $(document).ready(function() {
-                $('#datatables').DataTable({
-                "pagingType": "full_numbers",
-                "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-                responsive: true,
-                language: {
-                search: "_INPUT_",
-                searchPlaceholder: "Search records",
-                }
-                });
-                });
-              script(type='text/javascript').
-                $(document).ready(function(){
-                demo.initWizard();
-                });
+    .fixed-plugin
+    // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+    script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+    script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+    // Forms Validations Plugin
+    script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+    // Promise Library for SweetAlert2 working on IE
+    script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+    // Plugin for Date Time Picker and Full Calendar Plugin
+    script(src='/assets/paperDashboardPro/js/moment.min.js')
+    // Date Time Picker Plugin is included in this js file
+    script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+    // Select Picker Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+    // Switch and Tags Input Plugins
+    script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+    // Circle Percentage-chart
+    script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+    // Charts Plugin
+    script(src='/assets/paperDashboardPro/js/chartist.min.js')
+    // Notifications Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+    // Sweet Alert 2 plugin
+    script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+    // Vector Map plugin
+    script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+    // Google Maps Plugin
+    script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+    // Wizard Plugin
+    script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+    // Bootstrap Table Plugin
+    script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+    // Plugin for DataTables.net
+    script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+    // Full Calendar Plugin
+    script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+    // Paper Dashboard PRO Core javascript and methods for Demo purpose
+    script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+    // Sharrre Library
+    script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+    // Paper Dashboard PRO DEMO methods, don't include it in your project!
+    script(src='/assets/paperDashboardPro/js/demo.js')
+    script.
+      $(document).ready(function(){
+        $('.checkoutButton').click(function(){
+          var id = $(this).val()
+          $('#checkout').modal('show')
+          $.post('/payment/query/CheckoutDets',{id:id})
+          .done(data=>{
+            console.log(data)
+            $('#Room').append(`Room: ${data.out1[0].room_name}`)
+            $('#RoomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
+            $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+            $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+            for(var i=0;i<data.out1.length;i++)
+            {
+            $('#viewServicesAvailed').append(`
+              <tr>
+              <td>${data.out1[i].service_name}</td>
+              <td>${data.out1[i].service_total_quantity}</td>
+              <td>${data.out1[i].service_total_price}</td>
+              </tr>
+            `)
+            }
+            $('#checkout').on('hidden.bs.modal', function (){
+          $('#viewServicesAvailed').empty()
+          $('#custName').empty()
+        })
+          })
+        })
+      
+        $('.viewdetailsButton').click(function(){
+          var id = $(this).val()
+          $.post('/payment/query/CheckoutDets',{id:id})
+          .done(data=>{
+            $('#viewDetails').modal('show')
+          })
+        })
+      })
+    script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initOverviewDashboard();
+      demo.initCirclePercentage();
+      });
+    script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatables').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      });
+    script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initWizard();
+      });

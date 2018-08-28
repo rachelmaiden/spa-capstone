@@ -47,7 +47,7 @@ html(lang='en')
                 p
                   | Registration
             li.active
-              a(href='#')
+              a(href='./fdReservation')
                 i.ti-calendar
                 p
                   | Reservation
@@ -163,24 +163,9 @@ html(lang='en')
                                             td= service.service_points+" "+"Points"
                                           td
                                             span.total(service_id=`${service.service_id}`) 0.00
-                                    if(restype=='single')
-                                      h4
-                                        strong#room= `Room: ${room}`
+                                      strong#room= `Room: ${room}`
                                         input(type='hidden' value=`${roomId}` id="roomId")
-                                    else if(restype=='multiple')
-                                      .form-group
-                                        label.control-label
-                                          h4 Select Room
-                                          select.selectpicker.form-control(multiple='', data-style='btn-info',name='therapist' id="therapist" data-max-options='' style="border-radius:10px" )
-                                            option(disabled='') - Rooms -
-                                            
-                                          //- span.help-block This will be a remark only
-                                    h4
-                                      strong Final Total:  
-                                        a(id="grandtotal") 0.00 
-                                      br
-                                      strong Total Points: 
-                                        a(id="totalPoints") 0
+
                                     h4
                                       strong#date= `Date: ${date}`
                                       input(type="hidden" value=`${date}` id='dateRes')
@@ -190,6 +175,12 @@ html(lang='en')
                                       br
                                       strong End Time: 
                                         a(id='totalDuration') 0  
+                                h4
+                                  strong Total Price:  
+                                    a(id="grandtotal") 0.00 
+                                  br
+                                  strong Total Points: 
+                                    a(id="totalPoints") 0
                             
                             button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                             button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
@@ -209,14 +200,13 @@ html(lang='en')
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
               .modal-body
                 .col-lg-12.col-md-12
-                    h5.category
+                    h5
                       strong#Name= "Name: "
-                    h5.category
+                      br
                       strong#Gender= "Gender: "
-                    h5.category
+                      br
                       strong#Room= `Room:` 
-                  
-                    h5.category
+                      br
                       strong#Date= `Date:`
                     .row
                       .form-group
@@ -229,9 +219,10 @@ html(lang='en')
                             strong#EndTime
                             input(type="hidden" value='' id="timeEnd") 
                   
-                    h4.category Final Total: 
+                    h4 Total Price: 
                         a#finalTotal
-                    h4.category Final Points: 
+                        br
+                        | Total  Points: 
                         a#finalPoints
                 .row
                     .col-md-12
@@ -345,14 +336,25 @@ html(lang='en')
                 $('#viewServices').empty()
               })
             })
+            table.page('next').draw('page');
+          }
             console.log(serviceQuantity)
             console.log(serviceNewDuration)
             console.log(serviceTotal)
             console.log(idService)
-            table.page('next').draw('page');
-          }
 
         $('#reservationSummary').modal('show')
+        $('#reservationSummary').on('hidden.bs.modal', function (){
+          var serviceQuantity = []
+          var serviceNewDuration = []
+          var serviceTotal = []
+          var idService = []
+          console.log(serviceQuantity)
+          console.log(serviceNewDuration)
+          console.log(serviceTotal)
+          console.log(idService)
+        })
+        
         var Name = $('#name').text()
         var Gender = $('#gender').text()
         var Room = $('#room').text()
@@ -373,7 +375,8 @@ html(lang='en')
         $('#finalPoints').text(finalPoints)
 
         $('.submitButton').click(function(){
-          console.log(bed_quantity)
+          //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
+          
           $.post('/bookreservation/addReservation',{
             customerId :$('#customerId').val(),
             serviceId: idService,
@@ -384,8 +387,8 @@ html(lang='en')
             timeStart : $('#timeStart').val(),
             timeEnd: $('#timeEnd').val(),
             date : $('#dateRes').val(),
-            finalTotal : $('#finalTotal').text(),
-            finalPoints : $('#finalPoints').text(),
+            finalTotal : $('#finalTotal').text().replace(/,/g,''),
+            finalPoints : $('#finalPoints').text().replace(/,/g,''),
             roomId :$('#roomId').val()
            }).done(function(data){
              if(data.alertDesc==1)
@@ -486,32 +489,79 @@ html(lang='en')
               var pagelength = table.page.info().pages
               table.page(0).draw()
               var pinakaTotal = 0
+              var longest = []
         
             for (var i=1;i<=pagelength;i++){
               $(".checkbox:checked").each(function(){
               var id= $(this).val()
               var quantity =$(`.quantity[service_id='${id}']`).text()
-              var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
-              var minutes = $(`.duration[id='${id}']`).val() % 60;
-              hours = hours * quantity;
+              var restype = $('.restype[id="restype"]').val()
               var totals = $(`.total[service_id='${id}'`).text()
-              minutes = minutes * quantity;
               var points = $(`.points[id='${id}']`).val()
               points = points * quantity
-              console.log("Hours: "+hours+ " minutes: "+minutes)
+              if(restype=='single')
+                {
+                  console.log('single')
+                  var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
+                  var minutes = $(`.duration[id='${id}']`).val() % 60;
+                  hours = hours * quantity;
+                  minutes = minutes * quantity;
+                  theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
+                  $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
+                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                }
+              else if(restype=='multiple')
+                {
+                  console.log('multiple')
+                  var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
+                  var minutes = $(`.duration[id='${id}']`).val() % 60;
+                  hours = hours * quantity;
+                  minutes = minutes * quantity;
+                  theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
+                  $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
+                  longest.push(moment($(`.bagongDuration[id='${id}']`).val(),"hh:mm A").format('h:mma'))
+                  
+                  
+                  console.log(longest)
+                  
+                  
+                  var highest
+                  for(var j=0;j<=longest.length;j++)
+                    {
+                      console.log(longest.length)
+                      if(longest.length==0)
+                        {
+                          highest= longest[j];
+                        console.log("if") 
+                        }
+                      else 
+                        {
+                          if(moment(longest[j]).isAfter(longest[j-1]))
+                            {
+                          highest = longest[j];
+                          console.log("else if")   
+                            }
+                        } 
+                    }
+                    console.log(highest+" is the highest")
+                    //- if(sample>=longest)
+                    //-   {
+                    //-     longest = sample
+                    //-     console.log("aa"+longest)
+                    //-   }
+
+                  //- $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                }
                 pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
-                theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
               
                 //- alert(hours)
                 $('#grandtotal').text(pinakaTotal.toLocaleString())
-                $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
-                $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
               sum += parseInt(points)
             });
             table.page('next').draw('page');
             }
-              $('#totalPoints').text(sum)
               table.page(0).draw()
+              $('#totalPoints').text(sum)
               
           }
       })

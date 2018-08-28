@@ -8,3 +8,14 @@ exports.adminnauthed = (req, res, next) => {
 		next():
 		res.redirect("/admin/admin")
 }
+exports.receptionistnauthed = (req, res, next) => {
+	req.session.user?
+		next():
+		res.redirect("/receptionist/receptionist")
+}
+exports.guestistnauthed = (req, res, next) => {
+	req.session.user?
+		next():
+		res.redirect("/customer/customer")
+}
+

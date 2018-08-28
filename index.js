@@ -23,7 +23,7 @@ var app = express();
 require('./app')(app);
 
 app.get('/', (req, res) => {
-	res.redirect("/customer/custLogin")
+	res.redirect("/customer/customer")
 })
 
 
