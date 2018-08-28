@@ -3,20 +3,13 @@ var router = express.Router()
 var db = require('../../lib/database')();
 
 
-  router.get('/custHome',(req, res) => {
-      res.render('customer/custHome')
+  router.get('/home',(req, res) => {
+      res.render('customer/home')
     })
 
-
-  router.get('/custProfile',(req, res) => {
-      res.render('customer/custProfile')
-    })
-
-  router.get('/custLogin',(req, res) => {
-    res.render('customer/custLogin')
+  router.get('/login',(req, res) => {
+    res.render('customer/login')
   })
 
-
-  
 
 exports.customer = router;
