@@ -5,6 +5,7 @@ var mid = require("../../middlewares")
 var moment = require ('moment')
 
 
+<<<<<<< HEAD
 router.get('/sample',(req, res) => {
   res.render('customer/sample')
 })
@@ -72,5 +73,22 @@ router.get('/custProfile',mid.guestistnauthed,(req, res) => {
 	})
 
 
+=======
+  router.get('/custHome',(req, res) => {
+      res.render('customer/custHome')
+    })
+
+
+  router.get('/custProfile',(req, res) => {
+      res.render('customer/custProfile')
+    })
+
+  router.get('/custLogin',(req, res) => {
+    res.render('customer/custLogin')
+  })
+
+
+  
+>>>>>>> parent of 5e8742e... cust portal
 
 exports.customer = router;
