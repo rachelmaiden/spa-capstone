@@ -208,11 +208,16 @@ router.post('/selectTime/queryCommon',(req, res) => {
   FROM room_tbl 
   JOIN room_type_tbl ON room_tbl.room_type_id = room_type_tbl.room_type_id
   WHERE room_tbl.room_rate = 0
-  GROUP BY room_tbl.room_type_id
+  GROUP BY room_tbl.room_type_id;
+  SELECT * FROM room_tbl where room_gender = 1;
+  SELECT * FROM room_tbl where room_gender = 2
   `
 
   db.query(query,(err, out) => {
-    res.send(out)
+    res.send({common:out[0],
+    boys:out[1],
+    girls:out[2]
+    })
   })
 })
 router.post('/selectTime/addResource/Multiple', mid.frontdesknauthed,(err,res)=>{

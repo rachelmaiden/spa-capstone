@@ -14,6 +14,7 @@ router.get('/customer',(req, res) => {
   res.render('customer/customer')
 })
 
+
 router.get('/custHome',mid.guestistnauthed,(req, res) => {
 	const query =`SELECT customer_tbl.*, loyalty_tbl.* 
 	FROM customer_tbl
@@ -57,21 +58,19 @@ router.post("/customer/logout", (req, res) => {
   })
 })
 
-  router.get('/custProfile',mid.guestistnauthed,(req, res) => {
-			const query = `SELECT customer_tbl.*, loyalty_tbl.*
-			FROM customer_tbl
-			JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id
-			WHERE customer_tbl.cust_id=${req.session.user.cust_id}`
+router.get('/custProfile',mid.guestistnauthed,(req, res) => {
+		const query = `SELECT customer_tbl.*, loyalty_tbl.*
+		FROM customer_tbl
+		JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id
+		WHERE customer_tbl.cust_id=${req.session.user.cust_id}`
 
-			db.query(query,(err,out)=>{
-				res.render('customer/custProfile',{
-					customers: out
-				})
+		db.query(query,(err,out)=>{
+			res.render('customer/custProfile',{
+				customers: out
 			})
-    })
+		})
+	})
 
 
-
-  
 
 exports.customer = router;

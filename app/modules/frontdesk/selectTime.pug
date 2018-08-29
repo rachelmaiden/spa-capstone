@@ -170,10 +170,20 @@ html(lang='en')
     $(document).ready(function(){
       var restype = $('#restype').val()
       var room_type_id;
+      var girl_room;
+      var boy_room;
+      var girl_room_qty;
+      var boy_room_qty;
+      
       if(restype == 'multiple')
         {
           $.post('selectTime/queryCommon').done(data=>{
-            room_type_id= data[0].room_type_id
+            room_type_id= data.common[0].room_type_id
+            girl_room = data.girls[0].room_id
+            girl_room_qty = data.girls[0].bed_qty
+
+            boy_room = data.boys[0].room_id
+            boy_room_qty = data.boys[0].bed_qty
           })
           $.post('selectTime/queryRoom').done(data=>{
             for(var i=0; i<data.length;i++)
@@ -196,7 +206,6 @@ html(lang='en')
               $.post('selectTime/addResource/Multiple').done(data=>{
                 var saveArea;
                 var array = [];
-                console.log(array)
                 for(var i=0; i<data.length;i++)
                   {
                     var points = 0;
@@ -207,81 +216,155 @@ html(lang='en')
                       }
                     }
                     if(points == 0){
-                      array.push(data[i].walkin_start_time)
+                      var object= {roomId: data[i].room_id, time: data[i].walkin_start_time};
+                      array.push(object)
                     }
                   }
-                //- for(var t=0; t<array.length;t++){
-                //-   for(var r=0; r<data.length; r++){
-                //-     if(data[r].room_type_id==room_type_id){
-                //-       if(array[t] == data[r].walkin_start_time){
+                for(var t=0; t<array.length;t++){
+                  var title2save='';
+                  var saveGirlQty = girl_room_qty;
+                  var saveBoyQty = boy_room_qty;
+                  var desc='';
+                  var start = '';
+                  var end = '';
+                  for(var r=0; r<data.length; r++){
+                    if(data[r].room_type_id==room_type_id)
+                    {
 
-                //-       }
-                //-     }
-                //-   }
-                //- }
-                for(var i=0; i<data.length;i++)
-                  {
-                    if(data[i].room_type_id==room_type_id)
-                      {
-                        if(i>0)
-                          {
-                          var TIME = data[i-1].walkin_start_time
-                          }
-                        else{
-                          var TIME = data[0].walkin_start_time
+                      desc = data[r].room_type_desc
+                      //-   console.log("ROOM= "+data[r].room_id)
+                      //- //- console.log(data[r].room_type_desc)
+                      //-   console.log('ARRAY TIME= '+array[t])
+                        //- console.log('TIME= '+data[r].walkin_start_time)
+                      if(array[t].time == data[r].walkin_start_time && array[t].roomId == data[r].room_id){
+                        //- console.log('pasok')
+                        var occupied = data[r].bed_occupied
+                        //- console.log(occupied)
+                        if(r>0)
+                        {
+                          var test = data[r].walkin_date+' '+data[r].walkin_start_time;
+                          var test2 = data[r-1].walkin_date+' '+data[r-1].walkin_end_time;
+                          //- console.log(test)
+                          //- console.log(test2)
+                          if(moment(test).isSameOrAfter(test2))
+                            {
+                              if(girl_room == data[r].room_id){
+                                saveGirlQty = eval(saveGirlQty+'-'+data[r].occupied)
+                                title2save = title2save+""+data[r].room_name+" "+saveGirlQty
+                              }
+                              else if (boy_room == data[r].room_id){
+                                
+                                saveBoyQty = eval(saveBoyQty+'-'+data[r].occupied)
+                                title2save = title2save+""+data[r].room_name+" "+saveBoyQty
+                              }
+                            }
+                          else
+                            {
+                              if(girl_room == data[r].room_id){
+                                saveGirlQty = eval(girl_room_qty+'-'+data[r].occupied)
+                                title2save = title2save+""+data[r].room_name+" "+saveGirlQty
+                              }
+                              else if (boy_room == data[r].room_id){
+                                saveBoyQty = eval(boy_room_qty+'-'+data[r].occupied)
+                                title2save = title2save+""+data[r].room_name+" "+saveBoyQty
+                              }
+                            }
                         }
+                    start = moment(data[t].walkin_date+" "+data[t].walkin_start_time).format()
+                    end = moment(data[t].walkin_date+" "+data[t].walkin_start_time).add(5,'m').format()
+                      } 
+                    if(r == data.length-1){
+                      console.log(title2save)
+                      //- console.log('------------------------')
+                      //- console.log("START= "+start)
+                      //- console.log("END= "+end)
+                      //- console.log('------------------------')
+                      $('#fullCalendar').fullCalendar('renderEvent',{
+                        resourceId: 'common',
+                        title: "Remaining Bed",
+                        title2: title2save,
+                        description: desc,
+                        start: start,
+                        end: end
+                        },true)
+                    }
+                    }
+                    else if
+                    {
+                      $('#fullCalendar').fullCalendar('renderEvent',{
+                        resourceId: data[r].room_id,
+                        title: "Remaining Bed",
+                        title2: title2save,
+                        description: desc,
+                        start: start,
+                        end: end
+                        },true)
+                    }
+                  }
+                }
+                //- for(var i=0; i<data.length;i++)
+                //-   {
+                //-     if(data[i].room_type_id==room_type_id)
+                //-       {
+                //-         if(i>0)
+                //-           {
+                //-           var TIME = data[i-1].walkin_start_time
+                //-           }
+                //-         else{
+                //-           var TIME = data[0].walkin_start_time
+                //-         }
 
                         
-                        if(TIME==data[i].walkin_start_time)
-                          {
-                            var occupied = data[i].occupied
-                            var bed_qnty = data[i].bed_qty
-                            var newQnty = bed_qnty - occupied
-                            var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
-                            var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
-                            var newT = moment(Timeend).add(5,'m').format()
-                            var startTime = moment(Timestart).format()
-                            var endTime= moment(Timeend).format()
+                //-         if(TIME==data[i].walkin_start_time)
+                //-           {
+                //-             var occupied = data[i].occupied
+                //-             var bed_qnty = data[i].bed_qty
+                //-             var newQnty = bed_qnty - occupied
+                //-             var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                //-             var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+                //-             var newT = moment(Timeend).add(5,'m').format()
+                //-             var startTime = moment(Timestart).format()
+                //-             var endTime= moment(Timeend).format()
 
-                            if(i>0)
-                              {
-                              $('#fullCalendar').fullCalendar('renderEvent',{
-                                resourceId: 'common',
-                                title: "Remaining Bed",
-                                title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
-                                description: data[i].room_type_desc,
-                                start: startTime,
-                                end: newT
-                                },true)
-                              }
-                            console.log(TIME)
-                            if(TIME != data[i].walkin_start_time)
-                              {
-                                alert(TIME)
-                                var occupied = data[i].occupied
-                                var bed_qnty = data[i].bed_qty
-                                var newQnty = bed_qnty - occupied
-                                var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
-                                var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
-                                var newT = moment(Timeend).add(5,'m').format()
-                                var startTime = moment(Timestart).format()
-                                var endTime= moment(Timeend).format()
+                //-             if(i>0)
+                //-               {
+                //-               //- $('#fullCalendar').fullCalendar('renderEvent',{
+                //-               //-   resourceId: 'common',
+                //-               //-   title: "Remaining Bed",
+                //-               //-   title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
+                //-               //-   description: data[i].room_type_desc,
+                //-               //-   start: startTime,
+                //-               //-   end: newT
+                //-               //-   },true)
+                //-               }
+                //-             console.log(TIME)
+                //-             if(TIME != data[i].walkin_start_time)
+                //-               {
+                //-                 alert(TIME)
+                //-                 var occupied = data[i].occupied
+                //-                 var bed_qnty = data[i].bed_qty
+                //-                 var newQnty = bed_qnty - occupied
+                //-                 var Timestart = data[i].walkin_date +' '+data[i].walkin_start_time
+                //-                 var Timeend = data[i].walkin_date +' '+data[i].walkin_start_time;
+                //-                 var newT = moment(Timeend).add(5,'m').format()
+                //-                 var startTime = moment(Timestart).format()
+                //-                 var endTime= moment(Timeend).format()
 
-                                if(i>0)
-                                  {
-                                    $('#fullCalendar').fullCalendar('renderEvent',{
-                                      resourceId: 'common',
-                                      title: "Remaining Bed",
-                                      title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
-                                      description: data[i].room_type_desc,
-                                      start: startTime,
-                                      end: newT
-                                      },true)
-                                  }
-                              }
-                        }
-                      }
-                  }
+                //-                 if(i>0)
+                //-                   {
+                //-                     //- $('#fullCalendar').fullCalendar('renderEvent',{
+                //-                     //-   resourceId: 'common',
+                //-                     //-   title: "Remaining Bed",
+                //-                     //-   title2: data[i].room_name+" "+newQnty+" remainings "+data[i-1].room_name,
+                //-                     //-   description: data[i].room_type_desc,
+                //-                     //-   start: startTime,
+                //-                     //-   end: newT
+                //-                     //-   },true)
+                //-                   }
+                //-               }
+                //-         }
+                //-       }
+                //-   }
               })
           })
           //- $.post('selectTime/addResource/Multiple').done(data=>{
@@ -319,6 +402,7 @@ html(lang='en')
                     occupancy: data[i].bed_qty
                     })
 
+                    //- BACKGROUND COLOR 
                     $.post('selectTime/addResource',{id:data[i].room_id}).done(data=>{
                       console.log(data)
                       for(var i=0; i<data.length;i++)
@@ -349,6 +433,7 @@ html(lang='en')
                           },true)
                         }
                       })
+                    //- YUNG EVENT MISMO
                     $.post('selectTime/addResource',{id:data[i].room_id}).done(data=>{
                       var newQnty = data[0].bed_qty-1
                       var color = '#FF232' // kunwari blue
