@@ -97,8 +97,12 @@ html(lang='en')
                     br
                     strong= "Medical History: "+customer.medical_history
                 br
+                input(type='' value=`${male}` id='male')
                 br
-                
+                input.female(type='' value=`${female}` id='female')
+                input(type='' value=`${roomId}` id='roomId')              
+
+
               .card-content
                 .nav-tabs-navigation
                   .nav-tabs-wrapper
@@ -298,7 +302,8 @@ html(lang='en')
         }
         else if(restype='multiple')
         {
-        
+          var bed_occupied_boys = $('#male').val()
+          var bed_occupied_girls = $('#female').val()
         }
         var table =$('#datatables').DataTable()
         var pagelength = table.page.info().pages
@@ -377,7 +382,9 @@ html(lang='en')
         $('.submitButton').click(function(){
           //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
           
-          $.post('/bookreservation/addReservation',{
+          if(restype =='single')
+          {
+            $.post('/bookreservation/addReservation',{
             customerId :$('#customerId').val(),
             serviceId: idService,
             serviceQuantity: serviceQuantity,
@@ -408,9 +415,48 @@ html(lang='en')
                 text:'', 
                 icon:'warning'
                 })
+            } 
+          })
+          }
+          else if(restype=='multiple')
+          {            
+          $.post('/bookreservation/addReservation',{
+            customerId :$('#customerId').val(),
+            serviceId: idService,
+            serviceQuantity: serviceQuantity,
+            serviceNewDuration: serviceNewDuration,
+            serviceTotal: serviceTotal,
+            bed_quantity: bed_quantity,
+            boys_quantity: bed_occupied_boys,
+            girls_quantity: bed_occupied_girls,
+            timeStart : $('#timeStart').val(),
+            timeEnd: $('#timeEnd').val(),
+            date : $('#dateRes').val(),
+            finalTotal : $('#finalTotal').text().replace(/,/g,''),
+            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+            roomId :$('#roomId').val()
+           }).done(function(data){
+             if(data.alertDesc==1)
+             {
+            swal({
+              title:'Success', 
+              text:'New Reservation Added', 
+              icon:'success'
+              }).then(function(){
+                location.href='/frontdesk/home'
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'', 
+                icon:'warning'
+                })
             }
            })
-        })
+          }
+      })
       })
     script.
       $(document).ready(function(){
@@ -482,7 +528,7 @@ html(lang='en')
           }
           });
         function recalculate(){
-              var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY- MM-DD HH:mm')
+              var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY-MM-DD HH:mm')
               var sum = 0;                                                          
               var duration = 0
               var table =$('#datatables').DataTable()
@@ -490,8 +536,12 @@ html(lang='en')
               table.page(0).draw()
               var pinakaTotal = 0
               var longest = []
+              var newHours 
+              var newMin
         
             for (var i=1;i<=pagelength;i++){
+              var highest
+              
               $(".checkbox:checked").each(function(){
               var id= $(this).val()
               var quantity =$(`.quantity[service_id='${id}']`).text()
@@ -512,38 +562,45 @@ html(lang='en')
                 }
               else if(restype=='multiple')
                 {
-                  console.log('multiple')
-                  var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
-                  var minutes = $(`.duration[id='${id}']`).val() % 60;
-                  hours = hours * quantity;
+                  var minutes = $(`.duration[id='${id}']`).val();
                   minutes = minutes * quantity;
-                  theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
-                  $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
-                  longest.push(moment($(`.bagongDuration[id='${id}']`).val(),"hh:mm A").format('h:mma'))
+                  //- newHours = Math.floor(highest / 60)
+                  //- newMin = highest % 60
+                  theFutureTime = moment(theFutureTime).add(highest, 'minutes')
+                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+
+                  $(`.bagongDuration[id='${id}']`).val(minutes)
+                  longest.push($(`.bagongDuration[id='${id}']`).val())
                   
                   
                   console.log(longest)
+                  console.log('galing sa labas '+highest)
                   
-                  
-                  var highest
-                  for(var j=0;j<=longest.length;j++)
+                  for(var j=0;j<longest.length;j++)
                     {
-                      console.log(longest.length)
-                      if(longest.length==0)
+                      console.log(j)
+                      if((longest.length-1)==j)
                         {
+                          console.log('pasok')
                           highest= longest[j];
-                        console.log("if") 
+                          newHours = Math.floor(highest / 60)
+                          newMin = highest % 60
+                          //- console.log("HOURS: "+newHours)
+                          //- console.log("MINUTES: "+newMin)
                         }
-                      else 
+                      else if(longest[j] > highest)
                         {
-                          if(moment(longest[j]).isAfter(longest[j-1]))
-                            {
+                          console.log('from if '+highest)
+                          console.log('compare sa '+longest[j])
+                          console.log('pasok sa 2nd')
                           highest = longest[j];
-                          console.log("else if")   
-                            }
-                        } 
+                          newHours = Math.floor(highest / 60)
+                          newMin = highest % 60
+                          console.log('from else if '+highest)
+                        }
+                         
                     }
-                    console.log(highest+" is the highest")
+                          
                     //- if(sample>=longest)
                     //-   {
                     //-     longest = sample
