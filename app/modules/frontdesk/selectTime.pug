@@ -237,7 +237,6 @@ html(lang='en')
                       //-   console.log('ARRAY TIME= '+array[t])
                         //- console.log('TIME= '+data[r].walkin_start_time)
                       if(array[t].time == data[r].walkin_start_time && array[t].roomId == data[r].room_id){
-                      //- console.log(array[t])
                         //- console.log('pasok')
                         var occupied = data[r].bed_occupied
                         //- console.log(occupied)
@@ -275,7 +274,7 @@ html(lang='en')
                     end = moment(data[t].walkin_date+" "+data[t].walkin_start_time).add(5,'m').format()
                       } 
                     if(r == data.length-1){
-                      //- console.log(title2save)
+                      console.log(title2save)
                       //- console.log('------------------------')
                       //- console.log("START= "+start)
                       //- console.log("END= "+end)
@@ -290,22 +289,17 @@ html(lang='en')
                         },true)
                     }
                     }
-                    else 
-                      {
-                          console.log(data[r].room_id)
-                          var simula = moment(data[r].walkin_date+' '+data[r].walkin_start_time).format()
-                          var tapos = moment(data[r].walkin_date+' '+data[r].walkin_start_time).add(5,'m').format()
-                          console.log('SIMULA= '+simula)
-                          console.log('TAPOS= '+tapos)
-                        $('#fullCalendar').fullCalendar('renderEvent',{
-                          resourceId: data[r].room_id,
-                          title: "Remaining Bed",
-                          title2: title2save,
-                          description: desc,
-                          start: simula,
-                          end: tapos
-                          },true)
-                      }
+                    else if
+                    {
+                      $('#fullCalendar').fullCalendar('renderEvent',{
+                        resourceId: data[r].room_id,
+                        title: "Remaining Bed",
+                        title2: title2save,
+                        description: desc,
+                        start: start,
+                        end: end
+                        },true)
+                    }
                   }
                 }
                 //- for(var i=0; i<data.length;i++)
