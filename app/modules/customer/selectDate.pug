@@ -1,0 +1,199 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='/assets/now-ui/assets/img/apple-icon.png')
+    link(rel='icon', type='image/png', href='/assets/now-ui/assets/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | Mbay Health Spa
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no', name='viewport')
+    // Fonts and icons
+    link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700,200', rel='stylesheet')
+    link(href='https://use.fontawesome.com/releases/v5.0.6/css/all.css', rel='stylesheet')
+    // CSS Files
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/assets/now-ui/assets/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/assets/now-ui/assets/css/now-ui-kit.css', rel='stylesheet')
+    // CSS Just for demo purpose, don't include it in your project
+    link(href='/assets/now-ui/assets/demo/demo.css', rel='stylesheet')
+  body.profile-page.sidebar-collapse
+    // Navbar
+    nav.navbar.navbar-expand-lg.bg-info.fixed-top.navbar-transparent(color-on-scroll='400')
+      .container
+        .dropdown.button-dropdown
+          a#navbarDropdown.dropdown-toggle(href='#pablo', data-toggle='dropdown')
+            span.button-bar
+            span.button-bar
+            span.button-bar
+          .dropdown-menu(aria-labelledby='navbarDropdown')
+            a.dropdown-header Dropdown header
+            a.dropdown-item(href='#') Action
+            a.dropdown-item(href='#') Another action
+            a.dropdown-item(href='#') Something else here
+            .dropdown-divider
+            a.dropdown-item(href='#') Separated link
+            .dropdown-divider
+            a.dropdown-item(href='#') One more separated link
+        .navbar-translate
+          a.navbar-brand(href='#', rel='tooltip', title='', data-placement='bottom', target='_blank')
+            | Mbay Health Spa
+          button.navbar-toggler.navbar-toggler(type='button', data-toggle='collapse', data-target='#navigation', aria-controls='navigation-index', aria-expanded='false', aria-label='Toggle navigation')
+            span.navbar-toggler-bar.top-bar
+            span.navbar-toggler-bar.middle-bar
+            span.navbar-toggler-bar.bottom-bar
+        #navigation.collapse.navbar-collapse.justify-content-end(data-nav-image='/assets/now-ui/assets/img/blurred-image-1.jpg')
+    .wrapper
+      each customer in customers
+        .page-header.clear-filter(filter-color='')
+          if(customer.cust_gender =='Male')
+            .page-header-image(data-parallax='true', style="background-image:url('/assets/now-ui/assets/img/bluespa.jpg');")
+          else
+            .page-header-image(data-parallax='true', style="background-image:url('/assets/now-ui/assets/img/pinkspa.jpg');")
+          .container
+              .photo-container
+                img(src='/assets/now-ui/assets/img/ryan.jpg', alt='')
+              h3.title= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+              .content
+                .social-description
+                  if(customer.paid_status == 0)
+                    p Please pay the membership fee (P600)
+                  else 
+                    h2= customer.member_points
+                  p Loyalty Points
+                h3
+                  strong Loyalty Membership Valid Until:
+                    p= customer.valid_until
+    
+    
+    .section
+      .container
+        .row
+          .col-md-10.col-md-offset-1
+            .card.card-calendar
+              .card-content
+                input(value=`${customerId}` id="Id")
+                input(value=`${restype}`)
+                input(value=`Male: ${male}`)
+                input(value=`Female: ${female}`)
+                #fullCalendar
+    
+    footer.footer.footer-default
+      .container
+        nav
+        #copyright.copyright
+          | ©
+          script.
+            document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+          a(href='#', target='_blank') Team Mbay
+          | .
+
+  // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+  script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+  // Forms Validations Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+  // Promise Library for SweetAlert2 working on IE
+  script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+  // Plugin for Date Time Picker and Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/moment.min.js')
+  // Date Time Picker Plugin is included in this js file
+  script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+  // Select Picker Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+  // Switch and Tags Input Plugins
+  script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+  // Circle Percentage-chart
+  script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+  // Charts Plugin
+  script(src='/assets/paperDashboardPro/js/chartist.min.js')
+  // Notifications Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+  // Sweet Alert 2 plugin
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  // Vector Map plugin
+  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+  // Google Maps Plugin
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+  // Wizard Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+  // Bootstrap Table Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+  // Plugin for DataTables.net
+  script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+  // Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+  // Paper Dashboard PRO Core javascript and methods for Demo purpose
+  script(src='/assets/paperDashboardPro/js/paper-dashboard.js?v=1.2.1')
+  // Sharrre Library
+  script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+  // Paper Dashboard PRO DEMO methods, don't include it in your project!
+  script(src='/assets/paperDashboardPro/js/demo.js')
+  // Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+  script(src='/assets/paperDashboardPro/js/moment.min.js')
+  script(src='/assets/now-ui/assets/js/core/jquery.min.js', type='text/javascript')
+  script(src='/assets/now-ui/assets/js/core/popper.min.js', type='text/javascript')
+  script(src='/assets/now-ui/assets/js/core/bootstrap.min.js', type='text/javascript')
+  // Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/
+  script(src='/assets/now-ui/assets/js/plugins/bootstrap-switch.js')
+  // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
+  script(src='/assets/now-ui/assets/js/plugins/nouislider.min.js', type='text/javascript')
+  // Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker
+  script(src='/assets/now-ui/assets/js/plugins/bootstrap-datepicker.js', type='text/javascript')
+  // Google Maps Plugin
+  script(src='https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE')
+  // Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc
+  script(src='/assets/now-ui/assets/js/now-ui-kit.js?v=1.2.0', type='text/javascript')
+
+  
+  script.
+    $(document).ready(function(){
+        var customerId= $('#Id').val()
+        console.log(customerId)
+      $('#fullCalendar').fullCalendar({
+        dayClick: function(date, jsEvent, view) {
+          var now = moment().format('MM-DD-YYYY')
+          var clicked = date.format('MM-DD-YYYY')
+          if(moment(clicked).isSameOrAfter(now)){
+              swal({
+                title: "You Clicked " + date.format('MM-DD-YYYY'),
+                text: "Are You Sure?",
+                icon: "info",
+                buttons: ["Cancel","Proceed"],
+                dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                  var newDate= date.format('MM-DD-YYYY')
+                  location.href= `/selectTime?date=${newDate}`
+                }
+                else
+                {
+
+                }
+                });
+          //- location.href= `/selectTime?date=${newDate}`
+          }
+        }
+      })
+    });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      //- $('#calendar').val('')
+      });

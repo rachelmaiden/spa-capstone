@@ -211,96 +211,141 @@ html(lang='en')
                     var points = 0;
                     for(var k=0; k<array.length;k++)
                     {
-                      if(array[k] == data[i].walkin_start_time){
+                      if(array[k].dateTime == data[i].walkin_date+' '+data[i].walkin_start_time){
                         points = 1;
+                        array[k].roomDetails.push({
+                          roomId:data[i].room_id,
+                          roomName:data[i].room_name,
+                          roomOrigQty:data[i].bed_qty,
+                          roomType: data[i].room_type_id})
                       }
                     }
                     if(points == 0){
-                      var object= {roomId: data[i].room_id, time: data[i].walkin_start_time};
+                      var object= {
+                        roomDetails: [{
+                          roomId:data[i].room_id,
+                          roomName:data[i].room_name,
+                          roomOrigQty:data[i].bed_qty,
+                          roomType: data[i].room_type_id}],
+                        dateTime: data[i].walkin_date+' '+data[i].walkin_start_time};
                       array.push(object)
                     }
                   }
+                  console.log(array)
+                  console.log(data)
                 for(var t=0; t<array.length;t++){
                   var title2save='';
-                  var saveGirlQty = girl_room_qty;
-                  var saveBoyQty = boy_room_qty;
+                  //- var saveGirlQty = girl_room_qty;
+                  //- var saveBoyQty = boy_room_qty;
                   var desc='';
-                  var start = '';
-                  var end = '';
-                  for(var r=0; r<data.length; r++){
-                    if(data[r].room_type_id==room_type_id)
-                    {
-
-                      desc = data[r].room_type_desc
-                      //-   console.log("ROOM= "+data[r].room_id)
-                      //- //- console.log(data[r].room_type_desc)
-                      //-   console.log('ARRAY TIME= '+array[t])
-                        //- console.log('TIME= '+data[r].walkin_start_time)
-                      if(array[t].time == data[r].walkin_start_time && array[t].roomId == data[r].room_id){
-                        //- console.log('pasok')
-                        var occupied = data[r].bed_occupied
-                        //- console.log(occupied)
-                        if(r>0)
-                        {
-                          var test = data[r].walkin_date+' '+data[r].walkin_start_time;
-                          var test2 = data[r-1].walkin_date+' '+data[r-1].walkin_end_time;
-                          //- console.log(test)
-                          //- console.log(test2)
-                          if(moment(test).isSameOrAfter(test2))
-                            {
-                              if(girl_room == data[r].room_id){
-                                saveGirlQty = eval(saveGirlQty+'-'+data[r].occupied)
-                                title2save = title2save+""+data[r].room_name+" "+saveGirlQty
-                              }
-                              else if (boy_room == data[r].room_id){
-                                
-                                saveBoyQty = eval(saveBoyQty+'-'+data[r].occupied)
-                                title2save = title2save+""+data[r].room_name+" "+saveBoyQty
-                              }
-                            }
-                          else
-                            {
-                              if(girl_room == data[r].room_id){
-                                saveGirlQty = eval(girl_room_qty+'-'+data[r].occupied)
-                                title2save = title2save+""+data[r].room_name+" "+saveGirlQty
-                              }
-                              else if (boy_room == data[r].room_id){
-                                saveBoyQty = eval(boy_room_qty+'-'+data[r].occupied)
-                                title2save = title2save+""+data[r].room_name+" "+saveBoyQty
-                              }
-                            }
-                        }
-                    start = moment(data[t].walkin_date+" "+data[t].walkin_start_time).format()
-                    end = moment(data[t].walkin_date+" "+data[t].walkin_start_time).add(5,'m').format()
-                      } 
-                    if(r == data.length-1){
-                      console.log(title2save)
-                      //- console.log('------------------------')
-                      //- console.log("START= "+start)
-                      //- console.log("END= "+end)
-                      //- console.log('------------------------')
+                  var start = array[t].time;
+                  var end = moment(start);
+                  for(var d=0; d<array[t].roomDetails.length; d++){
+                    for(var f=0; f<data.length; f++){
+                      var dateTimeNow = data[f].walkin_date+" "+data[f].walkin_start_time;
+                      //- console.log(dateTimeNow)
+                      //- console.log(array[t].dateTime)
+                      //- console.log(moment(dateTimeNow).isSame(array[t].dateTime))
+                      if(data[f].room_id == array[t].roomDetails[d].roomId && moment(dateTimeNow).isSame(array[t].dateTime)){
+                        array[t].roomDetails[d].roomOrigQty = eval(array[t].roomDetails[d].roomOrigQty+'-'+data[f].bed_occupied)
+                      }
+                      if(f == (data.length-1)){
+                        title2save = "\n"+title2save+" "+array[t].roomDetails[d].roomName+" Remaining Beds: "+array[t].roomDetails[d].roomOrigQty;
+                      }
+                    }
+                    if(d == (array[t].roomDetails.length-1)){
                       $('#fullCalendar').fullCalendar('renderEvent',{
                         resourceId: 'common',
                         title: "Remaining Bed",
                         title2: title2save,
-                        description: desc,
-                        start: start,
-                        end: end
-                        },true)
-                    }
-                    }
-                    else if
-                    {
-                      $('#fullCalendar').fullCalendar('renderEvent',{
-                        resourceId: data[r].room_id,
-                        title: "Remaining Bed",
-                        title2: title2save,
-                        description: desc,
-                        start: start,
-                        end: end
+                        description: 'WALA',
+                        start: moment(array[t].dateTime).format(),
+                        end: moment(array[t].dateTime).add(5,'m').format()
                         },true)
                     }
                   }
+                  //- for(var r=0; r<data.length; r++){
+                  //-   if(data[r].room_type_id==room_type_id)
+                  //-   {
+
+                  //-     desc = data[r].room_type_desc
+                  //-     //-   console.log("ROOM= "+data[r].room_id)
+                  //-     //- //- console.log(data[r].room_type_desc)
+                  //-     //-   console.log('ARRAY TIME= '+array[t])
+                  //-       //- console.log('TIME= '+data[r].walkin_start_time)
+                  //-     if(array[t].time == data[r].walkin_start_time && array[t].roomId == data[r].room_id){
+                  //-       //- console.log('pasok')
+                  //-       var occupied = data[r].bed_occupied
+                  //-       //- console.log(occupied)
+                  //-       if(r>0)
+                  //-       {
+                  //-         var test = data[r].walkin_date+' '+data[r].walkin_start_time;
+                  //-         var test2 = data[r-1].walkin_date+' '+data[r-1].walkin_end_time;
+                  //-         console.log(test)
+                  //-         console.log(test2)
+                  //-         console.log(moment(test).isSameOrAfter(test2))
+                  //-         if(moment(test).isSameOrAfter(test2))
+                  //-           {
+                  //-             if(girl_room == data[r].room_id){
+                  //-               saveGirlQty = eval(saveGirlQty+'-'+data[r].occupied)
+                  //-               title2save = title2save+""+data[r].room_name+" "+saveGirlQty
+                              
+                  //-             console.log('FIRST IF(girls)= '+title2save+" "+saveGirlQty)
+                  //-             }
+                  //-             else if (boy_room == data[r].room_id){
+                                
+                  //-               saveBoyQty = eval(saveBoyQty+'-'+data[r].occupied)
+                  //-               title2save = title2save+""+data[r].room_name+" "+saveBoyQty
+                  //-               console.log('FIRST IF(boys)= '+title2save+" "+saveBoyQty)
+                  //-             }
+                  //-           }
+                  //-         else
+                  //-           {
+                  //-             if(girl_room == data[r].room_id){
+                  //-               saveGirlQty = eval(girl_room_qty+'-'+data[r].occupied)
+                  //-               title2save = title2save+""+data[r].room_name+" "+saveGirlQty
+                  //-               console.log('ELSE(girls)= '+title2save+" "+saveGirlQty)
+                              
+                  //-             }
+                  //-             else if (boy_room == data[r].room_id){
+                  //-               saveBoyQty = eval(boy_room_qty+'-'+data[r].occupied)
+                  //-               title2save = title2save+""+data[r].room_name+" "+saveBoyQty
+                  //-               console.log('ELSE(boys)= '+title2save+" "+saveBoyQty)
+                              
+                  //-             }
+                  //-           }
+                  //-       }
+                  //-   start = moment(data[t].walkin_date+" "+data[t].walkin_start_time).format()
+                  //-   end = moment(data[t].walkin_date+" "+data[t].walkin_start_time).add(5,'m').format()
+                  //-     } 
+                  //-   if(r == data.length-1){
+                  //-     console.log(title2save)
+                  //-     //- console.log('------------------------')
+                  //-     //- console.log("START= "+start)
+                  //-     //- console.log("END= "+end)
+                  //-     //- console.log('------------------------')
+                  //-     $('#fullCalendar').fullCalendar('renderEvent',{
+                  //-       resourceId: 'common',
+                  //-       title: "Remaining Bed",
+                  //-       title2: title2save,
+                  //-       description: desc,
+                  //-       start: start,
+                  //-       end: end
+                  //-       },true)
+                  //-   }
+                  //-   else
+                  //-   {
+                  //-     $('#fullCalendar').fullCalendar('renderEvent',{
+                  //-       resourceId: data[r].room_id,
+                  //-       title: "Remaining Bed",
+                  //-       title2: title2save,
+                  //-       description: desc,
+                  //-       start: start,
+                  //-       end: end
+                  //-       },true)
+                  //-   }
+                  //-   }
+                  //- }
                 }
                 //- for(var i=0; i<data.length;i++)
                 //-   {
