@@ -1,0 +1,458 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(name='description', content='Businnes, Portfolio, Corporate')
+    meta(name='Author', content='WebThemez')
+    title Life Spa Bootstrap 4 Website Template
+    link(rel='stylesheet', href='/assets/life-spa/css/normalize.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/font-awesome/css/font-awesome.min.css')
+    link(rel='stylesheet', href='/assets/life-spa/elegant_font/style.css')
+    //if lte IE 7
+      script(src='elegant_font/lte-ie7.js')
+    link(rel='stylesheet', href='/assets/life-spa/css/magnific-popup.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/slider-pro.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/owl.carousel.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/owl.theme.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/owl.transitions.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/animate.css')
+    link(rel='stylesheet', href='/assets/life-spa/elegant_font/style.css')
+    link(rel='stylesheet', href='/assets/life-spa/css/style.css')
+    //if lt IE 9
+      script(src='js/html5shiv.min.js')
+      script(src='js/respond.min.js')
+      script(type='text/javascript', src='js/selectivizr.js')
+  body
+    // Preloader
+    .preloader
+      .status
+    // Header End
+    header
+      // Navigation Menu start
+      nav#topNav.navbar.navbar-default.main-menu
+        .container
+          button.navbar-toggler.hidden-md-up.pull-right(type='button', data-toggle='collapse', data-target='#collapsingNavbar')
+            | ☰
+          a.navbar-brand.page-scroll(href='#slider')
+          #collapsingNavbar.collapse.navbar-toggleable-sm
+            ul.nav.navbar-nav
+              li.active
+                a(href='#slider') HOME
+              li
+                a(href='#about') ABOUT
+              li
+                a(href='#services') SERVICES
+              li
+                a(href='#menuCard') Price
+              li
+                a(href='#portfolio') GALLERY
+              li
+                a(href='#contact') CONTACT US
+              li
+                a(href='#') LOGIN
+    // Header End
+    section#slider.slider-pro.slider
+      .sp-slides
+        // Slides
+        .sp-slide.main-slides
+          .img-overlay
+          img.sp-image(src='/assets/life-spa/images/slider/slider-img-1.jpg', alt='Slider 1')
+          h1.sp-layer.slider-text-big(data-position='center', data-show-transition='left', data-hide-transition='right', data-show-delay='1500', data-hide-delay='200')
+            span.highlight-texts Best Massage Therapies
+          p.sp-layer(data-position='center', data-vertical='15%', data-show-delay='2000', data-hide-delay='200', data-show-transition='left', data-hide-transition='right')
+            | Relax, Renew, Revitalize.
+        // Slides End
+        // Slides
+        .sp-slide.main-slides
+          .img-overlay
+          img.sp-image(src='/assets/life-spa/images/slider/slider-img-2.jpg', alt='Slider 2')
+          h1.sp-layer.slider-text-big(data-position='center', data-show-transition='left', data-hide-transition='right', data-show-delay='1500', data-hide-delay='200')
+            span.highlight-texts Best Spa Services
+          p.sp-layer(data-position='center', data-vertical='15%', data-show-delay='2000', data-hide-delay='200', data-show-transition='left', data-hide-transition='right')
+            | Unlimited luxury for mind, body, and soul.
+        // Slides End
+        // Slides
+        .sp-slide.main-slides
+          .img-overlay
+          img.sp-image(src='/assets/life-spa/images/slider/slider-img-3.jpg', alt='Slider 3')
+          h1.sp-layer.slider-text-big(data-position='center', data-show-transition='left', data-hide-transition='right', data-show-delay='1500', data-hide-delay='200')
+            span.highlight-texts Best Body Treatments
+          p.sp-layer(data-position='center', data-vertical='15%', data-show-delay='2000', data-hide-delay='200', data-show-transition='left', data-hide-transition='right')
+            | A tranquil experience, through caring hands.
+        // Slides End
+    // Main Slider End
+    section#about.about-sec.section-wrapper.description
+      .container
+        .row
+          // Section Header
+          .col-md-12.col-sm-12.col-xs-12.section-header.wow.fadeInDown
+            h2
+              span.highlight-text About
+            p.col-md-8.col-sm-10.col-xs-12.col-md-offset-2.col-sm-offset-1
+              | A day spa is a business that provides a variety of services for the purpose of improving health, beauty and relaxation through personal care treatments such as hair, massages and facials.
+          // Section Header End
+          .col-md-6.col-sm-6.col-xs-12.custom-sec-img.wow.fadeInDown
+            img(src='/assets/life-spa/images/features.jpg', alt='Custom Image')
+          .col-md-6.col-sm-6.col-xs-12.customized-text.wow.fadeInDown.black-ed
+            p Our spa offers different kinds of massage!
+            .row
+              .col-md-11
+                strong Swedish Massage
+                p
+                  | Swedish massage is the most popular type of massage in the United States. It involves the use of hands, forearms or elbows to manipulate the superficial layers of the muscles to improve mental and physical health. Active or passive movement of the joints may also be part of the massage.
+            .row
+              .col-md-11
+                strong Deep Tissue Massage
+                p
+                  | Deep tissue massage therapy is similar to Swedish massage, but the deeper pressure is beneficial in releasing chronic muscle tension. The focus is on the deepest layers of muscle tissue, tendons and fascia (the protective layer surrounding muscles, bones and joints).
+            .row
+              .col-md-11
+                strong Thai Massage
+                p
+                  | "Thai massage" or "Thai yoga massage" is an ancient healing system combining acupressure, Indian Ayurvedic principles, and assisted yoga postures.
+    section#services.section-wrapper
+      .container
+        .row
+          // Section Header
+          .col-md-12.col-sm-12.col-xs-12.section-header.wow.fadeInDown
+            h2
+              span.highlight-text Services
+            p.col-md-8.col-sm-10.col-xs-12.col-md-offset-2.col-sm-offset-1
+          // Section Header End
+          .our-services
+            .row
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.2s')
+                .service-box
+                  .icon
+                    h3 Stone Massage
+                  p
+                    | A stone massage is a massage that uses smooth, flat, and heated rocks placed at key points on the body.
+                    | Health benefits: relieving muscle tension and pain.
+                  img(src='/assets/life-spa/images/stone.jpg', alt='Custom Image')
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.2s')
+                .service-box
+                  .icon
+                    h3 Foot Spa 
+                  p
+                    | A foot spa is a great way to help you pamper yourself after a stress-filled day, as it improves the process of reflexology, which can benefit your entire body.
+                  img(src='/assets/life-spa/images/foot.jpg', alt='Custom Image')
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.2s')
+                .service-box
+                  .icon
+                    h3 Facial Massage
+                  p
+                    | Facial massage is a very popular Western beauty treatment to slow down the aging process and achieve younger looking and healthier skin.
+                  img(src='/assets/life-spa/images/face.jpg', alt='Custom Image')
+            .row
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.1s')
+                .service-box
+                  .icon
+                    i.icon_star-half_alt
+                    h3 Thai Massage
+                  p
+                    | "Thai massage" or "Thai yoga massage" is an ancient healing system combining acupressure, Indian Ayurvedic principles, and assisted yoga postures.
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.1s')
+                .service-box
+                  .icon
+                    i.icon_music
+                    h3 Shiatsu Massage
+                  p
+                    | Shiatsu Massage is an alternative technique that involves manual pressure applied to specific points on the body in an attempt to relieve tension and pain.
+              .col-md-4.col-sm-4.col-xs-12.text-xs-center.wow.fadeInDown(data-wow-delay='.1s')
+                .service-box
+                  .icon
+                    i.icon_cog
+                    h3 Body Scrub
+                  p
+                    | A body scrub is a popular body treatment that is basically a facial for the body: it exfoliates and hydrates your skin, leaving it smooth and soft.
+    section#menuCard.menus.style3
+      .container
+        // Section Header
+        .col-md-12.col-sm-12.col-xs-12.section-header.wow.fadeInDown
+          h2
+            span.highlight-text Our Price List
+          p.col-md-8.col-sm-10.col-xs-12.col-md-offset-2.col-sm-offset-1
+        // Section Header End
+        .menus-container
+          // menu
+          .menu
+            .row
+              .col-md-12.wow.fadeInDown(style='visibility: visible; animation-name: fadeInRight;')
+                .food
+                  .food-desc
+                    h6.food-name Swedish Massage 60 minutes/90 minutes/120 minutes
+                    .dots
+                    .food-price
+                      span 750.00/1,000.00/1,300.00
+                    // /food-price
+                  // /food-desc
+                  .food-details
+                  // /food-details
+                // /food
+            // /row
+            .row
+              .col-md-12.wow.fadeInDown(style='visibility: visible; animation-name: fadeInRight;')
+                .food
+                  .food-desc
+                    h6.food-name Deep Tissue Massage 60 minutes/90 minutes/120 minutes
+                    .dots
+                    .food-price
+                      span 750.00/1,100.00/1,450.00
+                    // /food-price
+                  // /food-desc
+                  .food-details
+                  // /food-details
+                // /food
+            // /row
+            .row
+              .col-md-12.wow.fadeInDown(style='visibility: visible; animation-name: fadeInRight;')
+                .food
+                  .food-desc
+                    h6.food-name Shiatsu Tissue Massage 60 minutes/90 minutes/120 minutes
+                    .dots
+                    .food-price
+                      span 750.00/1,100.00/1,450.00
+                    // /food-price
+                  // /food-desc
+                  .food-details
+                  // /food-details
+                // /food
+            // /row
+            .row
+              .col-md-12.wow.fadeInDown(style='visibility: visible; animation-name: fadeInRight;')
+                .food
+                  .food-desc
+                    h6.food-name Stone Massage 60 minutes/90 minutes/120 minutes
+                    .dots
+                    .food-price
+                      span 750.00/1,100.00/1,450.00
+                    // /food-price
+                  // /food-desc
+                  .food-details
+                  // /food-details
+                // /food
+            // /row
+          // /menu-carousel
+      // /menus-container
+      // /container
+    section#portfolio.bgSection.portfolio-section
+      .container
+        .row
+          // Section Header
+          .col-md-12.col-sm-12.col-xs-12.section-header.wow.fadeInDown
+            h2
+              span.highlight-text Gallery
+          // Section Header End
+      // Works
+      .portfolio-works.wow.fadeIn(data-wow-duration='2s')
+        // Filter Button Start
+        #portfolio-filter.portfolio-filter-btn-group
+          ul
+            li
+              a(href='#', data-filter='.web') Facilities
+              a(href='#', data-filter='.seo') Rooms
+        // Filter Button End
+        .portfolio-items
+          // Facilities
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/1.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='images/facilities/1.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/2.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/2.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/3.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/3.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/4.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/4.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/5.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/5.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/6.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/6.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/7.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/7.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.web
+            img(src='/assets/life-spa/images/facilities/8.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/facilities/8.jpg')
+                        i.fa.fa-search-plus
+          // Facilities End
+          // Rooms
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/1.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/1.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/2.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/2.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/3.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/3.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/4.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/4.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/5.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/5.jpg')
+                        i.fa.fa-search-plus
+          .item.portfolio-item.seo
+            img(src='/assets/life-spa/images/rooms/6.jpg', alt='')
+            .portfolio-details-wrapper
+              .portfolio-details
+                .portfolio-meta-btn
+                  ul.work-meta
+                    li.lighbox
+                      a.featured-work-img(href='/assets/life-spa/images/rooms/6.jpg')
+                        i.fa.fa-search-plus
+          // Rooms End
+      // Works End
+    // Portfolio Section End
+    // Contact Section End
+    //
+      <section class="footer-container">
+      <div class="container">
+      <div class="row footer-containertent">
+      <div class="col-md-4">
+      <img src="" alt="">
+      <p></p>
+      </div>
+      <div class="col-md-4">
+      <h4>News & Updates</h4>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quod, nam corporis quas, saepe minima error aperiam dolorum aliquam, quis deserunt eos eius quisquam odio itaque.</p>
+      </div>
+      <div class="col-md-4 contac-us">
+      <h4>Contact Us</h4>
+      <p>Lorem ipsum dolor sit amet adipisicing elit.</p>
+      <ul>
+      <li><i class="fa fa-home"></i>123 New Venu Street</li>
+      <li><i class="fa fa-phone"></i>001 123 12345 99</li>
+      <li><i class="fa fa-envelope-o"></i>support@website.com</li>
+      </ul>
+      </div>
+      </div>
+      </div>
+      </section>
+    footer
+      .container
+        .row
+          .footer-containertent
+            ul.footer-social-info
+              li
+                a(href='#')
+                  i.fa.fa-facebook
+              li
+                a(href='#')
+                  i.fa.fa-twitter
+              li
+                a(href='#')
+                  i.fa.fa-pinterest
+              li
+                a(href='#')
+                  i.fa.fa-google-plus
+            br
+            br
+            p
+              | Copyright © 2018. Template by: 
+              a(href='http://webthemez.com/free-bootstrap-templates/') WebThemez
+              | , All rights reserved
+    // Footer End
+    script(src='/assets/life-spa/js/jquery-1.11.3.min.js')
+    script(src='/assets/life-spa/js/bootstrap.min.js')
+    script(src='/assets/life-spa/js/modernizr.min.js')
+    script(src='/assets/life-spa/js/jquery.easing.1.3.js')
+    script(src='/assets/life-spa/js/jquery.scrollUp.min.js')
+    script(src='/assets/life-spa/js/jquery.easypiechart.js')
+    script(src='/assets/life-spa/js/isotope.pkgd.min.js')
+    script(src='/assets/life-spa/js/jquery.fitvids.js')
+    script(src='/assets/life-spa/js/jquery.stellar.min.js')
+    script(src='/assets/life-spa/js/jquery.waypoints.min.js')
+    script(src='/assets/life-spa/js/wow.min.js')
+    script(src='/assets/life-spa/js/jquery.nav.js')
+    script(src='/assets/life-spa/js/imagesloaded.pkgd.min.js')
+    script(src='/assets/life-spa/js/smooth-scroll.min.js')
+    script(src='/assets/life-spa/js/jquery.magnific-popup.min.js')
+    script(src='/assets/life-spa/js/jquery.sliderPro.min.js')
+    script(src='/assets/life-spa/js/owl.carousel.min.js')
+    script(src='contact/jqBootstrapValidation.js')
+    script(src='contact/contact_me.js')
+    script(src='/assets/life-spa/js/custom.js')
