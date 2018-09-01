@@ -256,7 +256,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Freebie
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewFreebies') Add New Freebie
                   .content
                     .container-fluid
                       .row
@@ -286,33 +286,38 @@ html(lang='en')
                                       th Availability
                                       th Actions
                                   tbody
-                                    //each typ in typs
+                                    each freebie in freebies
                                       tr
-                                        td= typ.service_type_desc
+                                        td= freebie.service_name
                                         td
                                         td
+                                        td= freebie.equivalent_points
                                         td
-                                        td
-                                          if(typ.service_type_availability==0)
-                                            input.switch-icon(type='checkbox' checked value=`${typ.service_type_id}`)
-                                          else if(typ.service_type_availability==1)
-                                            input.switch-icon(type='checkbox' value=`${typ.service_type_id}`)
+                                          if(freebie.freebies_availability==0)
+                                            input.switch-icon(type='checkbox' checked value=`${freebie.freebies_id}`)
+                                          else if(freebie.freebies_availability==1)
+                                            input.switch-icon(type='checkbox' value=`${freebie.freebies_id}`)
 
                                         td
-                                          .dropdown.pull-right(style="right: 125px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${typ.service_type_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
+                                          if(freebie.freebies_availability==1)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-pencil-alt
+                                                    |  Update
+                                                li
+                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-trash
+                                                    |  Delete
+                                          else if(freebie.freebies_availability==0)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
                               .row
                                 .col-md-6
                                   .card-header
@@ -336,15 +341,6 @@ html(lang='en')
                                 .row
                                   .col-md-12
                                 .row 
-                          //- UPDATE
-                          #updateModal.modal.fade(tabindex='-1', role='dialog')
-                            .modal-dialog(role='document')
-                              .modal-content
-                                .modal-header
-                                  h5.modal-title
-                                    center Edit Service Type
-                                  button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                .modal-body#updateAppend
                                   
 
                                 .modal-footer
@@ -366,30 +362,48 @@ html(lang='en')
                                     button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
 
                           //- ADD
-                          #addNewService.modal.fade(tabindex='-1', role='dialog')
+                          #addNewFreebies.modal.fade(tabindex='-1', role='dialog')
                             .modal-dialog(role='document')
                               .modal-content
                                 .modal-header
                                   h5.modal-title
                                     center Add New Freebie
                                   button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                form#allInputsFormValidation(method='POST' action='/adminFreebie')
+                                form#allInputsFormValidation(method='#' action='#')
                                   .modal-body
                                     .row
                                       .col-md-6
                                         .form-group.has-default.bmd-form-group
-                                          label Service/s Included
+                                          label Service Included
                                           star *
-                                            select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
+                                            select.selectpicker(data-style='btn-info' name='service' required='true', aria-required='true')
+                                              each service in services
+                                                option(value=`${service.service_id}`)= service.service_name
                                       .col-md-6
                                         .form-group.has-default.bmd-form-group
                                           label Points Required 
                                           star *
-                                          input.form-control(type='number', placeholder='Points Required' name="" required='true', aria-required='true')            
+                                          input.form-control#points(type='number', placeholder='Points Required' name="required_points" required='true', aria-required='true')            
                                   .modal-footer
-                                    button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Freebie
+                                    button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='submit') Add Freebie
                                     button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                                 
+                          //UPDATE
+                          #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                            .modal-dialog(role='document')
+                              .modal-content
+                                .modal-header
+                                  button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                                    span(aria-hidden='true') x
+                                  h3.modal-title 
+                                    center Freebie Information
+                                  center
+                                    h5#freebieName
+                                .modal-body#updateAppend
+                                .modal-footer
+                                    button.btn.btn-danger.btn-fill.pull-left.cancelButton(type='button', data-dismiss='modal') Close
+                                    button.btn.btn-info.btn-fill.pull-right.updateSubmitButton(type='button') Update
+                          
                           footer.footer
                             .container-fluid
                               .copyright.pull-right
@@ -445,6 +459,117 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
+    $(document).ready(function(){
+      $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+      if(state==false)
+      {
+        var idNow = $(this).val();
+        var stats = 1
+        //- alert(stats)
+        //- alert(idNow)
+        $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow})
+      }
+      else if(state==true)
+      {
+        var idNow = $(this).val();
+        var stats = 0
+        //- alert(stats)
+        //- alert(idNow)
+        $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow})
+      }
+      location.reload();
+      })
+      $('.bawal').click(function(){
+      alert("Can't Update or Delete ")
+    })
+    });
+
+
+  script.
+    $(document).ready(function(){
+      $('.updateButton').click(function(){
+      var idNow = $(this).val();
+          $.post('/admin/adminFreebies/query',{id:idNow})
+          .done(data=>{
+            console.log(data)
+              $('#freebieName').append(`${data[0].service_name}`)
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Points Required </label>
+                        <star>*</star>
+                        <input class="form-control" id="req_points" type="number" placeholder="${data[0].equivalent_points}" value='${data[0].equivalent_points}' name="required_points" required="true" aria-required="true"/>
+                      </div>
+                    </div>
+                  </div>
+                  `)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('.updateSubmitButton').click(function(){
+                  $.post('/admin/adminFreebies/update',{
+                  points:$('#req_points').val(),
+                  id:idNow
+                  })
+                  .done(data=>{
+                      if(data.alertDesc==0){
+                          swal({
+                          title:'Success', 
+                          text:'Freebie Information Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                      }
+                      else
+                      {
+                         swal({
+                          title:'Error', 
+                          //- text:'Service Information Updated', 
+                          icon:'error'
+                         })
+                        
+                      }
+
+                  })
+                })
+              })
+
+          })
+    })
+
+
+  script.
+    $(document).ready(function(){
+      $('.addButton').click(function(){
+        var service = $('.selectpicker[name="service"]').val()
+        var points = $('#points').val()
+        $.post('/admin/adminFreebies/addFreebies',{service:service,points:points})
+        .done(function(data){
+          if(data.alertSuccess == 1)
+          {
+            swal({
+              title:'Success', 
+              text:'New Guest Inserted', 
+              icon:'success'
+              }).then(function(){
+                location.reload()
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'Customer Already Exist', 
+                icon:'warning'
+                })
+            }
+        })
+      })
+    })
+  script.
       $(document).ready(function(){
           $('.logout').click(function(){
             swal({
@@ -468,16 +593,10 @@ html(lang='en')
     demo.initCirclePercentage();
     });
   script(type='text/javascript').
-    $(document).ready(function() {
-    $('#datatables').DataTable({
-    "pagingType": "full_numbers",
-    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-    responsive: true,
-    language: {
-    search: "_INPUT_",
-    searchPlaceholder: "Search records",
-    }
-    });
+      $(document).ready(function() {
+      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
+
     
         
     //- $('#add').click(function(){

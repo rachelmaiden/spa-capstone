@@ -329,18 +329,24 @@ router.post('/adminServices/delete', (req, res) => {
   })
 //          > U P D A T E
 router.post('/adminServices/update', (req, res) => {
-
+  var alertSuccess =0
+  var notSuccess =1
   const query = `UPDATE services_tbl set
   service_name="${req.body.service_name}",
-  service_duration_id="${req.body.service_duration}",
   service_price="${req.body.service_price}",
-  service_type_id="${req.body.service_type}",
   service_points="${req.body.service_points}"
   WHERE service_id = ${req.body.id1}
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminServices")
+    console.log(query)
+    if(err)
+    {
+    res.send({alertDesc:notSuccess})
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    } 
 })
 })
 router.post('/adminServices/query',(req, res) => {
@@ -682,9 +688,6 @@ router.post('/adminSpecialty/delete', (req, res) => {
   })
 })
 
-router.get('/adminFreebies', (req, res) => {
-  res.render('admin/maintenance/freebies/adminFreebies')
-})
 
 
 
@@ -778,10 +781,70 @@ router.post('/adminCustomer/medicalHistory',(req, res) => {
     console.log(req.body.id1)
   })
 })
+// [FREEBIES]
+router.get('/adminFreebies',mid.adminnauthed, (req, res) => {
+  const query =`SELECT * FROM services_tbl where delete_stats=0;
+  SELECT services_tbl.*, freebies_tbl.* FROM services_tbl
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id`
+  db.query(query,(err,out)=>{
+  res.render('admin/maintenance/freebies/adminFreebies',{
+    services: out[0],
+    freebies: out[1]
+  })
+  })
+})
+router.post('/adminFreebies/addFreebies',(req, res)=>{
+  var alertSuccess =0
+  var notSuccess = 1
+  const query =`INSERT INTO freebies_tbl (service_id, equivalent_points,freebies_availability,delete_stats) values("${req.body.service}","${req.body.points}",1,0)`
+  db.query(query,(err,out)=>{
+    console.log(query)
+    if (err)
+    {
+      res.send({alertSuccess:notSuccess})
+    }
+    else
+    {
+      res.send({alertSuccess:alertSuccess})
+    }
+  })
+})
 
+router.post('/adminFreebies/statusChange',(req, res) => {
+  const query = `UPDATE freebies_tbl set freebies_availability= ${req.body.stats} where freebies_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    res.redirect("/admin/adminFreebies")
+    console.log(query)
+})
+})
 
+router.post('/adminFreebies/query',(req, res) => {
+  console.log('ID'+req.body.id)
+  const query =`
+  SELECT services_tbl.*, freebies_tbl.* FROM services_tbl
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id where freebies_tbl.freebies_id=?`
 
+  db.query(query,[req.body.id],(err,out)=>{
+    console.log(query)
+    res.send(out)
+  })
+})
+router.post('/adminFreebies/update',(req, res) => {
+  var alertSuccess =0
+  var notSuccess = 1
+  const query =`UPDATE freebies_tbl SET equivalent_points= "${req.body.points}" where freebies_id=?`
 
+  db.query(query,[req.body.id],(err,out)=>{
+    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+    }
+    else{
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
 
 
 

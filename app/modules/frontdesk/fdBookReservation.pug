@@ -97,10 +97,10 @@ html(lang='en')
                     br
                     strong= "Medical History: "+customer.medical_history
                 br
-                input(type='' value=`${male}` id='male')
+                input(type='hidden' value=`${male}` id='male')
                 br
-                input.female(type='' value=`${female}` id='female')
-                input(type='' value=`${roomId}` id='roomId')              
+                input.female(type='hidden' value=`${female}` id='female')
+                input(type='hidden' value=`${roomId}` id='roomId')              
 
 
               .card-content
@@ -334,8 +334,7 @@ html(lang='en')
                 </td>
                 <td>${bagongDuration}
                 </td>
-                <td>${totalPrice}
-                </input></td>
+                <td>${totalPrice}</td>
                 `)
               $('#reservationSummary').on('hidden.bs.modal', function (){
                 $('#viewServices').empty()

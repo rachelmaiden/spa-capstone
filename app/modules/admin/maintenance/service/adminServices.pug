@@ -556,26 +556,8 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Service Type
-                          <select id="service_type" value="${data.out1.service_type_id}" title="" data-style="btn-info" name="type" class="selectpicker">
-                          </select>
-                        </label>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
                         <label>Service Name</label>
                         <input type="text" id="service_name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Service Duration
-                          <select id="service_duration" value="${data.out1.service_duration_id} "title="${data.out1.service_duration_desc+ "minutes"}" data-style="btn-info" name="duration" class="selectpicker">
-                          </select>
-                        </label>
                       </div>
                     </div>
                     <div class="col-md-6">
@@ -589,24 +571,11 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Point/s</label>
-                        <input type="number" placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
+                        <input type="number" id='service_points' placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
                       </div>
                     </div>
                   </div>
                   `)
-                for(var i=0; i<data.out2.length;i++){
-                console.log(data.out2[i].service_type_desc)
-                $('#service_type').append(`
-                <option value="${data.out2[i].service_type_id}">${data.out2[i].service_type_desc}</option>`)
-                }
-                 $('#service_type').append(`
-                <option value="${data.out1.service_type_id}" selected disabled> ${data.out1.service_type_desc} </option>`)
-                
-                $('#service_duration').append(`<option value="${data.out1.service_duration_id}" selected disabled>${data.out1.service_duration_desc} minutes</option>`)
-                for(var i=0; i<data.out3.length;i++){
-                console.log(data.out3[i].service_duration_desc)
-                $('#service_duration').append(`<option value="${data.out3[i].service_duration_id}">${data.out3[i].service_duration_desc} minutes</option>`)
-                }
                 $('#service_type').selectpicker();
                 $('#service_duration').selectpicker();
               $('#updateModal').modal('show')
@@ -617,16 +586,15 @@ html(lang='en')
                 $('#updateAppend').remove();
               })
               $('#updateSubmitButton').click(function(){
+               
                   $.post('/admin/adminServices/update',{
-                  service_type:$('#service_type').val(),
                   service_name:$('#service_name').val(),
                   service_price:$('#service_price').val(),
-                  service_duration:$('#service_duration').val(),
                   service_points:$('#service_points').val(),
                   id1:idNow
                   })
                   .done(data=>{
-                      if(data){
+                      if(data.alertDesc==0){
                           swal({
                           title:'Success', 
                           text:'Service Information Updated', 
@@ -634,8 +602,17 @@ html(lang='en')
                           }).then(function(){
                             location.reload();
                           })
-                        $('#updateModal').modal('hide');
                       }
+                      else
+                      {
+                         swal({
+                          title:'Error', 
+                          //- text:'Service Information Updated', 
+                          icon:'error'
+                         })
+                        
+                      }
+
                   })
                 })
               })

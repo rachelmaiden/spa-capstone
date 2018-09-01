@@ -104,6 +104,7 @@ html(lang='en')
                                       th.disabled-sorting Membership Type
                                       th.disabled-sorting Reservation Details
                                       th.disabled-sorting End Time
+                                      th.disabled-sorting Action
                                   tfoot
                                     tr
                                       th Name
@@ -111,41 +112,58 @@ html(lang='en')
                                       th Membership Type
                                       th Reservation Details
                                       th End Time
+                                      th Action
                                   tbody
-                                    tr
-                                      td Caesar Vance
-                                      td Male
-                                      td Ordinary
-                                      td
-                                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#viewDetails')
-                                          span.btn-label
-                                            i.fa.fa-eye
-                                          |                                                                                 View  Reservation Details
-                                      td
-                                        | 3:00 pm
-                                    tr
-                                      td Doris Wilder
-                                      td Female
-                                      td Ordinary
-                                      td
-                                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#viewDetails')
-                                          span.btn-label
-                                            i.fa.fa-eye
-                                          |                                                                                 View  Reservation Details
-                                      td
-                                        | 5:00 pm
-                              #viewDetails.modal.fade(tabindex='-1', role='dialog')
-                                .modal-dialog.modal-lg(role='document')
+                                    each ongoing in ongoings
+                                      tr
+                                        td=ongoing.cust_fname+" "+ongoing.cust_mname+" "+ongoing.cust_lname
+                                        td=ongoing.cust_gender
+                                        if(ongoing.cust_type==0)
+                                          td Common
+                                        else
+                                          td Loyalty
+                                        td
+                                          button.btn.btn-info.btn-fill.btn-wd.viewServices(type='button' value=`${ongoing.walkin_id}`)
+                                            span.btn-label
+                                              i.fa.fa-eye
+                                            |  View  Reservation Details
+                                        td= ongoing.walkin_end_time
+                                        input.startTime(type='hidden' id=`${ongoing.walkin_id}` value=`${ongoing.walkin_start_time}`)
+                                        input.endTime(type='hidden' id=`${ongoing.walkin_id}` value=`${ongoing.walkin_end_time}`)
+                                        input.dateRes(type='hidden' id=`${ongoing.walkin_id}` value=`${ongoing.walkin_date}`)
+                                        td
+                                          button.btn.btn-info.btn-fill.btn-wd.buttonFinish(type='button' value=`${ongoing.walkin_id}`)
+                                            span.btn-label
+                                            | Finish
+                                            i.fa.fa-check
+                                    
+                              #viewServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                .modal-dialog(role='document')
                                   .modal-content
                                     .modal-header
-                                      h5.modal-title
-                                        center Reservation Details
                                       button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                    .modal-body
-                                      p reservation details
-                                    .modal-footer
-                                      // <button type="button" class="btn btn-secondary pull-left btn btn-info btn-fill btn-wd" ></button>
-                                      button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
+                                        span(aria-hidden='true') ×
+                                      center
+                                        h4.modal-title#title
+                                        h5#time
+                                    .modal-body 
+                                      .row
+                                        .col-md-12
+                                          .card-content
+                                            .toolbar
+                                            .fresh-datatables
+                                            table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                              thead
+                                                tr
+                                                  th
+                                                    strong  Services 
+                                                  th
+                                                    strong  Quantity
+                                                  th
+                                                    strong Duration
+                                                  th
+                                                    strong Total Price 
+                                              tbody#viewServicesAvailed
                               .row
                                 .col-md-6
                                   .card-header
@@ -219,6 +237,71 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+        $('.viewServices').click(function(){
+          var table =$('#datatables').DataTable()
+          var id = $(this).val()
+          $.post('/receptionist/ongoing/viewServices',{id:id})
+            .done(data=>{
+              console.log(data.out2)
+              console.log("NAME^")
+                $('#time').append(`Start: ${data.out2.walkin_start_time} End: ${data.out2.walkin_end_time}`)
+                $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+              for(var i=0; i<data.out1.length;i++){
+                  $('#viewServicesAvailed').append(` 
+                  <tr>
+                  <td>${data.out1[i].service_name}</td>
+                  <td>${data.out1[i].service_total_quantity}</td>
+                  <td>${data.out1[i].service_total_duration}</td>
+                  <td>${data.out1[i].service_total_price}</td>`)
+                }
+          $('#viewServices').modal('show')
+          $('#viewServices').on('hidden.bs.modal', function (){
+            $('#viewServicesAvailed').empty()
+            $('#title').empty()
+            $('#time').empty()
+          })
+          }) 
+      })
+      $('.buttonFinish').click(function(){
+        var id = $(this).val()
+        var dateRes = $(`.dateRes[id='${id}']`).val()
+        var startTime = $(`.startTime[id='${id}']`).val()
+        var endTime = $(`.endTime[id='${id}']`).val()
+        swal({
+          title: "Are you sure?",
+          text: "",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((finish) => {
+          if (finish) {
+            $.post('/receptionist/ongoing/Finish',{id:id,
+            walkin_date:dateRes,
+            startTime:startTime,
+            endTime:endTime})
+            .done(data=>{
+              if(data.alertSuccess==0)
+              {
+                swal({
+                  title: "Success",
+                  icon: "success"
+                })
+              }
+              else
+              {
+                swal({
+                  title: "ERROR",
+                  icon: "error"
+                })
+              }
+            })
+          } 
+        });
+        })
+    })
   script.
       $(document).ready(function(){
         $('.logout').click(function(){
