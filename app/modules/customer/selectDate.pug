@@ -2,93 +2,116 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    link(rel='apple-touch-icon', sizes='76x76', href='/assets/now-ui/assets/img/apple-icon.png')
-    link(rel='icon', type='image/png', href='/assets/now-ui/assets/img/favicon.png')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title
-      | Mbay Health Spa
-    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no', name='viewport')
-    // Fonts and icons
-    link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700,200', rel='stylesheet')
-    link(href='https://use.fontawesome.com/releases/v5.0.6/css/all.css', rel='stylesheet')
-    // CSS Files
+    title Online Booking and Spa Management System
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
+    // Social tags
+    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
+    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
+    // Schema.org markup for Google+
+    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
+    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
+    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Twitter Card data
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@creativetim')
+    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(name='twitter:creator', content='@creativetim')
+    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Open Graph data
+    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(property='og:type', content='article')
+    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
+    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(property='og:site_name', content='Creative Tim')
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
-    link(href='/assets/now-ui/assets/css/bootstrap.min.css', rel='stylesheet')
-    link(href='/assets/now-ui/assets/css/now-ui-kit.css', rel='stylesheet')
-    // CSS Just for demo purpose, don't include it in your project
-    link(href='/assets/now-ui/assets/demo/demo.css', rel='stylesheet')
-  body.profile-page.sidebar-collapse
-    // Navbar
-    nav.navbar.navbar-expand-lg.bg-info.fixed-top.navbar-transparent(color-on-scroll='400')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // CSS for Demo Purpose, don't include it in your project
+    link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
+    link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+  body.sidebar-mini
+    nav.navbar.navbar-transparent.navbar-absolute
       .container
-        .dropdown.button-dropdown
-          a#navbarDropdown.dropdown-toggle(href='#pablo', data-toggle='dropdown')
-            span.button-bar
-            span.button-bar
-            span.button-bar
-          .dropdown-menu(aria-labelledby='navbarDropdown')
-            a.dropdown-header Dropdown header
-            a.dropdown-item(href='#') Action
-            a.dropdown-item(href='#') Another action
-            a.dropdown-item(href='#') Something else here
-            .dropdown-divider
-            a.dropdown-item(href='#') Separated link
-            .dropdown-divider
-            a.dropdown-item(href='#') One more separated link
-        .navbar-translate
-          a.navbar-brand(href='#', rel='tooltip', title='', data-placement='bottom', target='_blank')
-            | Mbay Health Spa
-          button.navbar-toggler.navbar-toggler(type='button', data-toggle='collapse', data-target='#navigation', aria-controls='navigation-index', aria-expanded='false', aria-label='Toggle navigation')
-            span.navbar-toggler-bar.top-bar
-            span.navbar-toggler-bar.middle-bar
-            span.navbar-toggler-bar.bottom-bar
-        #navigation.collapse.navbar-collapse.justify-content-end(data-nav-image='/assets/now-ui/assets/img/blurred-image-1.jpg')
-    .wrapper
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navigation-example-2')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-left
+            li
+              a.h5(data-toggle="modal" data-target="#Home" style="color: white") Online Reservation and Spa Management System
+          ul.nav.navbar-nav.navbar-right
+            li
+              h5(style="color: white") Current Date: 
+                a(style="color: white")#date-part
+                  p
+                    a(style="color: white")#time-part
+                
+    .wrapper.wrapper-full-page
       each customer in customers
-        .page-header.clear-filter(filter-color='')
-          if(customer.cust_gender =='Male')
-            .page-header-image(data-parallax='true', style="background-image:url('/assets/now-ui/assets/img/bluespa.jpg');")
-          else
-            .page-header-image(data-parallax='true', style="background-image:url('/assets/now-ui/assets/img/pinkspa.jpg');")
-          .container
-              .photo-container
-                img(src='/assets/now-ui/assets/img/ryan.jpg', alt='')
-              h3.title= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
-              .content
-                .social-description
-                  if(customer.paid_status == 0)
-                    p Please pay the membership fee (P600)
-                  else 
-                    h2= customer.member_points
-                  p Loyalty Points
-                h3
-                  strong Loyalty Membership Valid Until:
-                    p= customer.valid_until
-    
-    
-    .section
-      .container
-        .row
-          .col-md-10.col-md-offset-1
-            .card.card-calendar
-              .card-content
-                input(value=`${customerId}` id="Id")
-                input(value=`${restype}`)
-                input(value=`Male: ${male}`)
-                input(value=`Female: ${female}`)
-                #fullCalendar
-    
-    footer.footer.footer-default
-      .container
-        nav
-        #copyright.copyright
-          | ©
-          script.
-            document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
-          a(href='#', target='_blank') Team Mbay
-          | .
+        if(customer.cust_gender=='Male')
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        input(value=`${customerId}` id="Id")
+                        input(value=`${restype}`)
+                        input(value=`Male: ${male}`)
+                        input(value=`Female: ${female}`)
+                        center  
+                          h2 Select Date
+                        #fullCalendar
+        else
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        center  
+                          h2 Select Date
+                          h1= customer.cust_fname
+                        input(type='hidden' value=`${customerId}` id="Id")
+                        input(type='hidden' value=`${restype}`)
+                        input(type='hidden' value=`Male: ${male}`)
+                        input(type='hidden' value=`Female: ${female}`)
+                        #fullCalendar
 
+
+        footer.footer.footer-transparent
+          .container
+            .copyright
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='') Team RJPC
+
+                       
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -116,8 +139,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -125,31 +146,14 @@ html(lang='en')
   // Plugin for DataTables.net
   script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
   // Full Calendar Plugin
-  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+  script(src='/assets/paperDashboardPro/js/fullcalendar.js')
+  script(src='/assets/paperDashboardPro/js/scheduler.js')
   // Paper Dashboard PRO Core javascript and methods for Demo purpose
-  script(src='/assets/paperDashboardPro/js/paper-dashboard.js?v=1.2.1')
+  script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
   // Sharrre Library
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
-  // Full Calendar Plugin
-  script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
-  script(src='/assets/paperDashboardPro/js/moment.min.js')
-  script(src='/assets/now-ui/assets/js/core/jquery.min.js', type='text/javascript')
-  script(src='/assets/now-ui/assets/js/core/popper.min.js', type='text/javascript')
-  script(src='/assets/now-ui/assets/js/core/bootstrap.min.js', type='text/javascript')
-  // Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/
-  script(src='/assets/now-ui/assets/js/plugins/bootstrap-switch.js')
-  // Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/
-  script(src='/assets/now-ui/assets/js/plugins/nouislider.min.js', type='text/javascript')
-  // Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker
-  script(src='/assets/now-ui/assets/js/plugins/bootstrap-datepicker.js', type='text/javascript')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE')
-  // Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc
-  script(src='/assets/now-ui/assets/js/now-ui-kit.js?v=1.2.0', type='text/javascript')
-
-  
   script.
     $(document).ready(function(){
         var customerId= $('#Id').val()
@@ -158,9 +162,9 @@ html(lang='en')
         dayClick: function(date, jsEvent, view) {
           var now = moment().format('MM-DD-YYYY')
           var clicked = date.format('MM-DD-YYYY')
-          if(moment(clicked).isSameOrAfter(now)){
+          if(moment(clicked).isAfter(now)){
               swal({
-                title: "You Clicked " + date.format('MM-DD-YYYY'),
+                title: "You Clicked " + date.format('MMMM DD YYYY'),
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
@@ -170,7 +174,7 @@ html(lang='en')
                 if(proceed)
                 {
                   var newDate= date.format('MM-DD-YYYY')
-                  location.href= `/selectTime?date=${newDate}`
+                  location.href= `/customer/customerTime?date=${newDate}`
                 }
                 else
                 {
@@ -196,4 +200,18 @@ html(lang='en')
           clearInterval(interval);
       });
       //- $('#calendar').val('')
+      });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
       });

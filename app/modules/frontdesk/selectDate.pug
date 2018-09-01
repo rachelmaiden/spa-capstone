@@ -86,10 +86,10 @@ html(lang='en')
               .col-md-10.col-md-offset-1
                 .card.card-calendar
                   .card-content
-                    input(value=`${customerId}` id="Id")
-                    input(value=`${restype}`)
-                    input(value=`Male: ${male}`)
-                    input(value=`Female: ${female}`)
+                    input(type='hidden' value=`${customerId}` id="Id")
+                    input(type='hidden' value=`${restype}`)
+                    input(type='hidden' value=`Male: ${male}`)
+                    input(type='hidden' value=`Female: ${female}`)
                     #fullCalendar
         footer.footer
           .container-fluid

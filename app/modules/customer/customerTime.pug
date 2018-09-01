@@ -2,128 +2,121 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    link(rel='apple-touch-icon', sizes='76x76', href='/assets/assets/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='/assets/assets/img/favicon.png')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title Online Booking and Spa Management System
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     meta(name='viewport', content='width=device-width')
+    // Social tags
+    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
+    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
+    // Schema.org markup for Google+
+    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
+    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
+    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Twitter Card data
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@creativetim')
+    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(name='twitter:creator', content='@creativetim')
+    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Open Graph data
+    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(property='og:type', content='article')
+    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
+    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(property='og:site_name', content='Creative Tim')
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
-    link(href='/assets/paperDashboardPro/css/paper-dashboard.css?v=1.2.1', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
     // CSS for Demo Purpose, don't include it in your project
     link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
     // Fonts and icons
-    link(href='https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
     link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
     link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
-    //- style.
-    //-   .pull-right .dropdown-menu:after {
-    //-     left: 10em;
-        
-    //-       }
-    //-   .pull-right .dropdown-menu {
-    //-       left: 10em;
-          
-    //-   }
   body.sidebar-mini
-    .wrapper
-      .sidebar(data-background-color='white', data-active-color='spa')
-        //
-          Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
-          Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
-        .logo
-          a.simple-text.logo-mini(href='https://www.creative-tim.com')
-            | CT
-          a.simple-text.logo-normal(href='https://www.creative-tim.com')
-            | Creative Tim
-        .sidebar-wrapper
-          .user
-            .info
-              .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
-              a.collapsed(data-toggle='collapse', href='#collapseExample')
-                span
-                  | Front Desk
-              .clearfix
-          ul.nav
+    nav.navbar.navbar-transparent.navbar-absolute
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navigation-example-2')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-left
             li
-              a(href='/frontdesk/home')
-                i.ti-pencil
-                p
-                  | Registration
-            li.active
-              a(href='./fdReservation')
-                i.ti-calendar
-                p
-                  | Reservation
+              a.h5(data-toggle="modal" data-target="#Home" style="color: white") Online Reservation and Spa Management System
+          ul.nav.navbar-nav.navbar-right
             li
-              a(href='#')
-                i.ti-credit-card
-                p
-                  | Payment      
-      .main-panel
-        nav.navbar.navbar-default
-          .container-fluid
-            .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
-            .navbar-header
-              button.navbar-toggle(type='button')
-                span.sr-only Toggle navigation
-                span.icon-bar.bar1
-                span.icon-bar.bar2
-                span.icon-bar.bar3
-              a.navbar-brand(href='#calendar') Calendar
-            .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
-              ul.nav.navbar-nav.navbar-right
-                li
-                  a#date-part(style="color: black")
-                li
-                  a#time-part(style="color: black") 
-                li
-                  a.logout(style="cursor: pointer; color: black") Log Out
-        .content
-          .container-fluid
-            .row
-              //- .col-md-10.col-md-offset-1
-              .card.card-calendar
-                .card-content
-                  input(type="hidden" value=`${customerId}` id="Id")
-                  input(type='hidden' value=`${customerId}` id="Id")
-                  input(type='hidden' id="restype" value=`${restype}`)
-                  input(type='hidden' value=`Male: ${male}`)
-                  input(type='hidden' value=`Female: ${female}`)
-                  #fullCalendar
-        
-        //VIEW SPECIFIC SCHEDULE
-        #viewDateSchedule.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-          .modal-dialog.modal-lg(role='document')
-            .modal-content
-              .modal-header
-                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                  span(aria-hidden='true') ×
-                center
-                  h4.modal-title
-              .modal-body#viewAppend
-        footer.footer
-          .container-fluid
-            .copyright.pull-right
+              h5(style="color: white") Current Date: 
+                a(style="color: white")#date-part
+                  p
+                    a(style="color: white")#time-part
+                
+    .wrapper.wrapper-full-page
+      each customer in customers
+        if(customer.cust_gender=='Male')
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        //- input(type="" value=`${date}` id="datePick")
+                        input(type="hidden" value=`${customerId}` id="Id")
+                        input(type='hidden' value=`${customerId}` id="Id")
+                        input(type='hidden' id="restype" value=`${restype}`)
+                        input(type='hidden' value=`Male: ${male}`)
+                        input(type='hidden' value=`Female: ${female}`)
+                        center  
+                          h2 Select Date
+                        #fullCalendar
+        else
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        center  
+                          h2 Select Date
+                          h1= customer.cust_fname
+                        input(type="hidden" value=`${customerId}` id="Id")
+                        input(value=`${customerId}` id="Id")
+                        input(id="restype" value=`${restype}`)
+                        input(value=`Male: ${male}`)
+                        input(value=`Female: ${female}`)
+                        #fullCalendar
+
+
+        footer.footer.footer-transparent
+          .container
+            .copyright
               | © 
               script.
                 document.write(new Date().getFullYear())
               | , made with 
               i.fa.fa-heart.heart
               |  by 
-              a(href='#') Team MBAY
+              a(href='') Team RJPC
+
+                       
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -168,17 +161,16 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/scheduler.js')
   script(type='text/javascript').
     $(document).ready(function(){
+      var date = !{JSON.stringify(date)}
       var restype = $('#restype').val()
       var room_type_id;
       var girl_room;
       var boy_room;
       var girl_room_qty;
       var boy_room_qty;
-      var date = !{JSON.stringify(date)}
-
       if(restype == 'multiple')
         {
-          $.post('selectTime/queryCommon').done(data=>{
+          $.post('/customer/customerTime/queryCommon').done(data=>{
             room_type_id= data.common[0].room_type_id
             girl_room = data.girls[0].room_id
             girl_room_qty = data.girls[0].bed_qty
@@ -186,7 +178,7 @@ html(lang='en')
             boy_room = data.boys[0].room_id
             boy_room_qty = data.boys[0].bed_qty
           })
-          $.post('selectTime/queryRoom').done(data=>{
+          $.post('/customer/customerTime/queryRoom').done(data=>{
             for(var i=0; i<data.length;i++)
               {
                 if(data[i].room_type_id==room_type_id)
@@ -204,7 +196,7 @@ html(lang='en')
                       })
                   }
               }
-              $.post('selectTime/addResource/Multiple').done(data=>{
+              $.post('/customer/customerTime/addResource/Multiple').done(data=>{
                 var saveArea;
                 var array = [];
                 for(var i=0; i<data.length;i++)
@@ -413,7 +405,7 @@ html(lang='en')
                 //-   }
               })
           })
-          //- $.post('selectTime/addResource/Multiple').done(data=>{
+          //- $.post('/customer/customerTime/addResource/Multiple').done(data=>{
           //-   for(var i=0; i<data.length;i++){
               
           //-   var occupied = data[i].occupied
@@ -439,7 +431,7 @@ html(lang='en')
           }
           else if (restype == 'single')
             {
-              $.post('selectTime/query').done(data=>{
+              $.post('/customer/customerTime/query').done(data=>{
                 for(var i=0; i<data.length;i++)
                   {
                     $('#fullCalendar').fullCalendar('addResource', {
@@ -449,10 +441,11 @@ html(lang='en')
                     })
 
                     //- BACKGROUND COLOR 
-                    $.post('selectTime/addResource',{id:data[i].room_id,datePick:date.date}).done(data=>{
-                      console.log(data)
+                    $.post('/customer/customerTime/addResource',{id:data[i].room_id,
+                    datePick:date.date}).done(data=>{
                       for(var i=0; i<data.length;i++)
                         {
+                          console.log(data)
                           
                           var occupied = data[i].bed_occupied
 
@@ -480,9 +473,10 @@ html(lang='en')
                         }
                       })
                     //- YUNG EVENT MISMO
-                    $.post('selectTime/addResource',{id:data[i].room_id,datePick:date.date}).done(data=>{
+                    $.post('/customer/customerTime/addResource',{id:data[i].room_id,datePick:date.date}).done(data=>{
+                      //- console.log(data)
                       var newQnty = data[0].bed_qty - data[0].occupied
-                      
+                      console.log('QUANTITY '+newQnty)
                       var color = '#FF232' // kunwari blue
                       for(var i=0; i<data.length;i++)
                         {
@@ -591,7 +585,7 @@ html(lang='en')
               var timePicked= date.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.titl,
+                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.title,
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
@@ -600,7 +594,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
+                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
                 }
                 else
                 {
@@ -647,7 +641,7 @@ html(lang='en')
               var timePicked= eventObj.start.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + eventObj.start.format('hh:mm A')+" From "+eventObj.description+" "+eventObj.title3,
+                title: "You Clicked " + eventObj.start.format('hh:mm A')+" From "+eventObj.title+" "+eventObj.title,
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
@@ -656,7 +650,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
+                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
                 }
                 else
                 {
@@ -687,3 +681,4 @@ html(lang='en')
       });
       //- $('#calendar').val('')
       });
+  

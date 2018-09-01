@@ -130,6 +130,7 @@ html(lang='en')
                                                 th.disabled-sorting Room
                                                 th Date
                                                 th Time
+                                                th Status
                                                 th.disabled-sorting Actions
                                             tfoot
                                               tr
@@ -138,18 +139,40 @@ html(lang='en')
                                                 th Room
                                                 th Date
                                                 th Time
+                                                th Status
                                                 th Actions
                                             tbody
                                               each walkin in walkins
                                                 tr
-                                                  td= walkin.cust_fname+" "+walkin.cust_lname+" "+walkin.cust_lname
+                                                  td= walkin.cust_fname+" "+walkin.cust_mname+" "+walkin.cust_lname
+                                                  input.name(type='hidden' id=`${walkin.walkin_id}` value=`${walkin.cust_fname} ${walkin.cust_mname} ${walkin.cust_lname}`)
                                                   td
                                                     button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${walkin.walkin_id}`) View Services
                                                   td= walkin.room_name
                                                   td= walkin.walkin_date
                                                   td= walkin.walkin_start_time+" to "+walkin.walkin_end_time
+                                                  input.startTime(type='hidden' value=`${walkin.walkin_start_time}` id=`${walkin.walkin_id}`)
+                                                  input.endTime(type='hidden' value=`${walkin.walkin_end_time}` id=`${walkin.walkin_id}`)
+                                                  td 
+                                                    if(walkin.status==0)
+                                                      span.label.label-success Going
+                                                    else if(walkin.status==1)
+                                                      span.label.label-warning Cancelled
                                                   td
-                                                  
+                                                    .dropdown.pull-right(style="right: 20px")
+                                                      button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                        i.ti-settings
+                                                      ul.dropdown-menu
+                                                        li
+                                                          button.btn.btn-simple.btn-warning.cancelReservation(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
+                                                            span.btn-label
+                                                            i.ti-close
+                                                            |  Cancel Reservation
+                                                        //- li
+                                                        //-   button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
+                                                        //-     span.btn-label
+                                                        //-     i.ti-trash
+                                                        //-     |  Delete
                   
 
                             hr
@@ -186,7 +209,8 @@ html(lang='en')
                                             tbody
                                               each reserv in reservs
                                                 tr
-                                                  td= reserv.cust_fname+" "+reserv.cust_lname+" "+reserv.cust_lname
+                                                  td= reserv.cust_fname+" "+reserv.cust_mname+" "+reserv.cust_lname
+                                                  input.name(type='hidden' id=`${reserv.walkin_id}` value=`${reserv.cust_fname} ${reserv.cust_mname} ${reserv.cust_lname}`)
                                                   td
                                                     button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${reserv.walkin_id}`) View Services
                                                   td= reserv.room_name
@@ -282,7 +306,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Wizard Plugin
@@ -314,7 +338,8 @@ html(lang='en')
                 <tr>
                 <td>${data.out1[i].service_name}</td>
                 <td>${data.out1[i].service_total_quantity}</td>
-                <td>${data.out1[i].service_total_duration}</td>`)
+                <td>${data.out1[i].service_total_duration}</td>
+                <td>${data.out1[i].service_total_price}</td>`)
               }
         $('#viewServices').modal('show')
         $('#viewServices').on('hidden.bs.modal', function (){
@@ -323,6 +348,49 @@ html(lang='en')
         })
         })
         
+      })
+
+
+      $('.cancelReservation').click(function(){
+        var id = $(this).val()
+        var Name = $(`.name[id='${id}']`).val()
+        var startTime = $(`.startTime[id='${id}']`).val()
+        var endTime = $(`.endTime[id='${id}']`).val()
+        swal({
+          title: "Cancel "+Name+" Resevation? ",
+          text: "Are you sure?",
+          icon: "warning",
+          buttons: ["Cancel","Proceed"],
+          dangerMode: true
+          
+        }).then((proceed) => {
+          if(proceed)
+          {
+            $.post('/fdReservation/CancelReservation',{id:id,startTime:startTime,endTime:endTime})
+            .done(data=>{
+              if(data.alertSuccess==0)
+                {
+                  swal({
+                    title: Name+" reservation has been cancelled",
+                    icon: 'success'
+                  }).then(function(){
+                    location.href='/fdReservation'
+                  })
+                }
+              else
+              {
+                swal({
+                    title: 'ERROR',
+                    icon: 'error'
+                  })
+              }
+            })
+          }
+          else
+          {
+
+          }
+          });
       })
     })
   script(type='text/javascript').
