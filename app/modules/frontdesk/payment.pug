@@ -708,7 +708,7 @@ html(lang='en')
                 icon: 'warning'
               })
             }
-          else if($('.amountReceived').val() < $('.totalPrice').val())
+          else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
             {
               swal({
                 title: "Amount Received is insufficient",

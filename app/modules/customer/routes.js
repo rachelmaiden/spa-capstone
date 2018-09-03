@@ -10,13 +10,13 @@ router.get('/sample',(req, res) => {
 })
 
 // LANDING PAGE
-router.get('/',(req, res) => {
+router.get('/customer',(req, res) => {
 	res.render('customer/landing')
   })
 
-// router.get('/customer',(req, res) => {
-//   res.render('customer/login')
-// })
+router.get('/login',(req, res) => {
+  res.render('customer/login')
+})
 
 
 // router.get('/custHome',mid.guestistnauthed,(req, res) => {
