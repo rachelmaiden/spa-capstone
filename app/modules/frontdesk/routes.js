@@ -704,12 +704,15 @@ router.post('/payment/Finish',(req,res)=>{
   })
   })
 
-
+    console.log("cust_id: "+req.body.cust_id)
 
     const query1=`SELECT * FROM loyalty_tbl where cust_id= ${req.body.cust_id}`
 
     db.query(query1,(err,out)=>{
-      if(out[0].paid_status==0)
+      console.log(query1)
+      console.log("OUT")
+      console.log(out)
+      if(out.paid_status==0)
         {
           
           const queryPaid = `UPDATE loyalty_tbl SET paid_status=1 WHERE cust_id=${req.body.cust_id};
@@ -729,6 +732,26 @@ router.post('/payment/Finish',(req,res)=>{
               }
           })
         }
+        else if(out== undefined || out==0)
+        {
+          const queryPaid = `
+          UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
+
+          db.query(queryPaid,(err,out)=>{
+            if(err)
+              {
+                console.log(err)
+                var notSuccess=1
+                res.send({alertDesc:notSuccess})
+              }
+            else
+              {
+                var alertSuccess=0
+                res.send({alertDesc:alertSuccess})
+              }
+          })
+        }
+        
     })
   })
   

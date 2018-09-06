@@ -11,6 +11,10 @@ router.get('/sample',(req, res) => {
 
 // LANDING PAGE
 router.get('/customer',(req, res) => {
+	res.render('customer/landing')
+  })
+
+router.get('/login',(req, res) => {
   res.render('customer/login')
 })
 
