@@ -700,7 +700,9 @@ html(lang='en')
         
         
         $('.buttonDone').click(function(){
-          //- alert($('.amountReceived').val())
+          alert($('.amountReceived').val())
+          alert($('.totalPrice').val())
+          alert(1000 < 800)
           if($('.amountReceived').val()==0)
             {
               swal({
@@ -708,7 +710,7 @@ html(lang='en')
                 icon: 'warning'
               })
             }
-          else if($('.amountReceived').val() < $('.totalPrice').val())
+          else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
             {
               swal({
                 title: "Amount Received is insufficient",
