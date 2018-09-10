@@ -51,6 +51,12 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 // ||---------------------- M A I N T E N A N C E -----------------------||
 // ||====================================================================||
 
+// [GC]
+router.get('/admingc', (req, res) => {
+  res.render('admin/maintenance/giftcertificate/gc')
+})
+
+
 // [AMENITY]
 router.get('/adminPackages', (req, res) => {
   res.render('admin/maintenance/package/adminPackages')
