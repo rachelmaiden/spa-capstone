@@ -1,0 +1,217 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title Online Booking and Spa Management System
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
+    // Social tags
+    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
+    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
+    // Schema.org markup for Google+
+    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
+    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
+    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Twitter Card data
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@creativetim')
+    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(name='twitter:creator', content='@creativetim')
+    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Open Graph data
+    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(property='og:type', content='article')
+    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
+    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(property='og:site_name', content='Creative Tim')
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // CSS for Demo Purpose, don't include it in your project
+    link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
+    link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+  body.sidebar-mini
+    nav.navbar.navbar-transparent.navbar-absolute
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navigation-example-2')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-left
+            li
+              a.h5(data-toggle="modal" data-target="#Home" style="color: white") Online Reservation and Spa Management System
+          ul.nav.navbar-nav.navbar-right
+            li
+              h5(style="color: white") Current Date: 
+                a(style="color: white")#date-part
+                  p
+                    a(style="color: white")#time-part
+                
+    .wrapper.wrapper-full-page
+      each customer in customers
+        if(customer.cust_gender=='Male')
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        input(value=`${customerId}` id="Id")
+                        input(value=`${restype}`)
+                        input(value=`Male: ${male}`)
+                        input(value=`Female: ${female}`)
+                        center  
+                          h2 Select Date
+                        #fullCalendar
+        else
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        center  
+                          h2 Select Date
+                          h1= customer.cust_fname
+                        input(type='hidden' value=`${customerId}` id="Id")
+                        input(type='hidden' value=`${restype}`)
+                        input(type='hidden' value=`Male: ${male}`)
+                        input(type='hidden' value=`Female: ${female}`)
+                        #fullCalendar
+
+
+        footer.footer.footer-transparent
+          .container
+            .copyright
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='') Team RJPC
+
+                       
+  // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+  script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+  // Forms Validations Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+  // Promise Library for SweetAlert2 working on IE
+  script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+  // Plugin for Date Time Picker and Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/moment.min.js')
+  // Date Time Picker Plugin is included in this js file
+  script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+  // Select Picker Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+  // Switch and Tags Input Plugins
+  script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+  // Circle Percentage-chart
+  script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+  // Charts Plugin
+  script(src='/assets/paperDashboardPro/js/chartist.min.js')
+  // Notifications Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+  // Sweet Alert 2 plugin
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  // Vector Map plugin
+  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+  // Wizard Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+  // Bootstrap Table Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+  // Plugin for DataTables.net
+  script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+  // Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/fullcalendar.js')
+  script(src='/assets/paperDashboardPro/js/scheduler.js')
+  // Paper Dashboard PRO Core javascript and methods for Demo purpose
+  script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+  // Sharrre Library
+  script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+  // Paper Dashboard PRO DEMO methods, don't include it in your project!
+  script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+        var customerId= $('#Id').val()
+        console.log(customerId)
+      $('#fullCalendar').fullCalendar({
+        dayClick: function(date, jsEvent, view) {
+          var now = moment().format('MM-DD-YYYY')
+          var clicked = date.format('MM-DD-YYYY')
+          if(moment(clicked).isAfter(now)){
+              swal({
+                title: "You Clicked " + date.format('MMMM DD YYYY'),
+                text: "Are You Sure?",
+                icon: "info",
+                buttons: ["Cancel","Proceed"],
+                dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                  var newDate= date.format('MM-DD-YYYY')
+                  location.href= `/customer/customerTime?date=${newDate}`
+                }
+                else
+                {
+
+                }
+                });
+          //- location.href= `/selectTime?date=${newDate}`
+          }
+        }
+      })
+    });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      //- $('#calendar').val('')
+      });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      });

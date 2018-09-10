@@ -678,72 +678,60 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Last Name*</label>
-                        <input type="text" name="therapist_lname" placeholder="${data.therapist_lname}" value="${data.therapist_lname}" id="therapist_lname" class="form-control"/>
+                        <label>Last Name</label>
+                        <star>*</star>
+                        <input class="form-control" type="text" placeholder="${data.therapist_lname}" name="therapist_lname" value='${data.therapist_lname}' required="true" aria-label="true"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
-                        <label>First Name*</label>
-                        <input type="text" placeholder="${data.therapist_fname}" value="${data.therapist_fname}" name="therapist_fname" id="therapist_fname" class="form-control"/>
+                        <label>First Name</label>
+                        <star>*</star>
+                        <input class="form-control" type="text" placeholder="${data.therapist_fname}" name="therapist_fname" value='${data.therapist_fname}' required="true" aria-label="true"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Middle Name</label>
-                        <input type="text" placeholder="${data.therapist_mname}" value="${data.therapist_mname}" name="therapist_mname" id="therapist_mname" class="form-control"/>
+                        <input class="form-control" type="text" placeholder="${data.therapist_mname}" name="therapist_mname" value='${data.therapist_mname}' aria-label="true"/>
+                      </div>
+                    </div>
+                      <div class="row">
+                          <div class="col-md-3">
+                            <div class="form-group has-default bmd-form-group">
+                              <label>Gender</label>
+                              <star>*</star>
+                              <select class="selectpicker" name="therapist_gender" id="gender" data-style="btn-info" required="true" aria-label="true">
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-1">
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group has-default bmd-form-group">
+                              <label>Birthday</label>
+                              <star>*</star>
+                            </div>
+                            <input class="form-control datepicker" type="text" name="therapist_birthday" placeholder='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' value='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' id="calendar" style="margin-top: -15px;"/>
+                          </div>
+                      </div>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group has-default bmd-form-group">
+                          <label>Address</label>
+                          <star>*</star>
+                          <input class="form-control" type="text" placeholder="${data.therapist_address}" id="therapist_address" name="therapist_address" value='${data.therapist_address}' required="true" aria-label="true"/>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group has-default bmd-form-group">
+                          <label>Mobile Number</label>
+                          <star>*</star>
+                          <input class="form-control" type="number" placeholder="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" value='${data.therapist_contact_no}' required="true" aria-label="true" minlength="11" maxlength="11"/>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-3">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Address*</label>
-                        <input type="text" placeholder="${data.address_house_no}" value="${data.address_house_no}" id="address_house_no" name="address_house_no" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_street_name}" value="${data.address_street_name}" id="address_street_name" name="address_street_name" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_admin_district}" value="${data.address_admin_district}" id="address_admin_district" name="address_admin_district" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group has default bmd-form-group">
-                        <label></label>
-                        <input type="text" placeholder="${data.address_city}" value="${data.address_city}" name="address_city" id="address_city" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-2">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Age*</label>
-                        <input type="text" placeholder="${data.therapist_age}" value="${data.therapist_age}" name="therapist_age" id="therapist_age" class="form-control"/>
-                      </div>
-                    </div>
-                    <div class="col-md-2">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Gender*</label>
-                        <select id="gender" value="${data.therapist_gender}" data-style="btn-info" class="selectpicker">
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-3">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Mobile Number*</label>
-                        <input type="text" placeholder="${data.therapist_contact_no}" value="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" class="form-control"/>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                </div>
               </form>`)
                     //- <div class="col-md-2">
                     //-   <div class="form-group has-default bmd-form-group">
@@ -766,6 +754,41 @@ html(lang='en')
                     <option value="Female" selected>Female</option>`
                 )
               }
+              $(function () {
+                var date = new Date()
+                var year = date.getFullYear()
+                var year2 = year - "18"
+                var year3 = new Date(year2, 00,01)
+                $('.datepicker').datetimepicker({
+                  viewMode: 'years',
+                  format: 'MM-DD-YYYY',
+                  maxDate: year3,
+                  icons: {
+                    time: "fa fa-clock-o",
+                    date: "fa fa-calendar",
+                    up: "fa fa-chevron-up",
+                    down: "fa fa-chevron-down",
+                    previous: 'fa fa-chevron-left',
+                    next: 'fa fa-chevron-right',
+                    today: 'fa fa-screenshot',
+                    clear: 'fa fa-trash',
+                    close: 'fa fa-remove'
+                    },
+                    widgetPositioning:{"horizontal":"auto",
+                    "vertical":"auto"}
+                  });
+              })
+
+                  
+                $('.datepicker').on('dp.hide', function(event){
+                  setTimeout(function(){
+                    $('.datepicker').data('DateTimePicker').viewMode('years');
+                  },1);
+                });
+
+
+                
+
               $('#updateModal').modal('show') 
               $('#gender').selectpicker()
               $('#therapist_specialty').selectpicker()
@@ -838,7 +861,6 @@ html(lang='en')
     //-   location.reload();
     //- });
     });
-    })
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();

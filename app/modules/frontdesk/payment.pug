@@ -17,6 +17,18 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      button.hello{
+        background:none!important;
+        border:none; 
+        padding:0!important;
+        
+        /*optional*/
+        font-family:arial,sans-serif; /*input has OS specific font-family*/
+        color:#069;
+        text-decoration:underline;
+        cursor:pointer;
+      }
   body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -39,7 +51,7 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='/registration')
+              a(href='/frontdesk/home')
                 i.ti-pencil
                 p
                   | Registration
@@ -148,6 +160,56 @@ html(lang='en')
                                           button.btn.btn-info.btn-fill.btn-wd.checkoutButton(type='button' value=`${notpaid.walkin_id}`)
                                             span.btn-label
                                             | Checkout
+                  br
+                  br
+                  .content
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          p.category  
+                          br
+                          .card
+                            .card-content
+                              center  
+                                h2 Paid Customers
+                              hr
+                              .toolbar
+                                // Here you can write extra buttons/actions for the toolbar
+                              .fresh-datatables
+                                table#datatables1.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                  thead
+                                    tr
+                                      th Membership Type
+                                      th Name
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th Services
+                                  tfoot
+                                    tr
+                                      th Membership Type
+                                      th Name
+                                      th
+                                      th
+                                      th Services
+
+                                  tbody
+                                    each paid in paids
+                                      tr
+                                        if(paid.cust_type==0)
+                                          td Common
+                                        else
+                                          td Loyalty
+                                        td= paid.cust_fname+" "+paid.cust_lname
+                                        td
+                                        td
+                                        td
+                                          button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
+                                            span.btn-label
+                                            | View 
+
+                  
+                  
+                  
                               #viewDetails.modal.fade(tabindex='-1', role='dialog')
                                 .modal-dialog(role='document')
                                   .modal-content
@@ -160,7 +222,46 @@ html(lang='en')
                                     .modal-footer
                                       // <button type="button" class="btn btn-secondary pull-left btn btn-info btn-fill btn-wd" ></button>
                                       button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
-                              #checkout.modal.fade(tabindex='-1', role='dialog')
+                              
+                              
+                              #RegisterModal.modal.fade(tabindex='1', role='dialog' aria-labelledby='myModalLabel')
+                                .modal-dialog(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      h5.modal-title
+                                        center Registration
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    .modal-body
+                                      .row
+                                        .col-md-4
+                                          .form-group
+                                            label.control-label Username
+                                            star *
+                                            input.form-control(type='text', name='username', id="username" placeholder='username\
+                                            ')
+                                        .col-md-4
+                                          .form-group
+                                            label.control-label Password
+                                            star *
+                                            input.form-control(type='password', name='password1', id="password" placeholder='password\
+                                            ')
+                                        .col-md-4
+                                          .form-group
+                                            label.control-label Re-enter Password
+                                            star *
+                                            input.form-control(type='password', name='password2', id="password2" placeholder='confim password\
+                                            ')
+
+                                      .row
+                                        .col-md-5
+                                            h5 Fee: 500.00
+                                            h5 Perks: freebies
+                                    .modal-footer
+                                      button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegister(type='button', data-dismiss='modal') Done
+                                      button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button', data-dismiss='modal') Close
+                              
+                              
+                              #checkout.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
                                 .modal-dialog.modal-lg(role='document')
                                   .modal-content
                                     .modal-header
@@ -171,6 +272,13 @@ html(lang='en')
                                       div
                                         h5
                                           strong#custName
+                                          br
+                                          button.hello(type='' value='') Register for Loyalty Membership
+                                        h5
+                                          strong#Room
+                                          br
+                                          strong#RoomRate
+                                          hr
                                       .fresh-datatables
                                         table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                           thead
@@ -179,39 +287,112 @@ html(lang='en')
                                                 strong Services Availed 
                                               th.disabled-sorting Quantity
                                               th.disabled-sorting Amount
+                                              th.disabled-sorting Equivalent Points
                                           tfoot
                                             tr
                                               th.disabled-sorting
                                               th
                                               th
+                                              th
                                           tbody#viewServicesAvailed
                                               
-                                      div
-                                        h5
-                                          strong Amenity Stay: 
                                         div
-                                          h5
-                                            strong#Room
-                                            br
-                                            strong#RoomRate
                                           h2
                                             strong#TotalPrice
-                                        .row
-                                          .col-md-4
-                                            .form-group.has-default.bmd-form-group
-                                              label Amount Received:
-                                              input.form-control(type='number', placeholder='Amount Received')
-                                          .col-md-4
-                                            .form-group.has-default.bmd-form-group
-                                              label Gift Certificate Amount:
-                                              input.form-control(type='number', placeholder='Gift Certificate Amount')
-                                          .col-md-4
-                                            .form-group.has-default.bmd-form-group
-                                              label Change: 
-                                              input.form-control(type='number', placeholder='Change')
+                                            input.totalPrice(type='hidden' value='')
+                                          h4
+                                            strong#TotalPoints
+                                          .row
+                                            .col-md-4
+                                              .form-group.has-default.bmd-form-group
+                                                label Amount Received:
+                                                input.form-control.amountReceived(type='number', placeholder='Amount Received' oninput="myFunction()")
+                                            //- .col-md-4
+                                            //-   .form-group.has-default.bmd-form-group
+                                            //-     label Gift Certificate Amount:
+                                            //-     input.form-control(type='number', placeholder='Gift Certificate Amount')
+                                            .col-md-4
+                                              .form-group.has-default.bmd-form-group
+                                                label Change: 
+                                                input.form-control.change(type='number', placeholder='Change' value='0')
+                                            .col-md-4#appendDito
                                       .modal-footer
-                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd(type='button') Done
+                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
                                         button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              
+                              #summary.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                                .modal-dialog.modal-lg(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      h5.modal-title
+                                        center Summary
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    .modal-body
+                                      div
+                                        h5
+                                          strong#CustName
+                                          br
+                                        h5
+                                          strong#room
+                                          br
+                                          strong#roomRate
+                                          hr
+                                      .fresh-datatables
+                                        table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                          thead
+                                            tr
+                                              th.disabled-sorting
+                                                strong Availed Services
+                                              th.disabled-sorting Quantity
+                                              th.disabled-sorting Amount
+                                          tfoot
+                                            tr
+                                              th.disabled-sorting
+                                              th
+                                              th
+                                              
+                                          tbody#ViewServicesAvailed
+                                              
+                                        div
+                                          h2
+                                            strong#totalPrice
+                                            input.TotalPrice(type='hidden' value='')
+                                          h4
+                                            strong#totalPoints
+                                          //- .row
+                                          //-   .col-md-4
+                                          //-     .form-group.has-default.bmd-form-group
+                                          //-       label Amount Received:
+                                          //-       input.form-control.amountReceived(type='number', placeholder='Amount Received' oninput="myFunction()")
+                                          //-   //- .col-md-4
+                                          //-   //-   .form-group.has-default.bmd-form-group
+                                          //-   //-     label Gift Certificate Amount:
+                                          //-   //-     input.form-control(type='number', placeholder='Gift Certificate Amount')
+                                          //-   .col-md-4
+                                          //-     .form-group.has-default.bmd-form-group
+                                          //-       label Change: 
+                                          //-       input.form-control.change(type='number', placeholder='Change' value='0')
+                                          //-   .col-md-4#appendDito
+                                      .modal-footer
+                                        center
+                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
+                              
+                              
+                              
+                              
+                              
+                              
                               .row
                                 .col-md-6
                                   .card-header
@@ -260,7 +441,7 @@ html(lang='en')
     // Notifications Plugin
     script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
     // Sweet Alert 2 plugin
-    script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+    script(src='/assets/paperDashboardPro/js/sweetalert.js')
     // Vector Map plugin
     script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
     // Google Maps Plugin
@@ -280,6 +461,177 @@ html(lang='en')
     // Paper Dashboard PRO DEMO methods, don't include it in your project!
     script(src='/assets/paperDashboardPro/js/demo.js')
     script.
+        function myFunction(){
+        var totalPrice = $('.totalPrice').val()
+        var input = $('.amountReceived').val()
+        if($('.amountReceived').val()==0)
+        {
+          $('.change').val(0)
+        }
+        else
+        {
+        input -= parseInt(totalPrice)
+
+        $('.change').val(input)
+
+        }
+        }
+
+    script.
+      $(document).ready(function(){
+        $('.hello').click(function(){
+          var id = $(this).val()
+            $('#RegisterModal').modal('show')
+            $('#checkout').modal('hide')
+            $('.buttonRegister').click(function(){
+              $.post('/payment/register',{
+                username: $('#username').val(),
+                password: $('#password').val(),
+                id:id})
+                .done(function(data){
+                  console.log(data)
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: "success"
+                      }).then(function(){
+                        $('#RegisterModal').modal('hide')
+                        location.reload()
+                      })
+                    }
+                  else if(data.alertDesc==3)
+                    {
+                      swal({
+                        title:'Not Success', 
+                        text:'Username Already Exist', 
+                        icon:'warning'
+                        }).then(function(){
+                          $('#RegisterModal').modal('show')
+                        })
+                    }
+                  else if(data.alertDesc==1)
+                    {
+                      swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                    }
+                })
+          })
+        })
+      })
+
+
+
+    script.
+      $(document).ready(function(){
+        $('.viewButton').click(function(){
+          
+          var id = $(this).val()
+          $('#summary').modal('show')
+          $.post('/payment/query/CheckSummary',{id:id})
+          .done(data=>{
+            console.log(data)
+            $('#room').append(`Room: ${data.out1[0].room_name}`)
+            $('#roomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
+            
+            if(data.out2.paid_status==0)
+            {
+              total_amount= data.out2.walkin_total_amount + 600
+              $('#totalPrice').append(`Total: ${data.out3.amount}`)
+              $('.TotalPrice').val(`${data.out3.amount}`)
+            }
+            else if (data.out2.paid_status==0)
+            {
+              $('#totalPrice').append(`Total: ${data.out3.amount}`)
+              $('.TotalPrice').val(`${data.out3.amount}`)
+            }
+            else
+            {
+              $('#totalPrice').append(`Total: ${data.out3.amount}`)
+              $('.TotalPrice').val(`${data.out3.amount}`)
+            }
+            
+              $('#totalPoints').append(`Total Points earned: ${data.out2.walkin_total_points}`)
+
+            $('#CustName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+            for(var i=0;i<data.out1.length;i++)
+            {
+            $('#ViewServicesAvailed').append(`
+              <tr>
+              <td>${data.out1[i].service_name}</td>
+              <td>${data.out1[i].service_total_quantity}</td>
+              <td>${data.out1[i].service_total_price}</td>
+              </tr>
+            `)
+            }
+            $('#summary').on('hidden.bs.modal', function (){
+          $('#ViewServicesAvailed').empty()
+          $('#CustName').empty()
+          $('#totalPrice').empty()
+          $('.TotalPrice').empty()  
+        })
+          })
+        
+        
+        
+        //- $('.buttonDone').click(function(){
+        //-   //- alert($('.amountReceived').val())
+        //-   if($('.amountReceived').val()==0)
+        //-     {
+        //-       swal({
+        //-         title: "Amount Received is 0",
+        //-         icon: 'warning'
+        //-       })
+        //-     }
+        //-   else if($('.amountReceived').val() < $('.totalPrice').val())
+        //-     {
+        //-       swal({
+        //-         title: "Amount Received is insufficient",
+        //-         icon: 'warning'
+        //-       })
+        //-     }
+        //-   else
+        //-     {
+        //-   $.post('/payment/Finish',{
+        //-     id:id,
+        //-     amount: $('.totalPrice').val(),
+        //-     cust_id: $('.hello').val() 
+        //-     }).done(function(data){
+        //-       if(data.alertDesc==0)
+        //-         {
+        //-           swal({
+        //-             title: "Success",
+        //-             icon: 'success'
+        //-           }).then(function(){
+        //-             location.reload()
+        //-           })
+        //-         }
+        //-       else
+        //-         {
+        //-           swal({
+        //-             title: "ERROR",
+        //-             icon: 'error'
+        //-           })
+        //-         }
+            
+        //-     })
+        //-     }
+        //- })
+        })
+      
+        //- $('.viewdetailsButton').click(function(){
+        //-   var id = $(this).val()
+        //-   $.post('/payment/query/CheckoutDets',{id:id})
+        //-   .done(data=>{
+        //-     $('#viewDetails').modal('show')
+        //-   })
+        //- })
+      })
+
+
+    script.
       $(document).ready(function(){
         $('.checkoutButton').click(function(){
           var id = $(this).val()
@@ -289,7 +641,42 @@ html(lang='en')
             console.log(data)
             $('#Room').append(`Room: ${data.out1[0].room_name}`)
             $('#RoomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
-            $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+            
+            if(data.out2.paid_status==0)
+            {
+              total_amount= data.out2.walkin_total_amount + 600
+              $('#TotalPrice').append(`Total: ${total_amount}`)
+              $('.totalPrice').val(`${total_amount}`)
+            }
+            else if (data.out2.paid_status==0)
+            {
+              $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+              $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+            }
+            else
+            {
+              $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+              $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+            }
+            
+              $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
+              $('.hello').val(data.out2.cust_id)
+            if(data.out2.cust_type==0)
+            {
+            }
+            else
+            {
+                $('.hello').addClass('hidden')
+                $('#appendDito').append(`
+                  <div class="form-group has-default bmd-form-group">
+                  <label> Current Points: ${data.out2.member_points}
+                    <div class="checkbox">
+                      <input id="checkbox1" type="checkbox"/>
+                      <label for="checkbox1">Pay using Points</label>
+                    </div>
+                </div>`)
+            }
+
             $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
             for(var i=0;i<data.out1.length;i++)
             {
@@ -298,14 +685,63 @@ html(lang='en')
               <td>${data.out1[i].service_name}</td>
               <td>${data.out1[i].service_total_quantity}</td>
               <td>${data.out1[i].service_total_price}</td>
+              <td>${data.out1[i].equivalent_points}</td>
               </tr>
             `)
             }
             $('#checkout').on('hidden.bs.modal', function (){
           $('#viewServicesAvailed').empty()
           $('#custName').empty()
+          $('#TotalPrice').empty()
+          $('.totalPrice').empty()  
         })
           })
+        
+        
+        
+        $('.buttonDone').click(function(){
+          //- alert($('.amountReceived').val())
+          if($('.amountReceived').val()==0)
+            {
+              swal({
+                title: "Amount Received is 0",
+                icon: 'warning'
+              })
+            }
+          else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+            {
+              swal({
+                title: "Amount Received is insufficient",
+                icon: 'warning'
+              })
+            }
+          else
+            {
+          $.post('/payment/Finish',{
+            id:id,
+            amount: $('.totalPrice').val(),
+            cust_id: $('.hello').val() 
+            }).done(function(data){
+              if(data.alertDesc==0)
+                {
+                  swal({
+                    title: "Success",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload()
+                  })
+                }
+              else
+                {
+                  swal({
+                    title: "ERROR",
+                    icon: 'error'
+                  })
+                }
+            
+            })
+            }
+        })
         })
       
         $('.viewdetailsButton').click(function(){
@@ -324,6 +760,18 @@ html(lang='en')
     script(type='text/javascript').
       $(document).ready(function() {
       $('#datatables').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      });
+    script.
+      $(document).ready(function() {
+      $('#datatables1').DataTable({
       "pagingType": "full_numbers",
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
       responsive: true,

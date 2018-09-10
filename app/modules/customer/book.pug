@@ -1,0 +1,846 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title Online Booking and Spa Management System
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
+    // Social tags
+    meta(name='keywords', content='creative tim, html dashboard, html css dashboard, web dashboard, bootstrap dashboard, bootstrap, css3 dashboard, bootstrap admin, paper bootstrap dashboard, frontend, responsive bootstrap dashboard')
+    meta(name='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. ')
+    // Schema.org markup for Google+
+    meta(itemprop='name', content='Paper Dashboard PRO by Creative Tim')
+    meta(itemprop='description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised. If you are looking for a tool to manage and visualise data about your business, this dashboard is the thing for you.')
+    meta(itemprop='image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Twitter Card data
+    meta(name='twitter:card', content='summary_large_image')
+    meta(name='twitter:site', content='@creativetim')
+    meta(name='twitter:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(name='twitter:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(name='twitter:creator', content='@creativetim')
+    meta(name='twitter:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    // Open Graph data
+    meta(property='og:title', content='Paper Dashboard PRO by Creative Tim')
+    meta(property='og:type', content='article')
+    meta(property='og:url', content='http://demos.creative-tim.com/paper-dashboard-pro/examples/dashboard/overview.html')
+    meta(property='og:image', content='http://s3.amazonaws.com/creativetim_bucket/products/47/original/opt_pdp_thumbnail.jpg')
+    meta(property='og:description', content='Paper Dashboard PRO is a beautiful Bootstrap admin dashboard with a large number of components, designed to look neat and organised.')
+    meta(property='og:site_name', content='Creative Tim')
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // CSS for Demo Purpose, don't include it in your project
+    link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/fullcalendar.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/scheduler.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
+    link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+  body.sidebar-mini
+    nav.navbar.navbar-transparent.navbar-absolute
+      .container
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navigation-example-2')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-left
+            li
+              a.h5(data-toggle="modal" data-target="#Home" style="color: white") Online Reservation and Spa Management System
+          ul.nav.navbar-nav.navbar-right
+            li
+              h5(style="color: white") Current Date: 
+                a(style="color: white")#date-part
+                  p
+                    a(style="color: white")#time-part
+                
+    .wrapper.wrapper-full-page
+      each customer in customers
+        if(customer.cust_gender=='Male')
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 85em;")
+                      .card-content
+                        .col-lg-12.col-md-12
+                            .card-header
+                              each customer in customers
+                                input.restype(type="hidden" id="restype" value=`${restype}`)
+                                h4.card-title
+                                  strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                  input(type="hidden" value=`${customer.cust_id}` id='customerId')
+                                h5.category
+                                  strong#gender= "Gender: "+ customer.cust_gender
+                                  br
+                                  strong= "Medical History: "+customer.medical_history
+                              br
+                              input(type='' value=`${male}` id='male')
+                              br
+                              input.female(type='' value=`${female}` id='female')
+                              input(type='' value=`${roomId}` id='roomId')              
+
+
+                            .card-content
+                              .nav-tabs-navigation
+                                .nav-tabs-wrapper
+                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                                    li.active
+                                      a(href='#single', data-toggle='tab') Services
+                                    li
+                                      a(href='#multiple', data-toggle='tab') Promos
+                              #my-tab-content.tab-content
+                                #single.tab-pane.active
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Services 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each service in services
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${service.service_id}`)
+                                                          
+                                                        td= service.service_name
+                                                          input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
+                                                          input.id(type='hidden' id= `${service.service_id}` value=`${service.service_id}`)
+                                                        td= service.service_duration_desc+" minutes"
+                                                          input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${service.service_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                                          span= service.service_price
+                                                        td
+                                                          span.quantity(service_id=`${service.service_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
+                                                        if(service.service_points==1|| service.service_points==0)
+                                                          td= service.service_points+" "+"Point"
+                                                        else if(service.service_points > 0)
+                                                          td= service.service_points+" "+"Points"
+                                                        td
+                                                          span.total(service_id=`${service.service_id}`) 0.00
+                                                    strong#room= `Room: ${room}`
+                                                      input(type='hidden' value=`${roomId}` id="roomId")
+
+                                                  h4
+                                                    strong#date= `Date: ${date}`
+                                                    input(type="hidden" value=`${date}` id='dateRes')
+                                                    br
+                                                    strong#time= `Time: ${time}`
+                                                    input(type="hidden" value=`${time}`)
+                                                    br
+                                                    strong End Time: 
+                                                      a(id='totalDuration') 0  
+                                              h4
+                                                strong Total Price:  
+                                                  a(id="grandtotal") 0.00 
+                                                br
+                                                strong Total Points: 
+                                                  a(id="totalPoints") 0
+                                          
+                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                                          button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
+                                          // end card
+                                        // end col-md-12
+                                      // end row
+                                #multiple.tab-pane
+                                  p Here is your profile.
+                                #packages.tab-pane
+                                  p Here are your messages.
+                      #reservationSummary.modal.fade(tabindex='-1', role='dialog')
+                        .modal-dialog.modal-lg(role='document')
+                          .modal-content
+                            .modal-header
+                              h3.modal-title
+                                center Reservation Summary
+                              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            .modal-body
+                              .col-lg-12.col-md-12
+                                  h5
+                                    strong#Name= "Name: "
+                                    br
+                                    strong#Gender= "Gender: "
+                                    br
+                                    strong#Room= `Room:` 
+                                    br
+                                    strong#Date= `Date:`
+                                  .row
+                                    .form-group
+                                      .col-md-3
+                                        h5.category
+                                          strong#StartTime
+                                          input(type="hidden" value='' id="timeStart")
+                                      .col-md-3
+                                        h5.category
+                                          strong#EndTime
+                                          input(type="hidden" value='' id="timeEnd") 
+                                
+                                  h4 Total Price: 
+                                      a#finalTotal
+                                      br
+                                      | Total  Points: 
+                                      a#finalPoints
+                              .row
+                                  .col-md-12
+                                    .card-content
+                                      .toolbar
+                                      .fresh-datatables
+                                      table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th
+                                            th
+                                              strong  Services 
+                                            th
+                                              strong  Quantity
+                                            th
+                                              strong Duration
+                                            th
+                                              strong Total Price 
+                                        tbody#viewServices
+                                          
+                            .modal-footer
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book Reservation
+                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                       
+        else
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        .col-lg-12.col-md-12
+                            .card-header
+                              each customer in customers
+                                input.restype(type="hidden" id="restype" value=`${restype}`)
+                                h4.card-title
+                                  strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                  input(type="hidden" value=`${customer.cust_id}` id='customerId')
+                                h5.category
+                                  strong#gender= "Gender: "+ customer.cust_gender
+                                  br
+                                  strong= "Medical History: "+customer.medical_history
+                              br
+                              input(type='hidden' value=`${male}` id='male')
+                              br
+                              input.female(type='hidden' value=`${female}` id='female')
+                              input(type='hidden' value=`${roomId}` id='roomId')              
+
+
+                            .card-content
+                              .nav-tabs-navigation
+                                .nav-tabs-wrapper
+                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                                    li.active
+                                      a(href='#single', data-toggle='tab') Services
+                                    li
+                                      a(href='#multiple', data-toggle='tab') Promos
+                              #my-tab-content.tab-content
+                                #single.tab-pane.active
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Services 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each service in services
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${service.service_id}`)
+                                                          
+                                                        td= service.service_name
+                                                          input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
+                                                          input.id(type='hidden' id= `${service.service_id}` value=`${service.service_id}`)
+                                                        td= service.service_duration_desc+" minutes"
+                                                          input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${service.service_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                                          span= service.service_price
+                                                        td
+                                                          span.quantity(service_id=`${service.service_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
+                                                        if(service.service_points==1|| service.service_points==0)
+                                                          td= service.service_points+" "+"Point"
+                                                        else if(service.service_points > 0)
+                                                          td= service.service_points+" "+"Points"
+                                                        td
+                                                          span.total(service_id=`${service.service_id}`) 0.00
+                                                    strong#room= `Room: ${room}`
+                                                      input(type='hidden' value=`${roomId}` id="roomId")
+
+                                                  h4
+                                                    strong#date= `Date: ${date}`
+                                                    input(type="hidden" value=`${date}` id='dateRes')
+                                                    br
+                                                    strong#time= `Time: ${time}`
+                                                    input(type="hidden" value=`${time}`)
+                                                    br
+                                                    strong End Time: 
+                                                      a(id='totalDuration') 0  
+                                              h4
+                                                strong Total Price:  
+                                                  a(id="grandtotal") 0.00 
+                                                br
+                                                strong Total Points: 
+                                                  a(id="totalPoints") 0
+                                          
+                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                                          button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
+                                          // end card
+                                        // end col-md-12
+                                      // end row
+                                #multiple.tab-pane
+                                  p Here is your profile.
+                                #packages.tab-pane
+                                  p Here are your messages.
+                      #reservationSummary.modal.fade(tabindex='-1', role='dialog')
+                        .modal-dialog.modal-lg(role='document')
+                          .modal-content
+                            .modal-header
+                              h3.modal-title
+                                center Reservation Summary
+                              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            .modal-body
+                              .col-lg-12.col-md-12
+                                  h5
+                                    strong#Name= "Name: "
+                                    br
+                                    strong#Gender= "Gender: "
+                                    br
+                                    strong#Room= `Room:` 
+                                    br
+                                    strong#Date= `Date:`
+                                  .row
+                                    .form-group
+                                      .col-md-3
+                                        h5.category
+                                          strong#StartTime
+                                          input(type="hidden" value='' id="timeStart")
+                                      .col-md-3
+                                        h5.category
+                                          strong#EndTime
+                                          input(type="hidden" value='' id="timeEnd") 
+                                
+                                  h4 Total Price: 
+                                      a#finalTotal
+                                      br
+                                      | Total  Points: 
+                                      a#finalPoints
+                              .row
+                                  .col-md-12
+                                    .card-content
+                                      .toolbar
+                                      .fresh-datatables
+                                      table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th
+                                            th
+                                              strong  Services 
+                                            th
+                                              strong  Quantity
+                                            th
+                                              strong Duration
+                                            th
+                                              strong Total Price 
+                                        tbody#viewServices
+                                          
+                            .modal-footer
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book Reservation
+                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+        footer.footer.footer-transparent
+          .container
+            .copyright
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='') Team RJPC
+
+                       
+  // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+  script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+  script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+  // Forms Validations Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+  // Promise Library for SweetAlert2 working on IE
+  script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+  // Plugin for Date Time Picker and Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/moment.min.js')
+  // Date Time Picker Plugin is included in this js file
+  script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+  // Select Picker Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+  // Switch and Tags Input Plugins
+  script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+  // Circle Percentage-chart
+  script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+  // Charts Plugin
+  script(src='/assets/paperDashboardPro/js/chartist.min.js')
+  // Notifications Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+  // Sweet Alert 2 plugin
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  // Vector Map plugin
+  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+  // Wizard Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+  // Bootstrap Table Plugin
+  script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+  // Plugin for DataTables.net
+  script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+  // Full Calendar Plugin
+  script(src='/assets/paperDashboardPro/js/fullcalendar.js')
+  script(src='/assets/paperDashboardPro/js/scheduler.js')
+  // Paper Dashboard PRO Core javascript and methods for Demo purpose
+  script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+  // Sharrre Library
+  script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+  // Paper Dashboard PRO DEMO methods, don't include it in your project!
+  script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+      $('.buttonSummary').click(function(){
+        var restype = $('.restype[id="restype"]').val()
+        if(restype=='single')
+        {
+          var bed_quantity= 1
+        }
+        else if(restype='multiple')
+        {
+          var bed_occupied_boys = $('#male').val()
+          var bed_occupied_girls = $('#female').val()
+        }
+        var table =$('#datatables').DataTable()
+        var pagelength = table.page.info().pages
+          table.page(0).draw()
+        var idService =[]
+        var serviceQuantity=[]
+        var serviceNewDuration=[]
+        var serviceTotal=[]
+          for (var i=1;i<=pagelength;i++){
+            $('.checkbox:checked').each(function(){
+              var id = $(this).val()
+              idService.push(id)
+              serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+              serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+              serviceTotal.push($(`.total[service_id='${id}']`).text())
+              var serviceId = $(`.id[id='${id}']`).val()
+              var serviceName = $(`.name[id='${id}']`).val()
+              var quantity= $(`.quantity[service_id='${id}'`).text()
+              var totalPrice = $(`.total[service_id='${id}']`).text()
+              var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
+              $('#viewServices').append(`
+                <tr>
+                <td>
+                <input type='hidden' value="${serviceId}" id="serviceId"></input>
+                </td> 
+                <td>${serviceName}</td>
+                <td>${quantity}
+                </td>
+                <td>${bagongDuration}
+                </td>
+                <td>${totalPrice}
+                </input></td>
+                `)
+              $('#reservationSummary').on('hidden.bs.modal', function (){
+                $('#viewServices').empty()
+              })
+            })
+            table.page('next').draw('page');
+          }
+            console.log(serviceQuantity)
+            console.log(serviceNewDuration)
+            console.log(serviceTotal)
+            console.log(idService)
+
+        $('#reservationSummary').modal('show')
+        $('#reservationSummary').on('hidden.bs.modal', function (){
+          var serviceQuantity = []
+          var serviceNewDuration = []
+          var serviceTotal = []
+          var idService = []
+          console.log(serviceQuantity)
+          console.log(serviceNewDuration)
+          console.log(serviceTotal)
+          console.log(idService)
+        })
+        
+        var Name = $('#name').text()
+        var Gender = $('#gender').text()
+        var Room = $('#room').text()
+        var Date = $('#date').text()
+        var Time = moment($("#time").text(),"hh:mm A").format('hh:mm A')
+        var EndTime = $('#totalDuration').text()
+        var finalTotal = $('#grandtotal').text()
+        var finalPoints = $('#totalPoints').text()
+        $('#timeStart').val(Time)
+        $('#timeEnd').val(EndTime)
+        $('#Name').text(Name)
+        $('#Gender').text(Gender)
+        $('#Room').text(Room)
+        $('#Date').text(Date)
+        $('#StartTime').text("Start Time: "+Time)
+        $('#EndTime').text("End Time: "+EndTime)
+        $('#finalTotal').text(finalTotal)
+        $('#finalPoints').text(finalPoints)
+
+        $('.submitButton').click(function(){
+          //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
+          
+          if(restype =='single')
+          {
+            $.post('/customer/bookreservation/addReservation',{
+            customerId :$('#customerId').val(),
+            serviceId: idService,
+            serviceQuantity: serviceQuantity,
+            serviceNewDuration: serviceNewDuration,
+            serviceTotal: serviceTotal,
+            bed_quantity: bed_quantity,
+            timeStart : $('#timeStart').val(),
+            timeEnd: $('#timeEnd').val(),
+            date : $('#dateRes').val(),
+            finalTotal : $('#finalTotal').text().replace(/,/g,''),
+            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+            roomId :$('#roomId').val()
+           }).done(function(data){
+             if(data.alertDesc==1)
+             {
+            swal({
+              title:'Success', 
+              text:'Your Reservation has been Added', 
+              icon:'success'
+              }).then(function(){
+                location.href='/customer/home'
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'', 
+                icon:'warning'
+                })
+            } 
+          })
+          }
+          else if(restype=='multiple')
+          {            
+          $.post('/customer/bookreservation/addReservation',{
+            customerId :$('#customerId').val(),
+            serviceId: idService,
+            serviceQuantity: serviceQuantity,
+            serviceNewDuration: serviceNewDuration,
+            serviceTotal: serviceTotal,
+            bed_quantity: bed_quantity,
+            boys_quantity: bed_occupied_boys,
+            girls_quantity: bed_occupied_girls,
+            timeStart : $('#timeStart').val(),
+            timeEnd: $('#timeEnd').val(),
+            date : $('#dateRes').val(),
+            finalTotal : $('#finalTotal').text().replace(/,/g,''),
+            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+            roomId :$('#roomId').val()
+           }).done(function(data){
+             if(data.alertDesc==1)
+             {
+            swal({
+              title:'Success', 
+              text:'New Reservation Added', 
+              icon:'success'
+              }).then(function(){
+                location.href='/frontdesk/home'
+              })
+          }
+          else
+            {
+              swal({
+                title:'Not Success', 
+                text:'', 
+                icon:'warning'
+                })
+            }
+           })
+          }
+      })
+      })
+  script.
+      $(document).ready(function(){
+        $('.checkbox').on('change.bootstrapSwitch', function(e){
+          if(e.target.checked==true)
+          {
+            var qnty
+            var y=$(this).val()
+            var price = $(`.price[id='${y}']`).val()
+            var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
+            var minutes = $(`.duration[id='${y}']`).val() % 60;
+            var points = $(`.points[id='${y}']`).val()
+            var duration = $(`.duration[id='${y}']`).val()
+            //- if(minutes==0)
+            //- {
+            //-   var newDuration = "0"+hours+":"+minutes+"0"
+            //- }
+            //- else
+            //- {
+            //-   var newDuration = "0"+hours+":"+minutes
+            //- }
+            var quantity = prompt("Quantity")
+
+            if (quantity==null || quantity=="")
+            {
+              e.target.checked=false;
+            }
+            else
+            {
+              $(`.quantity[service_id='${y}']`).text(quantity)
+              total = quantity * price;
+             
+            }
+              $(`.total[service_id='${y}']`).text(total.toLocaleString())
+              var table=$('#datatables').DataTable()
+              table.search('').draw()
+              
+
+              //- alert("Hours"+newHours+" Minutes: "+newMinutes)
+          }
+
+          else if(e.target.checked==false)
+          {
+            var y=$(this).val()
+            var total = $(`.total[service_id='${y}']`).text()
+            var grandTotal = $('#grandtotal').text()
+            var finalTotal = grandTotal.replace(/,/g,"") - total.replace(/,/g,"")
+            $(`.quantity[service_id='${y}']`).text("0")
+            $(`.total[service_id='${y}']`).text("0.00")
+            $('#grandtotal').text(finalTotal.toLocaleString())
+          }
+        })
+        
+      })
+
+  script.
+      $(document).ready(function(){
+        $(".checkbox").change(function(){
+          recalculate()
+          console.log($(this)[0].checked)
+          if($(this)[0].checked==false)
+          {
+            var aydi = $(this).attr('value')
+            $(`.bagongDuration[id='${aydi}']`).val('')
+          }
+          var test = $(".checkbox:checked");
+          if(test.length == 0){
+            $('#totalDuration').text('0')
+          }
+          });
+        function recalculate(){
+              var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY-MM-DD HH:mm')
+              var sum = 0;                                                          
+              var duration = 0
+              var table =$('#datatables').DataTable()
+              var pagelength = table.page.info().pages
+              table.page(0).draw()
+              var pinakaTotal = 0
+              var longest = []
+              var newHours 
+              var newMin
+        
+            for (var i=1;i<=pagelength;i++){
+              var highest
+              
+              $(".checkbox:checked").each(function(){
+              var id= $(this).val()
+              var quantity =$(`.quantity[service_id='${id}']`).text()
+              var restype = $('.restype[id="restype"]').val()
+              var totals = $(`.total[service_id='${id}'`).text()
+              var points = $(`.points[id='${id}']`).val()
+              points = points * quantity
+              if(restype=='single')
+                {
+                  console.log('single')
+                  var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
+                  var minutes = $(`.duration[id='${id}']`).val() % 60;
+                  hours = hours * quantity;
+                  minutes = minutes * quantity;
+                  theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
+                  $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
+                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                }
+              else if(restype=='multiple')
+                {
+                  var minutes = $(`.duration[id='${id}']`).val();
+                  minutes = minutes * quantity;
+                  //- newHours = Math.floor(highest / 60)
+                  //- newMin = highest % 60
+                  theFutureTime = moment(theFutureTime).add(highest, 'minutes')
+                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+
+                  $(`.bagongDuration[id='${id}']`).val(minutes)
+                  longest.push($(`.bagongDuration[id='${id}']`).val())
+                  
+                  
+                  console.log(longest)
+                  console.log('galing sa labas '+highest)
+                  
+                  for(var j=0;j<longest.length;j++)
+                    {
+                      console.log(j)
+                      if((longest.length-1)==j)
+                        {
+                          console.log('pasok')
+                          highest= longest[j];
+                          newHours = Math.floor(highest / 60)
+                          newMin = highest % 60
+                          //- console.log("HOURS: "+newHours)
+                          //- console.log("MINUTES: "+newMin)
+                        }
+                      else if(longest[j] > highest)
+                        {
+                          console.log('from if '+highest)
+                          console.log('compare sa '+longest[j])
+                          console.log('pasok sa 2nd')
+                          highest = longest[j];
+                          newHours = Math.floor(highest / 60)
+                          newMin = highest % 60
+                          console.log('from else if '+highest)
+                        }
+                         
+                    }
+                          
+                    //- if(sample>=longest)
+                    //-   {
+                    //-     longest = sample
+                    //-     console.log("aa"+longest)
+                    //-   }
+
+                  //- $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                }
+                pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
+              
+                //- alert(hours)
+                $('#grandtotal').text(pinakaTotal.toLocaleString())
+              sum += parseInt(points)
+            });
+            table.page('next').draw('page');
+            }
+              table.page(0).draw()
+              $('#totalPoints').text(sum)
+              
+          }
+      })
+  script.
+      $(document).ready(function(){
+        $('.logout').click(function(){
+              swal({
+          title: "Are you sure?",
+          text: "Do you want to Log Out?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+        })
+        .then((willDelete) => {
+          if (willDelete) {
+            $.post('/customer/logout')
+            location.reload()
+          } 
+        });
+        })
+      })
+  script.
+      $(document).ready(function() {
+        var interval = setInterval(function() {
+            var momentNow = moment();
+            $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                                + momentNow.format('dddd')
+                                .substring(0,3).toUpperCase());
+            $('#time-part').html(momentNow.format('A hh:mm:ss'));
+        }, 100);
+        
+        $('#stop-interval').on('click', function() {
+            clearInterval(interval);
+        });
+        $('#calendar').val('')
+        });
+  script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initOverviewDashboard();
+      demo.initCirclePercentage();
+      });
+  script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initWizard();
+      });
+  script(type='text/javascript').
+      $(document).ready(function(){
+      demo.initFullCalendar();
+      });
+  script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
