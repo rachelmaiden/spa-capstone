@@ -52,8 +52,8 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 // ||====================================================================||
 
 // [AMENITY]
-router.get('/adminAmenities', (req, res) => {
-  res.render('admin/maintenance/amenity/adminAmenities')
+router.get('/adminPackages', (req, res) => {
+  res.render('admin/maintenance/package/adminPackages')
 })
 
 // =========================================================================================================================================================================
