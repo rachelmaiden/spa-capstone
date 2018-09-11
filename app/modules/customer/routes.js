@@ -119,6 +119,9 @@ router.post('/customerTime/query',(req, res) => {
 router.post('/customerTime/queryRoom',(req,res)=>{
   const query = `SELECT * FROM room_tbl where delete_stats = 0 AND room_availability=0`
 
+  router.get('/custHome',(req, res) => {
+      res.render('customer/custHome')
+    })
   db.query(query,(err,out)=>{
     res.send(out)
   })
