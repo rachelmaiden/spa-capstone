@@ -16,6 +16,6 @@ exports.receptionistnauthed = (req, res, next) => {
 exports.guestistnauthed = (req, res, next) => {
 	req.session.user?
 		next():
-		res.redirect("/customer/customer")
+		res.redirect("/customer/login")
 }
 

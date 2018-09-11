@@ -278,6 +278,7 @@ html(lang='en')
                                     each thera in theras
                                       tr
                                         td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                                        input.name(type='hidden' value=`${thera.therapist_fname} ${thera.therapist_mname} ${thera.therapist_lname}` id=`${thera.therapist_id}`)
                                         td= thera.therapist_address
                                         td= thera.therapist_birthMonth+" "+thera.therapist_birthDate+" "+thera.therapist_birthYear
                                         td= thera.therapist_gender
@@ -382,20 +383,6 @@ html(lang='en')
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
 
-                  // DELETE  
-                  #modal-warning.modal.modal-warning.fade
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                          h4.modal-title Warning
-                        .modal-body
-                          p Are you sure you?
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(type='button') Yes
-
                   //UPDATE
                   #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog.modal-lg(role='document')
@@ -497,10 +484,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -518,6 +501,17 @@ html(lang='en')
   script.
     $(document).ready(function(){
       $('.submitButton').click(function(){
+        if($('#therapist_fname').val()==0 && $('#therapist_lname').val()==0 || $('#therapist_address').val()==0 || $('#calendar').val()==0 || $('#therapist_fname').val()==0 || $('#therapist_lname').val()==0)
+        {
+            swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+        }
+        else
+        {
+
        var newDate= $('#calendar').val()
           var vals = newDate.split('-');
           var year = vals[2];
@@ -553,6 +547,9 @@ html(lang='en')
                 })
             }
         })
+        }
+
+
       })
     })
   script.
@@ -573,34 +570,51 @@ html(lang='en')
           });
           })
           $('.bawal').click(function(){
-            alert("Can't Update or Delete ")
+            swal({
+            title: 'Set to not available this item first',
+            icon: 'warning'
+          })
           })
         // DELETE THERAPIST INFORMATION
         $('.deleteButton').click(function(){
             var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('/admin/adminTherapist/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
                 });
-                $('#deleteSubmit').click(function(){
-                $.post('/admin/adminTherapist/delete',{id:idNow})
-                  .done(data=>{
-                    if(data){
-                        swal({
-                        title:'Success', 
-                        text:'Therapist Deleted', 
-                        icon:'success'
-                        }).then(function(){
-                          location.reload();
-                        })
-                      $('#updateModal').modal('hide');
-                    }
-                  })
-            });
             
+        }); 
         });
 
         // VIEW THERAPIST SPECIALTY/SPECIALTIES
@@ -642,7 +656,7 @@ html(lang='en')
         // UPDATE THERAPIST SPECIALTY
         $('.updateSpecialty').click(function(){
           var idNow = $('#inputId').val();
-          console.log(idNow)
+          var name =$(`.name[id='${idNow}']`).val()
             $.post('/admin/adminTherapist/query2',{id1:idNow})
           .done(data=>{
             console.log(data)
@@ -672,18 +686,25 @@ html(lang='en')
                   specialty:$('#specialty').val(),
                   
                   id1: idNow
+                }).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title:'Success!',
+                      text: 'The specialty of '+name+' has been updated',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'ERROR',
+                      icon: 'error'
+                    })
+                  }
                 })
-                .done(
-
-                          swal({
-                          title:'Success', 
-                          text:'Therapist Specialty Updated', 
-                          icon:'success'
-                          }).then(function(){
-                            
-                            location.href='/admin/adminTherapist';
-                          })
-              )
           })
         })
       })      
@@ -701,20 +722,20 @@ html(lang='en')
                       <div class="form-group has-default bmd-form-group">
                         <label>Last Name</label>
                         <star>*</star>
-                        <input class="form-control" type="text" placeholder="${data.therapist_lname}" name="therapist_lname" value='${data.therapist_lname}' required="true" aria-label="true"/>
+                        <input class="form-control" type="text" id='lastname' placeholder="${data.therapist_lname}" name="therapist_lname" value='${data.therapist_lname}' required="true" aria-label="true"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>First Name</label>
                         <star>*</star>
-                        <input class="form-control" type="text" placeholder="${data.therapist_fname}" name="therapist_fname" value='${data.therapist_fname}' required="true" aria-label="true"/>
+                        <input class="form-control" type="text" id='firstname' placeholder="${data.therapist_fname}" name="therapist_fname" value='${data.therapist_fname}' required="true" aria-label="true"/>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-group has-default bmd-form-group">
                         <label>Middle Name</label>
-                        <input class="form-control" type="text" placeholder="${data.therapist_mname}" name="therapist_mname" value='${data.therapist_mname}' aria-label="true"/>
+                        <input class="form-control" type="text" id='middlename' placeholder="${data.therapist_mname}" name="therapist_mname" value='${data.therapist_mname}' aria-label="true"/>
                       </div>
                     </div>
                       <div class="row">
@@ -733,7 +754,7 @@ html(lang='en')
                               <label>Birthday</label>
                               <star>*</star>
                             </div>
-                            <input class="form-control datepicker" type="text" name="therapist_birthday" placeholder='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' value='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' id="calendar" style="margin-top: -15px;"/>
+                            <input class="form-control datepicker" type="text" name="therapist_birthday" placeholder='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' value='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' id="therapist_birthday" style="margin-top: -15px;"/>
                           </div>
                       </div>
                     <div class="row">
@@ -741,30 +762,19 @@ html(lang='en')
                         <div class="form-group has-default bmd-form-group">
                           <label>Address</label>
                           <star>*</star>
-                          <input class="form-control" type="text" placeholder="${data.therapist_address}" id="therapist_address" name="therapist_address" value='${data.therapist_address}' required="true" aria-label="true"/>
+                          <input class="form-control" type="text" placeholder="${data.therapist_address}" id="address" name="therapist_address" value='${data.therapist_address}' required="true" aria-label="true"/>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group has-default bmd-form-group">
                           <label>Mobile Number</label>
                           <star>*</star>
-                          <input class="form-control" type="number" placeholder="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" value='${data.therapist_contact_no}' required="true" aria-label="true" minlength="11" maxlength="11"/>
+                          <input class="form-control" id='contact_no' type="number" placeholder="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" value='${data.therapist_contact_no}' required="true" aria-label="true" minlength="11" maxlength="11"/>
                         </div>
                       </div>
                     </div>
                   </div>
               </form>`)
-                    //- <div class="col-md-2">
-                    //-   <div class="form-group has-default bmd-form-group">
-                    //-     <label>Specialty*</label>
-                    //-     <select multiple="" id="therapist_specialty" title="Specialty" data-style="btn-info" class="selectpicker">
-                    //-     </select>
-                    //-   </div>
-                    //- </div>
-              //- for(var i=0; i<data.out2.length;i++){
-              //-   console.log(data.out2[i].specialty_desc)
-              //-   $('#therapist_specialty').append(`<option value="${data.out2[i].specialty_id}">${data.out2[i].specialty_desc}</option>`)
-              //-   }
               if(data.therapist_gender == 'Male'){
                 $('#gender').append(`<option value="Male" selected>Male</option>
                     <option value="Female">Female</option>`
@@ -823,23 +833,22 @@ html(lang='en')
                   ('#updateAppend').empty();
               })
               $('#updateSubmitButton').click(function(){
+                  var newDate= $('#therapist_birthday').val()
+                  var vals = newDate.split('-');
+                  var year = vals[2];
+                  var month = vals[0];
+                  var date = vals[1];
                   $.post('/admin/adminTherapist/update',{
-                  therapist_fname:$('#therapist_fname').val(),
-                  therapist_mname:$('#therapist_mname').val(),
-                  therapist_lname:$('#therapist_lname').val(),
-                  address_house_no:$('#address_house_no').val(),
-                  address_street_name:$('#address_street_name').val(),
-                  address_admin_district:$('#address_admin_district').val(),
-                  address_city:$('#address_city').val(),
-                  therapist_age:$('#therapist_age').val(),
+                  therapist_fname:$('#firstname').val(),
+                  therapist_mname:$('#middlename').val(),
+                  therapist_lname:$('#lastname').val(),
+                  therapist_address:$('#address').val(),
                   therapist_gender:$('#gender').val(),
-                  therapist_contact_no:$('#therapist_contact_no').val(),
-                  therapist_specialty:$('#therapist_specialty').val(),
-
-                  id1:idNow
+                  therapist_contact_no:$('#contact_no').val(),  
+                  id1:idNow, year,month, date
                   }) 
                   .done(data=>{
-                      if(data){
+                      if(data.alertDesc==0){
                           swal({
                           title:'Success', 
                           text:'Therapist Infromation Updated', 
@@ -847,14 +856,19 @@ html(lang='en')
                           }).then(function(){
                             location.reload();
                           })
-                        $('#updateModal').modal('hide');
+                      }
+                      else
+                      {
+                        swal({
+                          title: 'ERROR',
+                          icon: 'error'
+                        })
                       }
                   })
                 })
               })
 
           })
-      })
   script(type='text/javascript').
     $(document).ready(function(){
     $('#calendar').val('')
@@ -926,3 +940,97 @@ html(lang='en')
    $(document).ready(function(){
     $('#calendar').val('')
    })
+
+  script.
+    $(document).ready(function(){
+      $(function(){
+          console.log(localStorage)
+          var name = localStorage.getItem('name')
+          if (localStorage.getItem('name'))
+          {
+            if(localStorage.getItem('status')==1)
+            {
+            $.notify(
+              {
+              icon: 'ti-bell',
+              message: name+' has been set to not available',
+              
+            },
+            {
+              type: 'success'
+            },
+            {
+            animate: {
+                  enter: 'animated bounceInDown',
+                  exit: 'animated bounceOutUp'
+                }
+            })
+              localStorage.clear()
+            }
+            else
+            {
+                $.notify(
+              {
+              icon: 'ti-bell',
+              message: name+' has been set to available',
+              
+            },
+            {
+              type: 'success'
+            },
+            {
+            animate: {
+                  enter: 'animated bounceInDown',
+                  exit: 'animated bounceOutUp'
+                }
+            })
+              localStorage.clear()
+            }
+        }
+        })
+    $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+      var idNow = $(this).val();
+      var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            console.log(name)
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminTherapist/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminTherapist/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+        });
+    })

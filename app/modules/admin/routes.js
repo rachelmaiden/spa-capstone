@@ -304,27 +304,46 @@ router.get('/adminServices',mid.adminnauthed,(req, res) => {
       typs: out[1],
       durations: out[2]
     })
-    console.log(out)
   })
 })
 //          > C R E A T E (ADD)
 router.post('/adminServices',(req, res) => {
-    const query = `
+  console.log(req.body)
+  var alertSuccess =0
+  var notSuccess =1  
+  const query = `
       insert into 
       services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, service_points, delete_stats)
-      value("${req.body.name}","${req.body.type}","${req.body.duration}","${req.body.price}", 1,"${req.body.points}",0)`
+      value("${req.body.service_name}","${req.body.service_type}","${req.body.service_duration}","${req.body.service_price}", 0,"${req.body.service_points}",0)`
     db.query(query, (err, out) => {
-      res.redirect('/admin/adminServices')
+      if(err)
+      {
+        res.send({alertDesc:notSuccess})
+        console.log(err)
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
       console.log(query)
     })
   })
 //          > D E L E T E
 router.post('/adminServices/delete', (req, res) => {
     console.log(req.body.id)
+    var alertSuccess=0
+    var notSuccess =1
     const query = `UPDATE services_tbl set delete_stats = 1 where service_id = ${req.body.id}`
       
     db.query(query,(err,out)=>{
-      res.redirect('/admin/adminServices')
+      if(err)
+      {
+      res.send({alertDesc:notSuccess})
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      } 
     })
   })
 //          > U P D A T E
@@ -367,11 +386,20 @@ router.post('/adminServices/query',(req, res) => {
 })
 })
 router.post('/adminServices/statusChange',(req, res) => {
+  var alertSuccess = 0
+  var notSuccess =1
+  
   const query = `UPDATE services_tbl set service_availability= ${req.body.stats} where service_id= ${req.body.id1}`
   db.query(query,(err,out) =>{
-    if(err) return console.log(err)
-    res.redirect("/admin/adminServices")
-    console.log(query)
+  if(err)
+  {
+    res.send({alertDesc:notSuccess})
+    console.log(err)
+  }
+  else
+  {
+    res.send({alertDesc:alertSuccess})
+  }
 })
 })
 
@@ -388,23 +416,43 @@ router.get('/adminServiceType', mid.adminnauthed,(req, res) => {
 })
 //          > C R E A T E (ADD)
 router.post('/adminServiceType',(req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
+
   const query = `
     insert into 
     service_type_tbl(service_type_desc, service_type_availability ,delete_stats)
-    value("${req.body.service_type_desc}",1,0)`
+    value("${req.body.service_type_desc}",0,0)`
   db.query(query, (err, out) => {
-    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 //          > U P D A T E
 router.post('/adminServiceType/update', (req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
 
   const query = `UPDATE service_type_tbl set service_type_desc = "${req.body.service_type_desc}"
   WHERE service_type_id = ${req.body.id1}
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminServiceType")
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 router.post('/adminServiceType/query',(req, res) => {
@@ -418,20 +466,39 @@ router.post('/adminServiceType/query',(req, res) => {
 })
 
 router.post('/adminServiceType/statusChange',(req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
+  
   const query = `UPDATE service_type_tbl set service_type_availability= ${req.body.stats} where service_type_id= ${req.body.id1}`
   db.query(query,(err,out) =>{
-    if(err) return console.log(err)
-    res.redirect("/adminServiceType")
-    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
 })
 })
 //          > D E L E T E
 router.post('/adminServiceType/delete', (req, res) => {
-  console.log(req.body.id)
+  var alertSuccess=0
+  var notSuccess=1
+
   const query = `UPDATE service_type_tbl set delete_stats = 1 where service_type_id = ${req.body.id}`
     
   db.query(query,(err,out)=>{
-    res.redirect('/admin/adminServiceType')
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 
@@ -448,23 +515,43 @@ router.get('/adminServiceDuration', mid.adminnauthed,(req, res) => {
 })
 //          > C R E A T E (ADD)
 router.post('/adminServiceDuration',(req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
+
   const query = `
     insert into 
     service_duration_tbl(service_duration_desc, delete_stats, service_duration_availability)
-    value("${req.body.service_duration_desc}", 0, 1)`
+    value("${req.body.service_duration_desc}", 0, 0)`
   db.query(query, (err, out) => {
-    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 //          > U P D A T E
 router.post('/adminServiceDuration/update', (req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
 
   const query = `UPDATE service_duration_tbl set service_duration_desc = "${req.body.service_duration_desc}"
   WHERE service_duration_id = ${req.body.id}
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminServiceType")
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 router.post('/adminServiceDuration/query',(req, res) => {
@@ -477,20 +564,38 @@ router.post('/adminServiceDuration/query',(req, res) => {
   })
 })
 router.post('/adminServiceDuration/statusChange',(req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
+  
   const query = `UPDATE service_duration_tbl set service_duration_availability= ${req.body.stats} where service_duration_id= ${req.body.id1}`
   db.query(query,(err,out) =>{
-    if(err) return console.log(err)
-    res.redirect("/adminServiceDuration")
-    console.log(query)
+  if(err)
+  {
+    res.send({alertDesc:notSuccess})
+    console.log(err)
+  }
+  else
+  {
+    res.send({alertDesc:alertSuccess})
+  }
 })
 })
 //          > D E L E T E
 router.post('/adminServiceDuration/delete', (req, res) => {
-  console.log(req.body.id)
+  var alertSuccess=0
+  var notSuccess=1
   const query = `UPDATE service_duration_tbl set delete_stats = 1 where service_duration_id = ${req.body.id}`
     
   db.query(query,(err,out)=>{
-    res.redirect('/admin/adminServiceDuration')
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 
@@ -538,7 +643,7 @@ router.post('/adminTherapist',(req, res) => {
     "${req.body.month}",
     "${req.body.date}",
     "${req.body.year}",
-    1,0)`
+    0,0)`
     db.query(query, (err, out) => {
       var alertSuccess = 1 ;
       var notSuccess= 0;
@@ -551,42 +656,64 @@ router.post('/adminTherapist',(req, res) => {
             
           })
         }
-        res.send({alertDesc: alertSuccess})
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
       })
     })
 //          > D E L E T E
 router.post('/adminTherapist/delete', (req, res) => {
-  console.log(req.body.id)
+  var alertSuccess=0
+  var notSuccess=1
+
   const query = `UPDATE therapist_tbl set delete_stats= 1 where therapist_id = ${req.body.id} `
   
   db.query(query,(err,out)=>{
-    res.redirect('/admin/adminTherapist')
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 
 
 //          > U P D A T E
 router.post('/adminTherapist/update', (req, res) => {
-  
-  console.log(req.body)
-  console.log("Galing sa Web")
+  var alertSuccess=0
+  var notSuccess=1
   const query = `UPDATE therapist_tbl set 
   therapist_fname="${req.body.therapist_fname}",
   therapist_mname="${req.body.therapist_mname}",
   therapist_lname="${req.body.therapist_lname}",
-  address_house_no="${req.body.address_house_no}",
-  address_street_name="${req.body.address_street_name}",
-  address_admin_district="${req.body.address_admin_district}",
-  address_city="${req.body.address_city}",
-  therapist_age="${req.body.therapist_age}",
+  therapist_address= "${req.body.therapist_address}",
+  therapist_birthMonth = "${req.body.month}",
+  therapist_birthDate= "${req.body.date}",
+  therapist_birthYear= "${req.body.year}",
   therapist_gender="${req.body.therapist_gender}",
   therapist_contact_no="${req.body.therapist_contact_no}"
   WHERE therapist_id = ${req.body.id1};
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      console.log(query)
-      res.redirect("/admin/adminTherapist")
+      if(err)
+      {
+        res.send({alertDesc:notSuccess})
+        console.log(err)
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
     })
 })
 
@@ -620,7 +747,9 @@ router.post('/adminTherapist/query2',(req,res)=>{
 })
 
 router.post('/adminTherapist/updateTherapistSpecialty',(req,res)=>{
-  console.log(req.body.id1)
+  var alertSuccess=0
+  var notSuccess=1
+
   const query =`DELETE from therapist_specialty_tbl where therapist_id=${req.body.id1}`
 
   db.query(query,(err,out)=>{
@@ -628,13 +757,42 @@ router.post('/adminTherapist/updateTherapistSpecialty',(req,res)=>{
     for(var i=0;i<req.body.specialty.length;i++)
     {
       db.query(`INSERT INTO therapist_specialty_tbl(specialty_id, therapist_id)value("${req.body.specialty[i]}","${aydi}")`,(err,out)=>{
-        if(err) return console.log(err)
-
+        
       })
+    }
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
     }
   })
 })
 
+
+router.post('/adminTherapist/statusChange',(req,res)=>{
+  var alertSuccess =0
+  var notSuccess =1
+
+  const query = `UPDATE therapist_tbl SET therapist_availability = ${req.body.stats} 
+  where therapist_id= ${req.body.id}`
+
+  db.query(query, (err,out)=>{
+    if (err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+      console.log(query)
+    }
+  })
+})
 // ^UNDER OF THERAPIST
 // [THERIST SPECIALTY]
 //        > R E A D
@@ -648,25 +806,44 @@ router.get('/adminSpecialty',mid.adminnauthed,(req, res) => {
   })
 })
 //          > C R E A T E (ADD)
-router.post('/adminSpecialty',(req, res) => {
+router.post('/adminSpecialty/Add',(req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
+
   const query = `
     insert into 
     specialty_tbl(specialty_desc, delete_stats)
     value("${req.body.specialty_desc}",0)`
   db.query(query, (err, out) => {
-    console.log(query)
-    res.redirect('/admin/adminSpecialty')
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 //          > U P D A T E
 router.post('/adminSpecialty/update', (req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
 
   const query = `UPDATE specialty_tbl set specialty_desc = "${req.body.specialty_desc}"
   WHERE specialty_id = ${req.body.id}
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminSpecialty")
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 router.post('/adminSpecialty/query',(req, res) => {
@@ -674,17 +851,24 @@ router.post('/adminSpecialty/query',(req, res) => {
   db.query(query,[req.body.id1],(err, out) => {
       
       return res.send(out[0])
-      console.log(out[0])
-      console.log(req.body.id)
   })
 })
 //          > D E L E T E
 router.post('/adminSpecialty/delete', (req, res) => {
-  console.log(req.body.id)
+  var alertSuccess =0
+  var notSuccess =1
   const query = `UPDATE specialty_tbl set delete_stats = 1 where specialty_id = ${req.body.id}`
     
   db.query(query,(err,out)=>{
-    res.redirect('/admin/adminSpecialty')
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 

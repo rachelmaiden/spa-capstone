@@ -41,10 +41,10 @@ router.post("/customer/login",(req, res) => {
 
 		db.query(query, (err, out) => {
  		if(!out[0])
-			return res.redirect("/customer/customer#notfound")
+			return res.redirect("/customer/login#notfound")
 		else {
 			if(out[0].member_password !== req.body.password)
-				return res.redirect("/customer/customer#incorrect")
+				return res.redirect("/customer/login#incorrect")
 			else {
 				delete out[0].member_password
 				req.session.user = out[0]	

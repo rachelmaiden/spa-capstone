@@ -245,17 +245,17 @@ html(lang='en')
                           h5.modal-title
                             center Add New Therapist Specialty
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/admin/adminSpecialty')
+                        form#allInputsFormValidation(method='' action='')
                           .modal-body
                             .row
                               .col-md-12
                                 .form-group.has-default.bmd-form-group
                                   label Therapist Specialty
                                   star *
-                                  input.form-control(type='text', placeholder='Therapist Specialty' name="specialty_desc" required='true', aria-required='true')
+                                  input.form-control(type='text', placeholder='Therapist Specialty' id="specialty_desc" required='true', aria-required='true')
                             .row
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Therapist Specialty
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addSpecialty(type='button') Add Therapist Specialty
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
@@ -289,6 +289,7 @@ html(lang='en')
                                     each specialty in specialtys
                                       tr
                                         td=specialty.specialty_desc
+                                        input.name(type='hidden' value=`${specialty.specialty_desc}` id=`${specialty.specialty_id}`)
                                         td
                                         td
                                         td
@@ -321,22 +322,6 @@ html(lang='en')
                                     .modal-footer
                                       button.btn.btn-info.btn-fill.pull-left#updateSubmitButton(type='button') Update
                                       button.btn.btn-danger.btn-fill.pull-right#cancelButton(type='button', data-dismiss='modal') Cancel
-                              // DELETE  
-                              #modal-warning.modal.modal-warning.fade
-                                .modal-dialog
-                                  .modal-content
-                                    .modal-header
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        span(aria-hidden='true') ×
-                                      h4.modal-title Warning
-                                    .modal-body
-                                      p Are you sure you?
-                                    .modal-footer
-                                        button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                                        button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
-                                      
-                                      
-                                      
                                       
                                   .row
                                     .col-md-6
@@ -417,6 +402,45 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
     $(document).ready(function(){
+        $('.addSpecialty').click(function(){
+          if($('#specialty_desc').val()==0)
+          {
+            swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+          }
+          else
+          {
+            $.post('./adminSpecialty/Add',{
+              specialty_desc: $('#specialty_desc').val(),
+            }).done(function(data){
+              if(data.alertDesc== 0)
+                {
+                  swal({
+                    title: "Success",
+                    text: "New Specialty has been Added",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload();
+                  })
+                }
+              else
+                {
+                  swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+                }
+            
+            })
+          }
+        })
+      })
+  script.
+    $(document).ready(function(){
         $('.logout').click(function(){
             swal({
             title: "Are you sure?",
@@ -432,33 +456,6 @@ html(lang='en')
             } 
           });
           })
-        $('.deleteButton').click(function(){
-            var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
-                });
-                $('#deleteSubmit').click(function(){
-                $.post('/admin/adminSpecialty/delete',{id:idNow})
-                    .done(data=>{
-                    if(data){
-                        swal({
-                        title:'Success', 
-                        text:'Service Duration Deleted', 
-                        icon:'success'
-                        }).then(function(){
-                          location.reload();
-                        })
-                      $('#updateModal').modal('hide');
-                    }
-                  })
-            });
-            
-        });
     })
         $('#modal-warning').on('hidden.bs.modal', function (){
                 var idNow = 0;
@@ -493,7 +490,7 @@ html(lang='en')
                   id:idNow
                   })
                   .done(data=>{
-                      if(data){
+                      if(data.alertDesc==0){
                           swal({
                           title:'Success', 
                           text:'Specialty Updated', 
@@ -501,7 +498,13 @@ html(lang='en')
                           }).then(function(){
                             location.reload();
                           })
-                        $('#updateModal').modal('hide');
+                      }
+                      else
+                      {
+                        swal({
+                          title:'ERROR',
+                          icon: 'error'
+                        })
                       }
                   })
                 })
@@ -524,16 +527,7 @@ html(lang='en')
     searchPlaceholder: "Search records",
     }
     });
-    //- $('#add').click(function(){
-    //- swal({
-    //-   title:'Success', 
-    //-   text:'New Specialty Added', 
-    //-   icon:'success'})
-    //-   .then(function(){
-    //-   location.reload();
-    //- })
-    //- });
-    //- });
+    })
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();
@@ -541,3 +535,45 @@ html(lang='en')
       $('#allInputsFormValidation').validate();
         });  
 
+  script.
+    $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('/admin/adminSpecialty/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })

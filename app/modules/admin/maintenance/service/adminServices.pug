@@ -250,7 +250,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Service   
+                        button.btn.btn-info.btn-fill.btn-wd.buttonAdd(data-toggle='modal', data-target='') Add New Service   
                   .content
                     .container-fluid
                       .row
@@ -286,6 +286,7 @@ html(lang='en')
                                       tr
                                         td= service.service_type_desc
                                         td= service.service_name
+                                        input.name(type='hidden' value=`${service.service_name}` id=`${service.service_id}`)
                                         td= service.service_duration_desc+" "+"minutes"
                                         td= service.service_price.toLocaleString()
                                         if(service.service_points==1|| service.service_points==0)
@@ -327,14 +328,14 @@ html(lang='en')
                           h5.modal-title
                             center Add New Service
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/admin/adminServices')
+                        form#allInputsFormValidation(method='#' action='#')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Service Type
                                   star *
-                                    select.selectpicker(data-style='btn-info' name='type' required='true', aria-required='true')
+                                    select.selectpicker(data-style='btn-info' name='service_type' id='service_type' required='true', aria-required='true')
                                       each typ in typs
                                         option(value=`${typ.service_type_id}`)= typ.service_type_desc
 
@@ -342,13 +343,13 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Name
                                   star *
-                                  input.form-control(type='text', placeholder='Service Name' name='name' required='true', aria-required='true')
+                                  input.form-control(type='text', placeholder='Service Name' name='service_name' id='service_name' required='true', aria-required='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Service Duration
                                   star *
-                                    select.selectpicker(data-style='btn-info' name='duration' required='true', aria-required='true')
+                                    select.selectpicker(data-style='btn-info' name='service_duration' id='service_duration' required='true', aria-required='true')
                                       each duration in durations
                                         option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
                                   //- input.form-control(type='text', placeholder='Service Duration' name='duration')
@@ -356,18 +357,18 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Price
                                   star *
-                                  input.form-control(type='text', number="true" placeholder='Service Price' name='price' required='true', aria-required='true')
+                                  input.form-control(type='text', number="true" placeholder='Service Price' name='service_price' id='service_price' required='true', aria-required='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Service Point/s
                                   star *
-                                  input.form-control(type='number', placeholder='Service Point' name='points' required='true', aria-required='true')
+                                  input.form-control(type='number', placeholder='Service Point' name='service_points' id='service_points' required='true', aria-required='true')
                             
 
 
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Service
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.buttonAddSubmit(type='button') Add Service
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   
                   // DELETE  
@@ -461,10 +462,7 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Vector Map plugin
   script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
-  // Wizard Plugin
-  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+
   // Bootstrap Table Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
   // Plugin for DataTables.net
@@ -473,10 +471,58 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
   // Paper Dashboard PRO Core javascript and methods for Demo purpose
   script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
-  // Sharrre Library
-  script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+      $('.buttonAdd').click(function(){
+        $('#addNewService').modal('show')
+
+        $('.buttonAddSubmit').click(function(){
+          if($('#service_name').val()==0 && $('#service_price').val()==0 || $('#service_price').val()==0 || $('#service_name').val()==0)
+          {
+            swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+          }
+          else
+          {
+            $.post('./adminServices',{
+              service_type: $('#service_type').val(),
+              service_name: $('#service_name').val(),
+              service_duration: $('#service_duration').val(),
+              service_price: $('#service_price').val(),
+              service_points: $('#service_points').val(),
+            }).done(function(data){
+              if(data.alertDesc== 0)
+                {
+                  swal({
+                    title: "Success",
+                    text: "New Services has been Added",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload();
+                  })
+                }
+              else
+                {
+                  swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+                }
+            
+            })
+          }
+        })
+      })
+    })
+
+
   script.
       $(document).ready(function(){
         $('.logout').click(function(){
@@ -485,7 +531,7 @@ html(lang='en')
             text: "Do you want to Log Out?",
             icon: "warning",
             buttons: true,
-            dangerMode: true,
+            dangerMode:   true,
           })
           .then((willDelete) => {
             if (willDelete) {
@@ -495,16 +541,80 @@ html(lang='en')
           });
           })
         $('.bawal').click(function(){
-          alert("Can't Update or Delete ")
+          swal({
+            title: 'Set to not available this item first',
+            icon: 'warning'
+          })
         })
+                $(function(){
+                  console.log(localStorage)
+                  var name = localStorage.getItem('name')
+                  if (localStorage.getItem('name'))
+                  {
+                    if(localStorage.getItem('status')==1)
+                    {
+                    $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to not available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                    else
+                    {
+                       $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                }
+                })
         $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
           if(state==false)
           {
-            var idNow = $(this).val();
             var stats = 1
+            console.log(name)
             //- alert(stats)
             //- alert(idNow)
-            $.post('/admin/adminServices/statusChange',{stats,id1:idNow})
+            $.post('/admin/adminServices/statusChange',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
           }
           else if(state==true)
           {
@@ -512,36 +622,19 @@ html(lang='en')
             var stats = 0
             //- alert(stats)
             //- alert(idNow)
-            $.post('/admin/adminServices/statusChange',{stats,id1:idNow})
+            $.post('/admin/adminServices/statusChange',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
           }
-          location.reload();
-        });
-        $('.deleteButton').click(function(){
-            var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
-                });
-                $('#deleteSubmit').click(function(){
-                $.post('/admin/adminServices/delete',{id:idNow})
-                    .done(data=>{
-                    if(data){
-                        swal({
-                        title:'Success', 
-                        text:'Service Deleted', 
-                        icon:'success'
-                        }).then(function(){
-                          location.reload();
-                        })
-                      $('#updateModal').modal('hide');
-                    }
-                  })
-            });
-            
         });
         $('#modal-warning').on('hidden.bs.modal', function (){
                 var idNow = 0;
@@ -557,13 +650,13 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Name</label>
-                        <input type="text" id="service_name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
+                        <input type="text" id="name" placeholder="${data.out1.service_name}" value="${data.out1.service_name}" name="name" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Price</label>
-                        <input type="text" id="service_price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
+                        <input type="text" id="price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -571,7 +664,7 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Point/s</label>
-                        <input type="number" id='service_points' placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
+                        <input type="number" id='points' placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -588,9 +681,9 @@ html(lang='en')
               $('#updateSubmitButton').click(function(){
                
                   $.post('/admin/adminServices/update',{
-                  service_name:$('#service_name').val(),
-                  service_price:$('#service_price').val(),
-                  service_points:$('#service_points').val(),
+                  service_name:$('#name').val(),
+                  service_price:$('#price').val(),
+                  service_points:$('#points').val(),
                   id1:idNow
                   })
                   .done(data=>{
@@ -619,6 +712,48 @@ html(lang='en')
 
           })
       })
+  script.
+    $(document).ready(function(){
+              $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('/admin/adminServices/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })
   script(type='text/javascript').
     $(document).ready(function(){
       demo.initOverviewDashboard();
@@ -634,19 +769,6 @@ html(lang='en')
     search: "_INPUT_",
     searchPlaceholder: "Search records",
     }
-    });
-    $('#add').click(function(){
-      .done(data=>{
-        if(data){
-          swal({
-            title:'Success', 
-            text:'New Service Added', 
-            icon:'success'})
-            .then(function(){
-            location.reload();
-          })
-        }
-    });
     });
     })
   script.
