@@ -1,0 +1,343 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title Paper Dashboard PRO by Creative Tim
+    // Bootstrap core CSS
+    link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
+    // Paper Dashboard core CSS
+    link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    // CSS for Demo Purpose, don't include it in your project
+    link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
+    // Fonts and icons
+    link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
+    link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
+    link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+  body
+    .wrapper
+      .sidebar(data-active-color='spa', style='color: white')
+        //
+          Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
+          Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
+        .logo
+          a.simple-text.logo-mini(href='http://www.creative-tim.com')
+            | MBAY
+          a.simple-text.logo-normal(href='http://www.creative-tim.com')
+            | MBAY Health Spa
+        .sidebar-wrapper
+          .user
+            .info
+              .photo
+                img(src='../paperDashboardPro/img/faces/face-2.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
+                span
+                  | ADMINISTRATOR
+              .clearfix
+          ul.nav
+            li
+              a(href='./admindashboard')
+                i.ti-dashboard
+                p
+                  | Dashboard
+            li
+              a(data-toggle='collapse', href='#componentsExamples')
+                i.ti-clipboard
+                p
+                  | Maintenance
+                  b.caret
+              #componentsExamples.collapse
+                ul.nav
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#services')
+                      p
+                        span.sidebar-mini S
+                        | Services
+                        b(style="margin-right: 30px").caret
+                    #services.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceType')
+                            span.sidebar-normal Service Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#therapist')
+                      p
+                        span.sidebar-mini T
+                        | Therapist
+                        b(style="margin-right: 30px").caret
+                    #therapist.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminSpecialty')
+                            span.sidebar-normal Therapist Specialty
+                        li(style="margin-left: 30px")
+                          a(href='./adminTherapist')
+                            span.sidebar-normal Therapist
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#packages')
+                      p
+                        | Packages
+                        span.sidebar-mini P
+                        b(style="margin-right: 30px").caret
+                    #packages.collapse
+                      ul.nav    
+                        li(style="margin-left: 30px")
+                          a(href='./adminPackages')
+                            span.sidebar-normal Packages
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#promos')
+                      p
+                        span.sidebar-mini P
+                        | Promos
+                        b(style="margin-right: 30px").caret
+                    #promos.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminPromos')
+                            span.sidebar-normal Promos
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#rooms')
+                      p
+                        span.sidebar-mini R
+                        | Rooms
+                        b(style="margin-right: 30px").caret
+                    #rooms.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminRoomType')
+                            span.sidebar-normal Room Type
+                        li(style="margin-left: 30px")
+                          a(href='./adminRooms')
+                            span.sidebar-normal Rooms
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#freebies')
+                      p
+                        span.sidebar-mini F
+                        | Freebies
+                        b(style="margin-right: 30px").caret
+                    #freebies
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./adminFreebies')
+                            span.sidebar-normal Freebies
+                        //li(style="margin-left: 30px")
+                          a(href='./adminServices')
+                            span.sidebar-normal Services
+                        //li(style="margin-left: 30px")
+                          a(href='./adminServiceDuration')
+                            span.sidebar-normal Service Duration 
+
+
+            li
+              a(data-toggle='collapse', href='#tablesExamples')
+                i.ti-panel
+                p
+                  | Transaction
+                  b.caret
+              #tablesExamples.collapse
+                ul.nav
+                  li
+                    a(href='/adminCustomer')
+                      span.sidebar-mini R
+                      span.sidebar-normal Registration
+                  li
+                    a(href='/adminReservation')
+                      span.sidebar-mini R
+                      span.sidebar-normal Reservations
+                  li
+                    a(href='/adminWalkin')
+                      span.sidebar-mini W
+                      span.sidebar-normal Walk-in
+                  li
+                    a(href='/adminQueue')
+                      span.sidebar-mini Q
+                      span.sidebar-normal Queue
+            li.active
+              a(data-toggle='collapse in')
+                i.ti-settings
+                p
+                  | Utilities
+            li
+              a(data-toggle='collapse', href='#sales')
+                i.ti-bar-chart-alt
+                p
+                  | Sales
+                  b.caret
+              #sales.collapse
+                ul.nav
+                  li
+                    a(href='../tables/regular.html')
+                      span.sidebar-mini D
+                      span.sidebar-normal Daily
+                  li
+                    a(href='../tables/datatables.net.html')
+                      span.sidebar-mini W
+                      span.sidebar-normal Weekly
+                  li
+                    a(href='../tables/datatables.net.html')
+                      span.sidebar-mini M
+                      span.sidebar-normal Monthly
+      .main-panel
+        nav.navbar.navbar-default
+          .container-fluid
+            .navbar-minimize
+              button#minimizeSidebar.btn.btn-fill.btn-icon
+                i.ti-more-alt
+            .navbar-header
+              button.navbar-toggle(type='button')
+                span.sr-only Toggle navigation
+                span.icon-bar.bar1
+                span.icon-bar.bar2
+                span.icon-bar.bar3
+              a.navbar-brand(href='#Dashboard')
+                | Overview
+            .collapse.navbar-collapse
+              form.navbar-form.navbar-left.navbar-search-form(role='search')
+                .input-group
+                  span.input-group-addon
+                    i.fa.fa-search
+                  input.form-control(type='text', value='', placeholder='Search...')
+              ul.nav.navbar-nav.navbar-right
+                li
+                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
+                    i.ti-panel
+                    p Stats
+                li.dropdown
+                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
+                    i.ti-bell
+                    span.notification 5
+                    p.hidden-md.hidden-lg
+                      | Notifications
+                      b.caret
+                  ul.dropdown-menu
+                    li
+                      a(href='#not1') Notification 1
+                    li
+                      a(href='#not2') Notification 2
+                    li
+                      a(href='#not3') Notification 3
+                    li
+                      a(href='#not4') Notification 4
+                    li
+                      a(href='#another') Another notification
+                li
+                  a.btn-rotate(href='#settings')
+                    i.ti-settings
+                    p.hidden-md.hidden-lg
+                      | Settings
+        .content
+          .card
+            .container-fluid
+              div
+                h1
+                  center Utilities
+                .row
+                  .col-md-8
+                    .form-group.has-default.bmd-form-group
+                      label Company Name
+                      input.form-control(type='text', placeholder='Company Name')
+                .row
+                  .col-md-6
+                    .form-group.has-default.bmd-form-group
+                      label Opening Time
+                      input.form-control(type='text', placeholder='Opening Time')
+                  .col-md-6
+                    .form-group.has-default.bmd-form-group
+                      label Closing Time
+                      input.form-control(type='text', placeholder='Closing Time')
+                .row
+                  .col-md-4
+                    .form-group.has-default.bmd-form-group
+                      label Maximum Guest Per Reservation
+                      input.form-control(type='text', placeholder='Maximum Guest Per Reservation')
+                  .col-md-4
+                    .form-group.has-default.bmd-form-group
+                      label Maximum Guest Per Reservation
+                      input.form-control(type='text', placeholder='Maximum Guest Per Reservation')
+                  .col-md-4
+                    .form-group.has-default.bmd-form-group
+                      label Entrance Fee
+                      input.form-control(type='number', placeholder='Entrance Fee')
+                .row
+                  .col-md-4
+                    .form-group.has-default.bmd-form-group
+                      label Membership Validity
+                      input.form-control(type='number', placeholder='Membership Validity')
+                  .col-md-4
+                    .form-group.has-default.bmd-form-group
+                      label Membership Fee
+                      input.form-control(type='text', placeholder='Membership Fee')
+              div
+                button.btn.btn-info.btn-fill.btn-wd.pull-right(data-toggle='modal', data-target='#') Save
+                        
+      .fixed-plugin
+      // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
+      script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
+      script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
+      script(src='/assets/paperDashboardPro/js/perfect-scrollbar.min.js', type='text/javascript')
+      script(src='/assets/paperDashboardPro/js/bootstrap.min.js', type='text/javascript')
+      // Forms Validations Plugin
+      script(src='/assets/paperDashboardPro/js/jquery.validate.min.js')
+      // Promise Library for SweetAlert2 working on IE
+      script(src='/assets/paperDashboardPro/js/es6-promise-auto.min.js')
+      // Plugin for Date Time Picker and Full Calendar Plugin
+      script(src='/assets/paperDashboardPro/js/moment.min.js')
+      // Date Time Picker Plugin is included in this js file
+      script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
+      // Select Picker Plugin
+      script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
+      // Switch and Tags Input Plugins
+      script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+      // Circle Percentage-chart
+      script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+      // Charts Plugin
+      script(src='/assets/paperDashboardPro/js/chartist.min.js')
+      // Notifications Plugin
+      script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
+      // Sweet Alert 2 plugin
+      script(src='/assets/paperDashboardPro/js/sweetalert2.js')
+      // Vector Map plugin
+      script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+      // Google Maps Plugin
+      script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+      // Wizard Plugin
+      script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
+      // Bootstrap Table Plugin
+      script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+      // Plugin for DataTables.net
+      script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
+      // Full Calendar Plugin
+      script(src='/assets/paperDashboardPro/js/fullcalendar.min.js')
+      // Paper Dashboard PRO Core javascript and methods for Demo purpose
+      script(src='/assets/paperDashboardPro/js/paper-dashboard.js')
+      // Sharrre Library
+      script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
+      // Paper Dashboard PRO DEMO methods, don't include it in your project!
+      script(src='/assets/paperDashboardPro/js/demo.js')
+      script(type='text/javascript').
+        $(document).ready(function(){
+        demo.initOverviewDashboard();
+        demo.initCirclePercentage();
+        });
+      //
+        <script type="text/javascript">
+        $(document).ready(function() {
+        $('#datatables').DataTable({
+        "pagingType": "full_numbers",
+        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+        responsive: true,
+        language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search records",
+        }
+        });
+        });
+        </script>
