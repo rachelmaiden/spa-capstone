@@ -754,5 +754,11 @@ router.post('/payment/Finish',(req,res)=>{
         
     })
   })
+
+  router.get('/therapist', (req, res) => {
+    res.render('frontdesk/therapist')
+  })
+  
+
   
 exports.frontdesk = router;
