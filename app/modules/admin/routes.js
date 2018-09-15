@@ -1132,7 +1132,9 @@ router.get('/bookReservation', (req, res) => {
   })
 
 
-
+  router.get('/utilities',(req, res) => {
+    res.render('admin/utilities/utilities')
+  })
 
 
 router.get('/bookService',(req, res) => {
