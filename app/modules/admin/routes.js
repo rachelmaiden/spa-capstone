@@ -975,7 +975,7 @@ router.post('/adminCustomer/medicalHistory',(req, res) => {
 router.get('/adminFreebies',mid.adminnauthed, (req, res) => {
   const query =`SELECT * FROM services_tbl where delete_stats=0;
   SELECT services_tbl.*, freebies_tbl.* FROM services_tbl
-  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id`
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id where freebies_tbl.delete_stats=0`
   db.query(query,(err,out)=>{
   res.render('admin/maintenance/freebies/adminFreebies',{
     services: out[0],
@@ -986,25 +986,46 @@ router.get('/adminFreebies',mid.adminnauthed, (req, res) => {
 router.post('/adminFreebies/addFreebies',(req, res)=>{
   var alertSuccess =0
   var notSuccess = 1
-  const query =`INSERT INTO freebies_tbl (service_id, equivalent_points,freebies_availability,delete_stats) values("${req.body.service}","${req.body.points}",1,0)`
-  db.query(query,(err,out)=>{
-    console.log(query)
-    if (err)
+  var valExisting =2
+  const query = `SELECT freebies_tbl.* , services_tbl.* from freebies_tbl
+  join services_tbl ON freebies_tbl.service_id = services_tbl.service_id where freebies_tbl.service_id=? and freebies_tbl.delete_stats=0`
+
+  db.query(query,[req.body.service],(err,out)=>{
+    if(out== undefined || out ==0)
     {
-      res.send({alertSuccess:notSuccess})
+      const query =`INSERT INTO freebies_tbl (service_id, equivalent_points,freebies_availability,delete_stats) values("${req.body.service}","${req.body.points}",0,0)`
+      db.query(query,(err,out)=>{
+        if (err)
+        {
+          res.send({alertDesc:notSuccess})
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
     }
-    else
+    else if(out != undefined )
     {
-      res.send({alertSuccess:alertSuccess})
+      res.send({alertDesc:valExisting})
     }
   })
 })
 
 router.post('/adminFreebies/statusChange',(req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
   const query = `UPDATE freebies_tbl set freebies_availability= ${req.body.stats} where freebies_id= ${req.body.id1}`
   db.query(query,(err,out) =>{
-    res.redirect("/admin/adminFreebies")
-    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
 })
 })
 
@@ -1036,7 +1057,25 @@ router.post('/adminFreebies/update',(req, res) => {
   })
 })
 
+router.post('/adminFreebies/Delete',(req, res)=>{
+  var alertSuccess =0
+  var notSuccess =1
 
+  const query =`UPDATE freebies_tbl SET delete_stats=1 where freebies_id =?`
+
+  db.query(query,[req.body.id],(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+      console.log(query)
+    }
+  })
+})
 
 
 
@@ -1102,10 +1141,6 @@ router.get('/bookService',(req, res) => {
 
 router.get('/adminWalkin',(req, res) => {
   res.render('admin/transaction/adminWalkin') 
-})
-
-router.post('/adminAme', (req, res) => {
-    console.log('hello')
 })
 
 exports.admin = router

@@ -535,11 +535,11 @@ html(lang='en')
               table.page(0).draw()
               var pinakaTotal = 0
               var longest = []
-              var newHours 
-              var newMin
+              var newHours = 0
+              var newMin = 0
+              var highest = 0
         
             for (var i=1;i<=pagelength;i++){
-              var highest
               
               $(".checkbox:checked").each(function(){
               var id= $(this).val()
@@ -566,40 +566,9 @@ html(lang='en')
                   //- newHours = Math.floor(highest / 60)
                   //- newMin = highest % 60
                   theFutureTime = moment(theFutureTime).add(highest, 'minutes')
-                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
 
                   $(`.bagongDuration[id='${id}']`).val(minutes)
-                  longest.push($(`.bagongDuration[id='${id}']`).val())
-                  
-                  
-                  console.log(longest)
-                  console.log('galing sa labas '+highest)
-                  
-                  for(var j=0;j<longest.length;j++)
-                    {
-                      console.log(j)
-                      if((longest.length-1)==j)
-                        {
-                          console.log('pasok')
-                          highest= longest[j];
-                          newHours = Math.floor(highest / 60)
-                          newMin = highest % 60
-                          //- console.log("HOURS: "+newHours)
-                          //- console.log("MINUTES: "+newMin)
-                        }
-                      else if(longest[j] > highest)
-                        {
-                          console.log('from if '+highest)
-                          console.log('compare sa '+longest[j])
-                          console.log('pasok sa 2nd')
-                          highest = longest[j];
-                          newHours = Math.floor(highest / 60)
-                          newMin = highest % 60
-                          console.log('from else if '+highest)
-                        }
-                         
-                    }
-                          
+                  longest.push($(`.bagongDuration[id='${id}']`).val())  
                     //- if(sample>=longest)
                     //-   {
                     //-     longest = sample
@@ -609,15 +578,51 @@ html(lang='en')
                   //- $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
                 }
                 pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
-              
                 //- alert(hours)
                 $('#grandtotal').text(pinakaTotal.toLocaleString())
               sum += parseInt(points)
             });
             table.page('next').draw('page');
+            if(i==pagelength){
+              console.log(longest)
+              for(var j=0;j<longest.length;j++)
+                {
+                  alert('hello')
+                  console.log(highest+'<'+longest[j])
+                  console.log(j)
+                  console.log(longest.length)
+                  console.log('tamaba?')
+                  if((longest.length-1)==0)
+                    {
+                      console.log('pasok')
+                      highest= longest[j];
+                      newHours = Math.floor(highest / 60)
+                      newMin = highest % 60
+                      //- console.log("HOURS: "+newHours)
+                      //- console.log("MINUTES: "+newMin)
+                      console.log('hayes  '+highest)
+                    }
+                  else if(parseInt(longest[j]) > parseInt(highest))
+                    {
+                      console.log('from if '+highest)
+                      console.log('compare sa '+longest[j])
+                      console.log('pasok sa 2nd')
+                      highest = longest[j];
+                      newHours = Math.floor(highest / 60)
+                      newMin = highest % 60
+                      console.log('from else if '+highest)
+                    }
+                  if(j == longest.length - 1){
+                    console.log('done')
+                    theFutureTime = moment(theFutureTime).add(newHours,'hours').add(newMin, 'minutes')
+                    $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                    table.page(0).draw()
+                    $('#totalPoints').text(sum)
+                  }   
+                }
+
             }
-              table.page(0).draw()
-              $('#totalPoints').text(sum)
+            }
               
           }
       })

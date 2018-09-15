@@ -289,6 +289,7 @@ html(lang='en')
                                     each freebie in freebies
                                       tr
                                         td= freebie.service_name
+                                        input.name(type='hidden' id=`${freebie.freebies_id}` value=`${freebie.service_name}`)
                                         td
                                         td
                                         td= freebie.equivalent_points
@@ -385,7 +386,7 @@ html(lang='en')
                                           star *
                                           input.form-control#points(type='number', placeholder='Points Required' name="required_points" required='true', aria-required='true')            
                                   .modal-footer
-                                    button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='submit') Add Freebie
+                                    button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add Freebie
                                     button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                                 
                           //UPDATE
@@ -460,28 +461,148 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
     $(document).ready(function(){
-      $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
-      if(state==false)
-      {
-        var idNow = $(this).val();
-        var stats = 1
-        //- alert(stats)
-        //- alert(idNow)
-        $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow})
-      }
-      else if(state==true)
-      {
-        var idNow = $(this).val();
-        var stats = 0
-        //- alert(stats)
-        //- alert(idNow)
-        $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow})
-      }
-      location.reload();
-      })
-      $('.bawal').click(function(){
-      alert("Can't Update or Delete ")
+          $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            console.log(idNow)
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('/admin/adminFreebies/Delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
     })
+  script.
+    $(document).ready(function(){
+         $('.bawal').click(function(){
+          swal({
+            title: 'Set to not available this item first',
+            icon: 'warning'
+          })
+        })
+    })
+  script.
+    $(document).ready(function(){
+       $(function(){
+                  console.log(localStorage)
+                  var name = localStorage.getItem('name')
+                  if (localStorage.getItem('name'))
+                  {
+                    if(localStorage.getItem('status')==1)
+                    {
+                    $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to not available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                    else
+                    {
+                       $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                }
+                })
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            console.log(name)
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChange',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+        });
     });
 
 
@@ -546,27 +667,47 @@ html(lang='en')
       $('.addButton').click(function(){
         var service = $('.selectpicker[name="service"]').val()
         var points = $('#points').val()
-        $.post('/admin/adminFreebies/addFreebies',{service:service,points:points})
-        .done(function(data){
-          if(data.alertSuccess == 1)
-          {
-            swal({
-              title:'Success', 
-              text:'New Guest Inserted', 
-              icon:'success'
-              }).then(function(){
-                location.reload()
-              })
-          }
-          else
+        if(points == 0 )
+        {
+          swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+        }
+        else
+        {
+          $.post('/admin/adminFreebies/addFreebies',{service:service,points:points})
+          .done(function(data){
+            if(data.alertDesc == 0)
             {
               swal({
-                title:'Not Success', 
-                text:'Customer Already Exist', 
-                icon:'warning'
+                title:'Success', 
+                text:'New Freebie Inserted', 
+                icon:'success'
+                }).then(function(){
+                  location.reload()
                 })
             }
-        })
+            else if(data.alertDesc ==1)
+              {
+                swal({
+                  title:'Not Success', 
+                  text:'ERROR', 
+                  icon:'error'
+                  })
+              }
+            else if(data.alertDesc ==2)
+            {
+                swal({
+                  title:'Not Success', 
+                  text:'Freebie is Already Exist', 
+                  icon:'warning'
+                  })
+            }
+          })
+
+        }
       })
     })
   script.
@@ -579,8 +720,8 @@ html(lang='en')
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
+          .then((logout) => {
+            if (logout) {
               $.post('/admin/admin/logout')
               location.reload()
             } 
