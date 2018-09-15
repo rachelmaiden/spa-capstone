@@ -52,7 +52,7 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 // ||====================================================================||
 
 // [GC]
-router.get('/admingc', (req, res) => {
+router.get('/gc', (req, res) => {
   res.render('admin/maintenance/giftcertificate/gc')
 })
 

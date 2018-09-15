@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Paper Dashboard PRO by Creative Tim
+    title MBAY Health Spa
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
@@ -23,9 +23,9 @@ html(lang='en')
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
+          a.simple-text.logo-mini(href='')
             | MBAY
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
+          a.simple-text.logo-normal(href='')
             | MBAY Health Spa
         .sidebar-wrapper
           .user
@@ -38,7 +38,7 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='./admindashboard')
+              a(href='/admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -117,49 +117,33 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
+                  
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#freebies')
                       p
                         span.sidebar-mini F
                         | Freebies
                         b(style="margin-right: 30px").caret
-                    #freebies
+                    #freebies.collapse
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminFreebies')
                             span.sidebar-normal Freebies
-                        //li(style="margin-left: 30px")
-                          a(href='./adminServices')
-                            span.sidebar-normal Services
-                        //li(style="margin-left: 30px")
-                          a(href='./adminServiceDuration')
-                            span.sidebar-normal Service Duration 
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#gifc')
+                      p
+                        span.sidebar-mini G
+                        | Gift Certificate
+                        b(style="margin-right: 30px").caret
+                    #gifc.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./gc')
+                            span.sidebar-normal Gift Certificate                     
+
+                       
 
 
-            li
-              a(data-toggle='collapse', href='#tablesExamples')
-                i.ti-panel
-                p
-                  | Transaction
-                  b.caret
-              #tablesExamples.collapse
-                ul.nav
-                  li
-                    a(href='/adminCustomer')
-                      span.sidebar-mini R
-                      span.sidebar-normal Registration
-                  li
-                    a(href='/adminReservation')
-                      span.sidebar-mini R
-                      span.sidebar-normal Reservations
-                  li
-                    a(href='/adminWalkin')
-                      span.sidebar-mini W
-                      span.sidebar-normal Walk-in
-                  li
-                    a(href='/adminQueue')
-                      span.sidebar-mini Q
-                      span.sidebar-normal Queue
             li.active
               a(data-toggle='collapse in')
                 i.ti-settings
@@ -257,24 +241,34 @@ html(lang='en')
                   .col-md-4
                     .form-group.has-default.bmd-form-group
                       label Maximum Guest Per Reservation
-                      input.form-control(type='text', placeholder='Maximum Guest Per Reservation')
+                      input.form-control(type='number', placeholder='Maximum Guest Per Reservation')
                   .col-md-4
-                    .form-group.has-default.bmd-form-group
-                      label Maximum Guest Per Reservation
-                      input.form-control(type='text', placeholder='Maximum Guest Per Reservation')
-                  .col-md-4
-                    .form-group.has-default.bmd-form-group
-                      label Entrance Fee
-                      input.form-control(type='number', placeholder='Entrance Fee')
+                    div
+                      label Membership Fee
+                      .input-group
+                        span.input-group-addon ₱
+                        input.form-control(type='number')
+                        span.input-group-addon .00
+
                 .row
                   .col-md-4
-                    .form-group.has-default.bmd-form-group
+                   div
                       label Membership Validity
-                      input.form-control(type='number', placeholder='Membership Validity')
+                      .input-group
+                        input.form-control(type='text')
+                        span.input-group-addon months
                   .col-md-4
-                    .form-group.has-default.bmd-form-group
-                      label Membership Fee
-                      input.form-control(type='text', placeholder='Membership Fee')
+                    div
+                      label Entrance Fee
+                      .input-group
+                        span.input-group-addon ₱
+                        input.form-control(type='number')
+                        span.input-group-addon .00
+
+                  
+                     
+                  
+    
               div
                 button.btn.btn-info.btn-fill.btn-wd.pull-right(data-toggle='modal', data-target='#') Save
                         
