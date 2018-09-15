@@ -2,6 +2,7 @@ var express = require('express')
 var router = express.Router()
 var db = require('../../lib/database')();
 var mid = require("../../middlewares")
+var moment = require ('moment')
 
 // [ADMIN - LOGIN PAGE] 
 router.get('/admin', (req, res) => {
@@ -51,15 +52,174 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 // ||---------------------- M A I N T E N A N C E -----------------------||
 // ||====================================================================||
 
-// [GC]
+// [GIFT CERTIFICATE]
 router.get('/admingc', (req, res) => {
   res.render('admin/maintenance/giftcertificate/gc')
 })
 
+// =========================================================================================================================================================================
+// [PACKAGE]
+//          > R E A D
+router.get('/adminPackages',mid.adminnauthed,(req, res) => {
+  const query =`SELECT * FROM services_tbl where delete_stats=0 and service_availability=0;
+  SELECT package_tbl.*, services_tbl.*, service_in_package_tbl.*, service_duration_tbl.* FROM package_tbl 
+  JOIN service_in_package_tbl ON service_in_package_tbl.package_id = package_tbl.package_id
+  JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = package_tbl.service_duration_id
+  JOIN services_tbl ON services_tbl.service_id = service_in_package_tbl.service_id WHERE package_tbl.delete_stats=0
+  GROUP BY package_tbl.package_id;
+  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 AND delete_stats=0`
 
-// [AMENITY]
-router.get('/adminPackages', (req, res) => {
-  res.render('admin/maintenance/package/adminPackages')
+  db.query(query, (err,out)=>{
+    res.render('admin/maintenance/package/adminPackages',{
+      services: out[0],
+      packages: out[1],
+      durations: out[2]
+    })
+  })
+})
+//          > C R E A T E
+router.post('/adminPackages',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+  const query =`INSERT INTO package_tbl(package_name,package_price,service_duration_id,package_availability,delete_stats)
+  VALUE("${req.body.package_name}","${req.body.package_price}","${req.body.package_duration}",0,0)`
+
+  db.query(query, (err,out)=>{
+    console.log(query)
+    aydi= out.insertId;
+    for(var i=0; i<req.body.services_included.length;i++)
+    {
+      const query1 = `INSERT INTO service_in_package_tbl(package_id,service_id)
+      VALUE("${aydi}","${req.body.services_included[i]}")`
+
+      db.query(query1,(err,out)=>{
+
+      })
+    }
+
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+//      > VIEW Services Included in Package
+router.post('/adminPackages/viewServicesIncluded',(req, res) => {
+  var id= req.body.id
+  const query = `SELECT services_tbl.service_name, service_in_package_tbl.service_id 
+  from services_tbl join service_in_package_tbl on services_tbl.service_id = service_in_package_tbl.service_id 
+  where service_in_package_tbl.package_id=?`
+  db.query(query,[req.body.id],(err, out) => {
+    var out1= out
+    db.query(`select * from package_tbl where package_id= ${id} and delete_stats= 0`,(err,out)=>{
+      return res.send({out1:out1, out2:out[0], id})
+    })
+  })
+})
+
+//      > UPDATE Availability of the Package
+router.post('/adminPackages/statusChange',(req, res) => {
+  var alertSuccess = 0
+  var notSuccess =1
+  
+  const query = `UPDATE package_tbl set package_availability= ${req.body.stats} where package_id= ${req.body.id}`
+  db.query(query,(err,out) =>{
+  if(err)
+  {
+    res.send({alertDesc:notSuccess})
+    console.log(err)
+  }
+  else
+  {
+    res.send({alertDesc:alertSuccess})
+  }
+})
+})
+
+//      > UPDATE Services included in Package
+router.post('/adminPackage/viewServices',(req, res) => {
+  const query = `SELECT * FROM services_tbl WHERE delete_stats=0`
+  db.query(query,(err, out) => {
+    return res.send({out1:out})
+  })
+})
+router.post('/adminPackages/updateServicesIncluded',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+
+  const query =`DELETE from service_in_package_tbl where package_id=${req.body.id}`
+
+  db.query(query,(err,out)=>{
+    aydi= req.body.id;
+    for(var i=0;i<req.body.nameOfservice.length;i++)
+    {
+      db.query(`INSERT INTO service_in_package_tbl(service_id, package_id)value("${req.body.nameOfservice[i]}","${aydi}")`,(err,out)=>{
+      })
+    }
+    if (err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
+//          > UPDATE Package Information
+router.post('/adminPackages/viewPackageInformation',(req, res) => {
+  const query = `SELECT * FROM package_tbl WHERE package_id=?`
+  db.query(query,[req.body.id],(err, out) => {
+      res.send(out[0])
+    })
+})
+router.post('/adminPackages/updatePackageInformation', (req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
+  console.log(req.body)
+  
+  const query = `UPDATE package_tbl SET
+  package_name="${req.body.package_name}",
+  package_price="${req.body.package_price}"
+  WHERE package_id="${req.body.id}"
+  `
+  db.query(query,(err,out) =>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
+router.post('/adminPackages/deletePackage',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+
+  const query= `UPDATE package_tbl SET delete_stats=1 WHERE package_id=?`
+
+  db.query(query,[req.body.id],(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
 })
 
 // =========================================================================================================================================================================
@@ -67,62 +227,93 @@ router.get('/adminPackages', (req, res) => {
 // [PROMO]
 //          > R E A D
 router.get('/adminPromos',mid.adminnauthed,(req, res) => {
-  const query = ` select promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name from promo_bundle_tbl 
-  join service_in_promo_tbl on promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id 
-  join services_tbl on services_tbl.service_id = service_in_promo_tbl.service_id where promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
-  select * from services_tbl where delete_stats=0 and service_availability=0`
+  const query = ` SELECT promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name, service_duration_tbl.* FROM promo_bundle_tbl 
+  JOIN service_in_promo_tbl ON promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id
+  JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = promo_bundle_tbl.service_duration_id 
+  JOIN services_tbl ON services_tbl.service_id = service_in_promo_tbl.service_id WHERE promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
+  SELECT * FROM services_tbl WHERE delete_stats=0 and service_availability=0;
+  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 ORDER BY service_duration_desc ASC`
   db.query(query,(err,out) =>{
     res.render('admin/maintenance/promo/adminPromos',{
       promos: out[0],
-      services: out[1]
+      services: out[1],
+      durations: out[2]
     })
   })
 })
 //          > C R E A T E (ADD) 
 router.post('/adminPromos',(req, res) => {
+    var alertSuccess=0
+    var notSuccess=1
+
+    var promobundle_valid_from = moment(req.body.promobundle_valid_from).format('MMMM DD, YYYY')
+    var promobundle_valid_until= moment(req.body.promobundle_valid_until).format('MMMM DD, YYYY')
     var aydi;
     const query = `
       insert into 
-      promo_bundle_tbl(promobundle_name, promobundle_price,promobundle_validity, promobundle_availability, promobundle_duration, promobundle_amenity_usage, delete_stats)
-      value("${req.body.name}","${req.body.price}","${req.body.valid}",0 ,"${req.body.duration}","${req.body.amenity}",0)`
+      promo_bundle_tbl(promobundle_name, promobundle_price,promobundle_valid_from,promobundle_valid_until, service_duration_id,promobundle_availability,  delete_stats)
+      value("${req.body.promobundle_name}","${req.body.promobundle_price}","${promobundle_valid_from}","${promobundle_valid_until}","${req.body.service_duration_id}",0,0)`
       
       db.query(query, (err, out) => {
         aydi=out.insertId;
-        for(var i=0;i<req.body.promos.length;i++)
+        for(var i=0;i<req.body.services_included.length;i++)
         {
-          db.query(`insert into service_in_promo_tbl(promobundle_id, service_id) value("${aydi}","${req.body.promos[i]}")`, (err,out)=>{
+          db.query(`insert into service_in_promo_tbl(promobundle_id, service_id) value("${aydi}","${req.body.services_included[i]}")`, (err,out)=>{
 
           })
+        }
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
         }
       })
   })
 //            > D E L E T E 
 router.post('/adminPromos/delete', (req, res) => {
-    console.log(req.body.id)
+    var alertSuccess =0
+    var notSuccess =1
+
     const query = `
     UPDATE promo_bundle_tbl set delete_stats=1 where promobundle_id = ${req.body.id} `
       
     db.query(query,(err,out)=>{
-      res.redirect('/admin/adminPromos')
-      console.log(query)
+      if (err)
+      {
+        res.send({alertDesc:notSuccess})
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
     })
   })
 //          > U P D A T E
 router.post('/adminPromos/update', (req, res) => {
-  console.log(req.body)
+  var alertSuccess=0
+  var notSuccess=0
   
   const query = `UPDATE promo_bundle_tbl set
   promobundle_name="${req.body.promobundle_name}",
   promobundle_price="${req.body.promobundle_price}",
-  promobundle_validity="${req.body.promobundle_validity}",
-  promobundle_availability="${req.body.promobundle_availability}",
-  promobundle_duration="${req.body.promobundle_duration}",
-  promobundle_amenity_usage="${req.body.promobundle_amenity_usage}"
-  WHERE promobundle_id = ${req.body.id1};
+  promobundle_valid_from="${req.body.promobundle_valid_from}",
+  promobundle_valid_until="${req.body.promobundle_valid_until}"
+  WHERE promobundle_id = ${req.body.id};
   `
   db.query(query,(err,out) =>{
-      res.redirect("/admin/adminPromos")
-    if(err) return console.log(err)
+    if (err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
 
@@ -157,7 +348,7 @@ router.post('/adminPromos/query2',(req, res) => {
   })
 })
 
-router.post('/adminTherapist/updateServicesInPromo',(req,res)=>{
+router.post('/adminPromos/updateServicesInPromo',(req,res)=>{
   console.log(req.body.id1)
   const query =`DELETE from service_in_promo_tbl where promobundle_id=${req.body.id1}`
 
@@ -172,6 +363,23 @@ router.post('/adminTherapist/updateServicesInPromo',(req,res)=>{
       console.log(query)
     }
   })
+})
+
+router.post('/adminPromos/statusChange',(req, res) => {
+  var alertSuccess=0
+  var notSuccess=1
+  const query = `UPDATE promo_bundle_tbl set promobundle_availability= ${req.body.stats} where promobundle_id= ${req.body.id}`
+  db.query(query,(err,out) =>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+})
 })
 
 // =========================================================================================================================================================================
@@ -191,53 +399,98 @@ router.get('/adminRooms',mid.adminnauthed,(req, res) => {
 })
 //          > C R E A T E (ADD)
 router.post('/adminRooms',(req, res) => {
-    const query = `
-      insert into 
-      room_tbl(room_name, room_type_id,room_rate,bed_qty, room_availability, delete_stats)
-      value("${req.body.room_name}","${req.body.room_type}","${req.body.room_rate}","${req.body.bed_qty}",1,0)`
-    db.query(query, (err, out) => {
-      res.redirect('/admin/adminRooms')
-      console.log(query)
-    })
+  var alertSuccess=0
+  var notSuccess =1
+  var valExisting=2
+
+  const query=`SELECT * FROM room_tbl WHERE room_name = "${req.body.room_name}" AND room_type_id ="${req.body.room_type_id}" AND delete_stats=0`
+
+  db.query(query,(err,out)=>{
+    if (out == undefined || out ==0)
+    {
+      const query = `
+          INSERT INTO
+          room_tbl(room_name, room_type_id,room_rate,bed_qty, room_availability, delete_stats)
+          VALUE("${req.body.room_name}","${req.body.room_type_id}","${req.body.room_rate}","${req.body.bed_qty}",0,0)`
+        db.query(query, (err, out) => {
+          if(err)
+          {
+            res.send({alertDesc:notSuccess})
+            console.log(err)
+          }
+          else
+          {
+            res.send({alertDesc:alertSuccess})
+          }
+        })
+    }
+    else if(out =! undefined)
+    {
+      res.send({alertDesc:valExisting})
+    }
+  })
   })
 //          > D E L E T E
 router.post('/adminRooms/delete', (req, res) => {
-    console.log(req.body.id)
+    var alertSuccess =0
+    var notSuccess =1 
     const query = `UPDATE room_tbl set delete_stats=1 where room_id = ${req.body.id}`
       
     db.query(query,(err,out)=>{
-      res.redirect('/admin/adminRooms')
+      if (err)
+      {
+        res.send({alertDesc:notSuccess})
+        console.log(err)
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
     })
   })
 //          > U P D A T E
 router.post('/adminRooms/update', (req, res) => {
-
+  var alertSuccess=0
+  var notSuccess=1
   const query = `UPDATE room_tbl set 
-  room_name="${req.body.room_name}", bed_qty="${req.body.bed_qty}",room_type_id="${req.body.room_type}"
-  WHERE room_id = ${req.body.id1}
+  room_name="${req.body.room_name}", bed_qty="${req.body.bed_qty}"
+  WHERE room_id = ${req.body.id}
   `
   db.query(query,(err,out) =>{
-      console.log(query)
-      if(err) return console.log(err)
-      res.redirect("/admin/adminRooms")
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+
   })
 })
   router.post('/adminRooms/query',(req, res) => {
+
     const query = `select room_tbl.*, room_type_tbl.room_type_desc from room_tbl join room_type_tbl 
     on room_tbl.room_type_id = room_type_tbl.room_type_id where room_id=?`
     db.query(query,[req.body.id1],(err, out) => {
-        var out1 = out[0]
-        db.query(`select * from room_type_tbl where delete_stats=0`,(err,out)=>{
-          return res.send({out1:out1, out2:out})
-        })
+      res.send(out[0])
     })
   })
   router.post('/adminRooms/statusChange',(req, res) => {
-    const query = `UPDATE room_tbl set room_availability= ${req.body.stats} where room_id= ${req.body.id1}`
+    var alertSuccess=0
+    var notSuccess=1
+    const query = `UPDATE room_tbl set room_availability= ${req.body.stats} where room_id= ${req.body.id}`
     db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminServices")
-      console.log(query)
+      if(err)
+      {
+        res.send({alertDesc:notSuccess})
+        console.log(err)
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
   })
   })
 // UNDER OF ROOM
@@ -255,42 +508,81 @@ router.get('/adminRoomType', mid.adminnauthed,(req, res) => {
 })
 //          > C R E A T E (ADD)
 router.post('/adminRoomType',(req, res) => {
-    const query = `
-      insert into 
-      room_type_tbl(room_type_desc, delete_stats)
-      value("${req.body.room_type_desc}",0)`
-    db.query(query, (err, out) => {
-      res.redirect('/admin/adminRoomType')
-      console.log(query)
-    })
+  var alertSuccess=0
+  var notSuccess=1
+  var valExisting=2
+
+  const query =`SELECT * FROM room_type_tbl WHERE room_type_desc="${req.body.room_type_desc}" AND delete_stats=0`
+  
+  db.query(query,(err,out)=>{
+    if (out== undefined || out==0)
+    {
+      const query1 = `
+        INSERT INTO room_type_tbl(room_type_desc, delete_stats)
+        VALUE("${req.body.room_type_desc}",0)`
+      db.query(query1, (err, out) => {
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
+    }
+    else if(out =! undefined)
+    {
+      res.send({alertDesc:valExisting})
+    }
+  })
+  
   })
 //          > D E L E T E
 router.post('/adminRoomType/delete', (req, res) => {
-    console.log(req.body.id)
+    var alertSuccess=0
+    var notSuccess=1
     const query = `UPDATE room_type_tbl set delete_stats=1 where room_type_id = ${req.body.id}`
       
     db.query(query,(err,out)=>{
-      res.redirect('/admin/adminRoomType')
+      if(err)
+      {
+        res.send({alertDesc:notSuccess})
+        console.log(err)
+      }
+      else
+      {
+        res.send({alertDesc:alertSuccess})
+      }
     })
   })
 //          > U P D A T E
 router.post('/adminRoomType/update', (req, res) => {
+  var alertSuccess =0
+  var notSuccess= 1
 
   const query = `UPDATE room_type_tbl set 
   room_type_desc="${req.body.room_type_desc}"
-  WHERE room_type_id = ${req.body.id1}
+  WHERE room_type_id = ${req.body.id}
   `
   db.query(query,(err,out) =>{
-      if(err) return console.log(err)
-      res.redirect("/admin/adminRoomType")
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
   })
 })
   router.post('/adminRoomType/query',(req, res) => {
     const query = `select * from room_type_tbl where room_type_id=?`
     db.query(query,[req.body.id1],(err, out) => {
         res.send(out[0])
-        console.log(out[0])
-        console.log(req.body.id1)
+
     })
   })
 
@@ -424,20 +716,32 @@ router.get('/adminServiceType', mid.adminnauthed,(req, res) => {
 router.post('/adminServiceType',(req, res) => {
   var alertSuccess=0
   var notSuccess=1
+  var valExisting=2
 
-  const query = `
-    insert into 
-    service_type_tbl(service_type_desc, service_type_availability ,delete_stats)
-    value("${req.body.service_type_desc}",0,0)`
-  db.query(query, (err, out) => {
-    if(err)
+  const query =`SELECT * FROM service_type_tbl WHERE service_type_desc="${req.body.service_type_desc}" AND delete_stats=0`
+
+  db.query(query,(err,out)=>{
+    if(out==undefined || out==0)
     {
-      res.send({alertDesc:notSuccess})
-      console.log(err)
+      const query1 = `
+        insert into 
+        service_type_tbl(service_type_desc, service_type_availability ,delete_stats)
+        value("${req.body.service_type_desc}",0,0)`
+      db.query(query1, (err, out) => {
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
     }
-    else
+    else if(out =! undefined)
     {
-      res.send({alertDesc:alertSuccess})
+      res.send({alertDesc:valExisting})
     }
   })
 })
@@ -523,22 +827,35 @@ router.get('/adminServiceDuration', mid.adminnauthed,(req, res) => {
 router.post('/adminServiceDuration',(req, res) => {
   var alertSuccess=0
   var notSuccess=1
+  var valExisting=2
 
-  const query = `
-    insert into 
-    service_duration_tbl(service_duration_desc, delete_stats, service_duration_availability)
-    value("${req.body.service_duration_desc}", 0, 0)`
-  db.query(query, (err, out) => {
-    if(err)
+  const query =`SELECT * FROM service_duration_tbl WHERE service_duration_desc="${req.body.service_duration_desc}" AND delete_stats=0`
+  
+  db.query(query,(err,out)=>{
+    if(out == undefined || out==0)
     {
-      res.send({alertDesc:notSuccess})
-      console.log(err)
+      const query = `
+        insert into 
+        service_duration_tbl(service_duration_desc, delete_stats, service_duration_availability)
+        value("${req.body.service_duration_desc}", 0, 0)`
+      db.query(query, (err, out) => {
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
     }
-    else
+    else if(out =! undefined)
     {
-      res.send({alertDesc:alertSuccess})
+      res.send({alertDesc:valExisting})
     }
   })
+  
 })
 //          > U P D A T E
 router.post('/adminServiceDuration/update', (req, res) => {
@@ -739,7 +1056,6 @@ router.post('/adminTherapist/query1',(req, res) => {
     var out1= out
     db.query(`select * from therapist_tbl where delete_stats= 0 and therapist_id= ${id2}`,(err,out)=>{
       return res.send({out1:out1, out2:out[0], id2})
-      console.log(out[0])
     })
   })
 })
@@ -800,7 +1116,7 @@ router.post('/adminTherapist/statusChange',(req,res)=>{
   })
 })
 // ^UNDER OF THERAPIST
-// [THERIST SPECIALTY]
+// [THERAPIST SPECIALTY]
 //        > R E A D
 router.get('/adminSpecialty',mid.adminnauthed,(req, res) => {
   const query = ` select * from specialty_tbl where delete_stats=0`
@@ -815,20 +1131,32 @@ router.get('/adminSpecialty',mid.adminnauthed,(req, res) => {
 router.post('/adminSpecialty/Add',(req, res) => {
   var alertSuccess=0
   var notSuccess=1
+  var valExisting=2
 
-  const query = `
-    insert into 
-    specialty_tbl(specialty_desc, delete_stats)
-    value("${req.body.specialty_desc}",0)`
-  db.query(query, (err, out) => {
-    if(err)
+  const query =`SELECT * FROM specialty_tbl WHERE specialty_desc="${req.body.specialty_desc}" AND delete_stats=0`
+  
+  db.query(query,(err,out)=>{
+    if(out == undefined || out ==0)
     {
-      res.send({alertDesc:notSuccess})
-      console.log(err)
+      const query = `
+        insert into 
+        specialty_tbl(specialty_desc, delete_stats)
+        value("${req.body.specialty_desc}",0)`
+      db.query(query, (err, out) => {
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
     }
-    else
+    else if(out =! undefined)
     {
-      res.send({alertDesc:alertSuccess})
+      res.send({alertDesc:valExisting})
     }
   })
 })

@@ -235,17 +235,17 @@ html(lang='en')
                           h5.modal-title
                             center Add New Room Type
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='post' action='/admin/adminRoomType')
+                        form#allInputsFormValidation(method='#' action='#')
                           .modal-body
                             .row
                               .col-md-12
                                 .form-group.has-default.bmd-form-group
                                   label New Room Type
                                   star *
-                                  input.form-control(type='text', placeholder='Room Type' name="room_type_desc" required='true' aria-label='true' ) 
+                                  input.form-control(type='text', placeholder='Room Type' id='room_type_desc' name="room_type_desc" required='true' aria-label='true' ) 
                             
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add New Room Type
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add New Room Type
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
@@ -279,6 +279,7 @@ html(lang='en')
                                     each rtyp in rtyps
                                       tr
                                         td= rtyp.room_type_desc
+                                        input.name(type='hidden' id=`${rtyp.room_type_id}` value=`${rtyp.room_type_desc}`)
                                         td
                                         td
                                         td
@@ -383,8 +384,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -400,6 +399,53 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
+    $(document).ready(function(){
+      $('.addButton').click(function(){
+        var room_type_desc = $('#room_type_desc').val()
+
+        if(room_type_desc==0)
+        {
+           swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+        }
+        else
+        {
+          $.post('./adminRoomType',{
+            room_type_desc
+          }).done(function(data){
+             if(data.alertDesc== 0)
+                {
+                  swal({
+                    title: "Success",
+                    text: "New Room Type has been Added",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload();
+                  })
+                }
+              else if(data.alertDesc==1)
+                {
+                  swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+                }
+              else if(data.alertDesc ==2)
+              {
+                  swal({
+                    title: room_type_desc+" already exist.",
+                    icon: 'warning'
+                  })
+              }
+          })
+        }
+      })
+    })
+  script.
       $(document).ready(function(){
         $('.logout').click(function(){
             swal({
@@ -409,40 +455,14 @@ html(lang='en')
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
+          .then((logout) => {
+            if (logout) {
               $.post('/admin/admin/logout')
               location.reload()
             } 
           });
           })
-        $('.deleteButton').click(function(){
-            var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
-                });
-                $('#deleteSubmit').click(function(){
-                $.post('/admin/adminRoomType/delete',{id:idNow})
-                    .done(data=>{
-                    if(data){
-                        swal({
-                        title:'Success', 
-                        text:'Service Deleted', 
-                        icon:'success'
-                        }).then(function(){
-                          location.reload();
-                        })
-                      $('#updateModal').modal('hide');
-                    }
-                  })
-            });
-            
-        });
+
         $('#modal-warning').on('hidden.bs.modal', function (){
                 var idNow = 0;
                 console.log(idNow)
@@ -456,7 +476,7 @@ html(lang='en')
                   <div class="col-md-12">
                     <div class="form-group has-default bmd-form-group">
                       <label>Room Type</label>
-                      <input type="text" placeholder="${data.room_type_desc}" id="room_type_desc" class="form-control"/>
+                      <input type="text" placeholder="${data.room_type_desc}" value='${data.room_type_desc}' id="room_type_description" class="form-control"/>
                     </div>
                   </div>
                 </div>
@@ -470,28 +490,77 @@ html(lang='en')
               })
               $('#updateSubmitButton').click(function(){
                   $.post('/admin/adminRoomType/update',{
-                  room_type_desc:$('#room_type_desc').val(),
+                  room_type_desc:$('#room_type_description').val(),
                  
                   
-                  id1:idNow
+                  id:idNow
                   })
-                  .done(data=>{
-                      if(data){
+                  .done(function(data){
+                      if(data.alertDesc==0){
                           swal({
                           title:'Success', 
-                          text:'Service Information Updated', 
+                          text:'Room Type Information has been Updated', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
                           })
-                        $('#updateModal').modal('hide');
                       }
+                      else
+                      {
+                        swal({
+                          title: "ERROR",
+                          icon: "error"
+                        })
+                      }
+                      
                   })
                 })
               })
 
           })
       })
+  script.
+    $(document).ready(function(){
+      $('.deleteButton').click(function(){
+             var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name,
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('./adminRoomType/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
@@ -509,15 +578,6 @@ html(lang='en')
     }
     });
     });
-    //- $('#add').click(function(){
-    //- swal({
-    //-   title:'Success', 
-    //-   text:'New Service Added', 
-    //-   icon:'success'})
-    //-   .then(function(){
-    //-   location.reload();
-    //- })
-    //- });
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();

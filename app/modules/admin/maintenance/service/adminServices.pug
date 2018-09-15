@@ -350,19 +350,19 @@ html(lang='en')
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.buttonAddSubmit(type='button') Add Service
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   
-                  // DELETE  
-                  #modal-warning.modal.modal-warning.fade
-                    .modal-dialog
-                      .modal-content
-                        .modal-header
-                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            span(aria-hidden='true') ×
-                          h4.modal-title Warning
-                        .modal-body
-                          p Are you sure you?
-                        .modal-footer
-                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
-                            button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
+                  //- // DELETE  
+                  //- #modal-warning.modal.modal-warning.fade
+                  //-   .modal-dialog
+                  //-     .modal-content
+                  //-       .modal-header
+                  //-         button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  //-           span(aria-hidden='true') ×
+                  //-         h4.modal-title Warning
+                  //-       .modal-body
+                  //-         p Are you sure you?
+                  //-       .modal-footer
+                  //-           button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') No
+                  //-           button.btn.btn-info.btn-fill.pull-right#deleteSubmit(href='button') Yes
 
 
                   //UPDATE
@@ -512,8 +512,8 @@ html(lang='en')
             buttons: true,
             dangerMode:   true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
+          .then((logout) => {
+            if (logout) {
               $.post('/admin/admin/logout')
               location.reload()
             } 

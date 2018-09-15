@@ -382,6 +382,7 @@ html(lang='en')
   script.
     $(document).ready(function(){
         $('.addSpecialty').click(function(){
+          var specialty_desc = $('#specialty_desc').val()
           if($('#specialty_desc').val()==0)
           {
             swal({
@@ -405,7 +406,7 @@ html(lang='en')
                     location.reload();
                   })
                 }
-              else
+              else if(data.alertDesc==1)
                 {
                   swal({
                     title: "Error",
@@ -413,7 +414,13 @@ html(lang='en')
                     icon: 'error'
                   })
                 }
-            
+              else if(data.alertDesc==2)
+              {
+                swal({
+                  title: specialty_desc+" is already exist.",
+                  icon: 'warning'
+                })
+              }
             })
           }
         })

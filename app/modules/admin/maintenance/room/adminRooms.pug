@@ -281,7 +281,8 @@ html(lang='en')
                                     each room in rooms
                                       tr
                                         td= room.room_type_desc
-                                        td= room.room_name 
+                                        td= room.room_name
+                                        input.name(type='hidden' id=`${room.room_id}` value=`${room.room_name}`)
                                         td= room.bed_qty
                                         td= room.room_rate
                                         td
@@ -318,14 +319,14 @@ html(lang='en')
                           h5.modal-title
                             center Add New Room
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
-                        form#allInputsFormValidation(method='POST' action='/admin/adminRooms')
+                        form#allInputsFormValidation(method='#' action='#')
                           .modal-body
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Room Type
                                   star *
-                                  select.selectpicker(name='room_type'  data-style='btn-info')
+                                  select.selectpicker(name='room_type' title='Select Room Type' data-style='btn-info' id='room_type')
                                     each rtyp in rtyps
                                       option(value=`${rtyp.room_type_id}`)= rtyp.room_type_desc
                                       
@@ -333,22 +334,22 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Room Name
                                   star *
-                                  input.form-control(type='text', placeholder='Room Name' name='room_name' required='true' aria-label='true')
+                                  input.form-control(type='text', placeholder='Room Name' name='room_name' id='room_name' required='true' aria-label='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Bed Quantity
                                   star *
-                                  input.form-control(type='number', placeholder='Bed Quantity' name='bed_qty' required='true' aria-label='true')
+                                  input.form-control(type='number', placeholder='Bed Quantity' name='bed_qty' id='bed_qty' required='true' aria-label='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                   label Rate per hour
                                   star *
-                                  input.form-control(type='number', placeholder='Rate' name='room_rate' required='true' aria-label='true')
+                                  input.form-control(type='number', placeholder='Rate' name='room_rate' id='room_rate' required='true' aria-label='true')
 
                             .row
                           .modal-footer
-                            button#add.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='submit') Add Room
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add Room
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   
                   // DELETE  
@@ -413,7 +414,7 @@ html(lang='en')
                         | , made with 
                         i.fa.fa-heart.heart
                         |  by 
-                        a(href='http://www.creative-tim.com') Team MBAY
+                        a(href='#') Team MBAY
             
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -440,10 +441,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -459,6 +456,201 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
+    $(document).ready(function(){
+      $('.addButton').click(function(){
+        var room_type_id= $('#room_type').val()
+        var room_name = $('#room_name').val()
+        var bed_qty = $('#bed_qty').val()
+        var room_rate = $('#room_rate').val()
+
+        if(room_type_id ==0 && room_name==0 && bed_qty ==0 || room_type_id ==0 || room_name==0 || bed_qty ==0 )
+        {
+          swal({
+            title: 'Please double check the Fields',
+            text: 'Make sure all required fields has value', 
+            icon: 'warning'
+          })
+          console.log(room_rate)
+        }
+        else
+        {
+          $.post('./adminRooms',{
+            room_type_id,
+            room_name,
+            bed_qty,
+            room_rate
+          }).done(function(data){
+             if(data.alertDesc== 0)
+                {
+                  swal({
+                    title: "Success",
+                    text: "New Room Duration has been Added",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload();
+                  })
+                }
+              else if(data.alertDesc==1)
+                {
+                  swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+                }
+              else if(data.alertDesc==2)
+              {
+                  swal({
+                    title: room_name+" already exist.",
+                    icon: 'warning'
+                  })
+              }
+          })
+        }
+      })
+    })
+
+  script.
+    $(document).ready(function(){
+       
+      $(function(){
+                  console.log(localStorage)
+                  var name = localStorage.getItem('name')
+                  if (localStorage.getItem('name'))
+                  {
+                    if(localStorage.getItem('status')==1)
+                    {
+                    $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to not available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                    else
+                    {
+                       $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                }
+                })
+    })
+
+  script.
+    $(document).ready(function(){
+      $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('./adminRooms/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+          }
+          else if(state==true)
+          {
+            //- var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('./adminRooms/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+
+        });
+    })
+
+  script.
+    $(document).ready(function(){
+      $('.deleteButton').click(function(){
+         var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('./adminRooms/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+'  has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })
+  script.
       $(document).ready(function(){
         $('.logout').click(function(){
             swal({
@@ -468,61 +660,20 @@ html(lang='en')
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
+          .then((logout) => {
+            if (logout) {
               $.post('/admin/admin/logout')
               location.reload()
             } 
           });
           })
         $('.bawal').click(function(){
-          alert("Can't Update or Delete ")
+          swal({
+            title: 'Set to not available this item first',
+            icon: 'warning'
+          })
         })
-        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
-          if(state==false)
-          {
-            var idNow = $(this).val();
-            var stats = 1
-            //- alert(stats)
-            //- alert(idNow)
-            $.post('/admin/adminRooms/statusChange',{stats,id1:idNow})
-          }
-          else if(state==true)
-          {
-            var idNow = $(this).val();
-            var stats = 0
-            //- alert(stats)
-            //- alert(idNow)
-            $.post('/admin/adminRooms/statusChange',{stats,id1:idNow})
-          }
-          location.reload();
-        });
-        $('.deleteButton').click(function(){
-            var idNow = $(this).val();
-            console.log(idNow)
-            $('#modal-warning').modal('show');
-            $('#deleteSubmit').css('display', 'block');
-            $('#cancelButton').css('display', 'block');
-                $('#cancelButton').click(function(){
-                  var idNow = 0;
-                });
-                $('#deleteSubmit').click(function(){
-                $.post('/admin/adminRooms/delete',{id:idNow})
-                    .done(data=>{
-                      if(data){
-                          swal({
-                          title:'Success', 
-                          text:'Room Deleted', 
-                          icon:'success'
-                          }).then(function(){
-                            location.reload();
-                          })
-                        $('#updateModal').modal('hide');
-                      }
-                  })
-            });
-            
-        });
+
         $('.updateButton').click(function(){
           var idNow = $(this).val();
               $.post('/admin/adminRooms/query',{id1:idNow})
@@ -531,36 +682,25 @@ html(lang='en')
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Room Type*</label>
-                        <select id="room_type" title="${data.out1.room_type_desc}" name="room_type" data-style="btn-info" class="selectpicker">
-                        </select>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Room Name*</label>
-                        <input type="text" placeholder="${data.out1.room_name}" value="${data.out1.room_name}" id="room_name" name="room_name" class="form-control"/>
+                        <label>Room Name</label>
+                        <input type="text" placeholder="${data.room_name}" value="${data.room_name}" id="name" name="room_name" class="form-control"/>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Bed Quantity*</label>
-                        <input type="number" placeholder="${data.out1.bed_qty}" value="${data.out1.bed_qty}" id="bed_qty" class="form-control"/>
+                        <label>Bed Quantity</label>
+                        <input type="number" placeholder="${data.bed_qty}" value="${data.bed_qty}" id="quantity" class="form-control"/>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Room Rate*</label>
-                        <input type="number" placeholder="${data.out1.room_rate}" value="${data.out1.room_rate}" id="bed_qty" class="form-control"/>
+                        <label>Room Rate</label>
+                        <input type="number" placeholder="${data.room_rate}" value="${data.room_rate}" id="rate" class="form-control"/>
                       </div>
                     </div>
                   </div>`)
-                for(var i=0; i<data.out2.length;i++){
-                console.log(data.out2[i].room_type_desc)
-                $('#room_type').append(`<option value="${data.out2[i].room_type_id}">${data.out2[i].room_type_desc}</option>`)
-                }
               $('#updateModal').modal('show')
               $('#bed_qty').selectpicker();
               $('#room_type').selectpicker();
@@ -573,16 +713,15 @@ html(lang='en')
               })
               $('#updateSubmitButton').click(function(){
                   $.post('/admin/adminRooms/update',{
-                  room_name:$('#room_name').val(),
-                  room_type:$('#room_type').val(),
-                  room_rate:$('#room_rate').val(),
-                  bed_qty:$('#bed_qty').val(),
-                  room_availability:$('#room_availability').val(),
+                  room_name:$('#name').val(),
+                  room_rate:$('#rate').val(),
+                  bed_qty:$('#quantity').val(),
                   
-                  id1:idNow
+                  id:idNow
                   })
-                  .done(data=>{
-                      if(data){
+                  .done(function(data){
+                      if(data.alertDesc==0)
+                      {
                           swal({
                           title:'Success', 
                           text:'Room Information Updated', 
@@ -590,7 +729,13 @@ html(lang='en')
                           }).then(function(){
                             location.reload();
                           })
-                        $('#updateModal').modal('hide');
+                      }
+                      else
+                      {
+                        swal({
+                          title: 'ERROR',
+                          icon: 'error'
+                        })
                       }
                   })
                 })

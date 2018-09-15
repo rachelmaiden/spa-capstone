@@ -405,6 +405,7 @@ html(lang='en')
   script.
     $(document).ready(function(){
         $('.addServiceDuration').click(function(){
+          var service_duration_desc = $('#duration_desc').val()
           if($('#duration_desc').val()==0)
           {
             swal({
@@ -428,7 +429,7 @@ html(lang='en')
                     location.reload();
                   })
                 }
-              else
+              else if(data.alertDesc==1)
                 {
                   swal({
                     title: "Error",
@@ -436,7 +437,13 @@ html(lang='en')
                     icon: 'error'
                   })
                 }
-            
+              else if(data.alertDesc==2)
+              {
+                  swal({
+                    title: service_duration_desc+" already exist.",
+                    icon: 'warning'
+                  })
+              }
             })
           }
         })
@@ -557,8 +564,8 @@ html(lang='en')
             buttons: true,
             dangerMode: true,
           })
-          .then((willDelete) => {
-            if (willDelete) {
+          .then((logout) => {
+            if (logout) {
               $.post('/admin/admin/logout')
               location.reload()
             } 

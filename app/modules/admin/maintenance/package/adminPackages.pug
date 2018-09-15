@@ -219,191 +219,191 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addPackage') Add New Package
-                        #addPackage.modal.fade(tabindex='-1', role='dialog')
-                          .modal-dialog(role='document')
-                            .modal-content
-                              .modal-header
-                                h5.modal-title
-                                  center Add New Package
-                                button.close(type='button', data-dismiss='modal', aria-label='Close')
-                              sform#allInputsFormValidation(method='POST' action='/admin/adminPromos')
-                                .modal-body
-                                  .row
-                                    .col-md-6
-                                      .form-group.has-default.bmd-form-group
-                                        label Package Name
-                                        star *
-                                        input.form-control(type='text', placeholder='Package Name' name='name' required='true', aria-required='true')
-                                    .col-md-6
-                                      .form-group.has-default.bmd-form-group
-                                        label Package Price
-                                        star *
-                                        input.form-control(type='number', placeholder='Package Price' name='price' required='true', aria-required='true' )
-                                  .form-group.has-default.bmd-form-group
-                                    center
-                                      label Services Included*
-                                        select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' name='package')
-                                          option
-                                  .row
-                                    .col-md-6
-                                      .form-group.has-default.bmd-form-group
-                                      label Package Duration
-                                      star *
-                                      select.selectpicker(name='duration'  data-style='btn-info')
-                                        option(value='60 minutes') 60 minutes
-                                        option(value='90 minutes') 90 minutes
-                                        option(value='120 minutes') 120 minutes
-                                    .col-md-6  
-                                      .form-group.has-default.bmd-form-group
-                                      label Hours of Amenity Usage
-                                      star *
-                                      select.selectpicker(name='amenity'  data-style='btn-info')
-                                        option(value='60 minutes') 60 minutes
-                                        option(value='90 minutes') 90 minutes
-                                        option(value='120 minutes') 120 minutes        
-                                //- form(method='POST' action='/adminAmenity')
-                                //-   .modal-body
-                                //-     .row
-                                //-       .col-sm-4
-                                //-       .col-sm-4
-                                //-         .input-group
-                                //-           input.form-control(type='number' name="amenity_usage")
-                                //-           span.input-group-addon Hours
-                                .modal-footer
-                                  button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='Submit') Add 
-                                  button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                  .content
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          p.category  
+                          .card
+                            .card-content
+                              .toolbar
+                                // Here you can write extra buttons/actions for the toolbar
+                              .fresh-datatables
+                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                  thead
+                                    tr
+                                      th Package Name
+                                      th Services Included
+                                      th Duration
+                                      th Price
+                                      th Availability
+                                      th.disabled-sorting Actions
+                                  tfoot
+                                    tr
+                                      th Package Name
+                                      th Services Included
+                                      th Duration
+                                      th Price
+                                      th Availability
+                                      th Actions
+                                  tbody
+                                    each pack in packages
+                                      tr
+                                        td= pack.package_name
+                                        input.name(type='hidden' id=`${pack.package_id}` value=`${pack.package_name}`)
+                                        td
+                                          button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${pack.package_id}`) View Services
+                                        td= pack.service_duration_desc+" "+"minutes"
+                                        td= pack.package_price
+                                        td
+                                          if(pack.package_availability ==0)
+                                            input.switch-icon(type='checkbox' checked value=`${pack.package_id}`)
+                                          else if(pack.package_availability ==1)
+                                            input.switch-icon(type='checkbox' value=`${pack.package_id}`)
+                                        td
+                                          if(pack.package_availability==1)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${pack.package_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-pencil-alt
+                                                    |  Update
+                                                li
+                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${pack.package_id}` stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-trash
+                                                    |  Delete
+                                          else if(pack.package_availability==0)
+                                            .dropdown.pull-right(style="right: 20px")
+                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
 
-                    .content
-                      .container-fluid
+
+
+                                    // ADD
+                                    #addPackage.modal.fade(tabindex='-1', role='dialog')
+                                      .modal-dialog(role='document')
+                                        .modal-content
+                                          .modal-header
+                                            h5.modal-title
+                                              center Add New Package
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                          sform#allInputsFormValidation(method='#' action='')
+                                            .modal-body
+                                              .row
+                                                .col-md-6
+                                                  .form-group.has-default.bmd-form-group
+                                                    label Package Name
+                                                    star *
+                                                    input.form-control(type='text', placeholder='Package Name' id='package_name' name='name' required='true', aria-required='true')
+                                                .col-md-6
+                                                  .form-group.has-default.bmd-form-group
+                                                    label Package Price
+                                                    star *
+                                                    input.form-control(type='number', placeholder='Package Price' id='package_price' name='price' required='true', aria-required='true' )
+                                              .form-group.has-default.bmd-form-group
+                                                center
+                                                  label Services Included*
+                                                    select.selectpicker(multiple='', title='Select Service/s', id='services_included' data-style='btn-info', data-size='7' name='package')
+                                                      each service in services
+                                                        option(value=`${service.service_id}`)= service.service_name
+                                              .row
+                                                .col-md-6
+                                                  .form-group.has-default.bmd-form-group
+                                                  label Package Duration
+                                                  star *
+                                                  select.selectpicker(name='duration'  title='Select Duration' data-style='btn-info' id='package_duration')
+                                                    each duration in durations
+                                                      option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                                //- .col-md-6  
+                                                //-   .form-group.has-default.bmd-form-group
+                                                //-   label Hours of Amenity Usage
+                                                //-   star *
+                                                //-   select.selectpicker(name='amenity' title='Select Hours of Usage' data-style='btn-info' id='package_amenity_usage')
+                                                //-     option(value='60') 60 minutes
+                                                //-     option(value='90') 90 minutes
+                                                //-     option(value='120') 120 minutes        
+                                            //- form(method='POST' action='/adminAmenity')
+                                            //-   .modal-body
+                                            //-     .row
+                                            //-       .col-sm-4
+                                            //-       .col-sm-4
+                                            //-         .input-group
+                                            //-           input.form-control(type='number' name="amenity_usage")
+                                            //-           span.input-group-addon Hours
+                                            .modal-footer
+                                              button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add 
+                                              button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                                    
+                                    
+                                    
+                                    //UPDATE
+                                    #updateModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                      .modal-dialog(role='document')
+                                        .modal-content
+                                          .modal-header
+                                            h5#exampleModalLabel.modal-title Package Information
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close') 
+                                              span(aria-hidden='true') x
+                                          .modal-body#updateAppend
+                                          .modal-footer
+                                              button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                                              button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Submit
+                                    
+                                    //VIEW SERVICES INCLUDED
+                                    #servicesIncluded.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                      .modal-dialog(role='document')
+                                        .modal-content
+                                          .modal-header
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                              span(aria-hidden='true') ×
+                                            center
+                                              h4.modal-title#title
+                                          .modal-body#viewAppend
+                                          .modal-footer#footerAppend
+                                            center
+                                              button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateServicesIncluded(data-toggle='modal') Update
+                                                        
+                                    //UPDATE SERVICES INCLUDED
+                                    #updatePackageServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                      .modal-dialog(role='document')
+                                        .modal-content
+                                          .modal-header
+                                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                              span(aria-hidden='true') ×
+                                            center
+                                              h4.modal-title Services
+                                          .modal-body#servicesAppend
+                                          .modal-footer
+                                            button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
+                                            button.btn.btn-info.btn-fill.pull-right#updateServicesIncludedButton(type='button') Submit
+                      
+                      .row
+                        .col-md-6
+                          .card-header
+                          .card-content
+                        .col-md-6
+                          .card-header
+                          .card-content
+                      .row
+                        .col-md-6
+                          .card-header
+                            h4.card-title
+                          .card-content
+                        .col-md-6
+                          .card-header
+                          .card-content
+                      .card-header
+                        h4.card-title
+                      .card-content
                         .row
                           .col-md-12
-                            p.category  
-                            br
-                            .card
-                              .card-content
-                                .toolbar
-                                  // Here you can write extra buttons/actions for the toolbar
-                                .fresh-datatables
-                                  table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                    thead
-                                      tr
-                                        th Package Name
-                                        th Services Included
-                                        th Duration
-                                        th Hours of Amenities Usage
-                                        th Price
-                                        th Availability
-                                        th.disabled-sorting Actions
-                                    tfoot
-                                      tr
-                                        th Package Name
-                                        th Services Included
-                                        th Duration
-                                        th Hours of Amenities Usage
-                                        th Price
-                                        th Availability
-                                        th Actions
-                                   
-                                    tbody
-                                      tr
-                                        td
-                                        td
-                                         button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=``) View Services
-                                        td
-                                        td
-                                        td
-                                        td
-                                        td
-                                          .dropdown.pull-right(style="right: 25px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
-                                
-                                            
-                                          //
-                                                                                                                        <a href="#" class="btn btn-simple btn-danger btn-icon remove" rel="tooltip" title="Delete"><i class="ti-close"></i></a>
-                                #editAmenity.modal.fade(tabindex='-1', role='dialog')
-                                  .modal-dialog(role='document')
-                                    .modal-content
-                                      .modal-header
-                                        h5.modal-title
-                                          center Edit Maximum Hours of Amenity Usage
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                      .modal-body
-                                        .row
-                                          .col-sm-12
-                                            .input-group
-                                              input.form-control(type='number')
-                                              span.input-group-addon hours
-                                          //
-                                            <div class="col-md-6">
-                                            <div class="form-group has-default bmd-form-group">
-                                            <label>Service Type*</label>
-                                            <input type="text" class="form-control" placeholder="Service Type">
-                                            </div>
-                                            </div>
-                                      .modal-footer
-                                        button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Submit
-                                        button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                                  #editAmenity.modal.fade(tabindex='-1', role='dialog')
-                                    .modal-dialog(role='document')
-                                      .modal-content
-                                        .modal-header
-                                          h5.modal-title
-                                            center Edit Maximum Hours of Amenity Usage
-                                          button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                        .modal-body
-                                          .row
-                                            .col-sm-12
-                                              .input-group
-                                                input.form-control(type='number')
-                                                span.input-group-addon hours
-                                            //
-                                              <div class="col-md-6">
-                                              <div class="form-group has-default bmd-form-group">
-                                              <label>Service Type*</label>
-                                              <input type="text" class="form-control" placeholder="Service Type">
-                                              </div>
-                                              </div>
-                                        .modal-footer
-                                          button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Submit
-                                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel    
-                                      
-                                    
-                                    
-                                    .row
-                                      .col-md-6
-                                        .card-header
-                                        .card-content
-                                      .col-md-6
-                                        .card-header
-                                        .card-content
-                                    .row
-                                      .col-md-6
-                                        .card-header
-                                          h4.card-title
-                                        .card-content
-                                      .col-md-6
-                                        .card-header
-                                        .card-content
-                                    .card-header
-                                      h4.card-title
-                                    .card-content
-                                      .row
-                                        .col-md-12
-                                      .row
-                                        .col-md-12
-                                      .row
+                        .row
+                          .col-md-12
+                        .row
                         footer.footer
                           .container-fluid
                             .copyright.pull-right
@@ -439,11 +439,7 @@ html(lang='en')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
-  script(src='/assets/paperDashboardPro/js/sweetalert2.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+  script(src='/assets/paperDashboardPro/js/sweetalert.js')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -458,6 +454,382 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  
+  
+  //- ADD NEW PACKAGE
+  script.
+    $(document).ready(function(){
+      $('.addButton').click(function(){
+        var package_name = $('#package_name').val()
+        var package_price = $('#package_price').val()
+        var services_included = $('#services_included').val()
+        var package_duration = $('#package_duration').val()
+        var package_amenity_usage = $('#package_amenity_usage').val()
+        if(package_name == 0 && package_price == 0 || package_name == 0 || package_price == 0 || services_included == 0 || package_duration==0 || package_amenity_usage ==0)
+        {
+            swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+        }
+        else
+        {
+          $.post('./adminPackages',{
+            package_name: package_name,
+            package_price: package_price,
+            services_included: services_included,
+            package_duration: package_duration
+          }).done(function(data){
+            if(data.alertDesc ==0)
+            {
+                swal({
+                    title: "Success",
+                    text: "New Package has been Added",
+                    icon: 'success'
+                  }).then(function(){
+                    location.reload();
+                  })
+            }
+            else
+            {
+               swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+            }
+          })
+        }
+      })
+    })
+
+  //- VIEW SERVICES INCLUDED
+  script.
+    $(document).ready(function(){
+     $('.viewButton').click(function(){
+          var idNow = $(this).val();
+          $.post('./adminPackages/viewServicesIncluded',{id:idNow})
+          .done(data=>{
+            $('#title').append(`${data.out2.package_name}`)
+            $('#viewAppend').append(`
+                  <div class="row">
+                    <div class="col-md-10" id=services_name>
+                      <label> Services Included </label>
+                      <div class="form-group has-default bmd-form-group">
+                      </div>
+                    </div>
+                  </div>
+            `)
+              if(data.out2.package_availability==1)
+              {
+                $('#footerAppend').append(`
+                  <input type="hidden" id="inputId" value="${data.id}"></input>`)
+              }
+              else if(data.out2.package_availability==0)
+              {
+                $('#footerAppend').append(`
+                <input type="hidden" id="inputId" value="bawal"></input>`)
+              }
+            for(var i=0; i<data.out1.length;i++){
+              console.log(data.out1[i].service_name)
+                $('#services_name').append(`<li>${data.out1[i].service_name}</li>`)
+              }
+            $('#servicesIncluded').modal('show')
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#services_name').remove()
+              });
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#inputId').remove()
+              });
+            $('#servicesIncluded').on('hidden.bs.modal', function (){
+                $('#title').empty()
+              });
+          })
+        })
+    })
+
+  //- UPDATE PACKAGE AVAILABILITY
+  script.
+      $(function(){
+            console.log(localStorage)
+            var name = localStorage.getItem('name')
+            if (localStorage.getItem('name'))
+            {
+              if(localStorage.getItem('status')==1)
+              {
+              $.notify(
+                {
+                icon: 'ti-bell',
+                message: name+' has been set to not available',
+                
+              },
+              {
+                type: 'success'
+              },
+              {
+              animate: {
+                    enter: 'animated bounceInDown',
+                    exit: 'animated bounceOutUp'
+                  }
+              })
+                localStorage.clear()
+              }
+              else
+              {
+                  $.notify(
+                {
+                icon: 'ti-bell',
+                message: name+' has been set to available',
+                
+              },
+              {
+                type: 'success'
+              },
+              {
+              animate: {
+                    enter: 'animated bounceInDown',
+                    exit: 'animated bounceOutUp'
+                  }
+              })
+                localStorage.clear()
+              }
+          }
+          })
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            console.log(name)
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('./adminPackages/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('./adminPackages/statusChange',{stats,id:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+        });
+
+  //- UPDATE SERVICES INCLUDED IN THE PACKAGE
+  script.
+    $(document).ready(function(){
+        $('.updateServicesIncluded').click(function(){
+          var idNow = $('#inputId').val();
+          console.log(idNow)
+          if(idNow=='bawal')
+          {
+            swal({ 
+            title: 'Set to not available this item first',
+            icon: 'warning'
+          })
+          }
+          else
+          {
+
+                $.post('/admin/adminPackage/viewServices',{id:idNow})
+              .done(data=>{
+                $('#servicesAppend').append(`
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Services
+                        <select name="nameOfservice" id="nameOfservice" multiple="" title="Choose Services" data-style="btn-info" data-size="7" class="selectpicker">
+                        </select>
+                      </label>
+                    </div>
+                `)
+                for(var i=0; i<data.out1.length;i++){
+
+                    $('#nameOfservice').append(`<option value="${data.out1[i].service_id}"> ${data.out1[i].service_name} </option>`)
+                  }
+                $('#nameOfservice').selectpicker()
+                $('#updatePackageServices').modal('show')
+                $('#servicesIncluded').modal('hide')
+                $('#updatePackageServices').on('hidden.bs.modal', function (){
+                    $('#servicesAppend').empty()
+                  });
+            $('#updateServicesIncludedButton').click(function(){
+                  $.post('./adminPackages/updateServicesIncluded',{
+                      nameOfservice:$('#nameOfservice').val(),
+                      
+                      id: idNow
+                    })
+                    .done(function(data){
+                      if(data.alertDesc==0)
+                      {
+                        swal({
+                        title:'Success', 
+                        text:'Services Included Updated', 
+                        icon:'success'
+                        }).then(function(){
+                          location.reload();
+                        })
+                      }
+                      else
+                      {
+                        swal({
+                          title: 'ERROR',
+                          icon:'error'
+                        })
+                      }
+                    })
+              })
+            })
+          }
+      })      
+    })
+
+  //- UPDATE PACKAGE INFORMATION
+  script.
+    $(document).ready(function(){
+              $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              $.post('./adminPackages/viewPackageInformation',{id:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Package Name</label>
+                      <star>*</star>
+                      <input class="form-control" type="text" placeholder="${data.package_name}" value='${data.package_name}' id="name_package" name="name" required="true" aria-required="true" />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Package Price</label>
+                      <star>*</star>
+                      <input class="form-control" type="number" placeholder="${data.package_price}" value='${data.package_price}' id="price_package" name="price" required="true" aria-required="true" />
+                    </div>
+                  </div>
+                </div>
+                `)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                })
+              $('#updateSubmitButton').click(function(){
+                  $.post('./adminPackages/updatePackageInformation',{
+                  package_name:$('#name_package').val(),
+                  package_price:$('#price_package').val(),
+
+                  
+                  id:idNow
+                  })
+                  .done(function(data){
+                      if(data.alertDesc==0){
+                          swal({
+                          title:'Success', 
+                          text:'Package Information Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                      }
+                      else
+                      {
+                         swal({
+                          title:'Error', 
+                          //- text:'Service Information Updated', 
+                          icon:'error'
+                         })
+                        
+                      }
+                  })
+                })
+                $('#cancelButton').click(function(){
+                  $('#updateAppend').empty();
+                })
+              
+              })
+
+          })
+    })
+
+  //- DELETE PACKAGE INFORMATION
+  script.
+    $(document).ready(function(){
+      $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('./adminPackages/deletePackage',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })
+  script.
+    $(document).ready(function(){
+      $('.bawal').click(function(){
+        swal({
+          title: 'Set to not available this item first',
+          icon: 'warning'
+        })
+      })
+    })
+
+  //- LOGOUT
   script(type='text/javascript').
     $(document).ready(function(){
     $('.logout').click(function(){
@@ -478,8 +850,7 @@ html(lang='en')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
-  //
-    <script type="text/javascript">
+  script.
     $(document).ready(function() {
     $('#datatables').DataTable({
     "pagingType": "full_numbers",
@@ -491,4 +862,3 @@ html(lang='en')
     }
     });
     });
-    </script>
