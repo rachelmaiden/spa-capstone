@@ -161,33 +161,21 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminFreebies')
-                            span.sidebar-normal Freebies            
+                            span.sidebar-normal Freebies  
+                  li(style="margin-left: 5px;")
+                    a(data-toggle='collapse', href='#gifc')
+                      p
+                        span.sidebar-mini G
+                        | Gift Certificate
+                        b(style="margin-right: 30px").caret
+                    #gifc.collapse
+                      ul.nav
+                        li(style="margin-left: 30px")
+                          a(href='./gc')
+                            span.sidebar-normal Gift Certificate                           
+            
             li
-              a(data-toggle='collapse', href='#tablesExamples')
-                i.ti-panel
-                p
-                  | Transaction
-                  b.caret
-              #tablesExamples.collapse
-                 ul.nav
-                  li
-                    a(href='/adminCustomer')
-                      span.sidebar-mini R
-                      span.sidebar-normal Registration
-                  li
-                    a(href='/adminReservation')
-                      span.sidebar-mini R
-                      span.sidebar-normal Reservations
-                  li
-                    a(href='/adminWalkin')
-                      span.sidebar-mini W
-                      span.sidebar-normal Walk-in
-                  li
-                    a(href='/adminQueue')
-                      span.sidebar-mini Q
-                      span.sidebar-normal Queue
-            li
-              a(data-toggle='collapse')
+              a(href='./utilities')
                 i.ti-settings
                 p
                   | Utilities
