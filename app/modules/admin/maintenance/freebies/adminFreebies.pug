@@ -486,7 +486,7 @@ html(lang='en')
     $(document).ready(function(){
          $('.bawal').click(function(){
           swal({
-            title: 'Set to not available this item first',
+            title: 'Set this item  to unavailable first',
             icon: 'warning'
           })
         })
@@ -672,7 +672,7 @@ html(lang='en')
             else if(data.alertDesc ==1)
               {
                 swal({
-                  title:'Not Success', 
+                  title:'Error', 
                   text:'ERROR', 
                   icon:'error'
                   })
@@ -680,8 +680,8 @@ html(lang='en')
             else if(data.alertDesc ==2)
             {
                 swal({
-                  title:'Not Success', 
-                  text:'Freebie is Already Exist', 
+                  title:'Warning', 
+                  text:'Freebie Already Exist', 
                   icon:'warning'
                   })
             }

@@ -86,7 +86,7 @@ html(lang='en')
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
                   li(style="margin-left: 5px;").active
-                    a(data-toggle='collapse', href='#amenities').active
+                    a(data-toggle='collapse', href='#packages').active
                       p
                         | Packages
                         span.sidebar-mini P
@@ -306,6 +306,13 @@ html(lang='en')
                                                   select.selectpicker(name='duration'  title='Select Duration' data-style='btn-info' id='package_duration')
                                                     each duration in durations
                                                       option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                                .col-md-6
+                                                  .form-group.has-default.bmd-form-group
+                                                  label Package Available For
+                                                  star *
+                                                  select.selectpicker(name='person'  title='Select Number of Person' data-style='btn-info' id='')
+                                                    each duration in durations
+                                                      option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"      
                                                 //- .col-md-6  
                                                 //-   .form-group.has-default.bmd-form-group
                                                 //-   label Hours of Amenity Usage
@@ -456,7 +463,7 @@ html(lang='en')
         if(package_name == 0 && package_price == 0 || package_name == 0 || package_price == 0 || services_included == 0 || package_duration==0 || package_amenity_usage ==0)
         {
             swal({
-              title: 'Please double check the Fields',
+              title: 'Please double check the fields',
               text: 'Make sure all required fields has value', 
               icon: 'warning'
             })
@@ -473,7 +480,7 @@ html(lang='en')
             {
                 swal({
                     title: "Success",
-                    text: "New Package has been Added",
+                    text: "New package has been added",
                     icon: 'success'
                   }).then(function(){
                     location.reload();
@@ -639,7 +646,7 @@ html(lang='en')
           if(idNow=='bawal')
           {
             swal({ 
-            title: 'Set to not available this item first',
+            title: 'Set this item to unavailable first',
             icon: 'warning'
           })
           }
@@ -811,7 +818,7 @@ html(lang='en')
     $(document).ready(function(){
       $('.bawal').click(function(){
         swal({
-          title: 'Set to not available this item first',
+          title: 'Set this item to unavailable first',
           icon: 'warning'
         })
       })
