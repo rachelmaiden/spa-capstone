@@ -5,7 +5,7 @@ html(lang='en')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
     link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa
+    title #{reqSession.utilities.company_name}
    
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
@@ -24,10 +24,10 @@ html(lang='en')
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
+          a.simple-text.logo-mini(href='#')
             | CT
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
-            | MBAY Health Spa
+          a.simple-text.logo-normal(href='./home')
+            | #{reqSession.utilities.company_name}
         .sidebar-wrapper
           .user
             .info
@@ -222,7 +222,7 @@ html(lang='en')
                                       .col-md-5
                                         .form-group
                                           h3.control-label
-                                            | Fee: 500.00
+                                            | Fee: ₱#{reqSession.utilities.membership_fee}.00
                                     .row
                                       .col-md-5
                                         .form-group
@@ -436,11 +436,51 @@ html(lang='en')
             $('#reservationFooter').empty()
             var male=$('.male[name="quantMale"]').val()
             var female=$('.female[name="quantFemale"]').val()
-            console.log("female: "+female)
-            console.log("male: "+male)
+            total = parseInt(male) + parseInt(female)
             $('#reservationFooter').append(`
-            <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=multiple&male=${male}&female=${female}" stlye="margin-right: 15px">Next</a>
+            <button class="btn btn-secondary btn-info btn-fill total" stlye="margin-right: 15px">Next</a>
             <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+            $(document).on('click', '.total', function(){
+              $('#reservationFooter').empty()
+              var scriptSession = !{JSON.stringify(reqSession)};
+              var max_guest =  scriptSession.utilities.max_guest
+               if(total > max_guest)
+               {
+                swal({
+                  title: "BAWAL",
+                  icon: 'warning'
+                }).then(function(){
+                $('#reservationFooter').append(`
+            <button class="btn btn-secondary btn-info btn-fill total" stlye="margin-right: 15px">Next</a>
+            <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+
+                })
+               }
+               else
+               {
+                swal({
+                  title: "Confirmation",
+                  text: male+" Male & "+female+" Female",
+                  icon: "warning",
+                  buttons: [true,"Confirm"]
+                  }).then(function(confirm){
+                    if(confirm)
+                    {
+                      location.href=`selectDate?id=${id}&reservetype=multiple&male=${male}&female=${female}`
+                    }
+                    else
+                    {
+                    $('.male').val('0')
+                    $('.female').val('0')
+                    $('#reservationFooter').append(`
+                    <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+                    <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
+                    }
+                  })
+               }
+            
+            })  
+            
             })
             $('.buttonAdd').attr('disabled',false)
           }
@@ -537,6 +577,11 @@ html(lang='en')
         var year = vals[2];
         var month = vals[0];
         var date = vals[1];
+        var dateNow = new Date()
+        var scriptSession = !{JSON.stringify(reqSession)};
+        var membership_validity= scriptSession.utilities.membership_validity
+        console.log(scriptSession)
+        var membershipDate = moment(dateNow).add(membership_validity,'months').format('MMMM DD, YYYY')
         $.post('/frontdesk/Home/newCustomer/Loyalty',{
           firstname:$('#firstname').val(),
           lastname:$('#lastname').val(),
@@ -547,7 +592,7 @@ html(lang='en')
           medical_history:$('#medical_history').val(),
           username:$('#username').val(),
           password:$('#password').val(),
-          newDate, year, month, date
+          newDate, year, month, date, membershipDate
         }).done(function(data){
           if(data.alertSuccess == 1)
           {

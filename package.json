@@ -1,10 +1,11 @@
 {
   "name": "express-boilerplate",
   "version": "1.0.0",
-  "description": "A quick and simple ExpressJS boilerplate",
+  "description": "Online Booking and Spa Management System",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -14,23 +15,26 @@
     "expressjs",
     "boilerplate"
   ],
-  "author": "Micah Andrew Bule",
+  "author": "Crisaldo Santos",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PUP-CCIS/express-boilerplate/issues"
   },
   "homepage": "https://github.com/PUP-CCIS/express-boilerplate#readme",
   "dependencies": {
-    "body-parser": "^1.17.2",
+    "body-parser": "^1.18.3",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-session": "^1.15.4",
     "method-override": "^2.3.9",
     "moment": "^2.22.2",
     "morgan": "^1.8.2",
+    "multer": "^1.3.1",
     "mysql": "^2.13.0",
     "nodemon": "^1.18.4",
+    "path": "^0.12.7",
     "pug": "^2.0.0-rc.2",
     "serve-static": "^1.12.3"
   }
+  
 }

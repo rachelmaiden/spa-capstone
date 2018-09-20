@@ -558,6 +558,11 @@ html(lang='en')
         })
   script.
       $(document).ready(function(){
+        var scriptSession = !{JSON.stringify(reqSession)};
+        console.log(scriptSession)
+        var opening_time= scriptSession.utilities.opening_time
+        var closing_time= scriptSession.utilities.closing_time
+        console.log(opening_time+" "+closing_time)
         var customerId= $('#Id').val()
         var date = !{JSON.stringify(date)}
         $('#fullCalendar').fullCalendar({
@@ -591,7 +596,7 @@ html(lang='en')
               var timePicked= date.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.titl,
+                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.title,
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
@@ -621,8 +626,8 @@ html(lang='en')
             // days of week. an array of zero-based day of week integers (0=Sunday)
             dow: [ 1, 2, 3, 4, 5, 6, 7 ], // Monday - Thursday
 
-            start: '13:00', 
-            end: '01:00', 
+            start: opening_time, 
+            end: closing_time, 
           },
           eventRender: function(eventObj, $el) {
             $el.popover({
@@ -634,7 +639,7 @@ html(lang='en')
             });
           },
           eventClick: function(eventObj) {
-             var timeNow = moment().format('YYYY-MM-DD HH:mm')
+            var timeNow = moment().format('YYYY-MM-DD HH:mm')
             //- var businessHours = reqSession.utilities.businessHours
             var businessHoursDate = moment().format('YYYY-MM-DD')
             var businessHours = businessHoursDate+' 13:00'
