@@ -336,13 +336,14 @@ html(lang='en')
                                   label Birthday
                                   star *
                                 input.form-control.datepicker(type='text' name='therapist_birthday' id="calendar" style='margin-top: -15px')
+                              .col-md-1
                               .col-md-3
                                 .form-group.has-default.bmd-form-group
                                   label Shift
                                   star *
-                                  select.selectpicker(name='' id=''  data-style='btn-info' required='true' aria-label='true')
-                                    option(value='day') Day
-                                    option(value='night') Night
+                                  select.selectpicker(name='therapist_shift' title='Select Shift' id='therapist_shift'  data-style='btn-info' required='true' aria-label='true')
+                                    option(value='First') First
+                                    option(value='Second') Second
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -510,6 +511,7 @@ html(lang='en')
             therapist_contact_no:$('#therapist_contact_no').val(),
             therapist_gender:$('#therapist_gender').val(),
             therapist_specialty: $('#therapist_specialty').val(),
+            therapist_shift: $('#therapist_shift').val(),
             newDate, year, month, date
           }).done(function(data){
           if(data.alertDesc == 1)

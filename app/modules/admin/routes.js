@@ -996,6 +996,7 @@ router.post('/adminTherapist',(req, res) => {
     therapist_birthMonth,
     therapist_birthDate,
     therapist_birthYear, 
+    therapist_shift,
     therapist_availability,
     delete_stats)
     value
@@ -1008,6 +1009,7 @@ router.post('/adminTherapist',(req, res) => {
     "${req.body.month}",
     "${req.body.date}",
     "${req.body.year}",
+    "${req.body.therapist_shift}",
     0,0)`
     db.query(query, (err, out) => {
       var alertSuccess = 1 ;
