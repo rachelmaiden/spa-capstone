@@ -118,8 +118,8 @@ html(lang='en')
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#packages')
                       p
+                        span.sidebar-mini P
                         | Packages
-                        span.sidebar-mini 
                         b(style="margin-right: 30px").caret
                     #packages.collapse
                       ul.nav    
@@ -333,7 +333,9 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Rate per hour
                                   star *
-                                  input.form-control(type='number', placeholder='Rate' name='room_rate' id='room_rate' required='true' aria-label='true')
+                                  .input-group
+                                      span.input-group-addon ₱  
+                                      input.form-control(type='number', placeholder='Rate' name='room_rate' id='room_rate' required='true' aria-label='true')
 
                             .row
                           .modal-footer

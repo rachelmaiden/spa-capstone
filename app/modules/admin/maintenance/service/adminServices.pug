@@ -323,7 +323,9 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Price
                                   star *
-                                  input.form-control(type='text', number="true" placeholder='Service Price' name='service_price' id='service_price' required='true', aria-required='true')
+                                    .input-group
+                                      span.input-group-addon ₱   
+                                      input.form-control(type='text', number="true" placeholder='Service Price' name='service_price' id='service_price' required='true', aria-required='true')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group

@@ -230,8 +230,30 @@ html(lang='en')
                         input.form-control(type='text', placeholder='Company Name' value=`${utilities.company_name}` id='company_name')
                     .col-md-5
                       .form-group.has-default.bmd-form-group
-                        label Company Logo
-                        input.form-control(type='file', name='company_logo' value='' id='company_logo' accept="image/*")
+                        h6.strong Company Logo
+                        button.btn.btn-warning.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
+                          span.btn-label
+                            i.ti-pencil
+                          | Edit 
+                      #editImage.modal.fade(tabindex='-1', role='dialog')
+                        .modal-dialog(role='document')
+                          .modal-content
+                            .modal-header
+                              h5.modal-title
+                                center Company Logo
+                              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            form#allInputsFormValidation(method='' action='')
+                              .modal-body
+                                .row
+                                  .col-md-6
+                                    .form-group.has-default.bmd-form-group
+                                     
+                                      input.form-control(type='file', name='company_logo' value='' id='company_logo' accept="image/*")
+                                .row
+                              .modal-footer
+                                button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Next
+                                button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel        
+                  
                   .row
                     .col-md-2
                       .form-group.has-default.bmd-form-group
@@ -265,6 +287,45 @@ html(lang='en')
                           span.input-group-addon ₱
                           input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
                           span.input-group-addon .00
+                    .col-md-2
+                          label Reservation Forfeiture
+                          .input-group
+                            input.form-control(type='number' value='' id='')
+                            span.input-group-addon minutes      
+                          
+                  .row
+                    .col-md-4
+                      h5
+                        strong Therapist First Shift
+                    .col-md-4
+                      h5
+                        strong Therapist Second Shift    
+                  
+                        
+                  .row
+                    .col-md-2
+                      .form-group.has-default.bmd-form-group
+                        label Start Time
+                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
+                        
+                    .col-md-2
+                      .form-group.has-default.bmd-form-group
+                        label End Time
+                        input.timepicker.form-control(type='text', placeholder='End Time' )
+
+                    .col-md-2
+                      .form-group.has-default.bmd-form-group
+                        label Start Time
+                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
+                        
+                    .col-md-2
+                      .form-group.has-default.bmd-form-group
+                        label End Time
+                        input.timepicker.form-control(type='text', placeholder='End Time' )    
+
+
+
+
                   .row
                     button.btn.btn-info.btn-fill.btn-wd.pull-right.updateButton(type='button' value=`${utilities.utilities_id}`) Save
                         

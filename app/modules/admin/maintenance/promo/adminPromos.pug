@@ -299,7 +299,9 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Promo Bundle Price
                                   star *
-                                  input.form-control(type='number', placeholder='Promo Bundle Price' id='price' name='price' required='true', aria-required='true' )
+                                  .input-group
+                                      span.input-group-addon ₱  
+                                      input.form-control(type='number', placeholder='Promo Bundle Price' id='price' name='price' required='true', aria-required='true' )
                             .form-group.has-default.bmd-form-group
                               center
                                 label Services Included*
