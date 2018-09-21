@@ -154,7 +154,7 @@ html(lang='en')
           var clicked = date.format('MM-DD-YYYY')
           if(moment(clicked).isSameOrAfter(now)){
               swal({
-                title: "You Clicked " + date.format('MM-DD-YYYY'),
+                title: "You Clicked " + date.format('MMMM DD, YYYY'),
                 text: "Are You Sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],

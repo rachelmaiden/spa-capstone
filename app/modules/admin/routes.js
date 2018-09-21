@@ -3,6 +3,9 @@ var router = express.Router()
 var db = require('../../lib/database')();
 var mid = require("../../middlewares")
 var moment = require ('moment')
+var multer = require('multer')
+const path = require('path');
+
 
 // [ADMIN - LOGIN PAGE] 
 router.get('/admin', (req, res) => {
@@ -16,10 +19,10 @@ router.post("/admin/login",(req, res) => {
 
 		db.query(query, (err, out) => {
  		if(!out[0])
-			return res.redirect("/admin?notfound?")
+			return res.redirect("/admin/admin#notfound")
 		else {
 			if(out[0].admin_password !== req.body.admin_password)
-				return res.redirect("/admin?incorrect")
+				return res.redirect("/admin/admin#incorrect")
 			else {
 				delete out[0].admin_password
 				req.session.user = out[0]	
@@ -43,7 +46,15 @@ router.post("/admin/logout", (req, res) => {
 
 // [DASHBOARD]
 router.get('/admindashboard',mid.adminnauthed,(req, res) => {
-  res.render('admin/dashboard/admindashboard')
+
+  const query =`SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[0]
+    res.render('admin/dashboard/admindashboard',{
+      reqSession: req.session
+    })
+  })
 })
 
 
@@ -53,8 +64,15 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 // ||====================================================================||
 
 // [GC]
-router.get('/gc', (req, res) => {
-  res.render('admin/maintenance/giftcertificate/gc')
+router.get('/giftcertificate', (req, res) => {
+  const query =`SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[0]
+    res.render('admin/maintenance/giftcertificate/gc',{
+      reqSession: req.session
+    })
+  })
 })
 
 // =========================================================================================================================================================================
@@ -67,13 +85,16 @@ router.get('/adminPackages',mid.adminnauthed,(req, res) => {
   JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = package_tbl.service_duration_id
   JOIN services_tbl ON services_tbl.service_id = service_in_package_tbl.service_id WHERE package_tbl.delete_stats=0
   GROUP BY package_tbl.package_id;
-  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 AND delete_stats=0`
+  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 AND delete_stats=0;
+  SELECT * FROM utilities_tbl`
 
   db.query(query, (err,out)=>{
+    req.session.utilities = out[3]
     res.render('admin/maintenance/package/adminPackages',{
       services: out[0],
       packages: out[1],
-      durations: out[2]
+      durations: out[2],
+      reqSession: req.session
     })
   })
 })
@@ -232,12 +253,15 @@ router.get('/adminPromos',mid.adminnauthed,(req, res) => {
   JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = promo_bundle_tbl.service_duration_id 
   JOIN services_tbl ON services_tbl.service_id = service_in_promo_tbl.service_id WHERE promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
   SELECT * FROM services_tbl WHERE delete_stats=0 and service_availability=0;
-  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 ORDER BY service_duration_desc ASC`
+  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 ORDER BY service_duration_desc ASC;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[3]
     res.render('admin/maintenance/promo/adminPromos',{
       promos: out[0],
       services: out[1],
-      durations: out[2]
+      durations: out[2],
+      reqSession: req.session
     })
   })
 })
@@ -388,11 +412,14 @@ router.post('/adminPromos/statusChange',(req, res) => {
 router.get('/adminRooms',mid.adminnauthed,(req, res) => {
   const query = ` select room_tbl.*, room_type_tbl.room_type_desc from room_tbl join room_type_tbl 
   on room_tbl.room_type_id = room_type_tbl.room_type_id where room_tbl.delete_stats=0;
-  select * from room_type_tbl where delete_stats=0`
+  select * from room_type_tbl where delete_stats=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[2]
     res.render('admin/maintenance/room/adminRooms',{
       rooms: out[0],
-      rtyps: out[1]
+      rtyps: out[1],
+      reqSession: req.session
     })
     console.log(out)
   })
@@ -498,10 +525,13 @@ router.post('/adminRooms/update', (req, res) => {
 //          > R E A D
 router.get('/adminRoomType', mid.adminnauthed,(req, res) => {
   const query = `
-  select * from room_type_tbl where delete_stats=0`
+  select * from room_type_tbl where delete_stats=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    res.session.utilities = out[1]
     res.render('admin/maintenance/room/adminRoomType',{
-      rtyps: out
+      rtyps: out[0],
+      reqSession: req.session
     })
     console.log(out)
   })
@@ -595,12 +625,15 @@ router.get('/adminServices',mid.adminnauthed,(req, res) => {
   from services_tbl join service_duration_tbl on services_tbl.service_duration_id = service_duration_tbl.service_duration_id
   join service_type_tbl on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats = 0;
   select * from service_type_tbl where delete_stats=0 and service_type_availability= 0;
-  select * from service_duration_tbl where delete_stats=0 and service_duration_availability=0`
+  select * from service_duration_tbl where delete_stats=0 and service_duration_availability=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[3]
     res.render('admin/maintenance/service/adminServices',{
       services: out[0],
       typs: out[1],
-      durations: out[2]
+      durations: out[2],
+      reqSession: req.session
     })
   })
 })
@@ -705,10 +738,13 @@ router.post('/adminServices/statusChange',(req, res) => {
 // [SERVICE TYPE]
 //          > R E A D
 router.get('/adminServiceType', mid.adminnauthed,(req, res) => {
-  const query = ` select * from service_type_tbl where delete_stats= 0`
+  const query = ` select * from service_type_tbl where delete_stats= 0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[2]
     res.render('admin/maintenance/service/adminServiceType',{
-      typs: out
+      typs: out[0],
+      reqSession: req.session
     })
   })
 })
@@ -816,10 +852,13 @@ router.post('/adminServiceType/delete', (req, res) => {
 // [SERVICE DURATION]
 //          > R E A D
 router.get('/adminServiceDuration', mid.adminnauthed,(req, res) => {
-  const query = ` select * from service_duration_tbl where delete_stats = 0 `
+  const query = ` select * from service_duration_tbl where delete_stats = 0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[1]
     res.render('admin/maintenance/service/adminServiceDuration',{
-      durations: out
+      durations: out[0],
+      reqSession: req.session
     })
   })
 })
@@ -931,11 +970,14 @@ router.post('/adminServiceDuration/delete', (req, res) => {
 //          > R E A D 
 router.get('/adminTherapist',mid.adminnauthed,(req, res) => {
   const query = ` select * from therapist_tbl where delete_stats= 0;
-  select * from specialty_tbl where delete_stats= 0`
+  select * from specialty_tbl where delete_stats= 0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[2]
     res.render('admin/maintenance/therapist/adminTherapist',{
       theras: out[0],
-      specialtys: out[1]
+      specialtys: out[1],
+      reqSession: req.session
     })
   })
 })
@@ -1119,10 +1161,13 @@ router.post('/adminTherapist/statusChange',(req,res)=>{
 // [THERAPIST SPECIALTY]
 //        > R E A D
 router.get('/adminSpecialty',mid.adminnauthed,(req, res) => {
-  const query = ` select * from specialty_tbl where delete_stats=0`
+  const query = ` select * from specialty_tbl where delete_stats=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[1]
     res.render('admin/maintenance/therapist/adminSpecialty',{
-      specialtys: out
+      specialtys: out[0],
+      reqSession: req.session
     })
     console.log(out)
   })
@@ -1216,10 +1261,13 @@ router.post('/adminSpecialty/delete', (req, res) => {
 // [CUSTOMER]
 //          > R E A D 
 router.get('/adminCustomer', mid.adminnauthed,(req, res) => {
-  const query = ` select * from customer_tbl where delete_stats=0`
+  const query = ` select * from customer_tbl where delete_stats=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
+    req.session.utilities = out[1]
       res.render('admin/transaction/adminCustomer',{
-        customers: out
+        customers: out[0],
+        reqSession: req.session
       })
     })
   })
@@ -1303,11 +1351,14 @@ router.post('/adminCustomer/medicalHistory',(req, res) => {
 router.get('/adminFreebies',mid.adminnauthed, (req, res) => {
   const query =`SELECT * FROM services_tbl where delete_stats=0;
   SELECT services_tbl.*, freebies_tbl.* FROM services_tbl
-  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id where freebies_tbl.delete_stats=0`
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id where freebies_tbl.delete_stats=0;
+  SELECT * FROM utilities_tbl`
   db.query(query,(err,out)=>{
+    req.session.utilities =out[2]
   res.render('admin/maintenance/freebies/adminFreebies',{
     services: out[0],
-    freebies: out[1]
+    freebies: out[1],
+    reqSession: req.session
   })
   })
 })
@@ -1415,62 +1466,65 @@ router.post('/adminFreebies/Delete',(req, res)=>{
 
 
 
-// ************************************************************************************************ ||
-// - - - - - - - - - - - - - - - - - - R E S E R V A T I O N - - - - - - - - - - - - - - - - - - -  ||
-// ================================================================================================ ||
 
-router.get('/adminReservation',(req, res) => {
-    res.render('admin/transaction/adminReservation')
-})
-
-
-router.get('/adminQueue',(req, res) => {
-    res.render('admin/transaction/adminQueue')
-})
 // ********************************************************************************************************* ||
-// - - - - - - - - - - - - - - - - - - B O O K  R E S E R V A T I O N - - - - - - - - - - - - - - - - - - -  ||
+// - - - - - - - - - - - - - - - - - - U T I L I T I E S - - - - - - - - - - - - - - - - - - -  ||
 // ========================================================================================================= ||
 
-    //READ
-router.get('/bookReservation', (req, res) => {
-  date = req.body.newDate
-  const query = ` SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 1;
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 2;
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_type_id= 3;
-  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
-  SELECT * FROM room_tbl where delete_stats=0`
-  db.query(query,(err,out) =>{
-      res.render('admin/transaction/bookReservation',{
-        bmsgs: out[0],
-        bscrubs: out[1],
-        addonss: out[2],
-        promos: out[3],
-        rooms: out[4],
-        date
+// [UTILITIES]
+//        > R E A D
+  router.get('/utilities',mid.adminnauthed,(req, res) => {
+    const query =`SELECT * FROM utilities_tbl`
+
+    db.query(query,(err,out)=>{
+      req.session.utilities = out[0]
+      res.render('admin/utilities/utilities',{
+        results: out,
+        reqSession: req.session
       })
-      console.log(out)
-      console.log(date)
     })
   })
 
-
-  router.get('/utilities',(req, res) => {
-    res.render('admin/utilities/utilities')
-  })
-
-
-router.get('/bookService',(req, res) => {
-  res.render('admin/transaction/bookService')
+// FILE UPLOAD using MULTER (IMAGE)
+var storage = multer.diskStorage({
+  destination: function (req, file, cb){
+    cb(null, './public/upload')
+  },
+  filename: function (req, file, cb){
+    cb(null, 'company_logo'+ '-'+Date.now()+path.extname(file.originalname))
+  }
 })
 
-router.get('/adminWalkin',(req, res) => {
-  res.render('admin/transaction/adminWalkin') 
+var upload = multer({ storage: storage})
+//        > CREATE or UPDATE
+router.post('/utilities',upload.single('company_logo'),(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+  var company_logo = req.file.filename;
+  const query =`UPDATE utilities_tbl SET
+  company_name="${req.body.company_name}",
+  company_logo="${company_logo}",
+  opening_time="${req.body.opening_time}",
+  closing_time="${req.body.closing_time}",
+  max_guest="${req.body.max_guest}",
+  membership_validity="${req.body.membership_validity}",
+  membership_fee="${req.body.membership_fee}",
+  entrance_fee="${req.body.entrance_fee}"
+  WHERE utilities_id="${req.body.utilities_id}"
+  `
+
+  db.query(query,(err,out)=>{
+    console.log(query)
+    if (err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
 })
 
 exports.admin = router

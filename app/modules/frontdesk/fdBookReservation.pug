@@ -89,13 +89,25 @@ html(lang='en')
               .card-header
                 each customer in customers
                   input.restype(type="hidden" id="restype" value=`${restype}`)
-                  h4.card-title
+                  h4
                     strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
                     input(type="hidden" value=`${customer.cust_id}` id='customerId')
-                  h5.category
+                    br
                     strong#gender= "Gender: "+ customer.cust_gender
                     br
-                    strong= "Medical History: "+customer.medical_history
+                    if(restype=='single')
+                      strong= "Medical History: "+customer.medical_history
+                    else
+                    
+                  h4
+                    strong#date= `Date: ${date}`
+                    input(type="hidden" value=`${date}` id='dateRes')
+                    br
+                    strong#time= `Time: ${time}`
+                    input(type="hidden" value=`${time}`)
+                    br
+                    strong End Time: 
+                      a(id='totalDuration') 0  
                 br
                 input(type='hidden' value=`${male}` id='male')
                 br
@@ -108,11 +120,11 @@ html(lang='en')
                   .nav-tabs-wrapper
                     ul#tabs.nav.nav-tabs(data-tabs='tabs')
                       li.active
-                        a(href='#single', data-toggle='tab') Single
+                        a(href='#single', data-toggle='tab') Services
                       li
-                        a(href='#multiple', data-toggle='tab') Multiple
+                        a(href='#multiple', data-toggle='tab') Package
                       li
-                        a(href='#packages', data-toggle='tab') Packages
+                        a(href='#packages', data-toggle='tab') Promo
                 #my-tab-content.tab-content
                   #single.tab-pane.active
                     .content
@@ -170,15 +182,6 @@ html(lang='en')
                                       strong#room= `Room: ${room}`
                                         input(type='hidden' value=`${roomId}` id="roomId")
 
-                                    h4
-                                      strong#date= `Date: ${date}`
-                                      input(type="hidden" value=`${date}` id='dateRes')
-                                      br
-                                      strong#time= `Time: ${time}`
-                                      input(type="hidden" value=`${time}`)
-                                      br
-                                      strong End Time: 
-                                        a(id='totalDuration') 0  
                                 h4
                                   strong Total Price:  
                                     a(id="grandtotal") 0.00 
@@ -582,12 +585,11 @@ html(lang='en')
                 $('#grandtotal').text(pinakaTotal.toLocaleString())
               sum += parseInt(points)
             });
-            table.page('next').draw('page');
             if(i==pagelength){
               console.log(longest)
               for(var j=0;j<longest.length;j++)
                 {
-                  alert('hello')
+                  
                   console.log(highest+'<'+longest[j])
                   console.log(j)
                   console.log(longest.length)
@@ -622,8 +624,9 @@ html(lang='en')
                 }
 
             }
+            table.page('next').draw('page');
             }
-              
+            table.page(0).draw()
           }
       })
     script.
