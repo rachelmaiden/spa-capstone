@@ -206,6 +206,8 @@ router.post('/selectTime/query',(req, res) => {
   const query = `select * from room_tbl where delete_stats=0 and room_availability=0`
   db.query(query,(err, out) => {
     res.send(out)
+    console.log(out)
+    console.log('OUT FROM QUERY^')
   })
 })
 
@@ -214,6 +216,8 @@ router.post('/selectTime/queryRoom',(req,res)=>{
 
   db.query(query,(err,out)=>{
     res.send(out)
+    console.log(out)
+    console.log('OUT FROM QUERY ROOM ^')
   })
 })
 
@@ -232,6 +236,8 @@ router.post('/selectTime/queryCommon',(req, res) => {
     boys:out[1],
     girls:out[2]
     })
+    console.log(out)
+    console.log('OUT^')
   })
 })
 router.post('/selectTime/addResource/Multiple', mid.frontdesknauthed,(err,res)=>{
@@ -246,6 +252,11 @@ router.post('/selectTime/addResource/Multiple', mid.frontdesknauthed,(err,res)=>
   ORDER BY walkin_queue_tbl.walkin_start_time`
 
   db.query(query,(err,out)=>{
+    console.log(query)
+    console.log('QUERY FROM MULTIPLE')
+    console.log('==============================================')
+    console.log(out)
+    console.log('OUT FROM MULTIPLE^')
     res.send(out)
   })
 })
@@ -332,15 +343,9 @@ router.post('/bookreservation/addReservation',(req,res)=>{
   const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
   values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${req.body.date}",0,0)`
   db.query(query,(err,out)=>{
-    console.log(err)
-    console.log(query)
-    console.log('QUERY ^')
-    console.log(out)
-    console.log('OUT ^')
     var notSuccess=0;
     var querySuccess= 1
     walkinId=out.insertId;
-    console.log(walkinId)
     if(restype=='single')
       {
         for(var i=0;i<req.body.serviceId.length;i++)
@@ -349,8 +354,6 @@ router.post('/bookreservation/addReservation',(req,res)=>{
             values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
               "${req.body.bed_quantity}","${req.body.serviceTotal[i]}")`
               db.query(query1,(err,out)=>{
-              console.log(query1)
-              console.log(req.body.serviceId[i])
             })
           }
           if(err)
@@ -373,32 +376,27 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                   {
                     for(var i=0; i<req.body.serviceId.length;i++)
                     {
-                      console.log(walkinId)
-                      console.log('^')
                       const queryBoys = `INSERT INTO walkin_services_tbl
                       (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
                       VALUES ("${walkinId}", "${req.body.serviceId[i]}","${out[o].room_id}", "${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
                       "${req.body.boys_quantity}","${req.body.serviceTotal[i]}")`
                       
                       db.query(queryBoys, (err,out)=>{
-                          console.log(queryBoys)
-                        })
-                      }
+                      })
+                    }
                   }
   
                 else if(out[o].room_gender == 2) // GIRLS
                   {
                     for(var i=0; i<req.body.serviceId.length;i++)
                       {
-                        console.log(walkinId)
-                      console.log('^')
+
                         const queryGirls = `INSERT INTO walkin_services_tbl
                         (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
                         VALUES ("${walkinId}", "${req.body.serviceId[i]}","${out[o].room_id}", "${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
                         "${req.body.girls_quantity}","${req.body.serviceTotal[i]}")`
   
                         db.query(queryGirls, (err,out)=>{
-                          console.log(queryGirls)
                           
                         })
                       }
@@ -792,13 +790,17 @@ router.post('/payment/Finish',(req,res)=>{
     })
   })
 
+// [THERAPIST ATTENDANCE]
   router.get('/therapist', (req, res) => {
-    const query = `SELECT * FROM utilities_tbl`
+    const query = `SELECT * FROM utilities_tbl;
+    SELECT * FROM therapist_tbl WHERE therapist_availability =0 AND delete_stats=0 
+    ORDER BY therapist_shift ASC`
 
     db.query(query,(err,out)=>{
       req.session.utilites = out[0]
       res.render('frontdesk/therapist',{
-        reqSession: req.session
+        reqSession: req.session,
+        therapist: out[1]
       })
     })
   })

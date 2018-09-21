@@ -38,22 +38,22 @@ html(lang='en')
               .clearfix
           ul.nav
             li
-              a(href='/registration')
+              a(href='./registration')
                 i.ti-pencil
                 p
                   | Registration
             li
-              a(href='#')
+              a(href='./reservation')
                 i.ti-calendar
                 p
                   | Reservation
             li
-              a(href='#')
+              a(href='./payment')
                 i.ti-credit-card
                 p
                   | Payment
             li.active
-              a(href='#')
+              a(href='./therapist')
                 i.ti-user
                 p
                   | Therapist
@@ -136,46 +136,47 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Name
-                                      th.disabled-sorting
-                                      th Status
-                                      th.disabled-sorting
+                                      th.disabled-sorting Name
+                                      th.disabled-sorting Shift
+                                      th.disabled-sorting Status
+                                      th.disabled-sorting Time Arrived
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Name
-                                      th.disabled-sorting
-                                      th Status
-                                      th.disabled-sorting
+                                      th.disabled-sorting Name
+                                      th.disabled-sorting Shift
+                                      th.disabled-sorting Status
+                                      th.disabled-sorting Time Arrived
                                       th.disabled-sorting Actions
                                   tbody
-                                    tr
-                                      td Gramar Lacsina
-                                      th.disabled-sorting
-                                      td Available
-                                      th.disabled-sorting
-                                      td
-                                        
-                                          .dropdown(style="right: 10px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
-                                                button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal', stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-check
-                                                  |  Available
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-time
-                                                  |  Break
-                                              li
-                                                button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-close
-                                                  |  Unavailable
+                                    each thera in therapist
+                                      tr
+                                        td= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                                        td= thera.therapist_shift
+                                        th.disabled-sorting
+                                        th.disabled-sorting
+                                        td
+                                          
+                                            .dropdown(style="right: 10px")
+                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                i.ti-settings
+                                              ul.dropdown-menu
+                                                li
+                                                  //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
+                                                  button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal', stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-check
+                                                    |  Available
+                                                li
+                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-time
+                                                    |  Break
+                                                li
+                                                  button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.ti-close
+                                                    |  Unavailable
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
@@ -239,6 +240,7 @@ html(lang='en')
                 $(document).ready(function() {
                 $('#datatables').DataTable({
                 "pagingType": "full_numbers",
+                "aaSorting": [],
                 "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                 responsive: true,
                 language: {
