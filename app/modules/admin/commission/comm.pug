@@ -2,10 +2,14 @@ doctype html
 html(lang='en')
   head
     meta(charset='utf-8')
-    link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities.company_logo}`)
+    link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title #{reqSession.utilities.company_name}
+    title Online Booking and Spa Management System
+    // Canonical SEO
+    link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
+    meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
+    meta(name='viewport', content='width=device-width')
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
@@ -16,6 +20,15 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .pull-right .dropdown-menu:after {
+        left: auto;
+        right: 10px;
+          }
+      .pull-right .dropdown-menu {
+          left: auto;
+          right: 0;
+      }
   body
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -24,20 +37,21 @@ html(lang='en')
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
           a.simple-text.logo-mini(href='')
-          a.simple-text.logo-normal(href='' style='margin-right:10em')
-            | #{reqSession.utilities.company_name}
+            | MBAY
+          a.simple-text.logo-normal(href='')
+            | MBAY Health Spa
         .sidebar-wrapper
           .user
             .info
               .photo
-                img(src='../paperDashboardPro/img/faces/face-2.jpg')
+                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
           ul.nav
             li
-              a(href='/admindashboard')
+              a(href='./admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -116,7 +130,6 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminRooms')
                             span.sidebar-normal Rooms
-                  
                   li(style="margin-left: 5px;")
                     a(data-toggle='collapse', href='#freebies')
                       p
@@ -139,16 +152,13 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./giftcertificate')
                             span.sidebar-normal Gift Certificate                     
-
-                       
-
-            li
+            li.active
               a(href="./commission")
                 i.ti-envelope
                 p
                   | Commission
-            li.active
-              a(data-toggle='collapse in')
+            li
+              a(href="./utilities")
                 i.ti-settings
                 p
                   | Utilities
@@ -194,146 +204,71 @@ html(lang='en')
                   input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
-                li
-                  a.btn-rotate(href='#settings')
+                  a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
                     i.ti-settings
                     p.hidden-md.hidden-lg
                       | Settings
+                  ul.dropdown-menu
+                    li
+                      a.logout(style="cursor: pointer;") Log Out
         .content
-          .card
-            .container-fluid
-              div
-                h1
-                  center Utilities
-                each utilities in results
+          .container-fluid
+            .row
+              .col-md-12
+                .card
                   .row
-                    .col-md-4
-                      .form-group.has-default.bmd-form-group
-                        label Company Name
-                        input.form-control(type='text', placeholder='Company Name' value=`${utilities.company_name}` id='company_name')
-                    .col-md-5
-                      .form-group.has-default.bmd-form-group
-                        h6.strong Company Logo
-                        button.btn.btn-warning.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
-                          span.btn-label
-                            i.ti-pencil
-                          | Edit 
-                      #editImage.modal.fade(tabindex='-1', role='dialog')
-                        .modal-dialog(role='document')
-                          .modal-content
-                            .modal-header
-                              h5.modal-title
-                                center Company Logo
-                              button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            form#allInputsFormValidation(method='' action='')
-                              .modal-body
-                                .row
-                                  .col-md-6
-                                    .form-group.has-default.bmd-form-group
-                                     
-                                      input.form-control(type='file', name='company_logo' value='' id='company_logo' accept="image/*")
-                                .row
-                              .modal-footer
-                                button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Next
-                                button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel        
-                  
-                  .row
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label Opening Time
-                        input.timepicker.form-control(type='text', placeholder='Opening Time' value=`${utilities.opening_time}` id='opening_time')
-                        
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label Closing Time
-                        input.timepicker.form-control(type='text', placeholder='Closing Time' value=`${utilities.closing_time}` id='closing_time')
-                    .col-md-3
-                      .form-group.has-default.bmd-form-group
-                        label Maximum Guest Per Reservation
-                        input.form-control(type='number', placeholder='Maximum Guest Per Reservation' value=`${utilities.max_guest}` id='max_guest')
-                    .col-md-2
-                        label Membership Fee
-                        .input-group
-                          span.input-group-addon ₱
-                          input.form-control(type='number' value=`${utilities.membership_fee}` id='membership_fee')
-                          span.input-group-addon .00
-
-                  .row
-                    .col-md-2
-                          label Membership Validity
-                          .input-group
-                            input.form-control(type='text' value=`${utilities.membership_validity}` id='membership_validity')
-                            span.input-group-addon months
-                    .col-md-2
-                        label Entrance Fee
-                        .input-group
-                          span.input-group-addon ₱
-                          input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
-                          span.input-group-addon .00
-                    .col-md-2
-                          label Reservation Forfeiture
-                          .input-group
-                            input.form-control(type='number' value='' id='')
-                            span.input-group-addon minutes      
-                          
-                  .row
-                    .col-md-4
-                      h5
-                        strong Therapist First Shift
-                    .col-md-4
-                      h5
-                        strong Therapist Second Shift    
-                  
-                        
-                  .row
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label Start Time
-                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
-                        
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label End Time
-                        input.timepicker.form-control(type='text', placeholder='End Time' )
-
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label Start Time
-                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
-                        
-                    .col-md-2
-                      .form-group.has-default.bmd-form-group
-                        label End Time
-                        input.timepicker.form-control(type='text', placeholder='End Time' )    
-
-
-
-
-                  .row
-                    button.btn.btn-info.btn-fill.btn-wd.pull-right.updateButton(type='button' value=`${utilities.utilities_id}`) Save
-                        
-  .fixed-plugin
+                    .col-md-6
+                      .card-content
+                        .content
+                    .container-fluid
+                      .row
+                        .col-md-12
+                          p.category  
+                          br
+                          .card
+                            .card-content
+                              .toolbar
+                                // Here you can write extra buttons/actions for the toolbar
+                              .fresh-datatables
+                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                  thead
+                                    tr
+                                      th Therapist Name
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th.disabled-sorting
+                                      th.disabled-sorting Total Commission
+                                  tfoot
+                                    tr
+                                      th Therapist Name
+                                      th
+                                      th
+                                      th
+                                      th
+                                      th Total Commission
+                                  tbody
+                                    tr
+                                      td Gramar Lacsina
+                                      input.name(type='hidden' value='' id='')
+                                      td
+                                      td
+                                      td
+                                      td
+                                      td 500
+                                         
+                             
+                          footer.footer
+                            .container-fluid
+                              .copyright.pull-right
+                                | © 
+                                script.
+                                  document.write(new Date().getFullYear())
+                                | , made with 
+                                i.fa.fa-heart.heart
+                                |  by 
+                                a(href='#') Team MBAY
+                      .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -347,15 +282,24 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/moment.min.js')
   // Date Time Picker Plugin is included in this js file
   script(src='/assets/paperDashboardPro/js/bootstrap-datetimepicker.js')
-  script(src='/assets/datetimepicker/bootstrap-datetimepicker.min.js')
   // Select Picker Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-selectpicker.js')
   // Switch and Tags Input Plugins
   script(src='/assets/paperDashboardPro/js/bootstrap-switch-tags.js')
+  // Circle Percentage-chart
+  script(src='/assets/paperDashboardPro/js/jquery.easypiechart.min.js')
+  // Charts Plugin
+  script(src='/assets/paperDashboardPro/js/chartist.min.js')
   // Notifications Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
+  // Vector Map plugin
+  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
+  // Google Maps Plugin
+  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
+  // Wizard Plugin
+  script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
   script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
   // Plugin for DataTables.net
@@ -370,114 +314,185 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
     $(document).ready(function(){
-      $('.updateButton').click(function(){
-        var formData = new FormData();
-        
-
-        var opening = moment($('#opening_time').val(), 'hh:mm A').format('HH:mm')
-        formData.append('company_name',$('#company_name').val())
-        formData.append('company_logo',$('#company_logo')[0].files[0])
-        formData.append('opening_time',opening)
-        formData.append('closing_time',$('#closing_time').val())
-        formData.append('max_guest',$('#max_guest').val())
-        formData.append('membership_validity',$('#membership_validity').val())
-        formData.append('membership_fee',$('#membership_fee').val())
-        formData.append('entrance_fee',$('#entrance_fee').val())
-        formData.append('utilities_id',$(this).val())
-        console.log($('#company_logo')[0].files[0])
-        $.ajax({
-          type:"POST",
-          url: "/admin/utilities",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data){
-            if(data.alertDesc==0)
-              {
+        $('.addSpecialty').click(function(){
+          var specialty_desc = $('#specialty_desc').val()
+          if($('#specialty_desc').val()==0)
+          {
+            swal({
+              title: 'Please double check the Fields',
+              text: 'Make sure all required fields has value', 
+              icon: 'warning'
+            })
+          }
+          else
+          {
+            $.post('./adminSpecialty/Add',{
+              specialty_desc: $('#specialty_desc').val(),
+            }).done(function(data){
+              if(data.alertDesc== 0)
+                {
                   swal({
                     title: "Success",
-                    text: "Utilities update success",
+                    text: "New Specialty has been Added",
                     icon: 'success'
                   }).then(function(){
                     location.reload();
                   })
-              }
-              else
+                }
+              else if(data.alertDesc==1)
+                {
+                  swal({
+                    title: "Error",
+                    text: "Error",
+                    icon: 'error'
+                  })
+                }
+              else if(data.alertDesc==2)
               {
                 swal({
-                  title: "ERROR",
-                  icon: "error"
+                  title: specialty_desc+" is already exist.",
+                  icon: 'warning'
                 })
               }
+            })
           }
         })
-
-        //- $.post('./utilities',{
-        //-   company_name: $('#company_name').val(),
-        //-   company_logo: $('#company_logo').val(),
-        //-   opening_time: $('#opening_time').val(),
-        //-   closing_time: $('#closing_time').val(),
-        //-   max_guest: $('#max_guest').val(),
-        //-   membership_validity: $('#membership_validity').val(),
-        //-   membership_fee: $('#membership_fee').val(),
-        //-   entrance_fee: $('#entrance_fee').val(),
-        //-   utilities_id: id
-        //- }).done(function(data){
-        //-   if(data.alertDesc==0)
-        //-   {
-        //-       swal({
-        //-         title: "Success",
-        //-         text: "Utilities update success",
-        //-         icon: 'success'
-        //-       }).then(function(){
-        //-         location.reload();
-        //-       })
-        //-   }
-        //-   else
-        //-   {
-        //-     swal({
-        //-       title: "ERROR",
-        //-       icon: "error"
-        //-     })
-        //-   }
-        //- })
       })
-    })
-  //- script.
-  //-   $(document).ready(function(){
-  //-     function readURL(input) {
-  //-       if (input.files && input.files[0]) {
-  //-           var reader = new FileReader();
-            
-  //-           reader.onload = function (e) {
-  //-               $('#company_logoDisplay').attr('src', e.target.result);
-  //-           }
-            
-  //-           reader.readAsDataURL(input.files[0]);
-  //-       }
-  //-       }
-  //-       $("#company_logo").change(function(){
-  //-         readURL(this);
-  //-       });
-  //-   })
-
   script.
-      $(function () {
-
-      $('.timepicker').datetimepicker({
-        format: 'LT',
-        icons: {
-         
-          up: "fa fa-chevron-up",
-          down: "fa fa-chevron-down"
-          
-          }
+    $(document).ready(function(){
+        $('.logout').click(function(){
+            swal({
+            title: "Are you sure?",
+            text: "Do you want to Log Out?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+          })
+          .then((willDelete) => {
+            if (willDelete) {
+              $.post('/admin/admin/logout')
+              location.reload()
+            } 
+          });
+          })
     })
-      })
+        $('#modal-warning').on('hidden.bs.modal', function (){
+                var idNow = 0;
+                console.log(idNow)
+                });
+
+    $('.updateButton').click(function(){
+          var idNow = $(this).val();
+              console.log(idNow)
+              $.post('/admin/adminSpecialty/query',{id1:idNow})
+          .done(data=>{
+              $('#updateAppend').append(`
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Therapist Specialty</label>
+                        <input type="text" id="specialty_desc" value='${data.specialty_desc}' placeholder="${data.specialty_desc}" class="form-control"/>
+                      </div>
+                    </div>
+                  </div>`)
+              $('#updateModal').modal('show')
+              $('#updateModal').on('hidden.bs.modal', function (){
+                $('#updateAppend').empty()
+                });
+              $('#cancelButton').click(function(){
+                $('#updateAppend').remove();
+              })
+              $('#updateSubmitButton').click(function(){
+                  $.post('/admin/adminSpecialty/update',{
+                  specialty_desc:$('#specialty_desc').val(),
+                  
+                  id:idNow
+                  })
+                  .done(data=>{
+                      if(data.alertDesc==0){
+                          swal({
+                          title:'Success', 
+                          text:'Specialty Updated', 
+                          icon:'success'
+                          }).then(function(){
+                            location.reload();
+                          })
+                      }
+                      else
+                      {
+                        swal({
+                          title:'ERROR',
+                          icon: 'error'
+                        })
+                      }
+                  })
+                })
+              })
+
+          })  
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
-
-    $('#opening_time').va('')
     });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatables').DataTable({
+    "pagingType": "full_numbers",
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    responsive: true,
+    language: {
+    search: "_INPUT_",
+    searchPlaceholder: "Search records",
+    }
+    });
+    })
+  script.
+    $().ready(function(){
+      $('#registerFormValidation').validate();
+      $('#loginFormValidation').validate();
+      $('#allInputsFormValidation').validate();
+        });  
+
+  script.
+    $(document).ready(function(){
+        $('.deleteButton').click(function(){
+            var idNow = $(this).val();
+            var name = $(`.name[id='${idNow}']`).val()
+            swal({
+              title: 'Do you want to delete '+name+'?',
+              text: 'Are you sure?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+                
+              }).then((proceed) => {
+                if(proceed)
+                {
+                $.post('/admin/adminSpecialty/delete',{id:idNow}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: name+' has been deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
+                }
+                else
+                {
+
+                }
+                });
+            
+        });
+    })

@@ -1529,4 +1529,10 @@ router.post('/utilities',upload.single('company_logo'),(req,res)=>{
   })
 })
 
+router.get('/commission', (req, res) => {
+  res.render('admin/commission/comm')
+})
+
+
+
 exports.admin = router
