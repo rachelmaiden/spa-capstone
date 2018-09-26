@@ -59,12 +59,13 @@ router.get('/home',mid.receptionistnauthed,(req, res) => {
     const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
     customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
     services_tbl.service_name, services_tbl.service_price, 
-    room_tbl.room_name, room_tbl.room_rate
+    room_tbl.room_name, room_tbl.room_rate, therapist_tbl.*
       from walkin_queue_tbl 
       join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
       join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
       join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-      join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id where walkin_services_tbl.walkin_id=?`
+      join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id
+      join therapist_tbl on walkin_services_tbl.therapist_id = therapist_tbl.therapist_id where walkin_services_tbl.walkin_id=?`
     
     db.query(query,[req.body.id],(err,out)=>{
       var out1= out;

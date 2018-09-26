@@ -236,7 +236,7 @@ html(lang='en')
                                       th Duration
                                       th Price
                                       th Points
-                                      th Availability
+                                      th Available
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
@@ -245,7 +245,7 @@ html(lang='en')
                                       th Duration
                                       th Price
                                       th Points
-                                      th Availability
+                                      th Available
                                       th Actions
                                   tbody
                                     each service in services
@@ -254,7 +254,7 @@ html(lang='en')
                                         td= service.service_name
                                         input.name(type='hidden' value=`${service.service_name}` id=`${service.service_id}`)
                                         td= service.service_duration_desc+" "+"minutes"
-                                        td= service.service_price.toLocaleString()
+                                        td= "₱"+service.service_price.toLocaleString()+".00"
                                         if(service.service_points==1|| service.service_points==0)
                                           td= service.service_points+" "+"Point"
                                         else if(service.service_points > 0)
@@ -326,6 +326,7 @@ html(lang='en')
                                     .input-group
                                       span.input-group-addon ₱   
                                       input.form-control(type='text', number="true" placeholder='Service Price' name='service_price' id='service_price' required='true', aria-required='true')
+                                      span.input-group-addon .00
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -624,7 +625,11 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Price</label>
-                        <input type="text" id="price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
+                          <div class ="input-group">
+                          <span class="input-group-addon"> ₱</span>
+                          <input type="text" id="price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
+                          <span class="input-group-addon"> .00</span>
+                        </div>
                       </div>
                     </div>
                   </div>

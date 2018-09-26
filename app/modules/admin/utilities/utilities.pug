@@ -290,7 +290,7 @@ html(lang='en')
                     .col-md-2
                           label Reservation Forfeiture
                           .input-group
-                            input.form-control(type='number' value='' id='')
+                            input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
                             span.input-group-addon minutes      
                           
                   .row
@@ -306,22 +306,22 @@ html(lang='en')
                     .col-md-2
                       .form-group.has-default.bmd-form-group
                         label Start Time
-                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
+                        input.timepicker.form-control(type='text', value=`${utilities.firstShift_timeStart}` id='firstShift_timeStart' placeholder='Start Time'  )
                         
                     .col-md-2
                       .form-group.has-default.bmd-form-group
                         label End Time
-                        input.timepicker.form-control(type='text', placeholder='End Time' )
+                        input.timepicker.form-control(type='text', value=`${utilities.firstShift_timeEnd}` id='firstShift_timeEnd' placeholder='End Time' )
 
                     .col-md-2
                       .form-group.has-default.bmd-form-group
                         label Start Time
-                        input.timepicker.form-control(type='text', placeholder='Start Time'  )
+                        input.timepicker.form-control(type='text', value=`${utilities.secondShift_timeStart}` id='secondShift_timeStart' placeholder='Start Time'  )
                         
                     .col-md-2
                       .form-group.has-default.bmd-form-group
                         label End Time
-                        input.timepicker.form-control(type='text', placeholder='End Time' )    
+                        input.timepicker.form-control(type='text', value=`${utilities.secondShift_timeEnd}` id='secondShift_timeEnd' placeholder='End Time' )    
 
 
 
@@ -367,27 +367,46 @@ html(lang='en')
   script.
     $(document).ready(function(){
       $('.updateButton').click(function(){
-        var formData = new FormData();
+        //- var formData = new FormData();
         
 
         var opening = moment($('#opening_time').val(), 'hh:mm A').format('HH:mm')
-        formData.append('company_name',$('#company_name').val())
-        formData.append('company_logo',$('#company_logo')[0].files[0])
-        formData.append('opening_time',opening)
-        formData.append('closing_time',$('#closing_time').val())
-        formData.append('max_guest',$('#max_guest').val())
-        formData.append('membership_validity',$('#membership_validity').val())
-        formData.append('membership_fee',$('#membership_fee').val())
-        formData.append('entrance_fee',$('#entrance_fee').val())
-        formData.append('utilities_id',$(this).val())
-        console.log($('#company_logo')[0].files[0])
-        $.ajax({
-          type:"POST",
-          url: "/admin/utilities",
-          data: formData,
-          processData: false,
-          contentType: false,
-          success: function(data){
+        //- formData.append('company_name',$('#company_name').val())
+        //- formData.append('company_logo',$('#company_logo')[0].files[0])
+        //- formData.append('opening_time',opening)
+        //- formData.append('closing_time',$('#closing_time').val())
+        //- formData.append('max_guest',$('#max_guest').val())
+        //- formData.append('membership_validity',$('#membership_validity').val())
+        //- formData.append('membership_fee',$('#membership_fee').val())
+        //- formData.append('entrance_fee',$('#entrance_fee').val())
+        //- formData.append('utilities_id',$(this).val())
+        //- formData.append('reservation_forfeitTime',$('#reservation_forfeitTime').val())
+        //- formData.append('firstShift_timeStart',$('#firstShift_timeStart').val())
+        //- formData.append('firstShift_timeEnd',$('#firstShift_timeEnd').val())
+        //- formData.append('secondShift_timeStart',$('#secondShift_timeStart').val())
+        //- formData.append('secondShift_timeEnd',$('#secondShift_timeEnd').val())
+        //- console.log($('#company_logo')[0].files[0])
+        //- $.ajax({
+        //-   type:"POST",
+        //-   url: "/admin/utilities",
+        //-   data: formData,
+        //-   processData: false,
+        //-   contentType: false,
+        $.post('./utilities',{
+          company_name:$('#company_name').val(),
+          opening_time: opening,
+          closing_time:$('#closing_time').val(),
+          max_guest:$('#max_guest').val(),
+          membership_validity:$('#membership_validity').val(),
+          membership_fee:$('#membership_fee').val(),
+          entrance_fee:$('#entrance_fee').val(),
+          utilities_id:$(this).val(),
+          reservation_forfeitTime:$('#reservation_forfeitTime').val(),
+          firstShift_timeStart:$('#firstShift_timeStart').val(),
+          firstShift_timeEnd:$('#firstShift_timeEnd').val(),
+          secondShift_timeStart:$('#secondShift_timeStart').val(),
+          secondShift_timeEnd:$('#secondShift_timeEnd').val(),
+        }).done(function(data){
             if(data.alertDesc==0)
               {
                   swal({
@@ -405,38 +424,7 @@ html(lang='en')
                   icon: "error"
                 })
               }
-          }
         })
-
-        //- $.post('./utilities',{
-        //-   company_name: $('#company_name').val(),
-        //-   company_logo: $('#company_logo').val(),
-        //-   opening_time: $('#opening_time').val(),
-        //-   closing_time: $('#closing_time').val(),
-        //-   max_guest: $('#max_guest').val(),
-        //-   membership_validity: $('#membership_validity').val(),
-        //-   membership_fee: $('#membership_fee').val(),
-        //-   entrance_fee: $('#entrance_fee').val(),
-        //-   utilities_id: id
-        //- }).done(function(data){
-        //-   if(data.alertDesc==0)
-        //-   {
-        //-       swal({
-        //-         title: "Success",
-        //-         text: "Utilities update success",
-        //-         icon: 'success'
-        //-       }).then(function(){
-        //-         location.reload();
-        //-       })
-        //-   }
-        //-   else
-        //-   {
-        //-     swal({
-        //-       title: "ERROR",
-        //-       icon: "error"
-        //-     })
-        //-   }
-        //- })
       })
     })
   //- script.

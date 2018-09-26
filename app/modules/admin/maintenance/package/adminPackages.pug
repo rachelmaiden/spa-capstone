@@ -294,12 +294,14 @@ html(lang='en')
                                                     .input-group
                                                       span.input-group-addon ₱  
                                                       input.form-control(type='number', placeholder='Package Price' id='package_price' name='price' required='true', aria-required='true' )
+                                                      span.input-group-addon .00
+                                                    .category#suggestedPrice
                                               .form-group.has-default.bmd-form-group
                                                 center
                                                   label Services Included*
                                                     select.selectpicker(multiple='', title='Select Service/s', id='services_included' data-style='btn-info', data-size='7' name='package')
                                                       each service in services
-                                                        option(value=`${service.service_id}`)= service.service_name
+                                                        option(value=`${service.service_id}` price=`${service.service_price}` service_name=`${service.service_name}` service_duration=`${service.service_duration_desc}`)= service.service_name+"("+service.service_duration_desc+" minutes) "+" ₱"+service.service_price+".00"
                                               .row
                                                 .col-md-6
                                                   .form-group.has-default.bmd-form-group
@@ -308,29 +310,16 @@ html(lang='en')
                                                   select.selectpicker(name='duration'  title='Select Duration' data-style='btn-info' id='package_duration')
                                                     each duration in durations
                                                       option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                                  .category#suggestedDuration
                                                 .col-md-6
                                                   .form-group.has-default.bmd-form-group
                                                   label Package Available For
                                                   star *
                                                   select.selectpicker(name='person'  title='Select Number of Person' data-style='btn-info' id='')
-                                                    each duration in durations
-                                                      option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"      
-                                                //- .col-md-6  
-                                                //-   .form-group.has-default.bmd-form-group
-                                                //-   label Hours of Amenity Usage
-                                                //-   star *
-                                                //-   select.selectpicker(name='amenity' title='Select Hours of Usage' data-style='btn-info' id='package_amenity_usage')
-                                                //-     option(value='60') 60 minutes
-                                                //-     option(value='90') 90 minutes
-                                                //-     option(value='120') 120 minutes        
-                                            //- form(method='POST' action='/adminAmenity')
-                                            //-   .modal-body
-                                            //-     .row
-                                            //-       .col-sm-4
-                                            //-       .col-sm-4
-                                            //-         .input-group
-                                            //-           input.form-control(type='number' name="amenity_usage")
-                                            //-           span.input-group-addon Hours
+                                                    option(value='1') 1 Person
+                                                    option(value='2') 2 Person
+                                                    option(value='3') 3 Person 
+                                      
                                             .modal-footer
                                               button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add 
                                               button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -452,7 +441,42 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   
-  
+  script.
+    $(document).ready(function(){
+      $('#services_included').on("change",function(){
+        var selected = $('option:selected', this)
+        console.log(selected)
+        var price_perService=[]
+        var total = 0;
+        var totalDuration = 0;
+        selected.each(function(){
+          console.log(parseInt(this.getAttribute('service_duration')))
+          //- total = eval(total+'+'+this.getAttribute('price'))
+          price_perService.push({
+            name: this.getAttribute('service_name'),
+            price: parseInt(this.getAttribute('price')),
+            duration: parseInt(this.getAttribute('service_duration'))
+          })
+        })
+        for(var i=0;i<price_perService.length;i++)
+        {
+          console.log(price_perService.length)
+          if(selected.length==0)
+          {
+            $('#suggestedPrice').text(' ')
+            $('#suggestedDuration').text(' ')
+          }
+          else
+          {
+            totalDuration = totalDuration + price_perService[i].duration 
+            total = total + price_perService[i].price
+          $('#suggestedDuration').text('Suggested Duration is '+totalDuration+' minutes')
+          $('#suggestedPrice').text("Suggested Price is ₱"+total+".00")
+          }
+        }
+      })
+    })
+
   //- ADD NEW PACKAGE
   script.
     $(document).ready(function(){

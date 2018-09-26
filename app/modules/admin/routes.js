@@ -79,7 +79,9 @@ router.get('/giftcertificate', (req, res) => {
 // [PACKAGE]
 //          > R E A D
 router.get('/adminPackages',mid.adminnauthed,(req, res) => {
-  const query =`SELECT * FROM services_tbl where delete_stats=0 and service_availability=0;
+  const query =`SELECT services_tbl.*, service_duration_tbl.* FROM services_tbl
+  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
+  WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0;
   SELECT package_tbl.*, services_tbl.*, service_in_package_tbl.*, service_duration_tbl.* FROM package_tbl 
   JOIN service_in_package_tbl ON service_in_package_tbl.package_id = package_tbl.package_id
   JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = package_tbl.service_duration_id
@@ -252,7 +254,8 @@ router.get('/adminPromos',mid.adminnauthed,(req, res) => {
   JOIN service_in_promo_tbl ON promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id
   JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = promo_bundle_tbl.service_duration_id 
   JOIN services_tbl ON services_tbl.service_id = service_in_promo_tbl.service_id WHERE promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
-  SELECT * FROM services_tbl WHERE delete_stats=0 and service_availability=0;
+  SELECT services_tbl.*, service_duration_tbl.* FROM services_tbl 
+  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id WHERE services_tbl.delete_stats=0 and services_tbl.service_availability=0;
   SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 ORDER BY service_duration_desc ASC;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
@@ -528,7 +531,7 @@ router.get('/adminRoomType', mid.adminnauthed,(req, res) => {
   select * from room_type_tbl where delete_stats=0;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
-    res.session.utilities = out[1]
+    req.session.utilities = out[1]
     res.render('admin/maintenance/room/adminRoomType',{
       rtyps: out[0],
       reqSession: req.session
@@ -1032,6 +1035,12 @@ router.post('/adminTherapist',(req, res) => {
         {
           res.send({alertDesc:alertSuccess})
         }
+
+        const query3 =`INSERT INTO therapist_attendance_tbl(therapist_id,availability)
+        VALUE(${aydi},0)`
+
+        db.query(query3,(err,out)=>{
+        })
       })
     })
 //          > D E L E T E
@@ -1475,7 +1484,7 @@ router.post('/adminFreebies/Delete',(req, res)=>{
 
 // [UTILITIES]
 //        > R E A D
-  router.get('/utilities',mid.adminnauthed,(req, res) => {
+  router.get('/utilities',(req, res) => {
     const query =`SELECT * FROM utilities_tbl`
 
     db.query(query,(err,out)=>{
@@ -1488,30 +1497,35 @@ router.post('/adminFreebies/Delete',(req, res)=>{
   })
 
 // FILE UPLOAD using MULTER (IMAGE)
-var storage = multer.diskStorage({
-  destination: function (req, file, cb){
-    cb(null, './public/upload')
-  },
-  filename: function (req, file, cb){
-    cb(null, 'company_logo'+ '-'+Date.now()+path.extname(file.originalname))
-  }
-})
+// var storage = multer.diskStorage({
+//   destination: function (req, file, cb){
+//     cb(null, './public/upload')
+//   },
+//   filename: function (req, file, cb){
+//     cb(null, 'company_logo'+ '-'+Date.now()+path.extname(file.originalname))
+//   }
+// })
 
-var upload = multer({ storage: storage})
+// var upload = multer({ storage: storage})
 //        > CREATE or UPDATE
-router.post('/utilities',upload.single('company_logo'),(req,res)=>{
+// router.post('/utilities',upload.single('company_logo'),(req,res)=>{
+  router.post('/utilities',(req,res)=>{
   var alertSuccess=0
   var notSuccess=1
-  var company_logo = req.file.filename;
+  // var company_logo = req.file.filename;
   const query =`UPDATE utilities_tbl SET
   company_name="${req.body.company_name}",
-  company_logo="${company_logo}",
   opening_time="${req.body.opening_time}",
   closing_time="${req.body.closing_time}",
   max_guest="${req.body.max_guest}",
   membership_validity="${req.body.membership_validity}",
   membership_fee="${req.body.membership_fee}",
-  entrance_fee="${req.body.entrance_fee}"
+  entrance_fee="${req.body.entrance_fee}",
+  reservation_forfeitTime="${req.body.reservation_forfeitTime}",
+  firstShift_timeStart="${req.body.firstShift_timeStart}",
+  firstShift_timeEnd="${req.body.firstShift_timeEnd}",
+  secondShift_timeStart="${req.body.secondShift_timeStart}",
+  secondShift_timeEnd="${req.body.secondShift_timeEnd}"
   WHERE utilities_id="${req.body.utilities_id}"
   `
 

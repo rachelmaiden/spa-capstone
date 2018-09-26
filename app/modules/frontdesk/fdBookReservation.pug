@@ -225,7 +225,20 @@ html(lang='en')
                           h5.category
                             strong#EndTime
                             input(type="hidden" value='' id="timeEnd") 
-                  
+                    .row
+                      .form-group
+                        .col-md-3
+                          h5.category
+                            strong Therapist
+                    .row
+                      if(restype=='single')
+                          select.selectpicker(title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                            each thera in therapist
+                              option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                      else if(restype=='multiple')
+                          select.selectpicker(multiple='', title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                            each thera in therapist
+                              option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
                     h4 Total Price: 
                         a#finalTotal
                         br
@@ -298,6 +311,18 @@ html(lang='en')
     script(src='/assets/paperDashboardPro/js/demo.js')
     script.
       $('.buttonSummary').click(function(){
+
+        $.post('./summary/viewTherapist')
+        .done(data=>{
+          console.log(data)
+          for(var i=0; i<data.length;i++)
+          {
+            console.log(data[i].therapist_fname)
+            $('#selected_therapist').append(`
+              <option value='${data[i].therapist_id}'> ${data[i].therapist_fname}  </option>
+            `)
+          }
+        })
         var restype = $('.restype[id="restype"]').val()
         if(restype=='single')
         {
@@ -393,6 +418,7 @@ html(lang='en')
             serviceNewDuration: serviceNewDuration,
             serviceTotal: serviceTotal,
             bed_quantity: bed_quantity,
+            therapist_id: $('#selected_therapist').val(),
             timeStart : $('#timeStart').val(),
             timeEnd: $('#timeEnd').val(),
             date : $('#dateRes').val(),

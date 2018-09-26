@@ -149,6 +149,7 @@ html(lang='en')
                                       .row
                                         .col-md-12
                                           .card-content
+                                            h4#therapist
                                             .toolbar
                                             .fresh-datatables
                                             table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
@@ -243,9 +244,11 @@ html(lang='en')
           var id = $(this).val()
           $.post('/receptionist/home/queue/viewServices',{id:id})
             .done(data=>{
+              console.log(data.out1)
               console.log(data.out2)
-              console.log("NAME^")
+              console.log(data.out1[0].therapist_fname)
                 $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+                $('#therapist').append(`Therapist: ${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
               for(var i=0; i<data.out1.length;i++){
                   $('#viewServicesAvailed').append(` 
                   <tr>
