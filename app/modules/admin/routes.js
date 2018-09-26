@@ -1543,4 +1543,10 @@ router.post('/adminFreebies/Delete',(req, res)=>{
   })
 })
 
+router.get('/commission', (req, res) => {
+  res.render('admin/commission/comm')
+})
+
+
+
 exports.admin = router
