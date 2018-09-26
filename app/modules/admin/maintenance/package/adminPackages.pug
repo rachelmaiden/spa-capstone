@@ -445,13 +445,10 @@ html(lang='en')
     $(document).ready(function(){
       $('#services_included').on("change",function(){
         var selected = $('option:selected', this)
-        console.log(selected)
         var price_perService=[]
         var total = 0;
         var totalDuration = 0;
         selected.each(function(){
-          console.log(parseInt(this.getAttribute('service_duration')))
-          //- total = eval(total+'+'+this.getAttribute('price'))
           price_perService.push({
             name: this.getAttribute('service_name'),
             price: parseInt(this.getAttribute('price')),
