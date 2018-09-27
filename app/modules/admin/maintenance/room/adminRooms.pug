@@ -91,7 +91,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
+                            span.sidebar-normal Therapist Skills
                         li(style="margin-left: 30px")
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
@@ -315,12 +315,12 @@ html(lang='en')
                                   input.form-control(type='number', placeholder='Bed Quantity' name='bed_qty' id='bed_qty' required='true' aria-label='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Rate per hour
+                                  label Fee Per Hour
                                   star *
                                   .input-group
                                       span.input-group-addon ₱  
                                       input.form-control(type='number', placeholder='Rate' name='room_rate' id='room_rate' required='true' aria-label='true')
-
+                                      span.input-group-addon .00
                             .row
                           .modal-footer
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add Room

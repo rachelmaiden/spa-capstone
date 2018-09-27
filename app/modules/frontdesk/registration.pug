@@ -254,13 +254,13 @@ html(lang='en')
                                     tr
                                       th Name
                                       th Gender
-                                      th Membership Type
+                                      th Customer Type
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
                                       th Name
                                       th Gender
-                                      th Membership Type
+                                      th Customer Type
                                       th Actions
                                   tbody
                                     each customer in customers
@@ -281,7 +281,7 @@ html(lang='en')
                                                 button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
                                                   span.btn-label
                                                   i.ti-calendar
-                                                  |  Book Reservation
+                                                  |  New Reservation
                                               li
                                                 button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
                                                   span.btn-label
@@ -323,7 +323,7 @@ html(lang='en')
                       .modal-content
                         .modal-header
                           h3.modal-title
-                            center Book Reservation
+                            center New Reservation
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                         .modal-body.text-center
                           .row
