@@ -249,14 +249,18 @@ html(lang='en')
                             form#allInputsFormValidation(method='' action='')
                               .modal-body
                                 .row
+                                  .col-md-3
                                   .col-md-6
-                                    .form-group.has-default.bmd-form-group
-                                     
-                                      input.form-control(type='file', name='company_logo' value='' id='company_logo' accept="image/*")
+                                      .form-group.has-default.bmd-form-group
+                                        input.form-control(type='file', name='company_logo' value='' id='company_logo' accept="image/*")
+                                .row
+                                  .col-md-1
+                                  .col-md-2
+                                      img.card(src=`/upload/${reqSession.utilities.company_logo}` id="viewImage" style='margin-left:25px; width: 30em')
                                 .row
                               .modal-footer
-                                button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Next
-                                button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel        
+                                button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel        
+                                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.updateLogo(type='button') Update
                   
                   .row
                     .col-md-2
@@ -368,6 +372,58 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+              function readURL(input) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              
+              reader.onload = function (e) {
+                  $('#viewImage').attr('src', e.target.result);
+              }
+              
+              reader.readAsDataURL(input.files[0]);
+          }
+          }
+          $("#company_logo").change(function(){
+            readURL(this);
+          });
+    })
+
+  script.
+    $(document).ready(function(){
+      $('.updateLogo').click(function(){
+        var formData = new FormData();
+        formData.append('company_logo',$('#company_logo')[0].files[0])
+      
+        console.log($('#company_logo')[0].files[0])
+        $.ajax({
+          type:"POST",
+          url: "/admin/utilities/updateLogo",
+          data: formData,
+          processData: false,
+          contentType: false,
+      }).done(function(data){
+        if(data.alertDesc==0)
+          {
+              swal({
+                title: "Success",
+                text: "Company Logo update success",
+                icon: 'success'
+              }).then(function(){
+                location.reload();
+              })
+          }
+          else
+          {
+            swal({
+              title: "ERROR",
+              icon: "error"
+            })
+          }
+        })
+      })
+    })
   script.
     $(document).ready(function(){
       $('.updateButton').click(function(){

@@ -224,19 +224,19 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Package Name
+                                      th Name
                                       th Services Included
                                       th Duration
                                       th Price
-                                      th Availability
+                                      th Available
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Package Name
+                                      th Name
                                       th Services Included
                                       th Duration
                                       th Price
-                                      th Availability
+                                      th Available
                                       th Actions
                                   tbody
                                     each pack in packages
@@ -311,9 +311,12 @@ html(lang='en')
                                                   .form-group.has-default.bmd-form-group
                                                   label Package Duration
                                                   star *
-                                                  select.selectpicker(name='duration'  title='Select Duration' data-style='btn-info' id='package_duration')
-                                                    each duration in durations
-                                                      option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                                  .input-group
+                                                    input.form-control(type='number', placeholder='Package Duration' id='package_duration' name='duration' required='true', aria-required='true' )
+                                                    span.input-group-addon minutes
+                                                  //- select.selectpicker(name='duration'  title='Select Duration' data-style='btn-info' id='package_duration')
+                                                  //-   each duration in durations
+                                                  //-     option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
                                                   .category#suggestedDuration
                                                 .col-md-6
                                                   .form-group.has-default.bmd-form-group
