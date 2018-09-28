@@ -92,7 +92,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
+                            span.sidebar-normal Therapist Skills
                         li(style="margin-left: 30px").active
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
@@ -242,7 +242,7 @@ html(lang='en')
                                       th Age
                                       th Gender
                                       th Contact No
-                                      th Specialty
+                                      th Skills
                                       th Available
                                       th.disabled-sorting Actions
                                   tfoot
@@ -252,7 +252,7 @@ html(lang='en')
                                       th Age
                                       th Gender
                                       th Contact No
-                                      th Specialty
+                                      th Skills
                                       th Available
                                       th Actions
                                   tbody
@@ -265,7 +265,7 @@ html(lang='en')
                                         td= thera.therapist_gender
                                         td= thera.therapist_contact_no
                                         td
-                                          button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${thera.therapist_id}`) View Specialty
+                                          button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${thera.therapist_id}`) View Skills
                                         td
                                           if(thera.therapist_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${thera.therapist_id}`)
@@ -362,9 +362,9 @@ html(lang='en')
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Specialty
+                                  label Skills
                                   star *
-                                    select.selectpicker(multiple='', title='Select Specialty', data-style='btn-info', data-size='7' name='therapist_specialty' id='therapist_specialty' required='true' aria-label='true')
+                                    select.selectpicker(multiple='', title='Select Skill/s', data-style='btn-info', data-size='7' name='therapist_specialty' id='therapist_specialty' required='true' aria-label='true')
                                       each specialty in specialtys
                                         option(value=`${specialty.specialty_id}`)= specialty.specialty_desc
                           .modal-footer
@@ -408,7 +408,7 @@ html(lang='en')
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                             span(aria-hidden='true') ×
                           center
-                            h4.modal-title Specialty
+                            h4.modal-title Skill/s
                         .modal-body#viewUpdateSpecialtyAppend
                         .modal-footer
                           button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
@@ -561,7 +561,7 @@ html(lang='en')
           })
           $('.bawal').click(function(){
             swal({
-            title: 'Set this item to unavailable first',
+            title: 'Set this therapist to unavailable first',
             icon: 'warning'
           })
           })
@@ -616,7 +616,7 @@ html(lang='en')
             $('#viewAppend').append(`
                   <div class="row">
                     <div class="col-md-6" id="specialty_desc">
-                      <label> Specialty </label>
+                      <label> Skill/s </label>
                       <div class="form-group has-default bmd-form-group">
                       
                       </div>
@@ -652,8 +652,8 @@ html(lang='en')
             console.log(data)
             $('#viewUpdateSpecialtyAppend').append(`
                   <div class="form-group has-default bmd-form-group">
-                    <label>Therapist Specialty
-                      <select name="specialty" id="specialty" multiple="" title="Choose Specialty" data-style="btn-info" data-size="7" class="selectpicker">
+                    <label>Therapist Skill/s
+                      <select name="specialty" id="specialty" multiple="" title="Choose Skill/s" data-style="btn-info" data-size="7" class="selectpicker">
                       </select>
                     </label>
                   </div>

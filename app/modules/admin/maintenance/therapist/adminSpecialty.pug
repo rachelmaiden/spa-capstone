@@ -90,7 +90,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px").active
                           a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
+                            span.sidebar-normal Therapist Skills
                         li(style="margin-left: 30px")
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
@@ -219,25 +219,25 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Therapist Specialty  
+                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewService') Add New Therapist Skill  
                   #addNewService.modal.fade(tabindex='-1', role='dialog')
                     .modal-dialog(role='document')
                       .modal-content
                         .modal-header
                           h5.modal-title
-                            center Add New Therapist Specialty
+                            center Add New Therapist Skill
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                         form#allInputsFormValidation(method='' action='')
                           .modal-body
                             .row
                               .col-md-12
                                 .form-group.has-default.bmd-form-group
-                                  label Therapist Specialty
+                                  label Therapist Skill
                                   star *
-                                  input.form-control(type='text', placeholder='Therapist Specialty' id="specialty_desc" required='true', aria-required='true')
+                                  input.form-control(type='text', placeholder='Therapist Skill' id="specialty_desc" required='true', aria-required='true')
                             .row
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addSpecialty(type='button') Add Therapist Specialty
+                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addSpecialty(type='button') Add Therapist Skill
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
@@ -253,7 +253,7 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Therapist Specialty
+                                      th Therapist Skills
                                       th.disabled-sorting
                                       th.disabled-sorting
                                       th.disabled-sorting
@@ -261,7 +261,7 @@ html(lang='en')
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Therapist Specialty
+                                      th Therapist Skills
                                       th
                                       th
                                       th
@@ -297,7 +297,7 @@ html(lang='en')
                                   .modal-content
                                     .modal-header
                                       h5.modal-title
-                                        center Edit Specialty Description
+                                        center Edit Skill Description
                                       button.close(type='button', data-dismiss='modal', aria-label='Close')
                                     .modal-body#updateAppend
                                       

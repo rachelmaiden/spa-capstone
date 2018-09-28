@@ -76,7 +76,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
+                            span.sidebar-normal Therapist Skills
                         li(style="margin-left: 30px")
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
@@ -287,7 +287,7 @@ html(lang='en')
                     .col-md-2
                           label Membership Validity
                           .input-group
-                            input.form-control(type='text' value=`${utilities.membership_validity}` id='membership_validity')
+                            input.form-control(type='number' value=`${utilities.membership_validity}` id='membership_validity')
                             span.input-group-addon months
                     .col-md-2
                         label Entrance Fee
@@ -295,12 +295,24 @@ html(lang='en')
                           span.input-group-addon ₱
                           input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
                           span.input-group-addon .00
-                    .col-md-2
+                    .col-md-3
                           label Reservation Forfeiture
                           .input-group
                             input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
-                            span.input-group-addon minutes      
-                          
+                            span.input-group-addon minutes
+                     
+                  .row 
+                     .col-md-3
+                          label Time Allowance After Each Service
+                          .input-group
+                            input.form-control(type='number' value='' id='')
+                            span.input-group-addon minutes              
+                     .col-md-3
+                          label Therapist Commission Per Service
+                          .input-group
+                            input.form-control(type='number' value='' id='')
+                            span.input-group-addon %
+
                   .row
                     .col-md-4
                       h5

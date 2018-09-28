@@ -81,7 +81,7 @@ html(lang='en')
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
-                            span.sidebar-normal Therapist Specialty
+                            span.sidebar-normal Therapist Skills
                         li(style="margin-left: 30px")
                           a(href='./adminTherapist')
                             span.sidebar-normal Therapist
@@ -132,15 +132,15 @@ html(lang='en')
                         li(style="margin-left: 30px")
                           a(href='./adminFreebies')
                             span.sidebar-normal Freebies
-                  li(style="margin-left: 5px;")
+                  li(style="margin-left: 5px;").active
                     a(data-toggle='collapse', href='#gifc')
                       p
                         span.sidebar-mini G
                         | Gift Certificate
                         b(style="margin-right: 30px").caret
-                    #gifc.collapse
+                    #gifc.collapse.in
                       ul.nav
-                        li(style="margin-left: 30px")
+                        li(style="margin-left: 30px").active
                           a(href='./gc')
                             span.sidebar-normal Gift Certificate                        
             li
@@ -230,7 +230,7 @@ html(lang='en')
                   .row
                     .col-md-6
                       .card-content
-                        // <button class="btn btn-info btn-fill btn-wd" data-toggle="modal" data-target="#addNewService">Add New Service Type  </button>
+                        
                     .content
                       .container-fluid
                         .row
@@ -240,35 +240,7 @@ html(lang='en')
                             .card
                               .card-content
                                 div
-                                  .row
-                                    .col-md-12
-                                      .form-group.has-default.bmd-form-group
-                                        h2
-                                          p.category
-                                          | Reference Number
-                                        // <input type="text" class="form-control" placeholder="Service Name">
-                                  .row
-                                    .col-md-2
-                                      .form-group.has-default.bmd-form-group
-                                        h3
-                                          p.category
-                                          | 0000
-                                        // <input type="text" class="form-control" placeholder="Service Name">
-                                    .col-md-2
-                                      .form-group.has-default.bmd-form-group
-                                        h3
-                                          p.category
-                                          | -
-                                    .col-md-2
-                                      .form-group.has-default.bmd-form-group
-                                        h3
-                                          p.category
-                                          | 0999
-                                    .col-md-2
-                                      .form-group.has-default.bmd-form-group
-                                        br
-                                        button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#updateRef') Update
-                                  hr
+                                  
                                   .row
                                     .col-md-12
                                       .form-group.has-default.bmd-form-group
@@ -281,7 +253,7 @@ html(lang='en')
                                         h3
                                           p.category
                                           | 0000
-                                        // <input type="text" class="form-control" placeholder="Service Name">
+                                       
                                     .col-md-2
                                       .form-group.has-default.bmd-form-group
                                         h3
@@ -296,31 +268,7 @@ html(lang='en')
                                       .form-group.has-default.bmd-form-group
                                         br
                                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#updateRel') Update
-                                #updateRef.modal.fade(tabindex='-1', role='dialog')
-                                  .modal-dialog(role='document')
-                                    .modal-content
-                                      .modal-header
-                                        h5.modal-title
-                                          center Update
-                                        button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                      .modal-body
-                                        .row
-                                          .col-md-5
-                                            .form-group.has-default.bmd-form-group
-                                              label
-                                              input.form-control(type='text', placeholder='0000')
-                                          .col-md-2
-                                            .form-group.has-default.bmd-form-group.text-center
-                                              h3
-                                                p.category
-                                                | -
-                                          .col-md-5
-                                            .form-group.has-default.bmd-form-group
-                                              label
-                                              input.form-control(type='text', placeholder='9999')
-                                      .modal-footer
-                                        button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd(type='button') Submit
-                                        button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                               
                                     #updateRel.modal.fade(tabindex='-1', role='dialog')
                                       .modal-dialog(role='document')
                                         .modal-content
