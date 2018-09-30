@@ -1548,5 +1548,19 @@ router.get('/commission', (req, res) => {
 })
 
 
+//QUERIES
+
+router.get('/customerList',(req, res) => {
+  res.render('admin/queries/customerList')
+})
+
+router.get('/loyaltyMembers',(req, res) => {
+  res.render('admin/queries/loyaltyMembers')
+})
+
+router.get('/servicesList',(req, res) => {
+  res.render('admin/queries/servicesList')
+})
+
 
 exports.admin = router
