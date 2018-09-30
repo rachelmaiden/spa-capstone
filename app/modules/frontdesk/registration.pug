@@ -3,7 +3,7 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities.company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
     title #{reqSession.utilities.company_name}
    
@@ -25,15 +25,13 @@ html(lang='en')
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
           a.simple-text.logo-mini(href='#')
-            | CT
           a.simple-text.logo-normal(href='./home')
             | #{reqSession.utilities.company_name}
         .sidebar-wrapper
           .user
             .info
-              .photo
-                img(src='../paperDashboardPro/img/faces/face-2.jpg')
-              a.collapsed(data-toggle='collapse', href='#collapseExample')
+              
+              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 45px;')
                 span
                   | Front Desk
               .clearfix
@@ -73,11 +71,6 @@ html(lang='en')
               a.navbar-brand(href='#Dashboard')
                 | Registration
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
               ul.nav.navbar-nav.navbar-right
                 li
                   a#date-part(style="color: black")
@@ -246,77 +239,103 @@ html(lang='en')
                           br
                           .card
                             .card-content
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              .fresh-datatables
-                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                  thead
-                                    tr
-                                      th Name
-                                      th Gender
-                                      th Customer Type
-                                      th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Name
-                                      th Gender
-                                      th Customer Type
-                                      th Actions
-                                  tbody
-                                    each customer in customers
-                                      tr
-                                        td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
-                                        input.name(type='hidden' value=`${customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname}` id=`${customer.cust_id}`)
-                                        td= customer.cust_gender
-                                        if(customer.cust_type==1) 
-                                          td Loyalty
-                                        else if(customer.cust_type==0)
-                                          td Common 
-                                        td
-                                          .dropdown(style="right: 10px")
-                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                              i.ti-settings
-                                            ul.dropdown-menu
-                                              li
-                                                //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
-                                                button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-calendar
-                                                  |  New Reservation
-                                              li
-                                                button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
-                                                  span.btn-label
-                                                  i.ti-pencil-alt
-                                                  |  Update
-                                              li
-                                                button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px" value=`${customer.cust_id}`)
-                                                  span.btn-label
-                                                  i.ti-trash
-                                                  |  Delete
-                                       
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
+                              .nav-tabs-navigation
+                                .nav-tabs-wrapper
+                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                                    li.active
+                                      a(href='#common', data-toggle='tab') Common
+                                    li
+                                      a(href='#loyalty', data-toggle='tab') Loyalty
+                              #my-tab-content.tab-content
+                                #common.tab-pane.active
+                                  .toolbar
+                                  .fresh-datatables
+                                    table#datatablesCommon.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Gender
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Gender
+                                          th Actions
+                                      tbody
+                                        each customer in customers
+                                          if(customer.cust_type==0)
+                                            tr
+                                              td
+                                                a.viewDetails(style='color: black; cursor: pointer' rel='tooltip' title='Click to view details' customer_id=`${customer.cust_id}`)= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                              input.name(type='hidden' value=`${customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname}` id=`${customer.cust_id}`)
+                                              td= customer.cust_gender
+                                              td
+                                                .dropdown(style="right: 10px")
+                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                    i.ti-settings
+                                                  ul.dropdown-menu
+                                                    li
+                                                      //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i.ti-calendar
+                                                        |  New Reservation
+                                                    li
+                                                      button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i.ti-pencil-alt
+                                                        |  Update
+                                                    li
+                                                      button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px" value=`${customer.cust_id}`)
+                                                        span.btn-label
+                                                        i.ti-trash
+                                                        |  Delete
+
+                                #loyalty.tab-pane.active
+                                  .toolbar
+                                  .fresh-datatables
+                                    table#datatablesLoyalty.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Gender
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Gender
+                                          th Actions
+                                      tbody
+                                        each customer in customers
+                                          if(customer.cust_type==1)
+                                            tr
+                                              td
+                                                a.viewLoyaltyDetails(style='color: black; cursor: pointer' rel='tooltip' title='Click to view details' customer_id=`${customer.cust_id}`)= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                              input.name(type='hidden' value=`${customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname}` id=`${customer.cust_id}`)
+                                              td= customer.cust_gender
+                                              td
+                                                .dropdown(style="right: 10px")
+                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                    i.ti-settings
+                                                  ul.dropdown-menu
+                                                    li
+                                                      //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i.ti-calendar
+                                                        |  New Reservation
+                                                    li
+                                                      button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i.ti-pencil-alt
+                                                        |  Update
+                                                    li
+                                                      button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px" value=`${customer.cust_id}`)
+                                                        span.btn-label
+                                                        i.ti-trash
+                                                        |  Delete
+
+                            
 
 
                   #ReservationModal.modal.fade(tabindex='-1', role='dialog')
@@ -325,6 +344,7 @@ html(lang='en')
                         .modal-header
                           h3.modal-title
                             center New Reservation
+                              p#hello(style='font-size: 20px')
                           button.close(type='button', data-dismiss='modal', aria-label='Close')
                         .modal-body.text-center
                           .row
@@ -341,11 +361,11 @@ html(lang='en')
                                   input(type='radio', name='nog', value='multiple')
                                   label(for='radio20')
                                     | Multiple 
-                          .row
+                          .row#Multiple(style='display:none')
                             .col-md-4  
                               .input-group
                                 span.input-group-btn
-                                  button.btn.btn-info.btn-numberMale.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quantMale' id="add")
+                                  button.btn.btn-info.btn-numberMale.buttonMinus(type='button', disabled='disabled', data-type='minus', data-field='quantMale' id="add" )
                                     span.ti-minus
                                 input.form-control.input-number.male(type='text', id="quantity" name='quantMale', value="0" min='0', max='6' disabled)
                                 span.input-group-btn
@@ -365,16 +385,44 @@ html(lang='en')
                         .modal-footer#reservationFooter
                           //- button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button' id="book" href=`selectDate/${customer.cust_id}`) Book Reservation
                           //- button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                  footer.footer
-                    .container-fluid
-                      .copyright.pull-right
-                        | © 
-                        script.
-                          document.write(new Date().getFullYear())
-                        | , made with 
-                        i.fa.fa-heart.heart
-                        |  by 
-                        a(href='#') TEAM MBAY
+        
+                  //VIEW COMMON CUSTOMER DETAILS
+                  #viewCustomerDetails.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          center
+                            h4.modal-title#titleName
+                        .modal-body#Details
+                        .modal-footer#footerAppend
+                          center
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd(data-dismiss='modal') Close
+                  //VIEW LOYALTY CUSTOMER DETAILS
+                  #viewCustomerLoyaltyDetails.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                      .modal-content
+                        .modal-header
+                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            span(aria-hidden='true') ×
+                          center
+                            h4.modal-title#titleLoyaltyName
+                        .modal-body#LoyaltyDetails
+                        .modal-footer#footerAppend
+                          center
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd(data-dismiss='modal') Close
+        
+        footer.footer
+          .container-fluid
+            .copyright.pull-right
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='#') TEAM MBAY
   .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -401,8 +449,6 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
@@ -421,7 +467,12 @@ html(lang='en')
     $(document).ready(function(){
       $('.reserveButton').click(function(){
         var id = $(this).val()
-        console.log(id)
+        var name = $(`.name[id='${id}']`).val()
+
+        $('#hello').append(`(${name})`)
+        $('#ReservationModal').on('hidden.bs.modal', function (){
+          $('#hello').empty()
+        });
         $('#ReservationModal').modal('show')
         $('input[type="radio"]').click(function(e){
         if(e.target.checked)
@@ -429,6 +480,7 @@ html(lang='en')
         $('#reservationFooter').empty()
           if($(this).val() == "single")
           {
+            $('#Multiple').css('display','none')
             $('#reservationFooter').empty()
           //-  alert("single")
             $('.buttonAdd').attr('disabled', true)
@@ -438,6 +490,7 @@ html(lang='en')
           }
           else if($(this).val()=="multiple")
           {
+            $('#Multiple').css('display','block')
             $('button[id="add"]').click(function(){
             $('#reservationFooter').empty()
             var male=$('.male[name="quantMale"]').val()
@@ -503,24 +556,6 @@ html(lang='en')
         })
       })
     })
-  //- script.
-  //-   $(document).ready(function(){
-  //-      $('input[type="radio"]').click(function(e){
-  //-        if(e.target.checked)
-  //-        {
-  //-          if($(this).val() == "single")
-  //-          {
-  //-           //-  alert("single")
-  //-            $('.buttonAdd').attr('disabled', true)
-  //-          }
-  //-          else if($(this).val()=="multiple")
-  //-          {
-  //-           //-  alert("multiple")
-  //-            $('.buttonAdd').attr('disabled',false)
-  //-          }
-  //-        }
-  //-      })
-  //-   })
   script.
     $(document).ready(function(){
       $('.buttonDelete').click(function(){
@@ -545,7 +580,35 @@ html(lang='en')
             }).then((confirm)=>{
               if(confirm)
               {
-                $.post('/frontdesk/DeleteCustomer')
+                var admin_password = $('.swal-content__input').val()
+                $.post('/frontdesk/DeleteCustomer',{admin_password,cust_id}).done(function(data){
+                  if(data.alertDesc==0)// IF SUCCESS
+                  {
+                    swal({
+                      title: 'Success',
+                      text: cust_name+' is deleted',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else if(data.alertDesc==1)// IF NOT SUCCESS
+                  {
+                    swal({
+                      title: 'Error',
+                      text: cust_name+' is not Deleted',
+                      icon: 'error'
+                    })
+                  }
+                  else if(data.alertDesc==2)// IF INCORRECT PASSWORD
+                  {
+                    swal({
+                      title: 'Error',
+                      text: 'The Administrator password is Incorrect',
+                      icon: 'error'
+                    })
+                  }
+                })
               }
             });
             $('.swal-content__input').attr('type', 'password')
@@ -553,6 +616,7 @@ html(lang='en')
         })
       })
     })
+  
   script.
     $(document).ready(function(){
         $('#checkbox1').on('change.bootstrapSwitch', function(e){
@@ -636,9 +700,9 @@ html(lang='en')
         {
           var newDate= $('#calendar').val()
           var vals = newDate.split('-');
-          var year = vals[0];
-          var month = vals[1];
-          var date = vals[2];
+          var year = vals[2];
+          var month = vals[0];
+          var date = vals[1];
           $.post('/frontdesk/Home/newCustomer',{
             firstname:$('#firstname').val(),
             lastname:$('#lastname').val(),
@@ -731,7 +795,19 @@ html(lang='en')
     });
   script(type='text/javascript').
     $(document).ready(function() {
-    $('#datatables').DataTable({
+    $('#datatablesCommon').DataTable({
+    "pagingType": "full_numbers",
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    responsive: true,
+    language: {
+    search: "_INPUT_",
+    searchPlaceholder: "Search records",
+    }
+    });
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesLoyalty').DataTable({
     "pagingType": "full_numbers",
     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
     responsive: true,
@@ -901,3 +977,53 @@ html(lang='en')
                     e.preventDefault();
                 }
           });
+  script.
+    $(document).ready(function(){
+      $('.viewDetails').click(function(){
+        var customer_id = $(this).attr('customer_id')
+        
+        $.post('./Customer/viewCustomerDetails',{customer_id}).done(function(data){
+          console.log(data)
+          $('#viewCustomerDetails').modal('show')
+          $('#titleName').append(`${data[0].cust_fname} ${data[0].cust_mname} ${data[0].cust_lname}`)
+          
+          
+          var birthday =data[0].cust_birthMonth+'-'+data[0].cust_birthDate+'-'+data[0].cust_birthYear
+          console.log(birthday)
+            birthday = moment(birthday).format('MMMM DD, YYYY')
+          $('#Details').append(`<p>Address: ${data[0].cust_address}
+          <p>Birthday: ${birthday} 
+          <p>Contact No: ${data[0].cust_contact_no}`)
+        })
+      $('#viewCustomerDetails').on('hidden.bs.modal', function (){
+          $('#titleName').empty(),
+          $('#Details').empty()
+        });
+      })
+    })
+  script.
+    $(document).ready(function(){
+      $('.viewLoyaltyDetails').click(function(){
+        var customer_id = $(this).attr('customer_id')
+        
+        $.post('./Customer/viewCustomerLoyaltyDetails',{customer_id}).done(function(data){
+          console.log(data)
+          $('#viewCustomerLoyaltyDetails').modal('show')
+          $('#titleLoyaltyName').append(`${data[0].cust_fname} ${data[0].cust_mname} ${data[0].cust_lname}`)
+          
+          
+          var birthday =data[0].cust_birthMonth+'-'+data[0].cust_birthDate+'-'+data[0].cust_birthYear
+          console.log(birthday)
+            birthday = moment(birthday).format('MMMM DD, YYYY')
+          $('#LoyaltyDetails').append(`<p>Address: ${data[0].cust_address}
+          <p>Birthday: ${birthday} 
+          <p>Contact No: ${data[0].cust_contact_no}
+          <p>Points:${data[0].member_points}
+          <p>Membership Expiration: ${data[0].membership_validity}`)
+        })
+      $('#viewCustomerLoyaltyDetails').on('hidden.bs.modal', function (){
+          $('#titleLoyaltyName').empty(),
+          $('#LoyaltyDetails').empty()
+        });
+      })
+    })

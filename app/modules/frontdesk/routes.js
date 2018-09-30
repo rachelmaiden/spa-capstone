@@ -4,23 +4,11 @@ var db = require('../../lib/database')();
 var mid = require("../../middlewares")
 var moment = require ('moment')
 
-// [FRONTDESK-HOME]
-router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
-  const query = ` select * from customer_tbl where delete_stats=0;
-  SELECT * FROM utilities_tbl`
-  db.query(query,(err,out) =>{
-    req.session.utilites = out[1]
-      res.render('frontdesk/registration',{
-        customers: out[0],
-        reqSession: req.session
-      })
-    })
-  })
 
 // [FRONT DESK - LOGIN PAGE] 
 router.get('/frontdesk', (req, res) => {
   const query =`SELECT * FROM utilities_tbl`
-
+  
   db.query(query,(err,out)=>{
     req.session.utilities= out[0]
     res.render('frontdesk/frontdesk',{
@@ -31,7 +19,7 @@ router.get('/frontdesk', (req, res) => {
 // [LOGIN]
 router.post("/frontdesk/login",(req, res) => {
 	const query = `
-		select * from admin_tbl where admin_username = "${req.body.admin_username}" and admin_desc="front_desk"`
+  select * from admin_tbl where admin_username = "${req.body.admin_username}" and admin_desc="front_desk"`
 
 		db.query(query, (err, out) => {
  		if(!out[0])
@@ -55,8 +43,39 @@ router.post("/frontdesk/logout", (req, res) => {
     res.redirect("/frontdesk")
   })
 })
-  
+// [FRONTDESK-HOME]
+router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
+  const query = ` select * from customer_tbl where delete_stats=0;
+  SELECT * FROM utilities_tbl`
+  db.query(query,(err,out) =>{
+    req.session.utilites = out[1]
+      res.render('frontdesk/registration',{
+        customers: out[0],
+        reqSession: req.session
+      })
+    })
+  })
 
+
+  
+router.post('/Customer/viewCustomerDetails',(req,res)=>{
+  const query = `SELECT * FROM customer_tbl WHERE cust_id = ${req.body.customer_id}`
+
+  db.query(query,(err,out)=>{
+    console.log(out)
+    res.send(out)
+  })
+})
+router.post('/Customer/viewCustomerLoyaltyDetails',(req,res)=>{
+  const query = `SELECT customer_tbl.* ,loyalty_tbl.* FROM customer_tbl 
+  JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id WHERE customer_tbl.cust_id = ${req.body.customer_id}`
+
+  db.query(query,(err,out)=>{
+    console.log(query)
+    console.log(out)
+    res.send(out)
+  })
+})
 // // [SEARCH]
 // router.post('/frontdesk/search', (req, res) => {
 //   console.log(req.body.searchBar)
@@ -312,14 +331,25 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   console.log(dateHello+' '+time)
 
   const query = `
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
-  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
+  JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
+  WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
+  SELECT promo_bundle_tbl.*, services_tbl.*, service_in_promo_tbl.* FROM promo_bundle_tbl
+  JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
+  JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
+  WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0
+  GROUP BY service_in_promo_tbl.promobundle_id;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
   SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId};
-  SELECT * FROM utilities_tbl`
+  SELECT * FROM utilities_tbl;
+  SELECT package_tbl.*, services_tbl.*, service_in_package_tbl.* FROM package_tbl
+  JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
+  JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
+  WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0
+  GROUP BY service_in_package_tbl.package_id`
   
   db.query(query,(err,out) =>{
     req.session.utilities = out[5]
@@ -328,6 +358,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     var crooms= out[2]
     var prooms= out[3]
     var customers= out[4]
+    var packages = out[6]
     // console.log(req.session.utilities)
     // console.log(req.session.utilities[0].company_name)
     var date = moment(new Date()).format('MM-DD-YYYY')
@@ -367,7 +398,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
           res.render('frontdesk/fdBookReservation',{
             date, time,room, roomId,
             reqSession: req.session,services,promos, crooms, prooms, customers,
-            therapist: out
+            therapist: out, packages
           })
         })
       }
@@ -384,7 +415,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
           res.render('frontdesk/fdBookReservation',{
             date, time,room, roomId,
             reqSession: req.session,services,promos, crooms, prooms, customers,
-            therapist: out
+            therapist: out,packages
           })
         })
       }
@@ -393,10 +424,30 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
 
     })
 
-// [BOOK RESERVATION - DISPLAY ALL AVAILABLE THERAPIST]
-router.post('/summary/viewTherapist',(req,res)=>{
-  const util =`SELECT * FROM utilities_tbl`
+// [BOOK RESERVATION - CHECK CUSTOMER DETAILS]
+router.post('/CheckCustomer/Details',(req,res)=>{
+  const customerQuery =`SELECT * FROM customer_tbl WHERE cust_id = ${req.body.cust_id}`
 
+  db.query(customerQuery,(err,out)=>{
+    console.log(out)
+    console.log(out[0].cust_type == 0)
+    if(out[0].cust_type == 0 )
+    {
+      res.send(out)
+    }
+    else
+    {
+      const query = `SELECT customer_tbl.* , loyalty_tbl.* FROM customer_tbl
+      JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id 
+      WHERE customer_tbl.cust_id = ${req.body.cust_id}`
+
+      db.query(query,(err,out)=>{
+        res.send(out)
+      })
+    }
+
+
+  })
 })
 
 // [BOOK RESERVATION - ADD RESERVATION]
@@ -945,4 +996,69 @@ router.post('/therapist/Absent',(req,res)=>{
     }
   })
 })
+
+// [DELETE COMMON CUSTOMER]
+router.post('/DeleteCustomer',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+  var IncorrectPassword=2
+
+  const query=`SELECT * FROM admin_tbl WHERE admin_id=1 AND admin_password = "${req.body.admin_password}"`
+  
+  db.query(query,(err,out)=>{
+    console.log(query)
+    if(out == undefined || out == 0 )
+    {
+      res.send({alertDesc:IncorrectPassword})
+    }
+    else
+    {
+      const query1 = `UPDATE customer_tbl set delete_stats=1 WHERE cust_id = "${req.body.cust_id}"`
+
+      db.query(query1,(err,out)=>{
+        if(err)
+        {
+          console.log(err)
+          res.send({alertDesc:notSuccess})
+        }
+        else
+        {
+          res.send({alertDesc:alertSuccess})
+        }
+      })
+    }
+  })
+})
+// // DELETE LOYALTY CUSTOMER
+// router.post('/DeleteLoyaltyCustomer',(req,res)=>{
+//   var alertSuccess=0
+//   var notSuccess=1
+//   var IncorrectPassword=2
+
+//   const query=`SELECT * FROM admin_tbl WHERE admin_id=1 AND admin_password = "${req.body.admin_password}"`
+  
+//   db.query(query,(err,out)=>{
+//     console.log(query)
+//     if(out == undefined || out == 0 )
+//     {
+//       res.send({alertDesc:IncorrectPassword})
+//     }
+//     else
+//     {
+//       const query1 = `UPDATE customer_tbl set delete_stats=1 WHERE cust_id = "${req.body.cust_id}"`
+
+//       db.query(query1,(err,out)=>{
+//         if(err)
+//         {
+//           console.log(err)
+//           res.send({alertDesc:notSuccess})
+//         }
+//         else
+//         {
+//           res.send({alertDesc:alertSuccess})
+//         }
+//       })
+//     }
+//   })
+// })
 exports.frontdesk = router;

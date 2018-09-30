@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa
+    title #{reqSession.utilities[0].company_name}
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -20,6 +20,18 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      button.hello{
+        background:none!important;
+        border:none; 
+        padding:0!important;
+        
+        /*optional*/
+        font-family:arial,sans-serif; /*input has OS specific font-family*/
+        color:#069;
+        text-decoration:underline;
+        cursor:pointer;
+      }
   body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -27,16 +39,15 @@ html(lang='en')
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
+          a.simple-text.logo-mini(href='#')
             | FD
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
-            | MBAY Health Spa
+          a.simple-text.logo-normal(href='#')
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
-              .photo
-                img(src='../paperDashboardPro/img/faces/face-2.jpg')
-              a.collapsed(data-toggle='collapse', href='#collapseExample')
+              
+              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 50px')
                 span
                   | Front Desk
               .clearfix
@@ -60,22 +71,13 @@ html(lang='en')
         nav.navbar.navbar-default
           .container-fluid
             .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
+
             .navbar-header
-              button.navbar-toggle(type='button')
-                span.sr-only Toggle navigation
-                span.icon-bar.bar1
-                span.icon-bar.bar2
-                span.icon-bar.bar3
-              a.navbar-brand(href='#Dashboard')
-                | Overview
+
+              a.navbar-brand(href='#')
+                | New Reservation
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+             
               ul.nav.navbar-nav.navbar-right
                 li
                   a#date-part(style="color: black")
@@ -85,7 +87,7 @@ html(lang='en')
                   a.logout(style="cursor: pointer; color: black") Log Out
         .content
           .col-lg-12.col-md-12
-            .card
+            .card(style='height: 75em')
               .card-header
                 each customer in customers
                   input.restype(type="hidden" id="restype" value=`${restype}`)
@@ -122,9 +124,9 @@ html(lang='en')
                       li.active
                         a(href='#single', data-toggle='tab') Services
                       li
-                        a(href='#multiple', data-toggle='tab') Package
+                        a(href='#packages', data-toggle='tab') Package
                       li
-                        a(href='#packages', data-toggle='tab') Promo
+                        a(href='#promo', data-toggle='tab') Promo
                 #my-tab-content.tab-content
                   #single.tab-pane.active
                     .content
@@ -173,6 +175,7 @@ html(lang='en')
                                             span.quantity(service_id=`${service.service_id}`) 0
                                           
                                           input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
+                                          input.eqPoints(type='hidden' id=`${service.service_id}` value=`${service.equivalent_points}`)
                                           if(service.service_points==1|| service.service_points==0)
                                             td= service.service_points+" "+"Point"
                                           else if(service.service_points > 0)
@@ -182,22 +185,128 @@ html(lang='en')
                                       strong#room= `Room: ${room}`
                                         input(type='hidden' value=`${roomId}` id="roomId")
 
-                                h4
-                                  strong Total Price:  
-                                    a(id="grandtotal") 0.00 
-                                  br
-                                  strong Total Points: 
-                                    a(id="totalPoints") 0
-                            
-                            button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                            button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
                             // end card
                           // end col-md-12
                         // end row
-                  #multiple.tab-pane
-                    p Here is your profile.
                   #packages.tab-pane
-                    p Here are your messages.
+                    .content
+                      .container-fluid
+                        .row
+                          .col-md-12
+                            .card
+                              .card-content
+                                .toolbar
+                                  // Here you can write extra buttons/actions for the toolbar
+                                .fresh-datatables
+                                  table#datatablesPackage.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                    thead
+                                      tr
+                                        th
+                                        th
+                                          strong  Packages 
+                                        th
+                                          strong  Duration
+                                        th
+                                          strong Price
+                                        th
+                                          strong Quantity
+                                        th
+                                          strong Points
+                                        th
+                                          strong Total
+                                        //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                        //-   strong Therapist
+                                    tbody
+                                      each pack in packages
+                                        tr
+                                          td
+                                            input.checkbox(type='checkbox' value=`${pack.package_id}`)
+                                            
+                                          td= pack.package_name
+                                            input.name(type='hidden' id= `${pack.package_id}` value=`${pack.package_name}`)
+                                            input.id(type='hidden' id= `${pack.package_id}` value=`${pack.package_id}`)
+                                          td= pack.package_duration+" minutes"
+                                            input.duration(type='hidden' value=`${pack.package_duration}` id=`${pack.package_id}`)
+                                            input.bagongDuration(type='hidden' value="" id=`${pack.package_id}`)
+                                          td
+                                            input.price(type="hidden" id=`${pack.package_id}` value=`${pack.package_price}`)
+                                            span= pack.package_price
+                                          td
+                                            span.quantity(service_id=`${pack.package_id}`) 0
+                                          
+                                          input.points(type='hidden' id=`${pack.package_id}` value=`${pack.package_points}`)
+                                          if(pack.package_points==1|| pack.package_points==0)
+                                            td= pack.package_points+" "+"Point"
+                                          else if(pack.package_points > 0)
+                                            td= pack.package_points+" "+"Points"
+                                          td
+                                            span.total(service_id=`${pack.package_id}`) 0.00
+                                      strong#room= `Room: ${room}`
+                                        input(type='hidden' value=`${roomId}` id="roomId")
+                  #promo.tab-pane
+                    .content
+                      .container-fluid
+                        .row
+                          .col-md-12
+                            .card
+                              .card-content
+                                .toolbar
+                                  // Here you can write extra buttons/actions for the toolbar
+                                .fresh-datatables
+                                  table#datatablesPromo.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                    thead
+                                      tr
+                                        th
+                                        th
+                                          strong  Promos 
+                                        th
+                                          strong  Duration
+                                        th
+                                          strong Price
+                                        th
+                                          strong Quantity
+                                        th
+                                          strong Points
+                                        th
+                                          strong Total
+                                        //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                        //-   strong Therapist
+                                    tbody
+                                      each promo in promos
+                                        tr
+                                          td
+                                            input.checkbox(type='checkbox' value=`${promo.promobundle_id}`)
+                                            
+                                          td= promo.promobundle_name
+                                            input.name(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_name}`)
+                                            input.id(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_id}`)
+                                          td= promo.promobundle_duration+" minutes"
+                                            input.duration(type='hidden' value=`${promo.promobundle_duration}` id=`${promo.promobundle_id}`)
+                                            input.bagongDuration(type='hidden' value="" id=`${promo.promobundle_id}`)
+                                          td
+                                            input.price(type="hidden" id=`${promo.promobundle_id}` value=`${promo.promobundle_price}`)
+                                            span= promo.promobundle_price
+                                          td
+                                            span.quantity(service_id=`${promo.promobundle_id}`) 0
+                                          
+                                          input.points(type='hidden' id=`${promo.promobundle_id}` value=`${promo.promobundle_points}`)
+                                          if(promo.promobundle_points==1|| promo.promobundle_points==0)
+                                            td= promo.promobundle_points+" "+"Point"
+                                          else if(promo.promobundle_points > 0)
+                                            td= promo.promobundle_points+" "+"Points"
+                                          td
+                                            span.total(service_id=`${promo.promobundle_id}`) 0.00
+                                      strong#room= `Room: ${room}`
+                                        input(type='hidden' value=`${roomId}` id="roomId")
+                h4
+                  strong Total Price:  
+                    a(id="grandtotal") 0.00 
+                  br
+                  strong Total Points: 
+                    a(id="totalPoints") 0
+              
+                button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
         #reservationSummary.modal.fade(tabindex='-1', role='dialog')
           .modal-dialog.modal-lg(role='document')
             .modal-content
@@ -264,9 +373,103 @@ html(lang='en')
                           tbody#viewServices
                             
               .modal-footer
-                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book Reservation
+                button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book
                 button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-       
+
+            // PAYNOW 
+            #checkout.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+              .modal-dialog.modal-lg(role='document')
+                .modal-content
+                  .modal-header
+                    h5.modal-title
+                      center Summary
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  .modal-body
+                    div
+                      h5
+                        strong#custName
+                        br
+                        button.hello(type='' value='') Register for Loyalty Membership
+                      h5
+                        strong#Room
+                        br
+                        strong#RoomRate
+                        hr
+                    .fresh-datatables
+                      table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                        thead
+                          tr
+                            th.disabled-sorting
+                              strong Services Availed 
+                            th.disabled-sorting Quantity
+                            th.disabled-sorting Amount
+                            th.disabled-sorting Equivalent Points
+                        tfoot
+                          tr
+                            th.disabled-sorting
+                            th
+                            th
+                            th
+                        tbody#viewServicesAvailed
+                            
+                      div
+                        h2
+                          strong#TotalPrice
+                          input.totalPrice(type='hidden' value='')
+                        h4
+                          strong#TotalPoints
+                        .row
+                          .col-md-4
+                            .form-group.has-default.bmd-form-group
+                              label Amount Received:
+                              input.form-control.amountReceived(type='number', placeholder='Amount Received' oninput="myFunction()")
+                          //- .col-md-4
+                          //-   .form-group.has-default.bmd-form-group
+                          //-     label Gift Certificate Amount:
+                          //-     input.form-control(type='number', placeholder='Gift Certificate Amount')
+                          .col-md-4
+                            .form-group.has-default.bmd-form-group
+                              label Change: 
+                              input.form-control.change(type='number', placeholder='Change' value='0')
+                          .col-md-4#appendDito
+                    .modal-footer
+                      button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
+                      button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+            //REGISTRATION
+            #RegisterModal.modal.fade(tabindex='1', role='dialog' aria-labelledby='myModalLabel')
+              .modal-dialog(role='document')
+                .modal-content
+                  .modal-header
+                    h5.modal-title
+                      center Registration
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                  .modal-body
+                    .row
+                      .col-md-4
+                        .form-group
+                          label.control-label Username
+                          star *
+                          input.form-control(type='text', name='username', id="username" placeholder='username\
+                          ')
+                      .col-md-4
+                        .form-group
+                          label.control-label Password
+                          star *
+                          input.form-control(type='password', name='password1', id="password" placeholder='password\
+                          ')
+                      .col-md-4
+                        .form-group
+                          label.control-label Re-enter Password
+                          star *
+                          input.form-control(type='password', name='password2', id="password2" placeholder='confim password\
+                          ')
+
+                    .row
+                      .col-md-5
+                          h5 Fee: 
+                  .modal-footer
+                    button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegister(type='button', data-dismiss='modal') Done
+                    button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button', data-dismiss='modal') Close
     .fixed-plugin
     // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
     script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -312,17 +515,6 @@ html(lang='en')
     script.
       $('.buttonSummary').click(function(){
 
-        $.post('./summary/viewTherapist')
-        .done(data=>{
-          console.log(data)
-          for(var i=0; i<data.length;i++)
-          {
-            console.log(data[i].therapist_fname)
-            $('#selected_therapist').append(`
-              <option value='${data[i].therapist_id}'> ${data[i].therapist_fname}  </option>
-            `)
-          }
-        })
         var restype = $('.restype[id="restype"]').val()
         if(restype=='single')
         {
@@ -370,10 +562,7 @@ html(lang='en')
             })
             table.page('next').draw('page');
           }
-            console.log(serviceQuantity)
-            console.log(serviceNewDuration)
-            console.log(serviceTotal)
-            console.log(idService)
+
 
         $('#reservationSummary').modal('show')
         $('#reservationSummary').on('hidden.bs.modal', function (){
@@ -381,10 +570,7 @@ html(lang='en')
           var serviceNewDuration = []
           var serviceTotal = []
           var idService = []
-          console.log(serviceQuantity)
-          console.log(serviceNewDuration)
-          console.log(serviceTotal)
-          console.log(idService)
+
         })
         
         var Name = $('#name').text()
@@ -411,79 +597,235 @@ html(lang='en')
           
           if(restype =='single')
           {
-            $.post('/bookreservation/addReservation',{
-            customerId :$('#customerId').val(),
-            serviceId: idService,
-            serviceQuantity: serviceQuantity,
-            serviceNewDuration: serviceNewDuration,
-            serviceTotal: serviceTotal,
-            bed_quantity: bed_quantity,
-            therapist_id: $('#selected_therapist').val(),
-            timeStart : $('#timeStart').val(),
-            timeEnd: $('#timeEnd').val(),
-            date : $('#dateRes').val(),
-            finalTotal : $('#finalTotal').text().replace(/,/g,''),
-            finalPoints : $('#finalPoints').text().replace(/,/g,''),
-            roomId :$('#roomId').val()
-           }).done(function(data){
-             if(data.alertDesc==1)
-             {
-            swal({
-              title:'Success', 
-              text:'New Reservation Added', 
-              icon:'success'
-              }).then(function(){
-                location.href='/frontdesk/home'
-              })
-          }
-          else
+            if($('#selected_therapist').val()==0)
             {
               swal({
-                title:'Not Success', 
-                text:'', 
-                icon:'warning'
-                })
-            } 
-          })
-          }
-          else if(restype=='multiple')
-          {            
-          $.post('/bookreservation/addReservation',{
-            customerId :$('#customerId').val(),
-            serviceId: idService,
-            serviceQuantity: serviceQuantity,
-            serviceNewDuration: serviceNewDuration,
-            serviceTotal: serviceTotal,
-            bed_quantity: bed_quantity,
-            boys_quantity: bed_occupied_boys,
-            girls_quantity: bed_occupied_girls,
-            timeStart : $('#timeStart').val(),
-            timeEnd: $('#timeEnd').val(),
-            date : $('#dateRes').val(),
-            finalTotal : $('#finalTotal').text().replace(/,/g,''),
-            finalPoints : $('#finalPoints').text().replace(/,/g,''),
-            roomId :$('#roomId').val()
-           }).done(function(data){
-             if(data.alertDesc==1)
-             {
-            swal({
-              title:'Success', 
-              text:'New Reservation Added', 
-              icon:'success'
-              }).then(function(){
-                location.href='/frontdesk/home'
+                title: 'Error',
+                text: 'You must select therapist',
+                icon: 'warning'
               })
-          }
-          else
-            {
-              swal({
-                title:'Not Success', 
-                text:'', 
-                icon:'warning'
-                })
             }
-           })
+            else
+            {
+                swal({
+                  title: 'Pay Now or Later?',
+                  icon: 'info',
+                  buttons: ['Pay Later',"Pay Now"],
+                }).then(function(PayNow){
+                  if(PayNow)
+                  {
+                    $('#Room').append(`Room: ${Room}`)
+                    $('#RoomRate').append(`Room Rate: `)
+
+                    $.post('./CheckCustomer/Details',{
+                      cust_id: $('#customerId').val()
+                    }).done(function(data){
+                      console.log(data)
+                      $('#checkout').modal('show')
+                      //- if(data[0].cust_type==0)
+                      //- {
+                      //-   $('#TotalPrice').append(`Total: ${total_amount}`)
+                      //-   $('.totalPrice').val(`${total_amount}`)
+                      //- }
+                      //- else if (data.out2.paid_status==0)
+                      //- {
+                      //-   $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+                      //-   $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+                      //- }
+                      //- else
+                      //- {
+                      //-   $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+                      //-   $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+                      //- }
+                      
+                        $('#TotalPoints').append(`Total Points to be earned: ${finalPoints}`)
+                        $('.hello').val(data[0].cust_id)
+                      if(data[0].cust_type==0)
+                      {
+                      }
+                      else
+                      {
+                          $('.hello').addClass('hidden')
+                          $('#appendDito').append(`
+                            <div class="form-group has-default bmd-form-group">
+                            <label> Current Points: ${data.out2.member_points}
+                              <div class="checkbox">
+                                <input id="checkbox1" type="checkbox"/>
+                                <label for="checkbox1">Pay using Points</label>
+                              </div>
+                          </div>`)
+                      }
+
+                      $('#custName').append(`Customer Name: ${data[0].cust_fname} ${data[0].cust_mname} ${data[0].cust_lname}`)
+                          var table =$('#datatables').DataTable()
+                          var pagelength = table.page.info().pages
+                        for (var i=1;i<=pagelength;i++){
+                              $('.checkbox:checked').each(function(){
+                                var id = $(this).val()
+                                idService.push(id)
+                                serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                                serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                                serviceTotal.push($(`.total[service_id='${id}']`).text())
+                                var serviceId = $(`.id[id='${id}']`).val()
+                                var serviceName = $(`.name[id='${id}']`).val()
+                                var quantity= $(`.quantity[service_id='${id}'`).text()
+                                var totalPrice = $(`.total[service_id='${id}']`).text()
+                                var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
+                                $('#viewServicesAvailed').append(`
+                                  <tr>
+                                  <td>${serviceName}</td>
+                                  <td>${quantity}
+                                  </td>
+                                  <td>${bagongDuration}
+                                  </td>
+                                  <td>${totalPrice}</td>
+                                  `)
+                                $('#reservationSummary').on('hidden.bs.modal', function (){
+                                  $('#viewServices').empty()
+                                })
+                              })
+                    table.page('next').draw('page');
+                            }
+
+                    })
+                    $('#checkout').on('hidden.bs.modal', function (){
+                  $('#viewServicesAvailed').empty()
+                  $('#custName').empty()
+                  $('#TotalPrice').empty()
+                  $('.totalPrice').empty()  
+                  $('#TotalPoints').empty()
+                })
+                  
+                
+                
+                
+                $('.buttonDone').click(function(){
+                  alert($('.amountReceived').val())
+                  alert($('.totalPrice').val())
+                  alert(1000 < 800)
+                  if($('.amountReceived').val()==0)
+                    {
+                      swal({
+                        title: "Amount Received is 0",
+                        icon: 'warning'
+                      })
+                    }
+                  else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+                    {
+                      swal({
+                        title: "Amount Received is insufficient",
+                        icon: 'warning'
+                      })
+                    }
+                  else
+                    {
+                  $.post('/payment/Finish',{
+                    id:id,
+                    amount: $('.totalPrice').val(),
+                    cust_id: $('.hello').val() 
+                    }).done(function(data){
+                      if(data.alertDesc==0)
+                        {
+                          swal({
+                            title: "Success",
+                            icon: 'success'
+                          }).then(function(){
+                            location.reload()
+                          })
+                        }
+                      else
+                        {
+                          swal({
+                            title: "ERROR",
+                            icon: 'error'
+                          })
+                        }
+                    
+                    })
+                    }
+                })
+
+                  }
+                  else
+                  {
+                    alert('PayLater')
+                  }
+                })
+              //-   $.post('/bookreservation/addReservation',{
+              //-   customerId :$('#customerId').val(),
+              //-   serviceId: idService,
+              //-   serviceQuantity: serviceQuantity,
+              //-   serviceNewDuration: serviceNewDuration,
+              //-   serviceTotal: serviceTotal,
+              //-   bed_quantity: bed_quantity,
+              //-   therapist_id: $('#selected_therapist').val(),
+              //-   timeStart : $('#timeStart').val(),
+              //-   timeEnd: $('#timeEnd').val(),
+              //-   date : $('#dateRes').val(),
+              //-   finalTotal : $('#finalTotal').text().replace(/,/g,''),
+              //-   finalPoints : $('#finalPoints').text().replace(/,/g,''),
+              //-   roomId :$('#roomId').val()
+              //- }).done(function(data){
+              //-   if(data.alertDesc==1)
+              //-   {
+              //-   swal({
+              //-     title:'Success', 
+              //-     text:'New Reservation Added', 
+              //-     icon:'success'
+              //-     }).then(function(){
+              //-       location.href='/frontdesk/home'
+              //-     })
+              //- }
+              //- else
+              //-   {
+              //-     swal({
+              //-       title:'Not Success', 
+              //-       text:'', 
+              //-       icon:'warning'
+              //-       })
+              //-   } 
+              //- })
+            }
           }
+      //-     else if(restype=='multiple')
+      //-     {            
+      //-     $.post('/bookreservation/addReservation',{
+      //-       customerId :$('#customerId').val(),
+      //-       serviceId: idService,
+      //-       serviceQuantity: serviceQuantity,
+      //-       serviceNewDuration: serviceNewDuration,
+      //-       serviceTotal: serviceTotal,
+      //-       bed_quantity: bed_quantity,
+      //-       boys_quantity: bed_occupied_boys,
+      //-       girls_quantity: bed_occupied_girls,
+      //-       timeStart : $('#timeStart').val(),
+      //-       timeEnd: $('#timeEnd').val(),
+      //-       date : $('#dateRes').val(),
+      //-       finalTotal : $('#finalTotal').text().replace(/,/g,''),
+      //-       finalPoints : $('#finalPoints').text().replace(/,/g,''),
+      //-       roomId :$('#roomId').val()
+      //-      }).done(function(data){
+      //-        if(data.alertDesc==1)
+      //-        {
+      //-       swal({
+      //-         title:'Success', 
+      //-         text:'New Reservation Added', 
+      //-         icon:'success'
+      //-         }).then(function(){
+      //-           location.href='/frontdesk/home'
+      //-         })
+      //-     }
+      //-     else
+      //-       {
+      //-         swal({
+      //-           title:'Not Success', 
+      //-           text:'', 
+      //-           icon:'warning'
+      //-           })
+      //-       }
+      //-      })
+      //-     }
+      //- })
       })
       })
     script.
@@ -491,6 +833,8 @@ html(lang='en')
         $('.checkbox').on('change.bootstrapSwitch', function(e){
           if(e.target.checked==true)
           {
+            var id = $(this).val()
+            var service_name = $(`.name[id='${id}']`).val()
             var qnty
             var y=$(this).val()
             var price = $(`.price[id='${y}']`).val()
@@ -498,32 +842,30 @@ html(lang='en')
             var minutes = $(`.duration[id='${y}']`).val() % 60;
             var points = $(`.points[id='${y}']`).val()
             var duration = $(`.duration[id='${y}']`).val()
-            //- if(minutes==0)
-            //- {
-            //-   var newDuration = "0"+hours+":"+minutes+"0"
-            //- }
-            //- else
-            //- {
-            //-   var newDuration = "0"+hours+":"+minutes
-            //- }
-            var quantity = prompt("Quantity")
-
-            if (quantity==null || quantity=="")
-            {
-              e.target.checked=false;
-            }
-            else
-            {
-              $(`.quantity[service_id='${y}']`).text(quantity)
-              total = quantity * price;
-             
-            }
-              $(`.total[service_id='${y}']`).text(total.toLocaleString())
-              var table=$('#datatables').DataTable()
-              table.search('').draw()
+            swal({
+              title: service_name,
+              icon: "info",
+              content: "input",
+              buttons: [true,"Confirm"],
+              dangerMode: true,
+            }).then(function(quantity){
+              $('.swal-content__input').attr('type', 'number')
+              var quantity = $('.swal-content__input').val()
+              if (quantity==null || quantity=="")
+              {
+                e.target.checked=false;
+              }
+              else
+              {
+                $(`.quantity[service_id='${y}']`).text(quantity)
+                total = quantity * price;
               
+                $(`.total[service_id='${y}']`).text(total.toLocaleString())
+                var table=$('#datatables').DataTable()
+                table.search('').draw()
+              }
 
-              //- alert("Hours"+newHours+" Minutes: "+newMinutes)
+            })
           }
 
           else if(e.target.checked==false)
@@ -544,7 +886,7 @@ html(lang='en')
       $(document).ready(function(){
         $(".checkbox").change(function(){
           recalculate()
-          console.log($(this)[0].checked)
+         
           if($(this)[0].checked==false)
           {
             var aydi = $(this).attr('value')
@@ -579,7 +921,6 @@ html(lang='en')
               points = points * quantity
               if(restype=='single')
                 {
-                  console.log('single')
                   var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
                   var minutes = $(`.duration[id='${id}']`).val() % 60;
                   hours = hours * quantity;
@@ -588,23 +929,17 @@ html(lang='en')
                   $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
                   $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
                 }
+                  //- sum += parseInt(points)
               else if(restype=='multiple')
                 {
                   var minutes = $(`.duration[id='${id}']`).val();
                   minutes = minutes * quantity;
-                  //- newHours = Math.floor(highest / 60)
-                  //- newMin = highest % 60
+
                   theFutureTime = moment(theFutureTime).add(highest, 'minutes')
 
                   $(`.bagongDuration[id='${id}']`).val(minutes)
                   longest.push($(`.bagongDuration[id='${id}']`).val())  
-                    //- if(sample>=longest)
-                    //-   {
-                    //-     longest = sample
-                    //-     console.log("aa"+longest)
-                    //-   }
 
-                  //- $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
                 }
                 pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
                 //- alert(hours)
@@ -612,36 +947,32 @@ html(lang='en')
               sum += parseInt(points)
             });
             if(i==pagelength){
-              console.log(longest)
+              
               for(var j=0;j<longest.length;j++)
                 {
                   
-                  console.log(highest+'<'+longest[j])
-                  console.log(j)
-                  console.log(longest.length)
-                  console.log('tamaba?')
+                  
+  
                   if((longest.length-1)==0)
                     {
-                      console.log('pasok')
+
                       highest= longest[j];
                       newHours = Math.floor(highest / 60)
                       newMin = highest % 60
                       //- console.log("HOURS: "+newHours)
                       //- console.log("MINUTES: "+newMin)
-                      console.log('hayes  '+highest)
+
                     }
                   else if(parseInt(longest[j]) > parseInt(highest))
                     {
-                      console.log('from if '+highest)
-                      console.log('compare sa '+longest[j])
-                      console.log('pasok sa 2nd')
+
                       highest = longest[j];
                       newHours = Math.floor(highest / 60)
                       newMin = highest % 60
-                      console.log('from else if '+highest)
+
                     }
                   if(j == longest.length - 1){
-                    console.log('done')
+
                     theFutureTime = moment(theFutureTime).add(newHours,'hours').add(newMin, 'minutes')
                     $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
                     table.page(0).draw()
@@ -650,6 +981,7 @@ html(lang='en')
                 }
 
             }
+             $('#totalPoints').text(sum)
             table.page('next').draw('page');
             }
             table.page(0).draw()
@@ -705,3 +1037,180 @@ html(lang='en')
       $(document).ready(function() {
       $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
       });
+    script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatablesPackage').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
+    script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatablesPromo').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
+
+    script.
+      $(document).ready(function(){
+        //- $('.checkoutButton').click(function(){
+        //-   var id = $(this).val()
+        //-   $('#checkout').modal('show')
+        //-   $.post('/payment/query/CheckoutDets',{id:id})
+        //-   .done(data=>{
+        //-     console.log(data)
+        //-     $('#Room').append(`Room: ${data.out1[0].room_name}`)
+        //-     $('#RoomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
+            
+        //-     if(data.out2.paid_status==0)
+        //-     {
+        //-       total_amount= data.out2.walkin_total_amount + 600
+        //-       $('#TotalPrice').append(`Total: ${total_amount}`)
+        //-       $('.totalPrice').val(`${total_amount}`)
+        //-     }
+        //-     else if (data.out2.paid_status==0)
+        //-     {
+        //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+        //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+        //-     }
+        //-     else
+        //-     {
+        //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+        //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+        //-     }
+            
+        //-       $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
+        //-       $('.hello').val(data.out2.cust_id)
+        //-     if(data.out2.cust_type==0)
+        //-     {
+        //-     }
+        //-     else
+        //-     {
+        //-         $('.hello').addClass('hidden')
+        //-         $('#appendDito').append(`
+        //-           <div class="form-group has-default bmd-form-group">
+        //-           <label> Current Points: ${data.out2.member_points}
+        //-             <div class="checkbox">
+        //-               <input id="checkbox1" type="checkbox"/>
+        //-               <label for="checkbox1">Pay using Points</label>
+        //-             </div>
+        //-         </div>`)
+        //-     }
+
+        //-     $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+        //-     for(var i=0;i<data.out1.length;i++)
+        //-     {
+        //-     $('#viewServicesAvailed').append(`
+        //-       <tr>
+        //-       <td>${data.out1[i].service_name}</td>
+        //-       <td>${data.out1[i].service_total_quantity}</td>
+        //-       <td>${data.out1[i].service_total_price}</td>
+        //-       <td>${data.out1[i].equivalent_points}</td>
+        //-       </tr>
+        //-     `)
+        //-     }
+        //-     $('#checkout').on('hidden.bs.modal', function (){
+        //-   $('#viewServicesAvailed').empty()
+        //-   $('#custName').empty()
+        //-   $('#TotalPrice').empty()
+        //-   $('.totalPrice').empty()  
+        //- })
+        //-   })
+        
+        
+        
+        //- $('.buttonDone').click(function(){
+        //-   alert($('.amountReceived').val())
+        //-   alert($('.totalPrice').val())
+        //-   alert(1000 < 800)
+        //-   if($('.amountReceived').val()==0)
+        //-     {
+        //-       swal({
+        //-         title: "Amount Received is 0",
+        //-         icon: 'warning'
+        //-       })
+        //-     }
+        //-   else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+        //-     {
+        //-       swal({
+        //-         title: "Amount Received is insufficient",
+        //-         icon: 'warning'
+        //-       })
+        //-     }
+        //-   else
+        //-     {
+        //-   $.post('/payment/Finish',{
+        //-     id:id,
+        //-     amount: $('.totalPrice').val(),
+        //-     cust_id: $('.hello').val() 
+        //-     }).done(function(data){
+        //-       if(data.alertDesc==0)
+        //-         {
+        //-           swal({
+        //-             title: "Success",
+        //-             icon: 'success'
+        //-           }).then(function(){
+        //-             location.reload()
+        //-           })
+        //-         }
+        //-       else
+        //-         {
+        //-           swal({
+        //-             title: "ERROR",
+        //-             icon: 'error'
+        //-           })
+        //-         }
+            
+        //-     })
+        //-     }
+        //- })
+        //- })
+      
+        $('.viewdetailsButton').click(function(){
+          var id = $(this).val()
+          $.post('/payment/query/CheckoutDets',{id:id})
+          .done(data=>{
+            $('#viewDetails').modal('show')
+          })
+        })
+      })
+    script.
+      $(document).ready(function(){
+        $('.hello').click(function(){
+          var id = $(this).val()
+            $('#RegisterModal').modal('show')
+            $('#checkout').modal('hide')
+            $('.buttonRegister').click(function(){
+              $.post('/payment/register',{
+                username: $('#username').val(),
+                password: $('#password').val(),
+                id:id})
+                .done(function(data){
+                  console.log(data)
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: "success"
+                      }).then(function(){
+                        $('#RegisterModal').modal('hide')
+                        location.reload()
+                      })
+                    }
+                  else if(data.alertDesc==3)
+                    {
+                      swal({
+                        title:'Not Success', 
+                        text:'Username Already Exist', 
+                        icon:'warning'
+                        }).then(function(){
+                          $('#RegisterModal').modal('show')
+                        })
+                    }
+                  else if(data.alertDesc==1)
+                    {
+                      swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                    }
+                })
+          })
+        })
+      })
+

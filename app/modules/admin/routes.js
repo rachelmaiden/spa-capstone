@@ -9,7 +9,14 @@ const path = require('path');
 
 // [ADMIN - LOGIN PAGE] 
 router.get('/admin', (req, res) => {
-  res.render('admin/admin')
+  const query = `SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[0]
+    res.render('admin/admin',{
+      reqSession: req.session
+    })
+  })
 })
 
 // [LOGIN]
@@ -78,56 +85,86 @@ router.get('/giftcertificate', (req, res) => {
 // =========================================================================================================================================================================
 // [PACKAGE]
 //          > R E A D
-router.get('/adminPackages',mid.adminnauthed,(req, res) => {
-  const query =`SELECT services_tbl.*, service_duration_tbl.* FROM services_tbl
+router.get('/adminPackages',(req, res) => {
+  const query =`SELECT services_tbl.*, service_duration_tbl.*, freebies_tbl.* FROM services_tbl
   JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
+  JOIN freebies_tbl ON freebies_tbl.service_id = services_tbl.service_id
   WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0;
-  SELECT package_tbl.*, services_tbl.*, service_in_package_tbl.*, service_duration_tbl.* FROM package_tbl 
+  SELECT package_tbl.*, services_tbl.* FROM package_tbl 
   JOIN service_in_package_tbl ON service_in_package_tbl.package_id = package_tbl.package_id
-  JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = package_tbl.service_duration_id
   JOIN services_tbl ON services_tbl.service_id = service_in_package_tbl.service_id WHERE package_tbl.delete_stats=0
   GROUP BY package_tbl.package_id;
-  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 AND delete_stats=0;
   SELECT * FROM utilities_tbl`
 
   db.query(query, (err,out)=>{
-    req.session.utilities = out[3]
+    req.session.utilities = out[2]
     res.render('admin/maintenance/package/adminPackages',{
       services: out[0],
       packages: out[1],
-      durations: out[2],
       reqSession: req.session
     })
+    console.log(out[2])
   })
 })
 //          > C R E A T E
 router.post('/adminPackages',(req,res)=>{
   var alertSuccess=0
   var notSuccess=1
-  const query =`INSERT INTO package_tbl(package_name,package_price,service_duration_id,package_availability,delete_stats)
-  VALUE("${req.body.package_name}","${req.body.package_price}","${req.body.package_duration}",0,0)`
+  var PackageExist=2
 
-  db.query(query, (err,out)=>{
+  const query =`SELECT * FROM package_tbl WHERE package_name ="${req.body.package_name}" 
+  AND package_price='${req.body.package_price}' 
+  AND package_duration ='${req.body.package_duration}' 
+  AND package_maxPerson = '${req.body.package_maxPerson}'`
+
+  db.query(query,(err,out)=>{
     console.log(query)
-    aydi= out.insertId;
-    for(var i=0; i<req.body.services_included.length;i++)
+    if(out == undefined || out ==0 )
     {
-      const query1 = `INSERT INTO service_in_package_tbl(package_id,service_id)
-      VALUE("${aydi}","${req.body.services_included[i]}")`
-
-      db.query(query1,(err,out)=>{
-
+      const query =`INSERT INTO package_tbl(package_name,package_price,package_duration,package_points,package_maxPerson,package_availability,delete_stats)
+      VALUE("${req.body.package_name}","${req.body.package_price}","${req.body.package_duration}","${req.body.package_points}",${req.body.package_maxPerson},0,0)`
+    
+      db.query(query, (err,out)=>{
+        aydi= out.insertId;
+        if(err)
+        {
+          res.send({alertDesc:notSuccess})
+          console.log(err)
+        }
+        else
+        {
+          for(var i=0; i<req.body.services_included.length;i++)
+          {
+            const query1 = `INSERT INTO service_in_package_tbl(package_id,service_id)
+            VALUE("${aydi}","${req.body.services_included[i]}")`
+      
+            db.query(query1,(err,out)=>{
+      
+            })
+          }
+          
+          const query = `INSERT INTO freebies_package_tbl(package_id,equivalent_points,freebies_package_availability,delete_stats)
+          VALUES("${aydi}","${req.body.equivalent_points}",0,0)`
+  
+          db.query(query,(err,out)=>{
+            console.log(query)
+            if(err)
+            {
+              res.send({alertDesc:notSuccess})
+              console.log(err)
+            }
+            else
+            {
+              res.send({alertDesc:alertSuccess})
+            }
+          })
+        }
       })
-    }
 
-    if(err)
-    {
-      res.send({alertDesc:notSuccess})
-      console.log(err)
     }
     else
     {
-      res.send({alertDesc:alertSuccess})
+      res.send({alertDesc:PackageExist})
     }
   })
 })
@@ -249,21 +286,20 @@ router.post('/adminPackages/deletePackage',(req,res)=>{
 
 // [PROMO]
 //          > R E A D
-router.get('/adminPromos',mid.adminnauthed,(req, res) => {
-  const query = ` SELECT promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name, service_duration_tbl.* FROM promo_bundle_tbl 
+router.get('/adminPromos',(req, res) => {
+  const query = ` SELECT promo_bundle_tbl.*, service_in_promo_tbl.service_id, services_tbl.service_name FROM promo_bundle_tbl 
   JOIN service_in_promo_tbl ON promo_bundle_tbl.promobundle_id = service_in_promo_tbl.promobundle_id
-  JOIN service_duration_tbl ON service_duration_tbl.service_duration_id = promo_bundle_tbl.service_duration_id 
   JOIN services_tbl ON services_tbl.service_id = service_in_promo_tbl.service_id WHERE promo_bundle_tbl.delete_stats=0 group by promo_bundle_tbl.promobundle_id ;
-  SELECT services_tbl.*, service_duration_tbl.* FROM services_tbl 
-  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id WHERE services_tbl.delete_stats=0 and services_tbl.service_availability=0;
-  SELECT * FROM service_duration_tbl WHERE service_duration_availability =0 ORDER BY service_duration_desc ASC;
+  SELECT services_tbl.*, service_duration_tbl.*, freebies_tbl.* FROM services_tbl
+  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
+  JOIN freebies_tbl ON freebies_tbl.service_id = services_tbl.service_id
+  WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
-    req.session.utilities = out[3]
+    req.session.utilities = out[2]
     res.render('admin/maintenance/promo/adminPromos',{
       promos: out[0],
       services: out[1],
-      durations: out[2],
       reqSession: req.session
     })
   })
@@ -272,33 +308,66 @@ router.get('/adminPromos',mid.adminnauthed,(req, res) => {
 router.post('/adminPromos',(req, res) => {
     var alertSuccess=0
     var notSuccess=1
+    var PromoExist=2
 
     var promobundle_valid_from = moment(req.body.promobundle_valid_from).format('MMMM DD, YYYY')
     var promobundle_valid_until= moment(req.body.promobundle_valid_until).format('MMMM DD, YYYY')
     var aydi;
-    const query = `
-      insert into 
-      promo_bundle_tbl(promobundle_name, promobundle_price,promobundle_valid_from,promobundle_valid_until, service_duration_id,promobundle_availability,  delete_stats)
-      value("${req.body.promobundle_name}","${req.body.promobundle_price}","${promobundle_valid_from}","${promobundle_valid_until}","${req.body.service_duration_id}",0,0)`
-      
-      db.query(query, (err, out) => {
-        aydi=out.insertId;
-        for(var i=0;i<req.body.services_included.length;i++)
-        {
-          db.query(`insert into service_in_promo_tbl(promobundle_id, service_id) value("${aydi}","${req.body.services_included[i]}")`, (err,out)=>{
 
+    const query = `SELECT * FROM promo_bundle_tbl WHERE promobundle_name = "${req.body.promobundle_name}"
+    AND promobundle_price = "${req.body.promobundle_price}"
+    AND promobundle_duration= "${req.body.promobundle_duration}"
+    AND promobundle_maxPerson ="${req.body.promobundle_maxPerson}"
+    AND promobundle_valid_from = "${promobundle_valid_from}"
+    AND promobundle_valid_until = "${promobundle_valid_until}"`
+
+    db.query(query,(err,out)=>{
+      if(out==undefined || out==0)
+      {
+        const query = `
+          insert into 
+          promo_bundle_tbl(promobundle_name, promobundle_price,promobundle_valid_from,promobundle_valid_until, promobundle_duration,promobundle_points,promobundle_availability,  delete_stats)
+          value("${req.body.promobundle_name}","${req.body.promobundle_price}","${promobundle_valid_from}","${promobundle_valid_until}","${req.body.promobundle_duration}","${req.body.promobundle_points}",0,0)`
+          
+          db.query(query, (err, out) => {
+            aydi=out.insertId;
+            if(err)
+            {
+              res.send({alertDesc:notSuccess})
+              console.log(err)
+            }
+            else
+            {
+              for(var i=0;i<req.body.services_included.length;i++)
+              {
+                db.query(`insert into service_in_promo_tbl(promobundle_id, service_id) value("${aydi}","${req.body.services_included[i]}")`, (err,out)=>{
+      
+                })
+              }
+
+              const query =`INSERT INTO freebies_promo_tbl(promobundle_id, equivalent_points, freebies_promo_availability, delete_stats)
+              VALUES("${aydi}","${req.body.equivalent_points}",0,0)`
+
+              db.query(query,(err,out)=>{
+                if(err)
+                {
+                  console.log(err)
+                  res.send({alertDesc:notSuccess})
+                }
+                else
+                {
+                  res.send({alertDesc:alertSuccess})
+                }
+              })
+            }
           })
-        }
-        if(err)
-        {
-          res.send({alertDesc:notSuccess})
-          console.log(err)
-        }
-        else
-        {
-          res.send({alertDesc:alertSuccess})
-        }
-      })
+
+      }
+      else
+      {
+        res.send({alertDesc:PromoExist})
+      }
+    })
   })
 //            > D E L E T E 
 router.post('/adminPromos/delete', (req, res) => {
@@ -644,23 +713,42 @@ router.get('/adminServices',mid.adminnauthed,(req, res) => {
 router.post('/adminServices',(req, res) => {
   console.log(req.body)
   var alertSuccess =0
-  var notSuccess =1  
-  const query = `
-      insert into 
-      services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, service_points, delete_stats)
-      value("${req.body.service_name}","${req.body.service_type}","${req.body.service_duration}","${req.body.service_price}", 0,"${req.body.service_points}",0)`
-    db.query(query, (err, out) => {
-      if(err)
-      {
-        res.send({alertDesc:notSuccess})
-        console.log(err)
-      }
-      else
-      {
-        res.send({alertDesc:alertSuccess})
-      }
-      console.log(query)
-    })
+  var notSuccess =1
+  var ServiceExisted=2 
+
+  const query = `SELECT * FROM services_tbl WHERE service_name ="${req.body.service_name}" AND service_type_id ="${req.body.service_type}" AND service_duration_id = "${req.body.service_duration}"` 
+  
+  db.query(query,(err,out)=>{
+    if(out == undefined || out == 0)
+    {
+      const query = `
+          insert into 
+          services_tbl(service_name, service_type_id, service_duration_id, service_price, service_availability, service_points, delete_stats)
+          value("${req.body.service_name}","${req.body.service_type}","${req.body.service_duration}","${req.body.service_price}", 0,"${req.body.service_points}",0)`
+        db.query(query, (err, out) => {
+          var service_id = out.insertId
+          if(err)
+          {
+            res.send({alertDesc:notSuccess})
+            console.log(err)
+          }
+          else
+          {
+            const query = `INSERT INTO freebies_tbl (service_id, equivalent_points,freebies_availability,delete_stats) values("${service_id}","${req.body.equivalent_points}",0,0) `
+            
+            db.query(query,(err,out)=>{
+              console.log(query)
+              res.send({alertDesc:alertSuccess})
+            })
+          }
+        })
+    }
+    else
+    {
+      res.send({alertDesc:ServiceExisted})
+    }
+  })
+  
   })
 //          > D E L E T E
 router.post('/adminServices/delete', (req, res) => {
@@ -744,7 +832,7 @@ router.get('/adminServiceType', mid.adminnauthed,(req, res) => {
   const query = ` select * from service_type_tbl where delete_stats= 0;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
-    req.session.utilities = out[2]
+    req.session.utilities = out[1]
     res.render('admin/maintenance/service/adminServiceType',{
       typs: out[0],
       reqSession: req.session
@@ -1168,6 +1256,22 @@ router.post('/adminTherapist/statusChange',(req,res)=>{
     }
   })
 })
+
+router.post('/adminTherapist/viewTherapistDetails',(req,res)=>{
+  const query = `SELECT * FROM therapist_tbl WHERE therapist_id = ?`
+
+  db.query(query,[req.body.therapist_id],(err,out)=>{
+    res.send(out)
+  })
+})
+
+router.post('/adminTherapist/Age',(req,res)=>{
+  const query =`SELECT * FROM therapist_tbl WHERE delete_stats=0`
+
+  db.query(query,(err,out)=>{
+    res.send(out)
+  })
+})
 // ^UNDER OF THERAPIST
 // [THERAPIST SPECIALTY]
 //        > R E A D
@@ -1362,15 +1466,25 @@ router.post('/adminCustomer/medicalHistory',(req, res) => {
 router.get('/adminFreebies',mid.adminnauthed, (req, res) => {
   const query =`SELECT * FROM services_tbl where delete_stats=0;
   SELECT services_tbl.*, freebies_tbl.* FROM services_tbl
-  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id where freebies_tbl.delete_stats=0;
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id 
+  WHERE freebies_tbl.delete_stats=0;
+  SELECT package_tbl.*, freebies_package_tbl.* FROM package_tbl
+  JOIN freebies_package_tbl ON package_tbl.package_id = freebies_package_tbl.package_id
+  WHERE freebies_package_tbl.delete_stats=0;
+  SELECT promo_bundle_tbl.*, freebies_promo_tbl.* FROM promo_bundle_tbl
+  JOIN freebies_promo_tbl ON promo_bundle_tbl.promobundle_id = freebies_promo_tbl.promobundle_id
+  WHERE freebies_promo_tbl.delete_stats=0;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out)=>{
-    req.session.utilities =out[2]
+    req.session.utilities =out[4]
   res.render('admin/maintenance/freebies/adminFreebies',{
     services: out[0],
     freebies: out[1],
+    packages: out[2],
+    promos: out[3],
     reqSession: req.session
   })
+  console.log(req.session)
   })
 })
 router.post('/adminFreebies/addFreebies',(req, res)=>{
@@ -1401,7 +1515,7 @@ router.post('/adminFreebies/addFreebies',(req, res)=>{
     }
   })
 })
-
+// STATUS CHANGE FOR FREEBIES - SERVICES
 router.post('/adminFreebies/statusChange',(req, res) => {
   var alertSuccess =0
   var notSuccess =1
@@ -1418,7 +1532,42 @@ router.post('/adminFreebies/statusChange',(req, res) => {
     }
 })
 })
+// STATUS CHANGE FOR FREEBIES - PACKAGES
+router.post('/adminFreebies/statusChangePackages',(req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
+  const query = `UPDATE freebies_package_tbl set freebies_package_availability= ${req.body.stats} where freebies_package_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    console.log(query)
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+})
+})
 
+// STATUS CHANGE FOR FREEBIES - PROMOS
+router.post('/adminFreebies/statusChangePromos',(req, res) => {
+  var alertSuccess =0
+  var notSuccess =1
+  const query = `UPDATE freebies_promo_tbl set freebies_promo_availability= ${req.body.stats} where promobundle_id= ${req.body.id1}`
+  db.query(query,(err,out) =>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+})
+})
 router.post('/adminFreebies/query',(req, res) => {
   console.log('ID'+req.body.id)
   const query =`
@@ -1484,7 +1633,7 @@ router.post('/adminFreebies/Delete',(req, res)=>{
 
 // [UTILITIES]
 //        > R E A D
-  router.get('/utilities',(req, res) => {
+  router.get('/utilities',mid.adminnauthed,(req, res) => {
     const query =`SELECT * FROM utilities_tbl`
 
     db.query(query,(err,out)=>{
@@ -1544,7 +1693,9 @@ router.post('/utilities/updateLogo',upload.single('company_logo'),(req,res)=>{
   firstShift_timeStart="${req.body.firstShift_timeStart}",
   firstShift_timeEnd="${req.body.firstShift_timeEnd}",
   secondShift_timeStart="${req.body.secondShift_timeStart}",
-  secondShift_timeEnd="${req.body.secondShift_timeEnd}"
+  secondShift_timeEnd="${req.body.secondShift_timeEnd}",
+  reservation_timeAllowance="${req.body.reservation_timeAllowance}",
+  therapist_commission="${req.body.therapist_commission}"
   WHERE utilities_id="${req.body.utilities_id}"
   `
 
@@ -1562,8 +1713,20 @@ router.post('/utilities/updateLogo',upload.single('company_logo'),(req,res)=>{
   })
 })
 
-router.get('/commission', (req, res) => {
-  res.render('admin/commission/comm')
+
+// ********************************************************************************************************* ||
+// - - - - - - - - - - - - - - - - - - C O M M I S S I O N - - - - -  - - - - - - - - - - - - - - - - - - -  ||
+// ========================================================================================================= ||
+
+router.get('/commission',mid.adminnauthed, (req, res) => {
+  const query = `SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out
+    res.render('admin/commission/comm',{
+      reqSession : req.session
+    })
+  })
 })
 
 
