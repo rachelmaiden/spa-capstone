@@ -234,23 +234,23 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Promo Name
+                                      th Name
                                       th Services Included
                                       th Duration
                                       th Price
                                       th Valid From
                                       th Valid Until
-                                      th Availability
+                                      th Available
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Promo Name
+                                      th Name
                                       th Services Included
                                       th Duration
                                       th Price
                                       th Valid From
                                       th Valid Until
-                                      th Availability
+                                      th Available
                                       th Actions
                                   tbody
                                     each promo in promos
@@ -319,9 +319,12 @@ html(lang='en')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
                                 label Promo Duration
-                                select.selectpicker(name='duration' title='Select Duration' id='duration'  data-style='btn-info')
-                                  each duration in durations
-                                    option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                                .input-group
+                                  input.form-control(type='number', placeholder='Promo Bundle Duration' id='duration' name='duration' required='true', aria-required='true' )
+                                  span.input-group-addon minutes
+                                //- select.selectpicker(name='duration' title='Select Duration' id='duration'  data-style='btn-info')
+                                //-   each duration in durations
+                                //-     option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
                                 .category#suggestedDuration
                               .col-md-6  
                                 .form-group.has-default.bmd-form-group

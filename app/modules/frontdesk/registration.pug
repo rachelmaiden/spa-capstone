@@ -266,6 +266,7 @@ html(lang='en')
                                     each customer in customers
                                       tr
                                         td= customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                        input.name(type='hidden' value=`${customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname}` id=`${customer.cust_id}`)
                                         td= customer.cust_gender
                                         if(customer.cust_type==1) 
                                           td Loyalty
@@ -288,7 +289,7 @@ html(lang='en')
                                                   i.ti-pencil-alt
                                                   |  Update
                                               li
-                                                button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px")
+                                                button.btn.btn-simple.btn-danger.buttonDelete(data-toggle='modal' stlye="margin-right: 15px" value=`${customer.cust_id}`)
                                                   span.btn-label
                                                   i.ti-trash
                                                   |  Delete
@@ -523,21 +524,33 @@ html(lang='en')
   script.
     $(document).ready(function(){
       $('.buttonDelete').click(function(){
+        var cust_id = $(this).val()
+        var cust_name =$(`.name[id='${cust_id}']`).val()
         swal({
-          title: "Are you sure?",
+          title: "Are you sure? Do you want to delete "+cust_name,
           text: "Once deleted, you will not be able to recover this file!",
           icon: "warning",
           buttons: [true,"Yes"],
           dangerMode: true,
         })
         .then((willDelete) => {
-          swal({
-          title: 'Please enter the administrator password',
-          icon: "warning",
-          content: "input",
+          if(willDelete)
+          {
+              swal({
+              title: 'Please enter the administrator password',
+              icon: "warning",
+              content: "input",
+              buttons: [true,"Confirm"],
+              dangerMode: true,
+            }).then((confirm)=>{
+              if(confirm)
+              {
+                $.post('/frontdesk/DeleteCustomer')
+              }
+            });
+            $('.swal-content__input').attr('type', 'password')
+          }
         })
-        $('.swal-content__input').attr('type', 'password')
-        });
       })
     })
   script.

@@ -1496,17 +1496,36 @@ router.post('/adminFreebies/Delete',(req, res)=>{
     })
   })
 
-// FILE UPLOAD using MULTER (IMAGE)
-// var storage = multer.diskStorage({
-//   destination: function (req, file, cb){
-//     cb(null, './public/upload')
-//   },
-//   filename: function (req, file, cb){
-//     cb(null, 'company_logo'+ '-'+Date.now()+path.extname(file.originalname))
-//   }
-// })
+  // FILE UPLOAD using MULTER (IMAGE)
+  var storage = multer.diskStorage({
+    destination: function (req, file, cb){
+      cb(null, './public/upload')
+    },
+    filename: function (req, file, cb){
+      cb(null, 'company_logo'+ '-'+Date.now()+path.extname(file.originalname))
+    }
+  })
+  
+  var upload = multer({ storage: storage})
 
-// var upload = multer({ storage: storage})
+router.post('/utilities/updateLogo',upload.single('company_logo'),(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+  var company_logo = req.file.filename;
+  const query= `UPDATE utilities_tbl SET company_logo = "${company_logo}"`
+
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
 //        > CREATE or UPDATE
 // router.post('/utilities',upload.single('company_logo'),(req,res)=>{
   router.post('/utilities',(req,res)=>{
