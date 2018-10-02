@@ -164,6 +164,46 @@ html(lang='en')
                 p
                   | Utilities
             li
+              a(data-toggle='collapse', href='#queries')
+                i.ti-notepad
+                p
+                  | Queries
+                  b.caret
+              #queries.collapse
+                ul.nav
+                  li(style="margin-left: 30px;")
+                    a(href='./customerList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Customers
+                  li(style="margin-left: 30px;")
+                    a(href='./loyaltyMembers')
+                      span.sidebar-mini 
+                      span.sidebar-normal Loyalty Members
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Services
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Packages
+                  li(style="margin-left: 30px;")
+                    a(href='./promoList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Promos
+                  li(style="margin-left: 30px;")
+                    a(href='./therapistList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Therapists
+                  li(style="margin-left: 30px;")
+                    a(href='./roomList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Rooms    
+                  li(style="margin-left: 30px;")
+                    a(href='./freebiesList')
+                      span.sidebar-mini 
+                      span.sidebar-normal Freebies         
+            li
               a(data-toggle='collapse', href='#sales')
                 i.ti-bar-chart-alt
                 p

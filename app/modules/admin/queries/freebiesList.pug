@@ -182,7 +182,7 @@ html(lang='en')
                     a(href='./servicesList')
                       span.sidebar-mini 
                       span.sidebar-normal Services
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./packagesList')
                       span.sidebar-mini 
                       span.sidebar-normal Packages
@@ -198,7 +198,7 @@ html(lang='en')
                     a(href='./roomList')
                       span.sidebar-mini 
                       span.sidebar-normal Rooms    
-                  li(style="margin-left: 30px;")
+                  li(style="margin-left: 30px;").active
                     a(href='./freebiesList')
                       span.sidebar-mini 
                       span.sidebar-normal Freebies
@@ -279,18 +279,12 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting  Service Type
-                                      th.disabled-sorting  Service Name
-                                      th.disabled-sorting  Price
-                                      th.disabled-sorting  Duration
-                                      th.disabled-sorting  Points
+                                      th.disabled-sorting Services Included
+                                      th.disabled-sorting Points Required 
                                  
                                   tbody
                                     
                                       tr
-                                        td
-                                        td
-                                        td
                                         td
                                         td
                                         //-   .dropdown.pull-right(style="right: 138px")

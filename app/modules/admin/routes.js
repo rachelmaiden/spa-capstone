@@ -1581,5 +1581,23 @@ router.get('/servicesList',(req, res) => {
   res.render('admin/queries/servicesList')
 })
 
+router.get('/packagesList',(req, res) => {
+  res.render('admin/queries/packagesList')
+})
 
+router.get('/promoList',(req, res) => {
+  res.render('admin/queries/promoList')
+})
+
+router.get('/therapistList',(req, res) => {
+  res.render('admin/queries/therapistList')
+})
+
+router.get('/roomList',(req, res) => {
+  res.render('admin/queries/roomList')
+})
+
+router.get('/freebiesList',(req, res) => {
+  res.render('admin/queries/freebiesList')
+})
 exports.admin = router
