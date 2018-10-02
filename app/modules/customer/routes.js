@@ -37,7 +37,9 @@ router.get('/login',(req, res) => {
 // [LOGIN]
 router.post("/customer/login",(req, res) => {
 	const query = `
-		select * from loyalty_tbl where member_username = "${req.body.username}"`
+    SELECT customer_tbl.*, loyalty_tbl.* FROM customer_tbl
+    JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id 
+    WHERE customer_tbl.delete_stats=0 AND loyalty_tbl.member_username = "${req.body.username}"`
 
 		db.query(query, (err, out) => {
  		if(!out[0])

@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Online Booking and Spa Management System
+    title #{reqSession.utilities[0].company_name}
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -37,16 +37,14 @@ html(lang='en')
           Tip 1: you can change the color of the sidebar's background using: data-background-color="white | brown"
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
-          a.simple-text.logo-mini(href='http://www.creative-tim.com')
-            | MBAY
-          a.simple-text.logo-normal(href='http://www.creative-tim.com')
-            | MBAY Health Spa
+          a.simple-text.logo-mini(href='#')
+
+          a.simple-text.logo-normal(href='#')
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
-              .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
-              a.collapsed(data-toggle='collapse', href='#collapseExample')
+              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
                 span
                   | ADMINSTRATOR
               .clearfix
@@ -227,22 +225,13 @@ html(lang='en')
         nav.navbar.navbar-default
           .container-fluid
             .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
+
             .navbar-header
-              button.navbar-toggle(type='button')
-                span.sr-only Toggle navigation
-                span.icon-bar.bar1
-                span.icon-bar.bar2
-                span.icon-bar.bar3
-              a.navbar-brand(href='#Dashboard')
-                | Overview
+
+              a.navbar-brand(href='#')
+                | Rooms
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+
               ul.nav.navbar-nav.navbar-right
                 li
                   a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
@@ -393,42 +382,18 @@ html(lang='en')
                             button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Close
                             button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(href='button') Submit
 
-                .row
-                  .col-md-6
-                    .card-header
-                    .card-content
-                  .col-md-6
-                    .card-header
-                    .card-content
-                .row
-                  .col-md-6
-                    .card-header
-                      h4.card-title
-                    .card-content
-                  .col-md-6
-                    .card-header
-                    .card-content
-                .card-header
-                  h4.card-title
-                .card-content
-                  .row
-                    .col-md-12
-                  .row
-                    .col-md-12
-                  .row
-                  footer.footer
-                    .container-fluid
-                      nav.pull-left
-                        ul
-                          
-                      .copyright.pull-right
-                        | © 
-                        script.
-                          document.write(new Date().getFullYear())
-                        | , made with 
-                        i.fa.fa-heart.heart
-                        |  by 
-                        a(href='#') Team MBAY
+        footer.footer
+          .container-fluid
+
+                
+            .copyright.pull-right
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='#') Team MBAY
             
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')

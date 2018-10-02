@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Online Booking and Spa Management System
+    title #{reqSession.utilities[0].company_name}
     
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
@@ -223,22 +223,13 @@ html(lang='en')
         nav.navbar.navbar-default
           .container-fluid
             .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
+
             .navbar-header
-              button.navbar-toggle(type='button')
-                span.sr-only Toggle navigation
-                span.icon-bar.bar1
-                span.icon-bar.bar2
-                span.icon-bar.bar3
+
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Freebies
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+
               ul.nav.navbar-nav.navbar-right
                 li
                   a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
@@ -257,92 +248,205 @@ html(lang='en')
                     .col-md-6
                       .card-content
                         button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#addNewFreebies') Add New Freebie
-                  .content
-                    .container-fluid
-                      .row
-                        .col-md-12
-                          p.category  
-                          br
-                          .card
-                            .card-content
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              .fresh-datatables
-                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                  thead
-                                    tr
-                                      th Freebie
-                                      th.disabled-sorting
-                                      th.disabled-sorting
-                                      th.disabled-sorting Points Required
-                                      th.disabled-sorting Available
-                                      th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Freebie
-                                      th
-                                      th
-                                      th Points Required
-                                      th Available
-                                      th Actions
-                                  tbody
-                                    each freebie in freebies
-                                      tr
-                                        td= freebie.service_name
-                                        input.name(type='hidden' id=`${freebie.freebies_id}` value=`${freebie.service_name}`)
-                                        td
-                                        td
-                                        td= freebie.equivalent_points
-                                        td
-                                          if(freebie.freebies_availability==0)
-                                            input.switch-icon(type='checkbox' checked value=`${freebie.freebies_id}`)
-                                          else if(freebie.freebies_availability==1)
-                                            input.switch-icon(type='checkbox' value=`${freebie.freebies_id}`)
+                  .card-content
+                    .nav-tabs-navigation
+                      .nav-tabs-wrapper
+                        ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                          li.active
+                            a(href='#service', data-toggle='tab') Services
+                          li
+                            a(href='#package', data-toggle='tab') Packages
+                          li
+                            a(href='#promo', data-toggle='tab') Promo
+                    #my-tab-content.tab-content
+                      //SERVICES
+                      #service.tab-pane.active
+                        .content
+                          .container-fluid
+                            .row
+                              .col-md-12
+                                .card
+                                  .card-content
+                                    .toolbar
+                                      // Here you can write extra buttons/actions for the toolbar
+                                    .fresh-datatables
+                                      table#datatablesServices.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th Freebie
+                                            th.disabled-sorting
+                                            th.disabled-sorting
+                                            th.disabled-sorting Points Required
+                                            th.disabled-sorting Available
+                                            th.disabled-sorting Actions
+                                        tfoot
+                                          tr
+                                            th Freebie
+                                            th
+                                            th
+                                            th Points Required
+                                            th Available
+                                            th Actions
+                                        tbody
+                                          each freebie in freebies
+                                            tr
+                                              td= freebie.service_name
+                                              input.name(type='hidden' id=`${freebie.freebies_id}` value=`${freebie.service_name}`)
+                                              td
+                                              td
+                                              td= freebie.equivalent_points
+                                              td
+                                                if(freebie.freebies_availability==0)
+                                                  input.switch-icon(type='checkbox' checked value=`${freebie.freebies_id}`)
+                                                else if(freebie.freebies_availability==1)
+                                                  input.switch-icon(type='checkbox' value=`${freebie.freebies_id}`)
 
-                                        td
-                                          if(freebie.freebies_availability==1)
-                                            .dropdown.pull-right(style="right: 20px")
-                                              button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                i.ti-settings
-                                              ul.dropdown-menu
-                                                li
-                                                  button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
-                                                    span.btn-label
-                                                    i.ti-pencil-alt
-                                                    |  Update
-                                                li
-                                                  button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
-                                                    span.btn-label
-                                                    i.ti-trash
-                                                    |  Delete
-                                          else if(freebie.freebies_availability==0)
-                                            .dropdown.pull-right(style="right: 20px")
-                                              button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                i.ti-settings
-                              .row
-                                .col-md-6
-                                  .card-header
+                                              td
+                                                if(freebie.freebies_availability==1)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-pencil-alt
+                                                          |  Update
+                                                      li
+                                                        button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${freebie.freebies_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-trash
+                                                          |  Delete
+                                                else if(freebie.freebies_availability==0)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings
+                      
+                      // PACKAGE
+                      #package.tab-pane.active
+                        .content
+                          .container-fluid
+                            .row
+                              .col-md-12
+                                .card
                                   .card-content
-                                .col-md-6
-                                  .card-header
+                                    .toolbar
+                                      // Here you can write extra buttons/actions for the toolbar
+                                    .fresh-datatables
+                                      table#datatablesPackage.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th Freebie
+                                            th.disabled-sorting
+                                            th.disabled-sorting
+                                            th.disabled-sorting Points Required
+                                            th.disabled-sorting Available
+                                            th.disabled-sorting Actions
+                                        tfoot
+                                          tr
+                                            th Freebie
+                                            th
+                                            th
+                                            th Points Required
+                                            th Available
+                                            th Actions
+                                        tbody
+                                          each pack in packages
+                                            tr
+                                              td= pack.package_name
+                                              input.name(type='hidden' id=`${pack.freebies_package_id}` value=`${pack.package_name}`)
+                                              td
+                                              td
+                                              td= pack.equivalent_points
+                                              td
+                                                if(pack.freebies_package_availability==0)
+                                                  input.switch-icon(type='checkbox' checked value=`${pack.freebies_package_id}`)
+                                                else if(pack.freebies_package_availability==1)
+                                                  input.switch-icon(type='checkbox' value=`${pack.freebies_package_id}`)
+
+                                              td
+                                                if(pack.freebies_package_availability==1)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${pack.freebies_package_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-pencil-alt
+                                                          |  Update
+                                                      li
+                                                        button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${pack.freebies_package_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-trash
+                                                          |  Delete
+                                                else if(pack.freebies_package_availability==0)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings          
+                      
+                      // PROMO
+                      #promo.tab-pane.active
+                        .content
+                          .container-fluid
+                            .row
+                              .col-md-12
+                                .card
                                   .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row 
-                                  
+                                    .toolbar
+                                      // Here you can write extra buttons/actions for the toolbar
+                                    .fresh-datatables
+                                      table#datatablesPromo.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th Freebie
+                                            th.disabled-sorting
+                                            th.disabled-sorting
+                                            th.disabled-sorting Points Required
+                                            th.disabled-sorting Available
+                                            th.disabled-sorting Actions
+                                        tfoot
+                                          tr
+                                            th Freebie
+                                            th
+                                            th
+                                            th Points Required
+                                            th Available
+                                            th Actions
+                                        tbody
+                                          each promo in promos
+                                            tr
+                                              td= promo.promobundle_name
+                                              input.name(type='hidden' id=`${promo.freebies_promo_id}` value=`${promo.promobundle_name}`)
+                                              td
+                                              td
+                                              td= promo.equivalent_points
+                                              td
+                                                if(promo.freebies_promo_availability==0)
+                                                  input.switch-icon(type='checkbox' checked value=`${promo.freebies_promo_id}`)
+                                                else if(promo.freebies_promo_availability==1)
+                                                  input.switch-icon(type='checkbox' value=`${promo.freebies_promo_id}`)
+
+                                              td
+                                                if(promo.freebies_promo_availability==1)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`${promo.freebies_promo_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-pencil-alt
+                                                          |  Update
+                                                      li
+                                                        button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${promo.freebies_promo_id}` stlye="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-trash
+                                                          |  Delete
+                                                else if(promo.freebies_promo_availability==0)
+                                                  .dropdown.pull-right(style="right: 20px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate.bawal(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                      i.ti-settings                  
 
                                 
                           // DELETE  
@@ -401,18 +505,18 @@ html(lang='en')
                                 .modal-footer
                                     button.btn.btn-danger.btn-fill.pull-left.cancelButton(type='button', data-dismiss='modal') Close
                                     button.btn.btn-info.btn-fill.pull-right.updateSubmitButton(type='button') Update
-                          
-                          footer.footer
-                            .container-fluid
-                              .copyright.pull-right
-                                | © 
-                                script.
-                                  document.write(new Date().getFullYear())
-                                | , made with 
-                                i.fa.fa-heart.heart
-                                |  by 
-                                a(href='#') Team MBAY
-                      .fixed-plugin
+        
+        footer.footer
+          .container-fluid
+            .copyright.pull-right
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='#') Team MBAY
+    .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
   script(src='/assets/paperDashboardPro/js/jquery-ui.min.js', type='text/javascript')
@@ -508,6 +612,7 @@ html(lang='en')
           })
         })
     })
+  //- STATUS CHANGE FOR FREEBIES - SERVICES
   script.
     $(document).ready(function(){
        $(function(){
@@ -603,6 +708,196 @@ html(lang='en')
     });
 
 
+  //- STATUS CHANGE FOR FREEBIES - PACKAGES
+  script.
+    $(document).ready(function(){
+       $(function(){
+                  console.log(localStorage)
+                  var name = localStorage.getItem('name')
+                  if (localStorage.getItem('name'))
+                  {
+                    if(localStorage.getItem('status')==1)
+                    {
+                    $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to not available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                    else
+                    {
+                       $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                }
+                })
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            console.log(name)
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChangePackages',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChangePackages',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+        });
+    });
+
+
+  //- STATUS CHANGE FOR FREEBIES - PROMOS
+  script.
+    $(document).ready(function(){
+       $(function(){
+                  console.log(localStorage)
+                  var name = localStorage.getItem('name')
+                  if (localStorage.getItem('name'))
+                  {
+                    if(localStorage.getItem('status')==1)
+                    {
+                    $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to not available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                    else
+                    {
+                       $.notify(
+                      {
+                      icon: 'ti-bell',
+                      message: name+' has been set to available',
+                      
+                    },
+                    {
+                      type: 'success'
+                    },
+                    {
+                    animate: {
+                          enter: 'animated bounceInDown',
+                          exit: 'animated bounceOutUp'
+                        }
+                    })
+                      localStorage.clear()
+                    }
+                }
+                })
+        $('.switch-icon').on('switchChange.bootstrapSwitch', function(event,state){
+          var idNow = $(this).val();
+          var name = $(`.name[id='${idNow}']`).val()
+          if(state==false)
+          {
+            var stats = 1
+            console.log(name)
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChangePromos',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc == 0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+                
+                
+              }
+              else
+              {
+
+              }
+            })
+            
+          }
+          else if(state==true)
+          {
+            var idNow = $(this).val();
+            var stats = 0
+            //- alert(stats)
+            //- alert(idNow)
+            $.post('/admin/adminFreebies/statusChangePromos',{stats,id1:idNow}).done(function(data){
+              if(data.alertDesc==0)
+              {
+                localStorage.setItem('name',name)
+                localStorage.setItem('status',stats)
+                location.reload()
+              }
+              else
+              {
+
+              }
+            })
+          }
+        });
+    });
   script.
     $(document).ready(function(){
       $('.updateButton').click(function(){
@@ -730,9 +1025,18 @@ html(lang='en')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
+
   script(type='text/javascript').
       $(document).ready(function() {
-      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      $('#datatablesServices').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
+  script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatablesPackage').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      });
+  script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatablesPromo').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
       });
 
     
