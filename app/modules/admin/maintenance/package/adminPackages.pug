@@ -561,8 +561,8 @@ html(lang='en')
         if(package_name == 0 && package_price == 0 && package_points == 0 && equivalent_points == 0  && package_maxPerson ==0 || package_name == 0 || package_price == 0 || services_included == 0 || package_duration==0 || package_amenity_usage ==0 || package_points==0 || equivalent_points == 0  || package_maxPerson ==0)
         {
             swal({
-              title: 'Please double check the fields',
-              text: 'Make sure all required fields has value', 
+              title: 'Please double check the fields.',
+              text: 'Make sure all required fields have value.', 
               icon: 'warning'
             })
         }
@@ -581,7 +581,7 @@ html(lang='en')
             {
                 swal({
                     title: "Success",
-                    text: "New package has been added",
+                    text: "New package has been added.",
                     icon: 'success'
                   }).then(function(){
                     location.reload();
@@ -599,7 +599,7 @@ html(lang='en')
             {
               swal({
                 title: "Error",
-                text: package_name+' is already exist',
+                text: package_name+' already exists.',
                 icon: 'error'
               })
             }
@@ -755,7 +755,7 @@ html(lang='en')
           if(idNow=='bawal')
           {
             swal({ 
-            title: 'Set this item to unavailable first',
+            title: 'Set this item to unavailable first.',
             icon: 'warning'
           })
           }
@@ -793,7 +793,7 @@ html(lang='en')
                       {
                         swal({
                         title:'Success', 
-                        text:'Services Included Updated', 
+                        text:'Services included updated.', 
                         icon:'success'
                         }).then(function(){
                           location.reload();
@@ -900,7 +900,7 @@ html(lang='en')
                   if(data.alertDesc==0)
                   {
                     swal({
-                      title: name+' has been deleted',
+                      title: name+' has been deleted.',
                       icon: 'success'
                     }).then(function(){
                       location.reload()
@@ -927,7 +927,7 @@ html(lang='en')
     $(document).ready(function(){
       $('.bawal').click(function(){
         swal({
-          title: 'Set this item to unavailable first',
+          title: 'Set this item to unavailable first.',
           icon: 'warning'
         })
       })
