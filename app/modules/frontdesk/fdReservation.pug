@@ -272,6 +272,7 @@ html(lang='en')
                                                 th
                                                   strong Total Price 
                                             tbody#viewServicesAvailed
+                                            #therapist
                                     //- .modal-footer
                                     //-   center
                                     //-     button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateSpecialty(data-toggle='modal') 
@@ -335,9 +336,11 @@ html(lang='en')
         var id = $(this).val()
         $.post('/fdReservation/viewServices',{id:id})
           .done(data=>{
-            console.log(data.out2)
+            console.log(data.out1)
             console.log("NAME^")
               $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+              $('#therapist').append(`<h5>Therapist: 
+              <a>${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
             for(var i=0; i<data.out1.length;i++){
                 $('#viewServicesAvailed').append(` 
                 <tr>
@@ -350,6 +353,7 @@ html(lang='en')
         $('#viewServices').on('hidden.bs.modal', function (){
           $('#viewServicesAvailed').empty()
           $('#title').empty()
+          $('#therapist').empty()
         })
         })
         

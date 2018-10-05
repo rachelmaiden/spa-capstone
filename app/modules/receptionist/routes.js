@@ -42,14 +42,20 @@ router.get('/home',mid.receptionistnauthed,(req, res) => {
       var fullDate = moment(new Date()).format('MM-DD-YYYY')
       console.log(fullDate)
       const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
-      from walkin_queue_tbl 
-      join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-      join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-      join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-      join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND room_tbl.room_type_id= '2' AND walkin_date='${fullDate}' AND walkin_indicator=0 group by walkin_services_tbl.walkin_id`
+      FROM walkin_queue_tbl 
+      JOIN walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+      JOIN customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+      JOIN services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+      JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id 
+      AND room_tbl.room_type_id= '2' 
+      AND walkin_date='${fullDate}' 
+      AND walkin_indicator=0 group by walkin_services_tbl.walkin_id;
+      SELECT * FROM utilities_tbl`
       db.query(query,(err,out)=>{
+        req.session.utilities = out[1]
         res.render('receptionist/queue',{
-          walkins: out
+          walkins: out[0],
+          reqSession: req.session
         })
       })
     })
