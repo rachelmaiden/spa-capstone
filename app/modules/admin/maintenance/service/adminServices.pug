@@ -217,7 +217,7 @@ html(lang='en')
                           br
                           .card
                             .card-content
-                              .toolbar
+                                .toolbar
                                 // Here you can write extra buttons/actions for the toolbar
                               .fresh-datatables
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
@@ -230,15 +230,7 @@ html(lang='en')
                                       th Points
                                       th Available
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Type
-                                      th Name
-                                      th Duration
-                                      th Price
-                                      th Points
-                                      th Available
-                                      th Actions
+                                  
                                   tbody
                                     each service in services
                                       tr
@@ -327,9 +319,9 @@ html(lang='en')
                                   input.form-control(type='number', placeholder='Service Point' name='service_points' id='service_points' required='true', aria-required='true')
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
-                                  label Equivalent Point/s
+                                  label Point/s Required To Avail As Freebie
                                   star *
-                                  input.form-control(type='number', placeholder='Equivalent Point' name='equivalent_points' id='equivalent_points' required='true', aria-required='true')
+                                  input.form-control(type='number', placeholder='Required Point/s' name='equivalent_points' id='equivalent_points' required='true', aria-required='true')
                             
 
 
@@ -425,8 +417,8 @@ html(lang='en')
           if($('#service_name').val()==0 && $('#service_price').val()==0 && $('#equivalent_points').val()==0 || $('#service_price').val()==0 || $('#service_name').val()==0 || $('#equivalent_points').val()==0 )
           {
             swal({
-              title: 'Please double check the Fields',
-              text: 'Make sure all required fields has value', 
+              title: 'Please double check the fields.',
+              text: 'Make sure all required fields have value.', 
               icon: 'warning'
             })
           }
@@ -444,7 +436,7 @@ html(lang='en')
                 {
                   swal({
                     title: "Success",
-                    text: "New Services has been Added",
+                    text: "New service has been added.",
                     icon: 'success'
                   }).then(function(){
                     location.reload();
@@ -462,7 +454,7 @@ html(lang='en')
               {
                 swal({
                     title: "Error",
-                    text: "Service is already exist",
+                    text: "Service already exists.",
                     icon: 'error'
                   })
               }
@@ -493,7 +485,7 @@ html(lang='en')
           })
         $('.bawal').click(function(){
           swal({
-            title: 'Set this item to unavailable first',
+            title: 'Set this item to unavailable first.',
             icon: 'warning'
           })
         })
@@ -507,7 +499,7 @@ html(lang='en')
                     $.notify(
                       {
                       icon: 'ti-bell',
-                      message: name+' has been set to not available',
+                      message: name+' has been set to not available.',
                       
                     },
                     {
@@ -526,7 +518,7 @@ html(lang='en')
                        $.notify(
                       {
                       icon: 'ti-bell',
-                      message: name+' has been set to available',
+                      message: name+' has been set to available.',
                       
                     },
                     {
@@ -645,7 +637,7 @@ html(lang='en')
                       if(data.alertDesc==0){
                           swal({
                           title:'Success', 
-                          text:'Service Information Updated', 
+                          text:'Service information updated.', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -686,7 +678,7 @@ html(lang='en')
                   if(data.alertDesc==0)
                   {
                     swal({
-                      title: name+' has been deleted',
+                      title: name+' has been deleted.',
                       icon: 'success'
                     }).then(function(){
                       location.reload()

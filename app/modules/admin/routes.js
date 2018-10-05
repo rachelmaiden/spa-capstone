@@ -72,15 +72,90 @@ router.get('/admindashboard',mid.adminnauthed,(req, res) => {
 
 // [GC]
 router.get('/giftcertificate', (req, res) => {
-  const query =`SELECT * FROM utilities_tbl`
+  const query =`SELECT * FROM utilities_tbl;
+  SELECT * FROM giftcertificate_tbl ORDER BY gc_name`
 
   db.query(query,(err,out)=>{
     req.session.utilities = out[0]
     res.render('admin/maintenance/giftcertificate/gc',{
-      reqSession: req.session
+      reqSession: req.session,
+      giftcerts: out[1]
     })
   })
 })
+
+// [GIFT CERTIFICATE - ADD]
+router.post('/AddGiftCertificate',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+  var gcExist =2
+
+  var gc_quantity = req.body.gc_quantity
+  
+  const query = `SELECT * FROM giftcertificate_tbl WHERE gc_name = "${req.body.gc_name}" AND gc_price="${req.body.gc_price}" AND gc_value="${req.body.gc_value}"`
+
+  db.query(query,(err,out)=>{
+    if(out==undefined || out==0)
+    {
+      for(var i=0;i<gc_quantity;i++)
+      {
+        let refCode = Math.random().toString(36).substring(7);
+        const query = `INSERT INTO giftcertificate_tbl(gc_name,gc_value,gc_price,gc_refCode,release_stats)
+        VALUES("${req.body.gc_name}","${req.body.gc_value}","${req.body.gc_price}","${refCode}",0)`
+    
+        db.query(query,(err,out)=>{
+
+        })
+      }
+        res.send({alertDesc:alertSuccess})
+    }
+    else
+    {
+      res.send({alertDesc:gcExist})
+    }
+  })
+})
+
+// [GIFT CERTIFICATE - DELETE]
+router.post('/DeleteGiftCertificate',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+
+  const query =`DELETE FROM giftcertificate_tbl WHERE gc_id = ${req.body.gc_id}`
+  
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
+// [GIFT CERTIFICATE - RELEASE]
+router.post('/ReleaseGiftCertificate',(req,res)=>{
+  var alertSuccess =0
+  var notSuccess =1
+
+  const query = `UPDATE giftcertificate_tbl SET release_stats= 1 WHERE gc_id = ${req.body.gc_id}`
+
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
 
 // =========================================================================================================================================================================
 // [PACKAGE]
@@ -1744,5 +1819,23 @@ router.get('/servicesList',(req, res) => {
   res.render('admin/queries/servicesList')
 })
 
+router.get('/packagesList',(req, res) => {
+  res.render('admin/queries/packagesList')
+})
 
+router.get('/promoList',(req, res) => {
+  res.render('admin/queries/promoList')
+})
+
+router.get('/therapistList',(req, res) => {
+  res.render('admin/queries/therapistList')
+})
+
+router.get('/roomList',(req, res) => {
+  res.render('admin/queries/roomList')
+})
+
+router.get('/freebiesList',(req, res) => {
+  res.render('admin/queries/freebiesList')
+})
 exports.admin = router

@@ -45,15 +45,38 @@ router.post("/frontdesk/logout", (req, res) => {
 })
 // [FRONTDESK-HOME]
 router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
+  var date_time = moment(new Date()).format('MMMM-DD-YYYY hh:mm')
+  var dateLang= moment(new Date()).format('MMMM-DD-YYYY')
   const query = ` select * from customer_tbl where delete_stats=0;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
-    req.session.utilites = out[1]
+    req.session.utilities = out[1]
       res.render('frontdesk/registration',{
         customers: out[0],
         reqSession: req.session
       })
+      var closing_time = dateLang+' '+req.session.utilities[0].closing_time
+          closing_time = moment(closing_time).format('MMMM-DD-YYYY HH:mm')
+      var opening_time = dateLang+' '+req.session.utilities[0].opening_time
+          opening_time = moment(opening_time).format('MMMM-DD-YYYY HH:mm')
+          opening_time = moment(opening_time).subtract(3,'h').format('MMMM-DD-YYYY HH:mm')
+          opening_time = moment(opening_time).add(1,'d').format('MMMM-DD-YYYY HH:mm')
+      console.log(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrAfter(opening_time))
+      if(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrAfter(opening_time))
+      {
+        const therapist_attendance = `UPDATE therapist_attendance_tbl 
+        SET therapist_datetime_in = NULL, 
+        availability = 0,
+        doneService_count = 0,
+         therapist_reserved =0`
+        
+        db.query(therapist_attendance,(err,out)=>{
+          console.log(therapist_attendance)
+            console.log(err)
+        })
+      }
     })
+    
   })
 
 
@@ -349,7 +372,8 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
   JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
   WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0
-  GROUP BY service_in_package_tbl.package_id`
+  GROUP BY service_in_package_tbl.package_id;
+  SELECT * FROM giftcertificate_tbl WHERE release_stats = 2 OR release_stats=4`
   
   db.query(query,(err,out) =>{
     req.session.utilities = out[5]
@@ -359,6 +383,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     var prooms= out[3]
     var customers= out[4]
     var packages = out[6]
+    var giftcerts = out[7]
     // console.log(req.session.utilities)
     // console.log(req.session.utilities[0].company_name)
     var date = moment(new Date()).format('MM-DD-YYYY')
@@ -371,6 +396,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
       secondShift_timeStart = moment(secondShift_timeStart).format('MM-DD-YYYY HH:mm')
       secondShift_timeEnd = moment(secondShift_timeEnd).format('MM-DD-YYYY HH:mm')
       var date_timeNow = moment(new Date()).format('MM-DD-YYYY HH:mm ')
+      var dateHello = req.query.date
     
       // console.log(secondShift_timeStart)
       // console.log(secondShift_timeEnd)
@@ -398,7 +424,8 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
           res.render('frontdesk/fdBookReservation',{
             date, time,room, roomId,
             reqSession: req.session,services,promos, crooms, prooms, customers,
-            therapist: out, packages
+            therapist: out, packages,
+            datePick: dateHello, giftcerts
           })
         })
       }
@@ -415,7 +442,8 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
           res.render('frontdesk/fdBookReservation',{
             date, time,room, roomId,
             reqSession: req.session,services,promos, crooms, prooms, customers,
-            therapist: out,packages
+            therapist: out,packages,
+            datePick: dateHello, giftcerts
           })
         })
       }
@@ -423,6 +451,35 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
 
 
     })
+
+router.post('/TherapistValidate',(req,res)=>{
+  var notAvailable =0
+  console.log(req.body)
+  const query =`SELECT * FROM therapist_tbl
+  JOIN therapist_attendance_tbl ON therapist_tbl.therapist_id = therapist_attendance_tbl.therapist_id
+  JOIN walkin_services_tbl ON therapist_tbl.therapist_id = walkin_services_tbl.therapist_id
+  JOIN walkin_queue_tbl ON walkin_services_tbl.walkin_id = walkin_queue_tbl.walkin_id
+  WHERE therapist_tbl.therapist_id=${req.body.therapist_id} AND walkin_queue_tbl.walkin_date ="${req.body.walkin_date}"`
+
+  db.query(query,(err,out)=>{
+    console.log(query)
+    console.log(out)
+    for(var i=0;i<out.length;i++)
+    {
+      var StartTime = out[i].walkin_date+" "+out[i].walkin_start_time
+      var EndTime = out[i].walkin_date+' '+out[i].walkin_end_time
+      var time_pick = req.body.walkin_date+" "+req.body.time_pick
+      var start_time = moment(time_pick).isSameOrAfter(StartTime)
+      var end_time = moment(time_pick).isSameOrBefore(EndTime)
+      console.log('START',start_time)
+      console.log('End',end_time)
+      if(start_time && end_time)
+      {
+        return res.send({alertDesc:notAvailable,out})
+      }
+    }
+  })
+})
 
 // [BOOK RESERVATION - CHECK CUSTOMER DETAILS]
 router.post('/CheckCustomer/Details',(req,res)=>{
@@ -450,6 +507,14 @@ router.post('/CheckCustomer/Details',(req,res)=>{
   })
 })
 
+// [BOOK RESERVATION - CHECK ROOM DETAILS]
+router.post('/CheckRoomDetails',(req,res)=>{
+  const query = `SELECT * FROM room_tbl WHERE room_id =${req.body.room_id}`
+
+  db.query(query,(err,out)=>{
+    res.send(out[0])
+  })
+}) 
 // [BOOK RESERVATION - ADD RESERVATION]
 router.post('/bookreservation/addReservation',(req,res)=>{
   var walkinId;
@@ -570,20 +635,21 @@ router.get('/fdReservation',mid.frontdesknauthed, (req, res) => {
 
   console.log(fullDate)
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
-  from walkin_queue_tbl 
-  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-  join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-  join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id= '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
+  FROM walkin_queue_tbl 
+  JOIN walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+  JOIN customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+  JOIN services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+  JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id 
+  WHERE room_tbl.room_type_id= '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
   SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
-  from walkin_queue_tbl 
-  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-  join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-  join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id != '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
+  FROM walkin_queue_tbl 
+  JOIN walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+  JOIN customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+  JOIN services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+  JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id != '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out)=>{
-    req.session.utilites = out[2]
+    req.session.utilities = out[2]
     res.render('frontdesk/fdReservation',{
       walkins: out[0],
       reservs: out[1],
@@ -596,11 +662,12 @@ router.post('/fdReservation/viewServices',(req,res)=>{
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
   customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
   services_tbl.service_name, services_tbl.service_price, 
-  room_tbl.room_name, room_tbl.room_rate
+  room_tbl.room_name, room_tbl.room_rate, therapist_tbl.*
     from walkin_queue_tbl 
     join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
     join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
     join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+    JOIN therapist_tbl ON therapist_tbl.therapist_id = walkin_services_tbl.therapist_id
     join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id where walkin_services_tbl.walkin_id=?`
   
   db.query(query,[req.body.id],(err,out)=>{
@@ -658,7 +725,7 @@ router.get('/payment',mid.frontdesknauthed, (req, res) => {
   GROUP BY walkin_services_tbl.walkin_id;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out)=>{
-    req.session.utilites = out[2]
+    req.session.utilities = out[2]
     res.render('frontdesk/payment',{
       notpaids : out[0],
       paids: out[1],
@@ -915,11 +982,43 @@ router.get('/therapist', (req, res) => {
   ORDER BY therapist_shift ASC`
 
   db.query(query,(err,out)=>{
-    req.session.utilites = out[0]
+    req.session.utilities = out[0]
     res.render('frontdesk/therapist',{
       reqSession: req.session,
       therapist: out[1]
     })
+    var current_date = moment(new Date()).format('MMMM-DD-YYYY')
+    for(var i=0;i<out[1].length;i++)
+    {
+      var therapist_date = moment(out[1][i].therapist_datetime_in).format('MMMM-DD-YYYY')
+      // console.log(therapist_date)
+      if(therapist_date=='Invalid date')
+      {
+        const query = `UPDATE therapist_attendance_tbl 
+        SET therapist_datetime_in = NULL, 
+        availability = 0,
+        doneService_count = 0,
+        therapist_reserved =0 WHERE therapist_datetime_in= NULL`
+
+        db.query(query,(err,out)=>{
+
+        })
+      }
+      else if(therapist_date !='Invalid date' && moment(therapist_date).isAfter(current_date))
+      {
+        const query = `UPDATE therapist_attendance_tbl 
+        SET therapist_datetime_in = NULL, 
+        availability = 0,
+        doneService_count = 0,
+        therapist_reserved =0`
+
+        db.query(query,(err,out)=>{
+          
+        })
+      }
+    }
+    console.log(current_date)
+    console.log(therapist_date)
   })
 })
 
@@ -1061,4 +1160,62 @@ router.post('/DeleteCustomer',(req,res)=>{
 //     }
 //   })
 // })
+
+
+// [GIFT CERTIFICATE - VIEW]
+
+router.get('/giftcert',(req, res) => {
+
+  const query =`SELECT * FROM giftcertificate_tbl WHERE release_stats =1;
+  SELECT * FROM utilities_tbl `
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[1]
+    console.log(req.session)
+    res.render('frontdesk/giftcert',{
+      giftcerts: out[0],
+      reqSession: req.session
+    })
+  })
+})
+
+// [GIFT CERTIFICATE - SELL]
+router.post('/SoldGiftCertificate',(req,res)=>{
+  var alertSuccess =0
+  var notSuccess =1
+  const query = `UPDATE giftcertificate_tbl SET release_stats= 2 WHERE gc_id = ${req.body.gc_id}`
+
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
+// [GIFT CERTIFICATE - GIFT]
+router.post('/AsGiftGiftCertificate',(req,res)=>{
+  var alertSuccess=0
+  var notSuccess=1
+
+  const query=`UPDATE giftcertificate_tbl SET release_stats= 4 WHERE gc_id = ${req.body.gc_id}`
+
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
 exports.frontdesk = router;

@@ -182,11 +182,11 @@ html(lang='en')
                     a(href='./servicesList')
                       span.sidebar-mini 
                       span.sidebar-normal Services
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./packagesList')
                       span.sidebar-mini 
                       span.sidebar-normal Packages
-                  li(style="margin-left: 30px;")
+                  li(style="margin-left: 30px;").active
                     a(href='./promoList')
                       span.sidebar-mini 
                       span.sidebar-normal Promos
@@ -279,15 +279,21 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting  Service Type
-                                      th.disabled-sorting  Service Name
-                                      th.disabled-sorting  Price
-                                      th.disabled-sorting  Duration
-                                      th.disabled-sorting  Points
+                                      th.disabled-sorting Promo Name
+                                      th.disabled-sorting Promo Price
+                                      th.disabled-sorting Services Included
+                                      th.disabled-sorting Promo Duration
+                                      th.disabled-sorting Points
+                                      th.disabled-sorting Available For
+                                      th.disabled-sorting Valid From
+                                      th.disabled-sorting Valid Until
                                  
                                   tbody
                                     
                                       tr
+                                        td
+                                        td
+                                        td
                                         td
                                         td
                                         td

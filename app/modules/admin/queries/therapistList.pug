@@ -182,7 +182,7 @@ html(lang='en')
                     a(href='./servicesList')
                       span.sidebar-mini 
                       span.sidebar-normal Services
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./packagesList')
                       span.sidebar-mini 
                       span.sidebar-normal Packages
@@ -190,7 +190,7 @@ html(lang='en')
                     a(href='./promoList')
                       span.sidebar-mini 
                       span.sidebar-normal Promos
-                  li(style="margin-left: 30px;")
+                  li(style="margin-left: 30px;").active
                     a(href='./therapistList')
                       span.sidebar-mini 
                       span.sidebar-normal Therapists
@@ -279,15 +279,17 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting  Service Type
-                                      th.disabled-sorting  Service Name
-                                      th.disabled-sorting  Price
-                                      th.disabled-sorting  Duration
-                                      th.disabled-sorting  Points
-                                 
+                                      th Customer Name
+                                      th.disabled-sorting Age
+                                      th.disabled-sorting Address
+                                      th.disabled-sorting Gender
+                                      th.disabled-sorting Mobile Number
+                                      th.disabled-sorting Skills
+                                  
                                   tbody
                                     
                                       tr
+                                        td
                                         td
                                         td
                                         td

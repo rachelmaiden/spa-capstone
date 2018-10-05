@@ -129,6 +129,7 @@ html(lang='en')
                                         input.name(type='hidden' value=`${walkin.cust_fname} ${walkin.cust_mname} ${walkin.cust_lname}` id=`${walkin.walkin_id}`)
 
                                         td= walkin.walkin_start_time+" TO "+walkin.walkin_end_time
+                                          input.timeStart(type='hidden' value=`${walkin.walkin_date} ${walkin.walkin_start_time}` id=`${walkin.walkin_id}`)
                                         td
                                           button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${walkin.walkin_id}`)
                                             span.btn-label
@@ -244,61 +245,120 @@ html(lang='en')
           var id = $(this).val()
           $.post('/receptionist/home/queue/viewServices',{id:id})
             .done(data=>{
-              console.log(data.out1)
-              console.log(data.out2)
-              console.log(data.out1[0].therapist_fname)
                 $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
-                $('#therapist').append(`Therapist: ${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
+                $('#therapist').append(`Therapist: 
+                <a>${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
               for(var i=0; i<data.out1.length;i++){
+                var total_duration = moment.duration(data.out1[i].service_total_duration).asMinutes()
                   $('#viewServicesAvailed').append(` 
                   <tr>
                   <td>${data.out1[i].service_name}</td>
                   <td>${data.out1[i].service_total_quantity}</td>
-                  <td>${data.out1[i].service_total_duration}</td>
+                  <td>${total_duration} minutes</td>
                   <td>${data.out1[i].service_total_price}</td>`)
                 }
           $('#viewServices').modal('show')
           $('#viewServices').on('hidden.bs.modal', function (){
             $('#viewServicesAvailed').empty()
             $('#title').empty()
+            $('#therapist').empty()
           })
           }) 
       })
       $('.proceedButton').click(function(){
         var id = $(this).val()
-        var Name = $(`.name[id='${id}']`).val()
-        swal({
-          title: "Proceed "+Name+" to Service",
-          text: 'Are you sure?',
-          icon: "warning",
-          buttons: ["Cancel","Proceed"],
-          dangerMode: true
-        }).then((proceed)=>{
-          if(proceed)
-          {
-            $.post('/receptionist/home/queue/MoveToOngoing',{id:id})
-            .done(data=>{
-              if(data.alertSuccess==0)
-                {
-                  swal({
-                    title: Name+" has been added to ongoing service",
-                    icon: 'success'
-                  }).then(function(){
-                    location.href='./ongoing'
-                  })
-                }
-              else
+        var name = $(`.name[id='${id}']`).val()
+        var startTime = $(`.timeStart[id='${id}'`).val()
+          startTime = moment(startTime).format('MMMM-DD-YYYY HH:mm')
+        var timeStart = moment(startTime).format('hh:mm A')
+        var timeNow = moment(new Date()).format('MMMM-DD-YYYY HH:mm')
+        var dateNow = moment(new Date()).format('MMMM-DD-YYYY')
+        var scriptSession = !{JSON.stringify(reqSession)}
+        var forfeit_time = scriptSession.utilities[0].reservation_forfeitTime
+            forfeit_time = moment(startTime).add(forfeit_time,'m').format('MMMM-DD-YYYY HH:mm')
+        var opening_time = scriptSession.utilities[0].opening_time
+            opening_time = dateNow+" "+opening_time
+            opening_time = moment(opening_time).format('MMMM-DD-YYYY HH:mm')
+        var allowable_time = moment(opening_time).subtract(30,'m').format('MMMM-DD-YYYY HH:mm')
+        console.log(allowable_time)
+        if(moment(timeNow).isSameOrBefore(opening_time) && moment(timeNow).isSame(allowable_time))
+        {
+          swal({
+            title: 'The Spa is not Open Yet',
+            icon: 'warning'
+          })
+        }
+        else if(moment(timeNow).isBefore(startTime) && moment(timeNow).isSameOrAfter(allowable_time))
+        {
+            swal({
+              title: 'The Reservation Time of '+name+' is '+timeStart,
+              text: 'Proceed '+name+' to service? Are you sure?',
+              icon: "warning",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+            }).then(function(proceed){
+              if(proceed)
               {
-                swal({
-                    title: 'ERROR',
-                    icon: 'error'
-                  })
+                $.post('./home/queue/AdvanceReservation',{id}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: 'success',
+                      icon:'success'
+                      })
+                  }
+                  else if(data.alertDesc==1)
+                  {
+                    swal({
+                      title:'Error',
+                      icon: 'error'
+                    })
+                  }
+                })
               }
             })
-          }
+        }
+        else if(moment(timeNow).isSameOrAfter(startTime) && moment(timeNow).isBefore(forfeit_time) && moment(startTime).isSameOrAfter(allowable_time))
+        {
+           swal({
+              title: name+' will proceed to ongoing service?',
+              icon: "info",
+              buttons: ["Cancel","Proceed"],
+              dangerMode: true
+            }).then(function(proceed){
+              if(proceed)
+              {
+                $.post('/receptionist/home/queue/MoveToOngoing',{id:id})
+                .done(data=>{
+                  if(data.alertSuccess==0)
+                    {
+                      swal({
+                        title: name+" has been added to ongoing service",
+                        icon: 'success'
+                      }).then(function(){
+                        location.href='./ongoing'
+                      })
+                    }
+                  else
+                  {
+                    swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                  }
+                })
+              }
+            })
+        }
+        else if(moment(timeNow).isSameOrAfter(forfeit_time))
+        {
+          swal({
+            title: 'THE CUSTOMER IS LATE',
+            text: 'The reservation is Void',
+            icon: 'warning'
+          })
+        }
         })
-
-      })
       })
     script.
       $(document).ready(function(){

@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities.company_logo}`)
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title #{reqSession.utilities.company_name}
+    title #{reqSession.utilities[0].company_name}
    
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
@@ -26,7 +26,7 @@ html(lang='en')
         .logo
           a.simple-text.logo-mini(href='#')
           a.simple-text.logo-normal(href='./home')
-            | #{reqSession.utilities.company_name}
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
@@ -281,7 +281,12 @@ html(lang='en')
                                                         i.ti-calendar
                                                         |  New Reservation
                                                     li
-                                                      button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i
+                                                        |  Amenities Only
+                                                    li
+                                                      button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
                                                         span.btn-label
                                                         i.ti-pencil-alt
                                                         |  Update
@@ -325,7 +330,12 @@ html(lang='en')
                                                         i.ti-calendar
                                                         |  New Reservation
                                                     li
-                                                      button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                        span.btn-label
+                                                        i
+                                                        |  Amenities Only
+                                                    li
+                                                      button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
                                                         span.btn-label
                                                         i.ti-pencil-alt
                                                         |  Update
@@ -386,6 +396,33 @@ html(lang='en')
                           //- button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd(type='button' id="book" href=`selectDate/${customer.cust_id}`) Book Reservation
                           //- button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
         
+                  //AMENITY ONLY
+                  #amenityOnly.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                    .modal-dialog(role='document')
+                        .modal-content
+                          .modal-header
+                            button.close(type='button', data-dismiss='modal', aria-label='Close')
+                              span(aria-hidden='true') ×
+                            center
+                              h4 Amenity Only
+                              p.modal-title#custName
+                          .modal-body
+                            .row
+                              center
+                                h5 Please specify how many  
+                                .col-md-4 
+                                .col-md-4
+                                  .input-group
+                                    span.input-group-btn
+                                      button.btn.btn-info.btn-number.buttonMinus(type='button',  data-type='minus', data-field='quantFemale' )
+                                        span.ti-minus
+                                    input.form-control.input-number.female(type='text', id="quantityFemale" name='quantFemale', value="0" min='0', max='6' disabled)
+                                    span.input-group-btn
+                                      button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quantFemale' )
+                                        span.ti-plus
+                          .modal-footer
+                            center
+                              button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd(data-dismiss='modal') Close
                   //VIEW COMMON CUSTOMER DETAILS
                   #viewCustomerDetails.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog(role='document')
@@ -463,6 +500,15 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script.
+    $(document).ready(function(){
+      $('.amenityButton').click(function(){
+        var id = $(this).val()
+        var cust_name = $(`.name[id='${id}'`).val()
+        $('#amenityOnly').modal('show')
+        $('#custName').append(`${cust_name}`)
+      })
+    })
   script.
     $(document).ready(function(){
       $('.reserveButton').click(function(){
