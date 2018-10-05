@@ -605,8 +605,8 @@ html(lang='en')
           || promobundle_valid_from ==0 || promobundle_valid_until==0 || promobundle_points==0  || equivalent_points ==0 || promobundle_maxPerson==0)
         {
            swal({
-              title: 'Please double check the Fields',
-              text: 'Make sure all required fields has value', 
+              title: 'Please double check the fields.',
+              text: 'Make sure all required fields have value.', 
               icon: 'warning'
             })
         }
@@ -630,7 +630,7 @@ html(lang='en')
               {
                   swal({
                       title: "Success",
-                      text: "New Promo has been Added",
+                      text: "New promo has been added.",
                       icon: 'success'
                     }).then(function(){
                       location.reload();
@@ -648,7 +648,7 @@ html(lang='en')
               {
                 swal({
                   title: 'Error',
-                  text: promobundle_name+" is already exist",
+                  text: promobundle_name+" already exists.",
                   icon: 'error'
                 })
               }
@@ -756,7 +756,7 @@ html(lang='en')
 
                           swal({
                           title:'Success', 
-                          text:'Services Included Updated', 
+                          text:'Services included updated.', 
                           icon:'success'
                           }).then(function(){
                             
@@ -844,7 +844,7 @@ html(lang='en')
                       {
                           swal({
                           title:'Success', 
-                          text:'Promo Bundle Information Updated', 
+                          text:'Promo bundle information updated.', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -931,7 +931,7 @@ html(lang='en')
                   if(data.alertDesc==0)
                   {
                     swal({
-                      title: name+' has been deleted',
+                      title: name+' has been deleted.',
                       icon: 'success'
                     }).then(function(){
                       location.reload()
@@ -967,7 +967,7 @@ html(lang='en')
                   $.notify(
                     {
                     icon: 'ti-bell',
-                    message: name+' has been set to not available',
+                    message: name+' has been set to not available.',
                     
                   },
                   {
@@ -986,7 +986,7 @@ html(lang='en')
                       $.notify(
                     {
                     icon: 'ti-bell',
-                    message: name+' has been set to available',
+                    message: name+' has been set to available.',
                     
                   },
                   {

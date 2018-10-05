@@ -568,8 +568,8 @@ html(lang='en')
         if($('#therapist_fname').val()==0 && $('#therapist_lname').val()==0 || $('#therapist_address').val()==0 || $('#calendar').val()==0 || $('#therapist_fname').val()==0 || $('#therapist_lname').val()==0)
         {
             swal({
-              title: 'Please double check the Fields',
-              text: 'Make sure all required fields has value', 
+              title: 'Please double check the fields',
+              text: 'Make sure all required fields have value', 
               icon: 'warning'
             })
         }
@@ -597,7 +597,7 @@ html(lang='en')
           {
             swal({
               title:'Success', 
-              text:'New Therapist Inserted', 
+              text:'New therapist added.', 
               icon:'success'
               }).then(function(){
                 location.reload()
@@ -636,7 +636,7 @@ html(lang='en')
           })
           $('.bawal').click(function(){
             swal({
-            title: 'Set this therapist to unavailable first',
+            title: 'Set this therapist to unavailable first.',
             icon: 'warning'
           })
           })
@@ -658,7 +658,7 @@ html(lang='en')
                   if(data.alertDesc==0)
                   {
                     swal({
-                      title: name+' has been deleted',
+                      title: name+' has been deleted.',
                       icon: 'success'
                     }).then(function(){
                       location.reload()
@@ -756,7 +756,7 @@ html(lang='en')
                   {
                     swal({
                       title:'Success!',
-                      text: 'The specialty of '+name+' has been updated',
+                      text: 'Skill/s information of '+name+' has been updated.',
                       icon: 'success'
                     }).then(function(){
                       location.reload()
@@ -916,7 +916,7 @@ html(lang='en')
                       if(data.alertDesc==0){
                           swal({
                           title:'Success', 
-                          text:'Therapist Infromation Updated', 
+                          text:'Therapist infromation updated.', 
                           icon:'success'
                           }).then(function(){
                             location.reload();
@@ -1018,7 +1018,7 @@ html(lang='en')
             $.notify(
               {
               icon: 'ti-bell',
-              message: name+' has been set to not available',
+              message: name+' has been set to not available.',
               
             },
             {
@@ -1037,7 +1037,7 @@ html(lang='en')
                 $.notify(
               {
               icon: 'ti-bell',
-              message: name+' has been set to available',
+              message: name+' has been set to available.',
               
             },
             {
