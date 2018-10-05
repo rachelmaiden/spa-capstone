@@ -86,7 +86,7 @@ html(lang='en')
                         span.sidebar-mini T
                         | Therapist
                         b(style="margin-right: 30px").caret
-                    #therapist.collapse.in
+                    #therapist.collapse
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
@@ -178,11 +178,11 @@ html(lang='en')
                     a(href='./loyaltyMembers')
                       span.sidebar-mini 
                       span.sidebar-normal Loyalty Members
-                  li(style="margin-left: 30px;")
+                  li(style="margin-left: 30px;").active
                     a(href='./servicesList')
                       span.sidebar-mini 
                       span.sidebar-normal Services
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./packagesList')
                       span.sidebar-mini 
                       span.sidebar-normal Packages
@@ -229,9 +229,7 @@ html(lang='en')
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
-            .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
+            
             .navbar-header
               button.navbar-toggle(type='button')
                 span.sr-only Toggle navigation
@@ -239,13 +237,9 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Queries
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+              
               ul.nav.navbar-nav.navbar-right
                 li
                   a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
@@ -288,36 +282,24 @@ html(lang='en')
                                   tbody
                                     
                                       tr
-                                        td
-                                        td
-                                        td
-                                        td
-                                        td
-                                        //-   .dropdown.pull-right(style="right: 138px")
-                                        //-     button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                        //-       i.ti-settings
-                                        //-     ul.dropdown-menu
-                                        //-       li
-                                        //-         button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal', value=`` stlye="margin-right: 15px")
-                                        //-           span.btn-label
-                                        //-           i.ti-pencil-alt
-                                        //-           |  Update
-                                        //-       li
-                                        //-         button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`` stlye="margin-right: 15px")
-                                        //-           span.btn-label
-                                        //-           i.ti-trash
-                                        //-           |  Delete
-                             
-                          footer.footer
-                            .container-fluid
-                              .copyright.pull-right
-                                | © 
-                                script.
-                                  document.write(new Date().getFullYear())
-                                | , made with 
-                                i.fa.fa-heart.heart
-                                |  by 
-                                a(href='#') Team MBAY
+                                        td Body Massage
+                                        td Thai Massage
+                                        td 1000.00
+                                        td 60 mins
+                                        td 2
+                      //- .row
+                      //-   .col-md-4
+                      //-     button.btn.btn-info.btn-fill.btn-wd#openPdf(data-toggle='modal', data-target='') Sample        
+        footer.footer
+          .container-fluid
+            .copyright.pull-right
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='#') Team MBAY
                       .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -362,6 +344,7 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script(src='/assets/pdfmake/pdfmake.js')
  
     
   script(type='text/javascript').
@@ -390,3 +373,5 @@ html(lang='en')
 
   
     })
+
+  

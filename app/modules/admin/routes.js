@@ -1763,4 +1763,18 @@ router.get('/roomList',(req, res) => {
 router.get('/freebiesList',(req, res) => {
   res.render('admin/queries/freebiesList')
 })
+
+
+
+
+//REPORTS
+router.get('/servicesReport',(req, res) => {
+  res.render('admin/reports/servicesReport')
+})
+
+router.get('/packagesReport',(req, res) => {
+  res.render('admin/reports/packagesReport')
+})
+
+
 exports.admin = router

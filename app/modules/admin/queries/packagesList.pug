@@ -229,9 +229,7 @@ html(lang='en')
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
-            .navbar-minimize
-              button#minimizeSidebar.btn.btn-fill.btn-icon
-                i.ti-more-alt
+            
             .navbar-header
               button.navbar-toggle(type='button')
                 span.sr-only Toggle navigation
@@ -239,13 +237,9 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Queries
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+              
               ul.nav.navbar-nav.navbar-right
                 li
                   a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
@@ -311,16 +305,16 @@ html(lang='en')
                                         //-           i.ti-trash
                                         //-           |  Delete
                              
-                          footer.footer
-                            .container-fluid
-                              .copyright.pull-right
-                                | © 
-                                script.
-                                  document.write(new Date().getFullYear())
-                                | , made with 
-                                i.fa.fa-heart.heart
-                                |  by 
-                                a(href='#') Team MBAY
+        footer.footer
+          .container-fluid
+            .copyright.pull-right
+              | © 
+              script.
+                document.write(new Date().getFullYear())
+              | , made with 
+              i.fa.fa-heart.heart
+              |  by 
+              a(href='#') Team MBAY
                       .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
