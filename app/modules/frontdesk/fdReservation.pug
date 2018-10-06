@@ -342,12 +342,13 @@ html(lang='en')
               $('#therapist').append(`<h5>Therapist: 
               <a>${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
             for(var i=0; i<data.out1.length;i++){
+                var total_duration = moment.duration(data.out1[i].service_total_duration).asMinutes()
                 $('#viewServicesAvailed').append(` 
                 <tr>
                 <td>${data.out1[i].service_name}</td>
                 <td>${data.out1[i].service_total_quantity}</td>
-                <td>${data.out1[i].service_total_duration}</td>
-                <td>${data.out1[i].service_total_price}</td>`)
+                <td>${total_duration} minutes</td>
+                <td>₱${data.out1[i].service_total_price}.00</td>`)
               }
         $('#viewServices').modal('show')
         $('#viewServices').on('hidden.bs.modal', function (){

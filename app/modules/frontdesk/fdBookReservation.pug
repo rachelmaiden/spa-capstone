@@ -59,7 +59,7 @@ html(lang='en')
                 p
                   | Reservation
             li
-              a(href='#')
+              a(href='./payment')
                 i.ti-credit-card
                 p
                   | Payment      
@@ -100,7 +100,7 @@ html(lang='en')
                   h4
                     strong Selected Room: 
                       a#room #{room}
-                    input(type='hidden' value=`${roomId}` id="roomId")
+                    input(type='' value=`${roomId}` id="roomId")
                     br
                     strong Room Fee: 
                       a#roomRate
@@ -425,6 +425,7 @@ html(lang='en')
                           input.totalPrice(type='' value='')
                         h5
                           strong#TotalPoints
+                          input.totalAmountReceived(type='' value='')
 
                       hr
                       .row
@@ -446,12 +447,9 @@ html(lang='en')
                             label Amount Received:
                             .input-group
                               span.input-group-addon ₱  
-                              input.form-control.amountReceived(type='number', placeholder='Amount Received' oninput="myFunction()" )
+                              input.form-control.amountReceived(type='number', placeholder='Amount Received')
                               span.input-group-addon .00
-                        //- .col-md-4
-                        //-   .form-group.has-default.bmd-form-group
-                        //-     label Gift Certificate Amount:
-                        //-     input.form-control(type='number', placeholder='Gift Certificate Amount')
+                        
                         .col-md-4
                           .form-group.has-default.bmd-form-group
                             label Change: 
@@ -538,9 +536,11 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
-        function myFunction(){
+    $(document).ready(function(){
+      $('.amountReceived').on('change paste keyup',function(){
         var totalPrice = $('.totalPrice').val()
-        var totalAmountReceived = parseInt($('.totalAmountReceived').val())
+        var gc_total = $('.totalGCval').val()
+        //- var totalAmountReceived = parseInt($('.totalAmountReceived').val())
         var input = $('.amountReceived').val()
         if($('.amountReceived').val()==0)
           {
@@ -548,22 +548,59 @@ html(lang='en')
           }
         else
           {
-            if($('#checkbox_gc')[0].checked == false))
+            if($('#checkbox_gc')[0].checked == false)
             {
-                var change = input - parseInt(totalPrice)
+                var change = parseInt(input) - parseInt(totalPrice)
                 $('.change').val(change)
             }
             else
             {
-
+              if(input==0 || input == ' ')
+              {
+                alert('aa')
+                $('.totalAmountReceived').val(gc_total)
+              }
+              else
+              {
+                var total = parseInt(input) + parseInt(gc_total)
+                console.log('TOTAL',total)
+                var change = parseInt(total) - parseInt(totalPrice)
+                $('.change').val(change)
+                $('.totalAmountReceived').val(total)
+              }
             }
 
-                //- $('.totalAmountReceived').val(totalAmountReceived)
-                //- totalAmountReceived += parseInt(input)
-                //- console.log('TOTAL',totalAmountReceived)
 
           }
-        }
+      })
+    })
+  //- script.
+  //-       function myFunction(){
+  //-       var totalPrice = $('.totalPrice').val()
+  //-       //- var totalAmountReceived = parseInt($('.totalAmountReceived').val())
+  //-       var input = $('.amountReceived').val()
+  //-       if($('.amountReceived').val()==0)
+  //-         {
+  //-           $('.change').val(0)
+  //-         }
+  //-       else
+  //-         {
+  //-           if($('#checkbox_gc')[0].checked == false))
+  //-           {
+  //-               var change = input - parseInt(totalPrice)
+  //-               $('.change').val(change)
+  //-           }
+  //-           else
+  //-           {
+
+  //-           }
+
+  //-               //- $('.totalAmountReceived').val(totalAmountReceived)
+  //-               //- totalAmountReceived += parseInt(input)
+  //-               //- console.log('TOTAL',totalAmountReceived)
+
+  //-         }
+  //-       }
 
 
   script.
@@ -571,6 +608,8 @@ html(lang='en')
       $('.checkboxGc').on('change.bootstrapSwitch',function(e){
         if(e.target.checked==true)
         {
+          $('.amountReceived').val(' ')
+          $('.change').val(' ')
           $('.selectpickerGc').removeAttr('disabled')
           $('.selectpickerGc').selectpicker("refresh");
           $('.selectpickerGc').on('change',function(){
@@ -583,6 +622,7 @@ html(lang='en')
                 var total_value = $('.totalGCval').val(0)
                 total_amount = total_amount - total_value
                 $('#TotalAmountReceived').text('₱'+total_amount+'.00')
+                $('.totalAmountReceived').val(total_amount)
               }
               var giftcerts =[]
               selected.each(function(){
@@ -602,6 +642,7 @@ html(lang='en')
                 $('#totalGCval').text('Total: ₱'+total_value+'.00')
                 $('#TotalAmountReceived').text('₱'+total_value+'.00')
                 $('.totalGCval').val(total_value)
+                $('.totalAmountReceived').val(total_value)
               }
             }
 
@@ -785,6 +826,10 @@ html(lang='en')
               var serviceQuantity=[]
               var serviceNewDuration=[]
               var serviceTotal=[]
+              console.log('serviceQuantity',serviceQuantity)
+              console.log('serviceNewDuration',serviceNewDuration)
+              console.log('serviceTotal',serviceTotal)
+              console.log('idService',idService)
               console.log(serviceTotal)
                 for (var i=1;i<=pagelength;i++){
                   $('.checkbox:checked').each(function(){
@@ -820,12 +865,13 @@ html(lang='en')
               $('#datatablesSummary').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]})
               $('#reservationSummary').modal('show')
               $('#reservationSummary').on('hidden.bs.modal', function (){
-                var serviceQuantity = []
-                var serviceNewDuration = []
-                var serviceTotal = []
-                var idService = []
 
               })
+                //- var serviceQuantity = []
+                //- var serviceNewDuration = []
+                //- var serviceTotal = []
+                //- var idService = []
+                
               
               var Name = $('#name').text()
               var Gender = $('#gender').text()
@@ -920,17 +966,17 @@ html(lang='en')
                               for (var i=1;i<=pagelength;i++){
                                     $('.checkbox:checked').each(function(){
                                       var id = $(this).val()
-                                      idService.push(id)
-                                      serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
-                                      serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                                      serviceTotal.push($(`.total[service_id='${id}']`).text())
+                                      //- idService.push(id)
+                                      //- serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                                      //- serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                                      //- serviceTotal.push($(`.total[service_id='${id}']`).text())
                                       var serviceId = $(`.id[id='${id}']`).val()
                                       var serviceName = $(`.name[id='${id}']`).val()
                                       var quantity= $(`.quantity[service_id='${id}'`).text()
                                       var totalPrice = $(`.total[service_id='${id}']`).text()
                                       var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
-
                                       var service_equivalentPoints = $(`.eqPoints[id='${id}']`).val()
+                                      var total_equivalentPoints = parseInt(quantity) * parseInt(service_equivalentPoints)
                                       $('#viewServicesAvailed').append(`
                                         <tr>
                                         <td>${serviceName}</td>
@@ -938,7 +984,7 @@ html(lang='en')
                                         </td>
                                         <td>${totalPrice}
                                         </td>
-                                        <td>${service_equivalentPoints}</td>
+                                        <td>${total_equivalentPoints}</td>
                                         `)
                                       $('#reservationSummary').on('hidden.bs.modal', function (){
                                         $('#viewServices').empty()
@@ -969,45 +1015,84 @@ html(lang='en')
                                 //- alert($('.amountReceived').val())
                                 //- alert($('.totalPrice').val())
                                 //- alert(1000 < 800)
-                                if($('.amountReceived').val()==0)
+                                if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== false)
                                   {
                                     swal({
                                       title: "Amount Received is 0",
                                       icon: 'warning'
                                     })
                                   }
-                                else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+                                else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()) && $('.checkboxGC')[0].checked== false)
                                   {
                                     swal({
                                       title: "Amount Received is insufficient",
                                       icon: 'warning'
                                     })
                                   }
+                                else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) < parseInt($('.totalPrice').val()))
+                                {
+                                  swal({
+                                      title: "Amount Received is insufficient",
+                                      icon: 'warning'
+                                    })
+                                }
+                                else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) > parseInt($('.totalPrice').val()))
+                                {
+                                  swal({
+                                      title: "The Gift certificate will not return any change",
+                                      icon: 'warning'
+                                    }).then(function(submit){
+                                      if(submit)
+                                      {
+                                        alert($('.hello').val()+'aaa')
+                                      }
+                                      else
+                                      {
+
+                                      }
+                                    })
+                                }
                                 else
                                   {
-                                    //- $.post('/payment/Finish',{
-                                    //-   id:id,
-                                    //-   amount: $('.totalPrice').val(),
-                                    //-   cust_id: $('.hello').val() 
-                                    //-   }).done(function(data){
-                                    //-     if(data.alertDesc==0)
-                                    //-       {
-                                    //-         swal({
-                                    //-           title: "Success",
-                                    //-           icon: 'success'
-                                    //-         }).then(function(){
-                                    //-           location.reload()
-                                    //-         })
-                                    //-       }
-                                    //-     else
-                                    //-       {
-                                    //-         swal({
-                                    //-           title: "ERROR",
-                                    //-           icon: 'error'
-                                    //-         })
-                                    //-       }
+                                    console.log('serviceQuantity',serviceQuantity)
+                                    console.log('serviceNewDuration',serviceNewDuration)
+                                    console.log('serviceTotal',serviceTotal)
+                                    console.log('idService',idService)
+                                    console.log(EndTime)
+                                    console.log($('#timeStart').val())
+                                    $.post('/payment/Early',{
+                                      amount: $('.totalPrice').val(),
+                                      cust_id: $('.hello').val(),
+                                      serviceId: idService,
+                                      serviceQuantity: serviceQuantity,
+                                      serviceNewDuration: serviceNewDuration,
+                                      serviceTotal: serviceTotal,
+                                      bed_quantity: bed_quantity,
+                                      therapist_id: $('#selected_therapist').val(),
+                                      timeStart : $('#timeStart').val(),
+                                      EndTime,
+                                      date : $('#dateRes').val(),
+                                      finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                      roomId :$('#roomId').val()
+                                      }).done(function(data){
+                                        if(data.alertDesc==0)
+                                          {
+                                            swal({
+                                              title: "Success",
+                                              icon: 'success'
+                                            }).then(function(){
+                                              location.reload()
+                                            })
+                                          }
+                                        else
+                                          {
+                                            swal({
+                                              title: "ERROR",
+                                              icon: 'error'
+                                            })
+                                          }
                                       
-                                    //-   })
+                                      })
                                   }
                               })
                           
@@ -1022,84 +1107,84 @@ html(lang='en')
                             console.log(timeEnd)
                                 timeEnd = moment(timeEnd,'hh:mm A').add(allowance_time,'minutes').format('hh:mm A')
                             console.log("TIME END "+timeEnd)
-                          //-   $.post('/bookreservation/addReservation',{
-                          //-   customerId :$('#customerId').val(),
-                          //-   serviceId: idService,
-                          //-   serviceQuantity: serviceQuantity,
-                          //-   serviceNewDuration: serviceNewDuration,
-                          //-   serviceTotal: serviceTotal,
-                          //-   bed_quantity: bed_quantity,
-                          //-   therapist_id: $('#selected_therapist').val(),
-                          //-   timeStart : $('#timeStart').val(),
-                          //-   timeEnd,
-                          //-   date : $('#dateRes').val(),
-                          //-   finalTotal : $('#finalTotal').text().replace(/,/g,''),
-                          //-   finalPoints : $('#finalPoints').text().replace(/,/g,''),
-                          //-   roomId :$('#roomId').val()
-                          //- }).done(function(data){
-                          //-   if(data.alertDesc==1)
-                          //-   {
-                          //-   swal({
-                          //-     title:'Success', 
-                          //-     text:'New Reservation Added', 
-                          //-     icon:'success'
-                          //-     }).then(function(){
-                          //-       location.href='/frontdesk/home'
-                          //-     })
-                          //- }
-                          //- else
-                          //-   {
-                          //-     swal({
-                          //-       title:'Not Success', 
-                          //-       text:'', 
-                          //-       icon:'warning'
-                          //-       })
-                          //-   } 
-                          //- })
+                            $.post('/bookreservation/addReservation',{
+                            customerId :$('#customerId').val(),
+                            serviceId: idService,
+                            serviceQuantity: serviceQuantity,
+                            serviceNewDuration: serviceNewDuration,
+                            serviceTotal: serviceTotal,
+                            bed_quantity: bed_quantity,
+                            therapist_id: $('#selected_therapist').val(),
+                            timeStart : $('#timeStart').val(),
+                            timeEnd,
+                            date : $('#dateRes').val(),
+                            finalTotal : hidden_finalTotal,
+                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                            roomId :$('#roomId').val()
+                          }).done(function(data){
+                            if(data.alertDesc==1)
+                            {
+                            swal({
+                              title:'Success', 
+                              text:'New Reservation Added', 
+                              icon:'success'
+                              }).then(function(){
+                                location.href='/frontdesk/home'
+                              })
+                          }
+                          else
+                            {
+                              swal({
+                                title:'Not Success', 
+                                text:'', 
+                                icon:'warning'
+                                })
+                            } 
+                          })
                         }
                       })
                   }
                 }
-            //-     else if(restype=='multiple')
-            //-     {            
-            //-     $.post('/bookreservation/addReservation',{
-            //-       customerId :$('#customerId').val(),
-            //-       serviceId: idService,
-            //-       serviceQuantity: serviceQuantity,
-            //-       serviceNewDuration: serviceNewDuration,
-            //-       serviceTotal: serviceTotal,
-            //-       bed_quantity: bed_quantity,
-            //-       boys_quantity: bed_occupied_boys,
-            //-       girls_quantity: bed_occupied_girls,
-            //-       timeStart : $('#timeStart').val(),
-            //-       timeEnd: $('#timeEnd').val(),
-            //-       date : $('#dateRes').val(),
-            //-       finalTotal : $('#finalTotal').text().replace(/,/g,''),
-            //-       finalPoints : $('#finalPoints').text().replace(/,/g,''),
-            //-       roomId :$('#roomId').val()
-            //-      }).done(function(data){
-            //-        if(data.alertDesc==1)
-            //-        {
-            //-       swal({
-            //-         title:'Success', 
-            //-         text:'New Reservation Added', 
-            //-         icon:'success'
-            //-         }).then(function(){
-            //-           location.href='/frontdesk/home'
-            //-         })
-            //-     }
-            //-     else
-            //-       {
-            //-         swal({
-            //-           title:'Not Success', 
-            //-           text:'', 
-            //-           icon:'warning'
-            //-           })
-            //-       }
-            //-      })
-            //-     }
-            //- })
+                else if(restype=='multiple')
+                {            
+                $.post('/bookreservation/addReservation',{
+                  customerId :$('#customerId').val(),
+                  serviceId: idService,
+                  serviceQuantity: serviceQuantity,
+                  serviceNewDuration: serviceNewDuration,
+                  serviceTotal: serviceTotal,
+                  bed_quantity: bed_quantity,
+                  boys_quantity: bed_occupied_boys,
+                  girls_quantity: bed_occupied_girls,
+                  timeStart : $('#timeStart').val(),
+                  timeEnd: $('#timeEnd').val(),
+                  date : $('#dateRes').val(),
+                  finalTotal : $('#finalTotal').text().replace(/,/g,''),
+                  finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                  roomId :$('#roomId').val()
+                 }).done(function(data){
+                   if(data.alertDesc==1)
+                   {
+                  swal({
+                    title:'Success', 
+                    text:'New Reservation Added', 
+                    icon:'success'
+                    }).then(function(){
+                      location.href='/frontdesk/home'
+                    })
+                }
+                else
+                  {
+                    swal({
+                      title:'Not Success', 
+                      text:'', 
+                      icon:'warning'
+                      })
+                  }
+                 })
+                }
             })
+            
       }
 
     })
