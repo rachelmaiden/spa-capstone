@@ -30,8 +30,10 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 45px;')
+              a.collapsed(data-toggle='collapse', href='#collapseExample' style='font-size: 18px')
                 span
                   | Front Desk
               .clearfix
@@ -271,22 +273,21 @@ html(lang='en')
                                               td= customer.cust_gender
                                               td
                                                 .dropdown(style="right: 10px")
-                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 5px')
                                                     i.ti-settings
                                                   ul.dropdown-menu
                                                     li
-                                                      //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
-                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` style="margin-right: 15px")
                                                         span.btn-label
                                                         i.ti-calendar
                                                         |  New Reservation
                                                     li
-                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` style="margin-right: 15px")
                                                         span.btn-label
-                                                        i
+                                                        i.fa.fa-bed
                                                         |  Amenities Only
                                                     li
-                                                      button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' value=`${customer.cust_id}` style="margin-right: 15px")
                                                         span.btn-label
                                                         i.ti-pencil-alt
                                                         |  Update
@@ -319,23 +320,23 @@ html(lang='en')
                                               input.name(type='hidden' value=`${customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname}` id=`${customer.cust_id}`)
                                               td= customer.cust_gender
                                               td
-                                                .dropdown(style="right: 10px")
+                                                .dropdown(style="right: 20px")
                                                   button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
                                                     i.ti-settings
                                                   ul.dropdown-menu
                                                     li
                                                       //- a.btn.btn-simple.btn-info.reserveButton(href=`selectDate/${customer.cust_id}` stlye="margin-right: 15px")
-                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal',  value=`${customer.cust_id}` stlye="margin-right: 13px")
                                                         span.btn-label
                                                         i.ti-calendar
                                                         |  New Reservation
                                                     li
-                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 13px")
                                                         span.btn-label
                                                         i
                                                         |  Amenities Only
                                                     li
-                                                      button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 15px")
+                                                      button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 13px")
                                                         span.btn-label
                                                         i.ti-pencil-alt
                                                         |  Update
@@ -404,12 +405,12 @@ html(lang='en')
                             button.close(type='button', data-dismiss='modal', aria-label='Close')
                               span(aria-hidden='true') ×
                             center
-                              h4 Amenity Only
+                              h4 Amenities Only
                               p.modal-title#custName
                           .modal-body
                             .row
                               center
-                                h5 Please specify how many  
+                                h5 Specify number of guests.
                                 .col-md-4 
                                 .col-md-4
                                   .input-group
@@ -421,8 +422,8 @@ html(lang='en')
                                       button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quantFemale' )
                                         span.ti-plus
                           .modal-footer
-                            center
-                              button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd(data-dismiss='modal') Close
+                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(data-dismiss='modal') Close
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right(data-dismiss='modal') Proceed
                   //VIEW COMMON CUSTOMER DETAILS
                   #viewCustomerDetails.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog(role='document')
@@ -763,7 +764,7 @@ html(lang='en')
             {
               swal({
                 title:'Success', 
-                text:'New Guest Inserted', 
+                text:'New guest added.', 
                 icon:'success'
                 }).then(function(){
                   location.reload()
@@ -773,7 +774,7 @@ html(lang='en')
             {
               swal({
                 title:'Not Success', 
-                text:'Customer Already Exist', 
+                text:'Customer already exist', 
                 icon:'warning'
                 })
             }

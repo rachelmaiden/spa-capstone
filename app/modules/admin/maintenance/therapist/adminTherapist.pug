@@ -397,6 +397,11 @@ html(lang='en')
                                     select.selectpicker(multiple='', title='Select Skill/s', data-style='btn-info', data-size='7' name='therapist_specialty' id='therapist_specialty' required='true' aria-label='true')
                                       each specialty in specialtys
                                         option(value=`${specialty.specialty_id}`)= specialty.specialty_desc
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label License Valid Until
+                                  star *  
+                                input.form-control.datepicker(type='text' name='therapist_birthday' id="calendar" style='margin-top: -15px')           
                           .modal-footer
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel

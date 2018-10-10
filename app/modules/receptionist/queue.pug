@@ -35,7 +35,7 @@ html(lang='en')
                 img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
-                  | Receptionist
+                  | Staff
               .clearfix
           ul.nav
             li.active
@@ -50,7 +50,7 @@ html(lang='en')
                   | Reservation
             li
               a(href='./ongoing')
-                i.fa.fa-bed
+                i.ti-reload
                 p
                   | Ongoing Service
       .main-panel
@@ -100,7 +100,7 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting Membership Type
+                                      th.disabled-sorting Name
                                       th.disabled-sorting Room
                                       th.disabled-sorting Gender
                                       th.disabled-sorting Name
@@ -109,7 +109,7 @@ html(lang='en')
                                       th.disabled-sorting Actions
                                   tfoot
                                     tr
-                                      th Membership Type
+                                      th Name
                                       th Room
                                       th Gender
                                       th Name
@@ -133,10 +133,24 @@ html(lang='en')
                                         td
                                           button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${walkin.walkin_id}`)
                                             span.btn-label
-                                            |                                                                                 View  Reservation Details
+                                            |  View  Reservation Details
                                         td
-                                          button.btn.btn-simple.btn-info.btn-icon.proceedButton(type='button' value=`${walkin.walkin_id}`, rel='tooltip', title='Proceed To Service')
-                                            i.ti-angle-double-right
+                                          
+                                        td
+                                          .dropdown.pull-right(style="right: 20px")
+                                            button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                              i.ti-settings
+                                            ul.dropdown-menu
+                                              li
+                                                button.btn.btn-simple.btn-info.btn-icon.proceedButton(type='button' value=`${walkin.walkin_id}`, rel='tooltip', title='Proceed To Service')
+                                                  span.btn-label
+                                                  i.ti-angle-double-right
+                                                  |  Proceed To  Service
+                                              li
+                                                button.btn.btn-simple.btn-info(data-toggle='modal', data-target='#change',  style="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.ti-exchange-vertical
+                                                  |  Change Therapist    
                               
                               #viewServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                                 .modal-dialog(role='document')
@@ -165,6 +179,26 @@ html(lang='en')
                                                   th
                                                     strong Total Price 
                                               tbody#viewServicesAvailed
+
+                              #change.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                .modal-dialog(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') ×
+                                      center
+                                        h4.modal-title Choose Therapist
+                                    .modal-body 
+                                      .row
+                                        .col-md-12
+                                          .form-group.has-default.bmd-form-group
+                                            label Therapist Name
+                                            select.selectpicker(multiple='', title='Select Therapist/s', data-style='btn-info', data-size='7' )
+                                              option Blaster
+                                    .modal-footer
+                                      button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(data-dismiss='modal') Cancel
+                                      button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right(data-dismiss='modal') Done          
+                                                          
                               .row
                                 .col-md-6
                                   .card-header

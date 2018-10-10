@@ -169,10 +169,15 @@ html(lang='en')
                                                         i.ti-settings
                                                       ul.dropdown-menu
                                                         li
-                                                          button.btn.btn-simple.btn-warning.cancelReservation(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
+                                                          button.btn.btn-simple.btn-danger.cancelReservation(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
                                                             span.btn-label
                                                             i.ti-close
                                                             |  Cancel Reservation
+                                                        li
+                                                          button.btn.btn-simple.btn-info(data-toggle='modal', data-target='#change',  style="margin-right: 15px")
+                                                            span.btn-label
+                                                            i.ti-exchange-vertical
+                                                            |  Change Therapist
                                                         //- li
                                                         //-   button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
                                                         //-     span.btn-label
@@ -273,6 +278,25 @@ html(lang='en')
                                                   strong Total Price 
                                             tbody#viewServicesAvailed
                                             #therapist
+                                  #change.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                    .modal-dialog(role='document')
+                                      .modal-content
+                                        .modal-header
+                                          button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                            span(aria-hidden='true') ×
+                                          center
+                                            h4.modal-title Choose Therapist
+                                        .modal-body 
+                                          .row
+                                            .col-md-12
+                                              .form-group.has-default.bmd-form-group
+                                                label Therapist Name
+                                                select.selectpicker(multiple='', title='Select Therapist/s', data-style='btn-info', data-size='7' )
+                                                  option Blaster
+                                        .modal-footer
+                                          button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(data-dismiss='modal') Cancel
+                                          button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right(data-dismiss='modal') Done          
+                                                          
                                     //- .modal-footer
                                     //-   center
                                     //-     button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.updateSpecialty(data-toggle='modal') 
