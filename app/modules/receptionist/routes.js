@@ -37,7 +37,7 @@ router.post("/receptionist/logout", (req, res) => {
 })
 
 
-// QUEUE
+// [QUEUE - VIEW]
 router.get('/home',mid.receptionistnauthed,(req, res) => {
       var fullDate = moment(new Date()).format('MM-DD-YYYY')
       console.log(fullDate)
@@ -59,31 +59,32 @@ router.get('/home',mid.receptionistnauthed,(req, res) => {
         })
       })
     })
-
-  router.post('/home/queue/viewServices',(req,res)=>{
-    console.log(req.body.id)
-    const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
-    customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
-    services_tbl.service_name, services_tbl.service_price, 
-    room_tbl.room_name, room_tbl.room_rate, therapist_tbl.*
-      from walkin_queue_tbl 
-      join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-      join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-      join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-      join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id
-      join therapist_tbl on walkin_services_tbl.therapist_id = therapist_tbl.therapist_id where walkin_services_tbl.walkin_id=?`
-    
-    db.query(query,[req.body.id],(err,out)=>{
-      var out1= out;
-      const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl join customer_tbl
-      on walkin_queue_tbl.cust_id = customer_tbl.cust_id where walkin_queue_tbl.walkin_id =?`
-      db.query(query1,[req.body.id],(err,out)=>{
-        return res.send({out1:out1, out2:out[0]})
-      })
-      console.log(out)
+// [QUEUE - VIEW SERVICES]
+router.post('/home/queue/viewServices',(req,res)=>{
+  console.log(req.body.id)
+  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
+  customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
+  services_tbl.service_name, services_tbl.service_price, 
+  room_tbl.room_name, room_tbl.room_rate, therapist_tbl.*
+    from walkin_queue_tbl 
+    join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+    join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+    join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id
+    join therapist_tbl on walkin_services_tbl.therapist_id = therapist_tbl.therapist_id where walkin_services_tbl.walkin_id=?`
+  
+  db.query(query,[req.body.id],(err,out)=>{
+    var out1= out;
+    const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl join customer_tbl
+    on walkin_queue_tbl.cust_id = customer_tbl.cust_id where walkin_queue_tbl.walkin_id =?`
+    db.query(query1,[req.body.id],(err,out)=>{
+      return res.send({out1:out1, out2:out[0]})
     })
+    console.log(out)
   })
+})
 
+// [QUEUE - MOVING TO ONGOING SERVICES]
 router.post('/home/queue/MoveToOngoing',(req,res)=>{
   var alertSuccess = 0
   var notSuccess = 1
@@ -102,8 +103,46 @@ router.post('/home/queue/MoveToOngoing',(req,res)=>{
   })
 })
 
-// RESERVATION
-  router.get('/reservationList',mid.receptionistnauthed,(req, res) => {
+// [QUEUE - MOVING TO ONGOING SERVICES - ADVANCE]
+router.post('/home/queue/AdvanceReservation',(req,res)=>{
+  var alertSuccess =0
+  var notSuccess =1
+  const query=`UPDATE walkin_queue_tbl SET walkin_date = "${req.body.dateOnly}",
+  walkin_start_time = "${req.body.new_startTime}", walkin_end_time="${req.body.new_endTime}", walkin_indicator = 1 
+  WHERE walkin_id = ${req.body.id}`
+
+  db.query(query,(err,out)=>{
+    if(err)
+    {
+      res.send({alertDesc:notSuccess})
+      console.log(err)
+    }
+    else
+    {
+      res.send({alertDesc:alertSuccess})
+    }
+  })
+})
+
+// [RESERVATION - VIEW]
+router.get('/reservationList',mid.receptionistnauthed,(req, res) => {
+  var fullDate = moment(new Date()).format('MM-DD-YYYY')
+  console.log(fullDate)
+  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
+  from walkin_queue_tbl 
+  join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
+  join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
+  join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
+  join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND room_tbl.room_type_id != '2' AND walkin_date >= '${fullDate}' group by walkin_services_tbl.walkin_id`
+  db.query(query,(err,out)=>{
+    res.render('receptionist/reservationList',{
+      reservs: out
+    })
+  })
+})
+
+// [ONGOING SERVICES - VIEW]
+router.get('/ongoing',mid.receptionistnauthed,(req, res) => {
     var fullDate = moment(new Date()).format('MM-DD-YYYY')
     console.log(fullDate)
     const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
@@ -111,31 +150,15 @@ router.post('/home/queue/MoveToOngoing',(req,res)=>{
     join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
     join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
     join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id AND room_tbl.room_type_id != '2' AND walkin_date >= '${fullDate}' group by walkin_services_tbl.walkin_id`
+    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id= '2' AND walkin_date='${fullDate}' AND walkin_indicator=1 group by walkin_services_tbl.walkin_id`
     db.query(query,(err,out)=>{
-      res.render('receptionist/reservationList',{
-        reservs: out
+      res.render('receptionist/ongoing',{
+        ongoings: out
       })
     })
   })
-
-  router.get('/ongoing',mid.receptionistnauthed,(req, res) => {
-      var fullDate = moment(new Date()).format('MM-DD-YYYY')
-      console.log(fullDate)
-      const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
-      from walkin_queue_tbl 
-      join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-      join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-      join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-      join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id= '2' AND walkin_date='${fullDate}' AND walkin_indicator=1 group by walkin_services_tbl.walkin_id`
-      db.query(query,(err,out)=>{
-        res.render('receptionist/ongoing',{
-          ongoings: out
-        })
-      })
-    })
   
-
+// [ONGOING SERVICES - VIEW SERVICES ]
 router.post('/ongoing/viewServices',(req,res)=>{
   console.log(req.body.id)
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 

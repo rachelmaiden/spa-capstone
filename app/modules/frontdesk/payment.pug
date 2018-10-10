@@ -213,9 +213,14 @@ html(lang='en')
                                         td
                                         td
                                         td
-                                          button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
-                                            span.btn-label
-                                            | View 
+                                          if(paid.walkin_payment_status== 2)
+                                            button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
+                                                span.btn-label
+                                                | Refund
+                                          else
+                                            button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
+                                              span.btn-label
+                                              | View 
 
                   
                   
@@ -264,8 +269,7 @@ html(lang='en')
 
                                       .row
                                         .col-md-5
-                                            h5 Fee: 500.00
-                                            h5 Perks: freebies
+                                            h5 Fee: ₱#{reqSession.utilities[0].membership_fee}.00
                                     .modal-footer
                                       button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegister(type='button', data-dismiss='modal') Done
                                       button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button', data-dismiss='modal') Close
@@ -290,7 +294,7 @@ html(lang='en')
                                           strong#RoomRate
                                           hr
                                       .fresh-datatables
-                                        table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        table#datatablesCheckout.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                           thead
                                             tr
                                               th.disabled-sorting
@@ -305,27 +309,47 @@ html(lang='en')
                                               th
                                               th
                                           tbody#viewServicesAvailed
-                                              
-                                        div
-                                          h2
+                                        .col-md-7
+                                        .col-md-4
+                                          h3
                                             strong#TotalPrice
-                                            input.totalPrice(type='hidden' value='')
-                                          h4
+                                            input.totalPrice(type='' value='')
+                                          h5
                                             strong#TotalPoints
-                                          .row
-                                            .col-md-4
-                                              .form-group.has-default.bmd-form-group
+                                            input.totalPoints(type='hidden' value='')
+                                            input.totalAmountReceived(type='' value='')
+                                        
+                                        hr
+                                        .row
+                                          .col-md-4 
+                                            .form-group.has-default.bmd-form-group
+                                              .row
+                                                .col-md-1
+                                                  input.checkboxGC(type='checkbox' id='checkbox_gc' value='')
+                                                .col-md-5
+                                                  label(for='checkbox_gc') Gift Certificate
+                                                .col-md-6
+                                                  .category#totalGCval 
+                                                  input.totalGCval(type='' value='')
+                                              select.selectpicker.selectpickerGc(title='Select Gift Certificate', multiple data-style='btn-info', data-size='7' name='giftcert' id='giftcert' required='true' aria-label='true' disabled='disabled')
+                                                each gc in giftcerts
+                                                  option(value=`${gc.gc_id}` gc_value=`${gc.gc_value}`)= gc.gc_refCode+" "+gc.gc_name
+                                          .col-md-4
+                                            .form-group.has-default.bmd-form-group
                                                 label Amount Received:
-                                                input.form-control.amountReceived(type='number', placeholder='Amount Received' oninput="myFunction()")
-                                            //- .col-md-4
-                                            //-   .form-group.has-default.bmd-form-group
-                                            //-     label Gift Certificate Amount:
-                                            //-     input.form-control(type='number', placeholder='Gift Certificate Amount')
-                                            .col-md-4
-                                              .form-group.has-default.bmd-form-group
-                                                label Change: 
+                                                .input-group
+                                                  span.input-group-addon ₱  
+                                                  input.form-control.amountReceived(type='number', placeholder='Amount Received')
+                                                  span.input-group-addon .00
+                                
+                                          .col-md-4
+                                            .form-group.has-default.bmd-form-group
+                                              label Change: 
+                                              .input-group
+                                                span.input-group-addon ₱
                                                 input.form-control.change(type='number', placeholder='Change' value='0')
-                                            .col-md-4#appendDito
+                                                span.input-group-addon .00
+                                          .col-md-4#appendDito
                                       .modal-footer
                                         button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
                                         button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -341,77 +365,55 @@ html(lang='en')
                               
                               
                               
-                              #summary.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
-                                .modal-dialog.modal-lg(role='document')
-                                  .modal-content
-                                    .modal-header
-                                      h5.modal-title
-                                        center Summary
-                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
-                                    .modal-body
-                                      div
-                                        h5
-                                          strong#CustName
-                                          br
-                                        h5
-                                          strong#room
-                                          br
-                                          strong#roomRate
-                                          hr
-                                      .fresh-datatables
-                                        table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                          thead
-                                            tr
-                                              th.disabled-sorting
-                                                strong Availed Services
-                                              th.disabled-sorting Quantity
-                                              th.disabled-sorting Amount
-                                          tfoot
-                                            tr
-                                              th.disabled-sorting
-                                              th
-                                              th
+                              //- #summary.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                              //-   .modal-dialog.modal-lg(role='document')
+                              //-     .modal-content
+                              //-       .modal-header
+                              //-         h5.modal-title
+                              //-           center Summary
+                              //-         button.close(type='button', data-dismiss='modal', aria-label='Close')
+                              //-       .modal-body
+                              //-         div
+                              //-           h5
+                              //-             strong#CustName
+                              //-             br
+                              //-           h5
+                              //-             strong#room
+                              //-             br
+                              //-             strong#roomRate
+                              //-             hr
+                              //-         .fresh-datatables
+                              //-           table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                              //-             thead
+                              //-               tr
+                              //-                 th.disabled-sorting
+                              //-                   strong Availed Services
+                              //-                 th.disabled-sorting Quantity
+                              //-                 th.disabled-sorting Amount
+                              //-             tfoot
+                              //-               tr
+                              //-                 th.disabled-sorting
+                              //-                 th
+                              //-                 th
                                               
-                                          tbody#ViewServicesAvailed
+                              //-             tbody#ViewServicesAvailed
                                               
-                                        div
-                                          h2
-                                            strong#totalPrice
-                                            input.TotalPrice(type='hidden' value='')
-                                          h4
-                                            strong#totalPoints
-                                      .modal-footer
-                                        center
-                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
+                              //-           div
+                              //-             h2
+                              //-               strong#totalPrice
+                              //-               input.TotalPrice(type='hidden' value='')
+                              //-             h4
+                              //-               strong#totalPoints
+                              //-         .modal-footer
+                              //-           center
+                              //-             button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
                               
                               
                               
                               
                               
                               
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
+                          
     .fixed-plugin
     // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
     script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -453,32 +455,118 @@ html(lang='en')
     // Paper Dashboard PRO DEMO methods, don't include it in your project!
     script(src='/assets/paperDashboardPro/js/demo.js')
     script.
-        function myFunction(){
-        var totalPrice = $('.totalPrice').val()
-        var input = $('.amountReceived').val()
-        if($('.amountReceived').val()==0)
-        {
-          $('.change').val(0)
-        }
-        else
-        {
-        input -= parseInt(totalPrice)
+      $(document).ready(function(){
+        $('.amountReceived').on('change paste keyup',function(){
+          var totalPrice = $('.totalPrice').val()
+          var gc_total = $('.totalGCval').val()
+          //- var totalAmountReceived = parseInt($('.totalAmountReceived').val())
+          var input = $('.amountReceived').val()
+          if($('.amountReceived').val()==0)
+            {
+              $('.change').val(0)
+            }
+          else
+            {
+              if($('#checkbox_gc')[0].checked == false)
+              {
+                  var change = parseInt(input) - parseInt(totalPrice)
+                  $('.change').val(change)
+              }
+              else
+              {
+                if(input==0 || input == ' ')
+                {
+                  alert('aa')
+                  $('.totalAmountReceived').val(gc_total)
+                }
+                else
+                {
+                  var total = parseInt(input) + parseInt(gc_total)
+                  console.log('TOTAL',total)
+                  var change = parseInt(total) - parseInt(totalPrice)
+                  $('.change').val(change)
+                  $('.totalAmountReceived').val(total)
+                }
+              }
 
-        $('.change').val(input)
 
-        }
-        }
+            }
+        })
+      })
+    script.
+      $(document).ready(function(){
+        $('#checkbox_gc').on('change.bootstrapSwitch',function(e){
+          if(e.target.checked==true)
+          {
+            $('.amountReceived').val(' ')
+            $('.change').val(' ')
+            $('.selectpickerGc').removeAttr('disabled')
+            $('.selectpickerGc').selectpicker("refresh");
+            $('.selectpickerGc').on('change',function(){
+                var total_value =0
+                var selected = $('option:selected',this)
+                if(selected.length==0)
+                {
+                  $('#totalGCval').text(' ')
+                  var total_amount = $('.totalAmountReceived').val()
+                  var total_value = $('.totalGCval').val(0)
+                  total_amount = total_amount - total_value
+                  $('#TotalAmountReceived').text('₱'+total_amount+'.00')
+                  $('.totalAmountReceived').val(total_amount)
+                }
+                var giftcerts =[]
+                selected.each(function(){
+                giftcerts.push({
+                  gc_value: parseInt(this.getAttribute('gc_value'))
+                })
+              })
+              for(var i=0;i<giftcerts.length;i++)
+              {
+                if(selected.length==0)
+                {
+                  alert('hello')
+                }
+                else
+                {
+                  total_value = total_value + giftcerts[i].gc_value
+                  $('#totalGCval').text('Total: ₱'+total_value+'.00')
+                  $('#TotalAmountReceived').text('₱'+total_value+'.00')
+                  $('.totalGCval').val(total_value)
+                  $('.totalAmountReceived').val(total_value)
+                }
+              }
 
+            })
+          }
+          else
+          {
+            $('.selectpickerGc').attr('disabled',true)
+            $('.selectpickerGc').val(0);
+            $('.selectpickerGc').selectpicker("refresh");
+            $('#totalGCval').text(' ')
+            var total_amount = $('.totalAmountReceived').val()
+            var total_value = $('.totalGCval').val(0)
+            total_amount = total_amount - total_value
+            $('#TotalAmountReceived').text('₱'+total_amount+'.00')
+          }
+        })
+      })
     script.
       $(document).ready(function(){
         $('.hello').click(function(){
+          var scriptSession = !{JSON.stringify(reqSession)}
           var id = $(this).val()
             $('#RegisterModal').modal('show')
             $('#checkout').modal('hide')
+            var membership_validity = scriptSession.utilities[0].membership_validity
+            var date_now = moment(new Date()).format('MMMM DD, YYYY')
+            var validity = moment(date_now).add(membership_validity,'months').format('MMMM DD, YYYY')
+            alert(validity)
             $('.buttonRegister').click(function(){
               $.post('/payment/register',{
                 username: $('#username').val(),
                 password: $('#password').val(),
+                membership_validity: validity,
                 id:id})
                 .done(function(data){
                   console.log(data)
@@ -557,6 +645,7 @@ html(lang='en')
               <td>${data.out1[i].service_total_price}</td>
               </tr>
             `)
+          
             }
             $('#summary').on('hidden.bs.modal', function (){
           $('#ViewServicesAvailed').empty()
@@ -626,6 +715,7 @@ html(lang='en')
     script.
       $(document).ready(function(){
         $('.checkoutButton').click(function(){
+          var scriptSession = !{JSON.stringify(reqSession)};
           var id = $(this).val()
           $('#checkout').modal('show')
           $.post('/payment/query/CheckoutDets',{id:id})
@@ -636,7 +726,7 @@ html(lang='en')
             
             if(data.out2.paid_status==0)
             {
-              total_amount= data.out2.walkin_total_amount + 600
+              total_amount= data.out2.walkin_total_amount + parseInt(scriptSession.utilities[0].membership_fee)
               $('#TotalPrice').append(`Total: ${total_amount}`)
               $('.totalPrice').val(`${total_amount}`)
             }
@@ -652,6 +742,7 @@ html(lang='en')
             }
             
               $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
+              $('.totalPoints').val(data.out2.walkin_total_points)
               $('.hello').val(data.out2.cust_id)
             if(data.out2.cust_type==0)
             {
@@ -672,6 +763,7 @@ html(lang='en')
             $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
             for(var i=0;i<data.out1.length;i++)
             {
+              var total_equivalent_points = parseInt(data.out1[i].service_total_quantity) * parseInt(data.out1[i].equivalent_points)
             $('#viewServicesAvailed').append(`
               <tr>
               <td>${data.out1[i].service_name}</td>
@@ -682,58 +774,115 @@ html(lang='en')
             `)
             }
             $('#checkout').on('hidden.bs.modal', function (){
-          $('#viewServicesAvailed').empty()
-          $('#custName').empty()
-          $('#TotalPrice').empty()
-          $('.totalPrice').empty()  
+              $('#viewServicesAvailed').empty()
+              $('#custName').empty()
+              $('#TotalPrice').empty()
+              $('.totalPrice').empty() 
+              $('#Room').empty()
+              $('#RoomRate').empty()
+              $('#totalPoints').empty() 
         })
+          $('#datatablesCheckout').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true,})
           })
         
         
         
         $('.buttonDone').click(function(){
-          alert($('.amountReceived').val())
-          alert($('.totalPrice').val())
-          alert(1000 < 800)
-          if($('.amountReceived').val()==0)
+          if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== false)
             {
               swal({
                 title: "Amount Received is 0",
                 icon: 'warning'
               })
             }
-          else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+          else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()) && $('.checkboxGC')[0].checked== false)
             {
               swal({
                 title: "Amount Received is insufficient",
                 icon: 'warning'
               })
             }
+          else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) < parseInt($('.totalPrice').val()))
+          {
+            swal({
+                title: "Amount Received is insufficient",
+                icon: 'warning'
+              })
+          }
+          else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) > parseInt($('.totalPrice').val()))
+          {
+            swal({
+                title: "The Gift certificate will not return any change",
+                icon: 'warning'
+              }).then(function(submit){
+                if(submit)
+                {
+                  alert($('.hello').val()+'aaa')
+                }
+                else
+                {
+
+                }
+              })
+          }
           else
             {
-          $.post('/payment/Finish',{
-            id:id,
-            amount: $('.totalPrice').val(),
-            cust_id: $('.hello').val() 
-            }).done(function(data){
-              if(data.alertDesc==0)
-                {
-                  swal({
-                    title: "Success",
-                    icon: 'success'
-                  }).then(function(){
-                    location.reload()
-                  })
-                }
+              if($('#checkbox_gc')[0].checked==true)
+              {
+                alert(id)
+              $.post('/payment/Finish/GC',{
+                id:id,
+                gc_id: $('#giftcert').val(),
+                total_points: $('.totalPoints').val(),
+                amount: $('.totalPrice').val(),
+                cust_id: $('.hello').val() 
+                }).done(function(data){
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: 'success'
+                      }).then(function(){
+                        location.reload()
+                      })
+                    }
+                  else
+                    {
+                      swal({
+                        title: "ERROR",
+                        icon: 'error'
+                      })
+                    }
+                
+                })
+              }
               else
-                {
-                  swal({
-                    title: "ERROR",
-                    icon: 'error'
-                  })
-                }
-            
-            })
+              {
+                $.post('/payment/Finish',{
+                id:id,
+                total_points: $('.totalPoints').val(),
+                amount: $('.totalPrice').val(),
+                cust_id: $('.hello').val() 
+                }).done(function(data){
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: 'success'
+                      }).then(function(){
+                        location.reload()
+                      })
+                    }
+                  else
+                    {
+                      swal({
+                        title: "ERROR",
+                        icon: 'error'
+                      })
+                    }
+                
+                })
+              }
             }
         })
         })

@@ -45,7 +45,7 @@ router.post("/frontdesk/logout", (req, res) => {
 })
 // [FRONTDESK-HOME]
 router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
-  var date_time = moment(new Date()).format('MMMM-DD-YYYY hh:mm')
+  var date_time = moment(new Date()).format('MMMM-DD-YYYY HH:mm')
   var dateLang= moment(new Date()).format('MMMM-DD-YYYY')
   const query = ` select * from customer_tbl where delete_stats=0;
   SELECT * FROM utilities_tbl`
@@ -60,9 +60,12 @@ router.get('/frontdesk/home',mid.frontdesknauthed,(req,res)=>{
       var opening_time = dateLang+' '+req.session.utilities[0].opening_time
           opening_time = moment(opening_time).format('MMMM-DD-YYYY HH:mm')
           opening_time = moment(opening_time).subtract(3,'h').format('MMMM-DD-YYYY HH:mm')
-          opening_time = moment(opening_time).add(1,'d').format('MMMM-DD-YYYY HH:mm')
-      console.log(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrAfter(opening_time))
-      if(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrAfter(opening_time))
+          // opening_time = moment(opening_time).format('MMMM-DD-YYYY hh:mm')
+          console.log('CLOSING TIME',closing_time)
+          console.log('DATE AND TIME',date_time)
+          console.log('OPENING TIME',opening_time)
+      console.log(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrBefore(opening_time))
+      if(moment(date_time).isSameOrAfter(closing_time) && moment(date_time).isSameOrBefore(opening_time))
       {
         const therapist_attendance = `UPDATE therapist_attendance_tbl 
         SET therapist_datetime_in = NULL, 
@@ -509,11 +512,23 @@ router.post('/CheckCustomer/Details',(req,res)=>{
 
 // [BOOK RESERVATION - CHECK ROOM DETAILS]
 router.post('/CheckRoomDetails',(req,res)=>{
-  const query = `SELECT * FROM room_tbl WHERE room_id =${req.body.room_id}`
+  if(req.body.room_id=='common')
+  {
+    const query = `SELECT * FROM room_tbl WHERE room_rate = 0 `
 
-  db.query(query,(err,out)=>{
-    res.send(out[0])
-  })
+    db.query(query,(err,out)=>{
+      res.send(out[0])
+    })
+  }
+  else
+  {
+    const query = `SELECT * FROM room_tbl WHERE room_id =${req.body.room_id}`
+  
+    db.query(query,(err,out)=>{
+      res.send(out[0])
+    })
+
+  }
 }) 
 // [BOOK RESERVATION - ADD RESERVATION]
 router.post('/bookreservation/addReservation',(req,res)=>{
@@ -640,13 +655,16 @@ router.get('/fdReservation',mid.frontdesknauthed, (req, res) => {
   JOIN customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   JOIN services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
   JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id 
-  WHERE room_tbl.room_type_id= '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
+  WHERE room_tbl.room_type_id= '2' AND walkin_queue_tbl.walkin_payment_status=0 
+  OR walkin_queue_tbl.walkin_payment_status=2 group by walkin_services_tbl.walkin_id;
   SELECT walkin_queue_tbl.*, walkin_services_tbl.*, customer_tbl.*, services_tbl.*, room_tbl.*
   FROM walkin_queue_tbl 
   JOIN walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
   JOIN customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
   JOIN services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-  JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id != '2' AND walkin_queue_tbl.walkin_payment_status=0 group by walkin_services_tbl.walkin_id;
+  JOIN room_tbl on room_tbl.room_id = walkin_services_tbl.room_id WHERE room_tbl.room_type_id != '2' 
+  AND walkin_queue_tbl.walkin_payment_status=0 
+  AND walkin_queue_tbl.walkin_payment_status=2 group by walkin_services_tbl.walkin_id;
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out)=>{
     req.session.utilities = out[2]
@@ -706,6 +724,7 @@ router.get('/summary', (req, res) => {
   res.render('frontdesk/summary')
 })
 
+// [PAYMENT - VIEW]
 router.get('/payment',mid.frontdesknauthed, (req, res) => {
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*,customer_tbl.*, services_tbl.service_name, room_tbl.room_name
   FROM walkin_queue_tbl 
@@ -721,18 +740,22 @@ router.get('/payment',mid.frontdesknauthed, (req, res) => {
   JOIN customer_tbl ON customer_tbl.cust_id = walkin_queue_tbl.cust_id
   JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  WHERE walkin_queue_tbl.walkin_payment_status = 1 AND walkin_queue_tbl.walkin_indicator = 2 
+  WHERE walkin_queue_tbl.walkin_payment_status = 1 || walkin_queue_tbl.walkin_payment_status = 2 || walkin_queue_tbl.walkin_payment_status != 0 AND walkin_queue_tbl.walkin_indicator = 2 
   GROUP BY walkin_services_tbl.walkin_id;
-  SELECT * FROM utilities_tbl`
+  SELECT * FROM utilities_tbl;
+  SELECT * FROM giftcertificate_tbl WHERE release_stats = 2 OR release_stats=4 `
   db.query(query,(err,out)=>{
     req.session.utilities = out[2]
     res.render('frontdesk/payment',{
       notpaids : out[0],
       paids: out[1],
-      reqSession: req.session
+      reqSession: req.session,
+      giftcerts: out[3]
     })
   })
 })
+
+// [PAYMENT - VIEW DETAILS]
 router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
   customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
@@ -781,7 +804,7 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
 
 
 
-
+// [PAYMENT - VIEW SUMMARY]
 router.post('/payment/query/CheckSummary',mid.frontdesknauthed, (req, res) => {
   const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
   customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
@@ -867,27 +890,29 @@ router.post('/payment/query/CheckSummary',mid.frontdesknauthed, (req, res) => {
 
 
 
-
+// [PAYMENT - LOYALTY REGISTRATION]
 router.post('/payment/register',(req,res)=>{
-  const query = `SELECT * FROM loyalty_tbl where member_username = "${req.body.username}"`
+  const query = `SELECT * FROM loyalty_tbl where member_username = "${req.body.username}";
+  SELECT * FROM utilities_tbl`
   
   db.query(query,(err,out)=>{
     console.log(out)
-    if(out== undefined || out == 0)
+    if(out[0]== undefined || out[0] == 0)
       {
         console.log('WALA PA')
         var alertSuccess =0
         var notSuccess =1
-        var valid = moment(new Date).add(1,'year').format('MM-DD-YYYY')
-        const query1=`INSERT INTO loyalty_tbl (cust_id, member_username, member_password, member_points, valid_until, paid_status)
-        values("${req.body.id}","${req.body.username}","${req.body.password}", 0, "${valid}",0)`
+        const query1=`INSERT INTO loyalty_tbl (cust_id, member_username, member_password, member_points, membership_validity, paid_status)
+        values("${req.body.id}","${req.body.username}","${req.body.password}", 0, "${req.body.membership_validity}",0)`
 
         db.query(query1,(err,out)=>{
+          console.log(query1)
           const query2 = `UPDATE customer_tbl SET cust_type =1 WHERE cust_id =${req.body.id}`
 
           db.query(query2,(err,out)=>{
               if(err)
               {
+                console.log(err)
                 res.send({alertDesc:notSuccess})
               }
               else
@@ -907,6 +932,7 @@ router.post('/payment/register',(req,res)=>{
   })
 })
 
+// [PAYMENT - FINISH]
 router.post('/payment/Finish',(req,res)=>{
 
   var date= moment(new Date()).format('MMMM DD YYYY')
@@ -932,7 +958,7 @@ router.post('/payment/Finish',(req,res)=>{
       if(out.paid_status==0)
         {
           
-          const queryPaid = `UPDATE loyalty_tbl SET paid_status=1 WHERE cust_id=${req.body.cust_id};
+          const queryPaid = `UPDATE loyalty_tbl SET paid_status=1, member_points="${req.body.total_points}" WHERE cust_id=${req.body.cust_id};
           UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
 
           db.query(queryPaid,(err,out)=>{
@@ -972,8 +998,238 @@ router.post('/payment/Finish',(req,res)=>{
     })
   })
 
+  router.post('/payment/Finish/GC',(req,res)=>{
+    var date= moment(new Date()).format('MMMM DD YYYY')
+    const queryServAv = `SELECT * FROM services_availed_tbl where transaction_id = ${req.body.id}`
+    db.query(queryServAv,(err,out)=>{
+      console.log(out)
+        const query = `INSERT INTO payment_tbl (services_availed_id, payment_type,payment_date,amount)
+        values("${out[0].service_availed_id}","Cash","${date}","${req.body.amount}")`
+        db.query(query,(err,out)=>{
+          console.log(err)
+      })
+    })
+  
+      console.log("cust_id: "+req.body.cust_id)
+      const query1=`SELECT * FROM loyalty_tbl where cust_id= ${req.body.cust_id}`
+      db.query(query1,(err,out)=>{
+        console.log(out)
+        console.log(out[0].paid_status)
+        if(out[0].paid_status==0)
+          {
+            const queryPaid = `UPDATE loyalty_tbl SET paid_status=1, member_points="${req.body.total_points}" WHERE cust_id=${req.body.cust_id};
+            UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
+            db.query(queryPaid,(err,out)=>{
+              console.log(queryPaid)
+              console.log(err)
+              if(err)
+                {
+                  var notSuccess=1
+                  res.send({alertDesc:notSuccess})
+                }
+              else
+                {
+                  console.log(req.body.gc_id.length)
+                  for(var i=0;i<req.body.gc_id.length;i++)
+                    {
+                      const query = `UPDATE giftcertificate_tbl SET release_stats = 3 WHERE gc_id = ${req.body.gc_id[i]}`
+
+                      db.query(query,(err,out)=>{
+                        console.log(query)
+                        console.log(err)
+                      })
+                    }
+                  var alertSuccess=0
+                  res.send({alertDesc:alertSuccess})
+                }
+            })
+          }
+          else if(out== undefined || out==0)
+          {
+            const queryPaid = `
+            UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
+            db.query(queryPaid,(err,out)=>{
+              if(err)
+                {
+                  console.log(err)
+                  var notSuccess=1
+                  res.send({alertDesc:notSuccess})
+                }
+              else
+                {
+                  var alertSuccess=0
+                  res.send({alertDesc:alertSuccess})
+                  for(var i=0;req.body.gc_id.length;i++)
+                    {
+                      const query = `UPDATE giftcertificate_tbl SET released_stats = 3 WHERE gc_id = ${req.body.gc_id[i]}`
+
+                      db.query(query,(err,out)=>{
+
+                      })
+                    }
+                }
+            })
+          }
+      })
+
+      
+    })
+
+// [PAYMENT - EARLY PAYMENT]
+router.post('/payment/Early',(req,res)=>{
+  var alertSuccess=0;
+  var notSuccess= 1
+  var walkinId;
+  console.log(req.body)
+  const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
+  values("${req.body.cust_id}","${req.body.timeStart}","${req.body.EndTime}","${req.body.amount}","${req.body.finalPoints}","${req.body.date}",2,0)`
+  db.query(query,(err,out)=>{
+    walkinId=out.insertId;
+    if(restype=='single')
+      {
+        for(var i=0;i<req.body.serviceId.length;i++)
+          {
+            const query1= `insert into walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price,therapist_id) 
+            values("${walkinId}","${req.body.serviceId[i]}","${req.body.roomId}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+              "${req.body.bed_quantity}","${req.body.serviceTotal[i]}","${req.body.therapist_id}")`
+              db.query(query1,(err,out)=>{
+            })
+          }
+          if(err)
+          {
+            res.send({alertDesc: notSuccess})
+          }
+          else
+          {
+            res.send({alertDesc:alertSuccess})
+          }
+          const queryThera=`UPDATE therapist_attendance_tbl SET therapist_reserved = 1 WHERE therapist_id = ${req.body.therapist_id}`
+          db.query(queryThera,(err,out)=>{
+            console.log('THERAPIST ERROR',err)
+          })
+        }
+    else if(restype=='multiple'){
+      if(req.body.roomId == 'common')
+      {
+        const queryRoom = `SELECT * FROM room_tbl WHERE room_rate= 0` 
+        db.query(queryRoom,(err,out)=>{
+          for(var o= 0; o<out.length;o++)
+          {
+            if(out[o].room_gender == 1) // BOYS
+                  {
+                    for(var i=0; i<req.body.serviceId.length;i++)
+                    {
+                      const queryBoys = `INSERT INTO walkin_services_tbl
+                      (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
+                      VALUES ("${walkinId}", "${req.body.serviceId[i]}","${out[o].room_id}", "${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+                      "${req.body.boys_quantity}","${req.body.serviceTotal[i]}")`
+                      
+                      db.query(queryBoys, (err,out)=>{
+                      })
+                    }
+                  }
+  
+                else if(out[o].room_gender == 2) // GIRLS
+                  {
+                    for(var i=0; i<req.body.serviceId.length;i++)
+                      {
+
+                        const queryGirls = `INSERT INTO walkin_services_tbl
+                        (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
+                        VALUES ("${walkinId}", "${req.body.serviceId[i]}","${out[o].room_id}", "${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+                        "${req.body.girls_quantity}","${req.body.serviceTotal[i]}")`
+  
+                        db.query(queryGirls, (err,out)=>{
+                          
+                        })
+                      }
+                  }
+            }     
+            if(err)
+              {
+                res.send({alertDesc: notSuccess})
+              }
+              else
+              {
+                res.send({alertDesc:alertSuccess})
+              }
+          })
+        }
+        else
+        {
+          const queryPrivate =`INSERT INTO walkin_services_tbl
+          (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
+          VALUES ("${walkinId}", "${req.body.seriviceId[i]}","${req.body.roomId}", "${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
+          "${req.body.boys_quantity}","${req.body.serviceTotal[i]}")`
+
+          db.query(queryPrivate, (err,out)=>{
+            if(err)
+              {
+                res.send({alertDesc: notSuccess})
+              }
+              else
+              {
+                res.send({alertDesc:alertSuccess})
+              }
+          })
+        }
+    }
+  })
+
+    // console.log("cust_id: "+req.body.cust_id)
+
+    // const query1=`SELECT * FROM loyalty_tbl where cust_id= ${req.body.cust_id}`
+
+    // db.query(query1,(err,out)=>{
+    //   console.log(query1)
+    //   console.log("OUT")
+    //   console.log(out)
+    //   if(out.paid_status==0)
+    //     {
+          
+    //       const queryPaid = `UPDATE loyalty_tbl SET paid_status=1 WHERE cust_id=${req.body.cust_id};
+    //       UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
+
+    //       db.query(queryPaid,(err,out)=>{
+    //         if(err)
+    //           {
+    //             console.log(err)
+    //             var notSuccess=1
+    //             res.send({alertDesc:notSuccess})
+    //           }
+    //         else
+    //           {
+    //             var alertSuccess=0
+    //             res.send({alertDesc:alertSuccess})
+    //           }
+    //       })
+    //     }
+    //     else if(out== undefined || out==0)
+    //     {
+    //       const queryPaid = `
+    //       UPDATE walkin_queue_tbl SET walkin_payment_status =1 where walkin_id=${req.body.id}`
+
+    //       db.query(queryPaid,(err,out)=>{
+    //         if(err)
+    //           {
+    //             console.log(err)
+    //             var notSuccess=1
+    //             res.send({alertDesc:notSuccess})
+    //           }
+    //         else
+    //           {
+    //             var alertSuccess=0
+    //             res.send({alertDesc:alertSuccess})
+    //           }
+    //       })
+    //     }
+        
+    // })
+  })
+
+
 // [THERAPIST ATTENDANCE]
-router.get('/therapist', (req, res) => {
+router.get('/therapist', mid.frontdesknauthed,(req, res) => {
   const query = `SELECT * FROM utilities_tbl;
   SELECT therapist_tbl.*, therapist_attendance_tbl.* 
   FROM therapist_tbl JOIN therapist_attendance_tbl 
