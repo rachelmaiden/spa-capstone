@@ -401,7 +401,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label License Valid Until
                                   star *  
-                                input.form-control.datepicker(type='text' name='therapist_birthday' id="calendar" style='margin-top: -15px')           
+                                input.form-control.datepickerLicense(type='text' name='therapist_license' id="calendar" style='margin-top: -15px')           
                           .modal-footer
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -878,14 +878,22 @@ html(lang='en')
                     widgetPositioning:{"horizontal":"auto",
                     "vertical":"auto"}
                   });
+
               })
 
+          
                   
                 $('.datepicker').on('dp.hide', function(event){
                   setTimeout(function(){
                     $('.datepicker').data('DateTimePicker').viewMode('years');
                   },1);
                 });
+                $('.datepickerLicense').on('dp.hide', function(event){
+                  setTimeout(function(){
+                    $('.datepickerLicense').data('DateTimePicker').viewMode('years');
+                  },1);
+                });
+
 
 
                 
@@ -939,11 +947,31 @@ html(lang='en')
               })
 
           })
+
+
+          
   script(type='text/javascript').
     $(document).ready(function(){
     $('#calendar').val('')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
+    $('.datepickerLicense').datetimepicker({
+        viewMode: 'years',
+        format: 'MMMM DD, YYYY',
+        icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+          },
+          widgetPositioning:{"horizontal":"auto",
+          "vertical":"auto"}
+        });
     });
   script(type='text/javascript').
     $(document).ready(function() {

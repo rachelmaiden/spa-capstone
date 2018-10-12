@@ -380,7 +380,7 @@ html(lang='en')
                 button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
             // PAYNOW 
-            #checkout.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+            #checkout.modal.fade(role='dialog' aria-labelledby='myModalLabel' style='overflow: auto')
               .modal-dialog.modal-lg(role='document')
                 .modal-content
                   .modal-header
@@ -393,6 +393,7 @@ html(lang='en')
                         strong#custName
                         br
                         button.hello(type='hidden' value='') Register for Loyalty Membership
+                        input.paid_stats(type='hidden' value='')
                       h5
                         strong#RoomAvailed
                         br
@@ -411,50 +412,62 @@ html(lang='en')
                             th.disabled-sorting Quantity
                             th.disabled-sorting Amount
                             th.disabled-sorting Equivalent Points
+                            th
                         tfoot
                           tr
                             th.disabled-sorting
                             th
                             th
                             th
+                            th
                         tbody#viewServicesAvailed
-                      .col-md-7
-                      .col-md-4
-                        h3
-                          strong#TotalPrice
-                          input.totalPrice(type='' value='')
-                        h5
-                          strong#TotalPoints
-                          input.totalAmountReceived(type='' value='')
+                    .col-md-7
+                    .col-md-4
+                      h3
+                        strong#TotalPrice
+                        input.totalPrice(type='hidden' value='')
+                        br
+                        strong Amount Needed: 
+                          a#AmountNeeded
+                        input.amountNeeded(type='hidden' value='')
+                      h5
+                        strong#TotalPoints
+                        input.totalAmountPoints(type='hidden' value='')
+                        input.totalAmountReceived(type='hidden' value='')
 
-                      hr
-                      .row
-                        .col-md-4 
-                          .form-group.has-default.bmd-form-group
-                            .row
-                              .col-md-1
-                                input.checkboxGC(type='checkbox' id='checkbox_gc' value='')
-                              .col-md-5
-                                label(for='checkbox_gc') Gift Certificate
-                              .col-md-6
-                                .category#totalGCval 
-                                input.totalGCval(type='' value='')
-                            select.selectpicker.selectpickerGc(title='Select Gift Certificate', multiple data-style='btn-info', data-size='7' name='giftcert' data-id='giftcert' required='true' aria-label='true' disabled='disabled')
-                              each gc in giftcerts
-                                option(value=`${gc.gc_id}` gc_value=`${gc.gc_value}`)= gc.gc_refCode+" "+gc.gc_name
-                        .col-md-4
-                          .form-group.has-default.bmd-form-group
-                            label Amount Received:
-                            .input-group
-                              span.input-group-addon ₱  
-                              input.form-control.amountReceived(type='number', placeholder='Amount Received')
-                              span.input-group-addon .00
-                        
-                        .col-md-4
-                          .form-group.has-default.bmd-form-group
-                            label Change: 
-                            input.form-control.change(type='number', placeholder='Change' value='0')
-                        .col-md-4#appendDito
+                    
+                    .row
+                      .col-md-3
+                        .form-group.has-default.bmd-form-group
+                          .row
+                            .col-md-1
+                              input.checkboxGC(type='checkbox' id='checkbox_gc' value='')
+                            .col-md-5
+                              label(for='checkbox_gc') Gift Certificate
+                            .col-md-6
+                              .category#totalGCval 
+                              input.totalGCval(type='hidden' value='')
+                          select.selectpicker.selectpickerGc(title='Select Gift Certificate', multiple data-style='btn-info', data-size='7' name='giftcert' data-id='giftcert' required='true' aria-label='true' disabled='disabled')
+                            each gc in giftcerts
+                              option(value=`${gc.gc_id}` gc_value=`${gc.gc_value}`)= gc.gc_refCode+" "+gc.gc_name
+                      .col-md-3
+                        .form-group.has-default.bmd-form-group
+                          label Amount Received:
+                          .input-group
+                            span.input-group-addon ₱  
+                            input.form-control.amountReceived(type='number', placeholder='₱0.00')
+                            span.input-group-addon .00
+                      
+                      .col-md-3
+                        .form-group.has-default.bmd-form-group
+                          label Change: 
+                          .input-group
+                            span.input-group-addon ₱  
+                            input.form-control.change(type='number', placeholder='Change' value='0' disabled)
+                            span.input-group-addon .00
+                      .col-md-3#appendDito
+                      input.currentPoints(type='hidden' value='')
+                      input.newPoints(type='hidden' value='')
                     .modal-footer
                       button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
                       button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -472,27 +485,37 @@ html(lang='en')
                         .form-group
                           label.control-label Username
                           star *
-                          input.form-control(type='text', name='username', id="username" placeholder='username\
-                          ')
+                          .input-group
+                            .input-group-addon
+                              i.fa.fa-user
+                            input.form-control(type='text', name='username', id="username" placeholder='username')
+                          .category#ValidUsername
+                    .row
                       .col-md-4
                         .form-group
                           label.control-label Password
                           star *
-                          input.form-control(type='password', name='password1', id="password" placeholder='password\
-                          ')
+                          .input-group
+                            .input-group-addon
+                              i.fa.fa-key
+                            input.form-control(type='password', name='password1', id="password1" placeholder='password')
+                          .category#ValidLength
                       .col-md-4
                         .form-group
                           label.control-label Re-enter Password
                           star *
-                          input.form-control(type='password', name='password2', id="password2" placeholder='confim password\
-                          ')
-
+                          .input-group
+                            .input-group-addon
+                              i.fa.fa-key
+                            input.form-control(type='password', name='password2', id="password2" placeholder='confirm password')
+                          .category#ValidPass
                     .row
                       .col-md-5
-                          h5 Fee: 
+                          h4 Fee:
+                            a#fee 
                   .modal-footer
-                    button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegister(type='button', data-dismiss='modal') Done
-                    button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button', data-dismiss='modal') Close
+                    button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegister(type='button') Done
+                    button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left.buttonClose(type='button') Close
   .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -536,41 +559,223 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
+    function calculate(){
+      var totalPrice = $('.totalPrice').val()
+      var currentPoints = $('.currentPoints').val()
+      var pointsTotal = 0;
+      var priceTotal = 0;
+      var newPrice
+      var newPoints
+
+      $(".checkboxPayment:checked").each(function(){
+        var id = $(this).val()
+        var newhalaga = $(`.newhalaga[id='${id}']`).val()
+        var newPointsEq = $(`.newPointsEq[id='${id}']`).val()
+
+        console.log('NEW HALAGA', newhalaga)
+        priceTotal = eval(newhalaga+"+"+priceTotal)
+        console.log('PRICE TOTAL',priceTotal)
+        NewPrice = parseInt(totalPrice) - parseInt(priceTotal)
+        pointsTotal = eval(newPointsEq+'+'+pointsTotal)
+        NewPoints = parseInt(currentPoints) - parseInt(pointsTotal)
+      })
+        $('.newPoints').val(NewPoints)
+        console.log('NEW PRICE',NewPrice)
+        $('.amountNeeded').val(NewPrice)
+        $('#AmountNeeded').text('₱'+NewPrice+'.00')
+
+    }
+  script.
+    $(document).ready(function(){
+      $(document).on('change.bootstrapSwitch','.checkboxPayment',function(e){
+        var id = $(this).val()
+        var quantity = $(`.quantityTotal[id='${id}']`).val()
+        var name = $(`.servname[id='${id}']`).val()
+        var price = $(`.halaga[id='${id}']`).val()
+        var points = $(`.eqTotal[id='${id}']`).val()
+        if(e.target.checked==true)
+        {
+          if(quantity ==1)
+          {
+            var pricePerServ = parseInt(price) / parseInt(quantity)
+            var computed_price = parseInt(quantity) * parseInt(pricePerServ)
+            $(`.newhalaga[id='${id}']`).val(computed_price)
+
+            var pointsPerServ = parseInt(points) / parseInt(quantity)
+            var computed_points = parseInt(quantity) * parseInt(pointsPerServ)
+            $(`.newPointsEq[id='${id}']`).val(computed_points)
+          }
+          else if(parseInt(quantity) > parseInt(1))
+          {
+            swal({
+              title: "How many "+name+" will pay using points?",
+              content: {
+              element: "input",
+              attributes: {
+                type: "number",
+                max: quantity,
+              },
+            },
+            }).then(function(value){
+              if(parseInt(value) > parseInt(quantity))
+              {
+                swal({
+                  title: "ERROR",
+                  text: "The inputed number is invalid please try again",
+                  icon: 'error'
+                }).then(function(){
+                  e.target.checked=false
+                })
+              }
+              else
+              {
+                var pricePerServ = parseInt(price) / parseInt(quantity)
+                var computed_price = parseInt(value) * parseInt(pricePerServ)
+                $(`.newhalaga[id='${id}']`).val(computed_price)
+
+                var pointsPerServ = parseInt(points) / parseInt(quantity)
+                var computed_points = parseInt(value) * parseInt(pointsPerServ)
+                $(`.newPointsEq[id='${id}']`).val(computed_points)
+                
+              }
+
+              if(value=='' || value==null)
+              {
+                 e.target.checked=false
+              }
+            })
+          }
+              setTimeout(calculate,3000)
+        }
+        else
+        {
+          var id = $(this).val()
+          var newPointsEq = $(`.newPointsEq[id='${id}']`).val()
+          var newPoints = $('.newPoints').val()
+          var newhalaga = $(`.newhalaga[id='${id}'`).val()
+          var amountNeeded = $('.amountNeeded').val()
+          var total = eval(amountNeeded+"+"+newhalaga)
+
+          newhalaga -= parseInt(newhalaga)
+          $(`.newhalaga[id='${id}']`).val(newhalaga)
+          $('.amountNeeded').val(total)
+          $('#AmountNeeded').text('₱'+total+'.00')
+
+          var pointsTotal = eval(newPoints+'+'+newPointsEq)
+          $('.newPoints').val(pointsTotal)
+          newPointsEq -= parseInt(newPointsEq)
+          $(`.newPointsEq[id='${id}']`).val(newPointsEq)
+        }
+      })
+    })
+  script.
+    $(document).ready(function(){
+      $(document).on('change.bootstrapSwitch','#checkboxPoints',function(e){
+        var currentPoints = $('.currentPoints').val()
+        var paid_stats = $('.paid_stats').val()
+
+        if(e.target.checked==true)
+        {
+          if(currentPoints==0 && paid_stats==1)
+          {
+            swal({
+              title: 'Cannot Use Points As Payment',
+              text: 'Your Points is '+currentPoints,
+              icon: 'error'
+            }).then(function(confirm){
+              if(confirm)
+              {
+                $('#checkboxPoints').prop('checked',false)
+              }
+              else
+              {
+              }
+            })
+          }
+          else if(currentPoints==0 && paid_stats!=1)
+          {
+            swal({
+              title: 'Cannot Use Points As Payment',
+              text: 'please pay the membership fee first',
+              icon: 'error'
+            }).then(function(confirm){
+              if(confirm)
+              {
+                $('#checkboxPoints').prop('checked',false)
+              }
+              else
+              {
+                
+              }
+            })
+          }
+          else
+          {
+            $('.checkboxPayment').css('display','block')
+          }
+        }
+        else
+        {
+         
+        }
+
+      })
+    })
+  script.
     $(document).ready(function(){
       $('.amountReceived').on('change paste keyup',function(){
         var totalPrice = $('.totalPrice').val()
         var gc_total = $('.totalGCval').val()
         //- var totalAmountReceived = parseInt($('.totalAmountReceived').val())
         var input = $('.amountReceived').val()
+        var amountNeeded = $('.amountNeeded').val()
         if($('.amountReceived').val()==0)
           {
             $('.change').val(0)
           }
         else
           {
-            if($('#checkbox_gc')[0].checked == false)
+            if($('#checkbox_gc')[0].checked == false && $('#checkboxPoints')[0].checked == false)
             {
                 var change = parseInt(input) - parseInt(totalPrice)
                 $('.change').val(change)
             }
-            else
+            else if ($('#checkbox_gc')[0].checked == true && $('#checkboxPoints')[0].checked == false)
             {
-              if(input==0 || input == ' ')
-              {
-                alert('aa')
-                $('.totalAmountReceived').val(gc_total)
-              }
-              else
-              {
-                var total = parseInt(input) + parseInt(gc_total)
-                console.log('TOTAL',total)
-                var change = parseInt(total) - parseInt(totalPrice)
+              //- if(input==0 || input == ' ')
+              //- {
+              //-   $('.totalAmountReceived').val(gc_total)
+              //- }
+                var change = parseInt(input) - parseInt(amountNeeded)
                 $('.change').val(change)
-                $('.totalAmountReceived').val(total)
-              }
+              //- else
+              //- {
+                //- var total = parseInt(input) + parseInt(gc_total)
+                //- console.log('TOTAL',total)
+                //- var change = parseInt(total) - parseInt(totalPrice)
+                //- $('.change').val(change)
+                //- $('.totalAmountReceived').val(total)
+              //- }
             }
+            else if ($('#checkbox_gc')[0].checked == false && $('#checkboxPoints')[0].checked == true)
+            {
 
+              var change = parseInt(input) - parseInt(amountNeeded)
+              $('.change').val(change)
 
+              //- if(input==0 || input == ' ')
+              //- {
+              //-   $('.totalAmountReceived').val(gc_total)
+              //- }
+              //- else
+              //- {
+              //-   var total = parseInt(input) + parseInt(gc_total)
+              //-   console.log('TOTAL',total)
+              //-   var change = parseInt(total) - parseInt(totalPrice)
+              //-   $('.change').val(change)
+              //-   $('.totalAmountReceived').val(total)
+              //- }
+            }
           }
       })
     })
@@ -606,6 +811,8 @@ html(lang='en')
   script.
     $(document).ready(function(){
       $('.checkboxGc').on('change.bootstrapSwitch',function(e){
+          var amountNeeded = $('.amountNeeded').val()
+          var total_value =0
         if(e.target.checked==true)
         {
           $('.amountReceived').val(' ')
@@ -613,7 +820,6 @@ html(lang='en')
           $('.selectpickerGc').removeAttr('disabled')
           $('.selectpickerGc').selectpicker("refresh");
           $('.selectpickerGc').on('change',function(){
-              var total_value =0
               var selected = $('option:selected',this)
               if(selected.length==0)
               {
@@ -639,10 +845,14 @@ html(lang='en')
               else
               {
                 total_value = total_value + giftcerts[i].gc_value
+                
+                var newTotal = amountNeeded - total_value
+                $('.amountNeeded').val(newTotal)
                 $('#totalGCval').text('Total: ₱'+total_value+'.00')
                 $('#TotalAmountReceived').text('₱'+total_value+'.00')
                 $('.totalGCval').val(total_value)
                 $('.totalAmountReceived').val(total_value)
+                $
               }
             }
 
@@ -654,6 +864,9 @@ html(lang='en')
           $('.selectpickerGc').val(0);
           $('.selectpickerGc').selectpicker("refresh");
           $('#totalGCval').text(' ')
+          var newTotal = eval(amountNeeded+'+'+total_value)
+          $('.amountNeeded').val(newTotal)
+          console.log(newTotal)
           var total_amount = $('.totalAmountReceived').val()
           var total_value = $('.totalGCval').val(0)
           total_amount = total_amount - total_value
@@ -751,6 +964,8 @@ html(lang='en')
           }
           table.page(0).draw()
         }
+
+  //- CHECK THERAPIST AVAILABILITY
   script.
     $(document).ready(function(){
       $('#selected_therapist').on('change',function(){
@@ -909,12 +1124,23 @@ html(lang='en')
                   }
                   else
                   {
+                    var scriptSession = !{JSON.stringify(reqSession)};
+                    var membership_fee= scriptSession.utilities[0].membership_fee
                       swal({
                         title: 'Pay Now or Later?',
                         icon: 'info',
-                        buttons: ['Pay Later',"Pay Now"],
-                      }).then(function(PayNow){
-                        if(PayNow)
+                        buttons: {paylater: {
+                                      text: "Pay Later",
+                                      value: "paylater",
+                                      ButtonColor: '#0000'
+                        },confirm:{
+                          text: "Pay Now",
+                          value: "paynow"
+                        }
+                        },
+                      }).then(function(value){
+                        console.log('value',value)
+                        if(value=='paynow')
                         {
                           $('#RoomAvailed').append(`Room: ${Room}`)
                           //- if()
@@ -926,23 +1152,33 @@ html(lang='en')
                           }).done(function(data){
                             console.log(data)
                             $('#checkout').modal('show')
+                            $('#reservationSummary').modal('hide')
                             if(data[0].cust_type==0)
                             {
                               $('#TotalPrice').append(`Total: ${finalTotal}`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
+                              $('.totalAmountPoints').val(finalPoints)
+                              $('.paid_stats').val(3)
                             }
                             else if (data[0].paid_status==0)
                             {
-                              $('#TotalPrice').append(`Total: ${finalTotal}`)
+                              hidden_finalTotal=parseInt(hidden_finalTotal) + parseInt(membership_fee) 
+                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}.00`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
+                              $('.totalAmountPoints').val(finalPoints)
+
+                              $('.paid_stats').val(data[0].paid_status)
                             }
                             else
                             {
                               $('#TotalPrice').append(`Total: ${finalTotal}`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
+                              $('.totalAmountPoints').val(finalPoints)
+                              $('.paid_stats').val(1)
                             }
                             
                               $('#TotalPoints').append(`Total Points to be earned: ${finalPoints}`)
+                              $('.totalAmountPoints').val(finalPoints)
                               $('.hello').val(data[0].cust_id)
                             if(data[0].cust_type==0)
                             {
@@ -950,12 +1186,13 @@ html(lang='en')
                             else
                             {
                                 $('.hello').addClass('hidden')
+                                $('.currentPoints').val(data[0].member_points)
                                 $('#appendDito').append(`
                                   <div class="form-group has-default bmd-form-group">
                                   <label> Current Points: ${data[0].member_points}
                                     <div class="checkbox">
-                                      <input id="checkbox1" type="checkbox"/>
-                                      <label for="checkbox1">Pay using Points</label>
+                                      <input id="checkboxPoints" type="checkbox"/>
+                                      <label for="checkboxPoints">Pay using Points</label>
                                     </div>
                                 </div>`)
                             }
@@ -974,17 +1211,30 @@ html(lang='en')
                                       var serviceName = $(`.name[id='${id}']`).val()
                                       var quantity= $(`.quantity[service_id='${id}'`).text()
                                       var totalPrice = $(`.total[service_id='${id}']`).text()
+                                      var hiddenTotal = $(`.hiddenTotal[id='${id}']`).val()
                                       var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
                                       var service_equivalentPoints = $(`.eqPoints[id='${id}']`).val()
                                       var total_equivalentPoints = parseInt(quantity) * parseInt(service_equivalentPoints)
                                       $('#viewServicesAvailed').append(`
                                         <tr>
-                                        <td>${serviceName}</td>
+                                        <td>${serviceName}
+                                          <input class="servname" type='hidden' value="${serviceName}" id="${serviceId}">
+                                        </td>
                                         <td>${quantity}
+                                          <input class="quantityTotal" type='hidden' value="${quantity}" id="${serviceId}">
                                         </td>
                                         <td>${totalPrice}
+                                          <input class="halaga" type='hidden' value="${hiddenTotal}" id="${serviceId}">
+                                          <input class="newhalaga" type='hidden' value="" id="${serviceId}">
+
                                         </td>
-                                        <td>${total_equivalentPoints}</td>
+                                        <td>${total_equivalentPoints}
+                                          <input class="eqTotal" type='hidden' value="${total_equivalentPoints}" id="${serviceId}">
+                                          <input class="newPointsEq" type='hidden' value="" id="${serviceId}">
+                                        </td>
+                                        <td>
+                                          <input class="checkboxPayment" type="checkbox" value="${serviceId}" style='display:none' />
+                                        </td>
                                         `)
                                       $('#reservationSummary').on('hidden.bs.modal', function (){
                                         $('#viewServices').empty()
@@ -1070,6 +1320,8 @@ html(lang='en')
                                       bed_quantity: bed_quantity,
                                       therapist_id: $('#selected_therapist').val(),
                                       timeStart : $('#timeStart').val(),
+                                      paid_stats: $('.paid_stats').val(),
+                                      membership_fee,
                                       EndTime,
                                       date : $('#dateRes').val(),
                                       finalPoints : $('#finalPoints').text().replace(/,/g,''),
@@ -1081,7 +1333,7 @@ html(lang='en')
                                               title: "Success",
                                               icon: 'success'
                                             }).then(function(){
-                                              location.reload()
+                                              location.href='/frontdesk/home'
                                             })
                                           }
                                         else
@@ -1097,7 +1349,7 @@ html(lang='en')
                               })
                           
                         }
-                        else
+                        else if(value=='paylater')
                         {
                             var scriptSession = !{JSON.stringify(reqSession)};
                             console.log(scriptSession)
@@ -1121,26 +1373,30 @@ html(lang='en')
                             finalTotal : hidden_finalTotal,
                             finalPoints : $('#finalPoints').text().replace(/,/g,''),
                             roomId :$('#roomId').val()
-                          }).done(function(data){
-                            if(data.alertDesc==1)
-                            {
-                            swal({
-                              title:'Success', 
-                              text:'New Reservation Added', 
-                              icon:'success'
-                              }).then(function(){
-                                location.href='/frontdesk/home'
-                              })
-                          }
-                          else
-                            {
+                            }).done(function(data){
+                              if(data.alertDesc==1)
+                              {
                               swal({
-                                title:'Not Success', 
-                                text:'', 
-                                icon:'warning'
+                                title:'Success', 
+                                text:'New Reservation Added', 
+                                icon:'success'
+                                }).then(function(){
+                                  location.href='/frontdesk/home'
                                 })
-                            } 
-                          })
+                            }
+                            else
+                              {
+                                swal({
+                                  title:'Not Success', 
+                                  text:'', 
+                                  icon:'warning'
+                                  })
+                              } 
+                            })
+                        }
+                        else
+                        {
+
                         }
                       })
                   }
@@ -1453,48 +1709,150 @@ html(lang='en')
         })
       })
     })
+
+
+
+  //- PASSWORD VALIDATION
+  script.
+    $(document).ready(function(){
+      // FIRST PASSWORD
+      $('#password1').on('change paste keyup', function(){
+        $('#ValidLength').empty()
+        if($(this).val() != 0)
+        {
+          $('#password2').attr('disabled',false)
+        }
+        else
+        {
+          $('#password2').attr('disabled',true)
+          $('#password2').val('')
+        }
+        if($(this).val().length == 7 || $(this).val().length == 8 || $(this).val().length == 9)
+        {
+          $('#ValidLength').append('your password is medium')
+          $('#ValidLength').css('color','orange')
+        }
+        else if($(this).val().length <= 7)
+        {
+          $('#ValidLength').append('your password is too short')
+          $('#ValidLength').css('color','red')
+          $('#password2').attr('disabled',true)
+        }
+        else if($(this).val().length >= 10 )
+        {
+          $('#ValidLength').append('your password is strong')
+          $('#ValidLength').css('color','green')
+        }
+
+        if($(this).val()==0)
+        {
+          $('#ValidLength').empty()
+          $('#ValidPass').empty()
+        }
+      })
+      // SECOND PASSWORD
+      $('#password2').on('change paste keyup', function(){
+          $('#ValidPass').empty()
+        if($(this).val() != $('#password1').val())
+        {
+          $('#ValidPass').append(`Di Equal`)
+          $('#ValidPass').css('color','red')
+        }
+        else if($(this).val() == $('#password1').val())
+        {
+          $('#ValidPass').append(`Equal`)
+          $('#ValidPass').css('color','green')
+        }
+        if($(this).val().length == 0)
+        {
+          $('#ValidPass').empty()
+        }
+      })
+    })
+
+    // USERNAME VALIDATION
+    $('#username').on('change paste keyup',function(){
+      $('#ValidUsername').empty()
+      var username = $(this).val()
+        if(username.length <= 5 )
+        {
+          $('#ValidUsername').append('your username is too short')
+          $('#ValidUsername').css('color','red')
+        }
+        if (username.length == 0)
+        {
+          $('#ValidUsername').empty()
+        }
+    })
   script.
     $(document).ready(function(){
       $('.hello').click(function(){
         var id = $(this).val()
+        var scriptSession = !{JSON.stringify(reqSession)}
+        var membership_fee = scriptSession.utilities[0].membership_fee
+        var membership_validity = scriptSession.utilities[0].membership_validity
+        var date_now = moment(new Date()).format('MMMM DD, YYYY')
+        var validity = moment(date_now).add(membership_validity,'months').format('MMMM DD, YYYY')
           $('#RegisterModal').modal('show')
+          $('#fee').append(`₱${membership_fee}.00`)
           $('#checkout').modal('hide')
           $('.buttonRegister').click(function(){
-            $.post('/payment/register',{
-              username: $('#username').val(),
-              password: $('#password').val(),
-              id:id})
-              .done(function(data){
-                console.log(data)
-                if(data.alertDesc==0)
-                  {
-                    swal({
-                      title: "Success",
-                      icon: "success"
-                    }).then(function(){
-                      $('#RegisterModal').modal('hide')
-                      location.reload()
-                    })
-                  }
-                else if(data.alertDesc==3)
-                  {
-                    swal({
-                      title:'Not Success', 
-                      text:'Username Already Exist', 
-                      icon:'warning'
+        var password1 = $('#password1').val()
+        var password2 = $('#password2').val()
+        var username = $('#username').val()
+            if(password1 == password2 && password1 != 0 && password2 != 0)
+            {
+              
+              $.post('/payment/register',{
+                username: $('#username').val(),
+                password: $('#password1').val(),
+                id:id})
+                .done(function(data){
+                  console.log(data)
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: "success"
                       }).then(function(){
-                        $('#RegisterModal').modal('show')
+                        $('#checkout').modal('show')
+                        $('#RegisterModal').modal('hide')
                       })
-                  }
-                else if(data.alertDesc==1)
-                  {
-                    swal({
-                      title: 'ERROR',
-                      icon: 'error'
-                    })
-                  }
-              })
+                    }
+                  else if(data.alertDesc==3)
+                    {
+                      swal({
+                        title:'Not Success', 
+                        text:'Username Already Exist', 
+                        icon:'warning'
+                        })
+                    }
+                  else if(data.alertDesc==1)
+                    {
+                      swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                    }
+                })
+            }
+            if(password1 == 0 && password2 ==0 && username ==0 || password1 == 0 || password2 ==0 || username ==0)
+            {
+                console.log(password1)
+                console.log(password2)
+                console.log(username)
+              swal({
+                  title: 'Please double check the fields.',
+                  text: 'Make sure all required fields have value.', 
+                  icon: 'warning'
+                })
+            }
+        })
+        $('.buttonClose').click(function(){
+          $('#RegisterModal').modal('hide')
+          $('#checkout').modal('show')
         })
       })
     })
+
 

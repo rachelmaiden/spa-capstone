@@ -463,12 +463,13 @@ html(lang='en')
               console.log(idNow)
               $.post('/admin/adminSpecialty/query',{id1:idNow})
           .done(data=>{
+            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group has-default bmd-form-group">
                         <label>Therapist Specialty</label>
-                        <input type="text" id="specialty_desc" value='${data.specialty_desc}' placeholder="${data.specialty_desc}" class="form-control"/>
+                        <input type="text" id="specialty_desu" value='${data.specialty_desc}' placeholder="${data.specialty_desc}" class="form-control"/>
                       </div>
                     </div>
                   </div>`)
@@ -477,11 +478,12 @@ html(lang='en')
                 $('#updateAppend').empty()
                 });
               $('#cancelButton').click(function(){
-                $('#updateAppend').remove();
+                $('#updateAppend').empty();
               })
               $('#updateSubmitButton').click(function(){
+
                   $.post('/admin/adminSpecialty/update',{
-                  specialty_desc:$('#specialty_desc').val(),
+                  specialty_desc:$('#specialty_desu').val(),
                   
                   id:idNow
                   })

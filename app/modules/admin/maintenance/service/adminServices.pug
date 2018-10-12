@@ -239,10 +239,7 @@ html(lang='en')
                                         input.name(type='hidden' value=`${service.service_name}` id=`${service.service_id}`)
                                         td= service.service_duration_desc+" "+"minutes"
                                         td= "₱"+service.service_price.toLocaleString()+".00"
-                                        if(service.service_points==1|| service.service_points==0)
-                                          td= service.service_points+" "+"Point"
-                                        else if(service.service_points > 0)
-                                          td= service.service_points+" "+"Points"
+                                        td= service.service_points
                                         td
                                           if(service.service_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${service.service_id}`)

@@ -17,6 +17,10 @@ html(lang='en')
     link(href='http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css', rel='stylesheet')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
+    style.
+      .dropdown-menu {
+        margin-left: -131px !important;
+      }
   body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -39,7 +43,7 @@ html(lang='en')
               .clearfix
           ul.nav
             li.active
-              a(href='/registration')
+              a(href='./home')
                 i.ti-pencil
                 p
                   | Registration
@@ -57,7 +61,12 @@ html(lang='en')
               a(href='./therapist')
                 i.ti-user
                 p
-                  | Therapist Attendance      
+                  | Therapist Attendance    
+            li
+              a(href='./giftcert')
+                i.ti-gift
+                p
+                  | Gift Certification  
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -222,12 +231,12 @@ html(lang='en')
                                       .col-md-5
                                         .form-group
                                           h3.control-label
-                                            | Fee: ₱#{reqSession.utilities.membership_fee}.00
-                                    .row
-                                      .col-md-5
-                                        .form-group
-                                          h3.control-label
-                                            | Perks: freebies
+                                            | Fee: ₱#{reqSession.utilities[0].membership_fee}.00
+                                    //- .row
+                                    //-   .col-md-5
+                                    //-     .form-group
+                                    //-       h3.control-label
+                                    //-         | Perks: freebies
                               .card-footer
                                 button.btn.btn-default.btn-fill.btn-wd.btn-back.pull-left(type='button') Back
                                 button.btn.btn-info.btn-fill.btn-wd.btn-next.pull-right(type='button') Next
@@ -249,6 +258,7 @@ html(lang='en')
                                     li
                                       a(href='#loyalty', data-toggle='tab') Loyalty
                               #my-tab-content.tab-content
+                                // COMMON TAB
                                 #common.tab-pane.active
                                   .toolbar
                                   .fresh-datatables
@@ -287,6 +297,11 @@ html(lang='en')
                                                         i.fa.fa-bed
                                                         |  Amenities Only
                                                     li
+                                                      button.btn.btn-simple.btn-info.loyaltyRegistrationButton(data-toggle='modal' value=`${customer.cust_id}` style="margin-right: 15px")
+                                                        span.btn-label
+                                                        i
+                                                        |  Register as Loyalty
+                                                    li
                                                       button.btn.btn-simple.btn-warning.updateButton(data-toggle='modal' value=`${customer.cust_id}` style="margin-right: 15px")
                                                         span.btn-label
                                                         i.ti-pencil-alt
@@ -296,8 +311,8 @@ html(lang='en')
                                                         span.btn-label
                                                         i.ti-trash
                                                         |  Delete
-
-                                #loyalty.tab-pane.active
+                                // LOYALTY TAB
+                                #loyalty.tab-pane
                                   .toolbar
                                   .fresh-datatables
                                     table#datatablesLoyalty.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
@@ -333,7 +348,7 @@ html(lang='en')
                                                     li
                                                       button.btn.btn-simple.btn-info.amenityButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 13px")
                                                         span.btn-label
-                                                        i
+                                                        i.fa.fa-bed
                                                         |  Amenities Only
                                                     li
                                                       button.btn.btn-simple.btn-warning.updateLoyaltyButton(data-toggle='modal' value=`${customer.cust_id}` stlye="margin-right: 13px")
@@ -409,21 +424,29 @@ html(lang='en')
                               p.modal-title#custName
                           .modal-body
                             .row
+                              .col-md-15
+                                .panel-info
+                                  .panel-heading 
+                                    center The Entrance Fee is ₱#{reqSession.utilities[0].entrance_fee}.00
+
+                            .row
                               center
                                 h5 Specify number of guests.
                                 .col-md-4 
                                 .col-md-4
                                   .input-group
                                     span.input-group-btn
-                                      button.btn.btn-info.btn-number.buttonMinus(type='button',  data-type='minus', data-field='quantFemale' )
+                                      button.btn.btn-info.btn-number.buttonMinus(type='button',  data-type='minus', data-field='quantGuest' )
                                         span.ti-minus
-                                    input.form-control.input-number.female(type='text', id="quantityFemale" name='quantFemale', value="0" min='0', max='6' disabled)
+                                    input.form-control.input-number.quantityGuest(type='text', id="quantityGuest" name='quantGuest', value="0" min='0', max='6' disabled)
                                     span.input-group-btn
-                                      button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quantFemale' )
+                                      button.btn.btn-info.btn-number.buttonAdd(type='button', data-type='plus', data-field='quantGuest' )
                                         span.ti-plus
                           .modal-footer
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(data-dismiss='modal') Close
-                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right(data-dismiss='modal') Proceed
+                            button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.proceedButton(type='button') Proceed
+
+
                   //VIEW COMMON CUSTOMER DETAILS
                   #viewCustomerDetails.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                     .modal-dialog(role='document')
@@ -451,6 +474,157 @@ html(lang='en')
                           center
                             button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd(data-dismiss='modal') Close
         
+                // Registration For Loyalty
+                #registerLoyalty.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                          span(aria-hidden='true') ×
+                        center
+                          h4.modal-title#titleCustomerName
+                      .modal-body
+                        .row
+                          .col-md-10
+                            p About sa loyalty
+                        .row
+                          .col-md-6
+                            .form-group
+                              label.control-label Username
+                              star *
+                              .input-group
+                                .input-group-addon 
+                                  i.fa.fa-user
+                                input.form-control(type='text', name='username', id="usernameReg" placeholder='username')
+                              .category#ValidUsername
+                        .row
+                          .col-md-5
+                            .form-group
+                              label.control-label Password
+                              star *
+                              .input-group
+                                .input-group-addon 
+                                  i.fa.fa-key
+                                input.form-control(type='password', name='username', id="password1" placeholder='password')
+                              .category#ValidLength
+                          .col-md-5
+                            .form-group
+                              label.control-label Re-enter Password
+                              star *
+                              input.form-control(type='password', name='username', id="password3" placeholder='confim password' disabled)
+                              .category#ValidPass
+                        .row
+                        .row
+                          .col-md-5
+                            .form-group
+                              h4 Fee: 
+                                a ₱#{reqSession.utilities[0].membership_fee}.00
+                          .col-md-5
+                            .form-group
+                              h4 Perks: freebies
+                      .modal-footer
+                        button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegisterSubmit(type='button') Submit
+                        button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button') Cancel
+
+                // PAYNOW LOYALTY
+                #payment.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        h5.modal-title
+                          center Summary
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      .modal-body
+                        .row
+                          .col-md-5
+                            h4
+                              strong Name: 
+                                a#customerName
+                        hr
+                        .row
+                          .col-md-10
+                            p Registration for Loyalty Membership
+                        .row
+                          .col-md-4
+                          .col-md-6
+                            h3
+                              strong#TotalPrice
+                              input.totalPrice(type='' value='')
+
+                        hr
+                        .row
+                          .col-md-5
+                            .form-group.has-default.bmd-form-group
+                              label Amount Received:
+                              .input-group
+                                span.input-group-addon ₱  
+                                input.form-control.amountReceived(type='number', placeholder='Amount Received')
+                                span.input-group-addon .00
+                          
+                          .col-md-5
+                            .form-group.has-default.bmd-form-group
+                              label Change: 
+                              .input-group
+                                span.input-group-addon ₱ 
+                                input.form-control.change(type='number', placeholder='Change' value='0' disabled)
+                                span.input-group-addon .00
+                        .modal-footer
+                          button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
+                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+                // PAYNOW AMENITY
+                #paynowAmenity.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                  .modal-dialog(role='document')
+                    .modal-content
+                      .modal-header
+                        h5.modal-title
+                          center Summary
+                        button.close(type='button', data-dismiss='modal', aria-label='Close')
+                      .modal-body
+                        .row
+                          .col-md-10
+                            h4
+                              strong Name: 
+                                a#Name
+                        hr
+                        .row
+                          .col-md-15
+                            .panel-info
+                              .panel-heading 
+                                center Privelage to use all amenity.
+                        .row
+                          .col-md-10
+                            h4 Total Guest: 
+                                a#EntranceFee
+                                  strong#numberOfGuest 
+                        .row
+                          .col-md-4
+                          .col-md-6
+                            h3
+                              strong#TotalAmenityPrice
+                              input.totalAmenityPrice(type='hidden' value='')
+
+                        hr
+                        .row
+                          .col-md-5
+                            .form-group.has-default.bmd-form-group
+                              label Amount Received:
+                              .input-group
+                                span.input-group-addon ₱  
+                                input.form-control.amountAmenityReceived(type='number', placeholder='Amount Received')
+                                span.input-group-addon .00
+                          
+                          .col-md-5
+                            .form-group.has-default.bmd-form-group
+                              label Change: 
+                              .input-group
+                                span.input-group-addon ₱ 
+                                input.form-control.changeAmenity(type='number', placeholder='Change' value='0' disabled)
+                                span.input-group-addon .00
+                        .modal-footer
+                          button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonAmenityDone(type='button') Done
+                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+            
         footer.footer
           .container-fluid
             .copyright.pull-right
@@ -501,6 +675,255 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  //- PASSWORD VALIDATION
+  script.
+    $(document).ready(function(){
+      // FIRST PASSWORD
+      $('#password1').on('change paste keyup', function(){
+        $('#ValidLength').empty()
+        if($(this).val() != 0)
+        {
+          $('#password3').attr('disabled',false)
+        }
+        else
+        {
+          $('#password3').attr('disabled',true)
+          $('#password3').val('')
+        }
+        if($(this).val().length == 7 || $(this).val().length == 8 || $(this).val().length == 9)
+        {
+          $('#ValidLength').append('your password is medium')
+          $('#ValidLength').css('color','orange')
+        }
+        else if($(this).val().length <= 7)
+        {
+          $('#ValidLength').append('your password is too short')
+          $('#ValidLength').css('color','red')
+          $('#password3').attr('disabled',true)
+        }
+        else if($(this).val().length >= 10 )
+        {
+          $('#ValidLength').append('your password is strong')
+          $('#ValidLength').css('color','green')
+        }
+
+        if($(this).val()==0)
+        {
+          $('#ValidLength').empty()
+          $('#ValidPass').empty()
+        }
+      })
+      // SECOND PASSWORD
+      $('#password3').on('change paste keyup', function(){
+          $('#ValidPass').empty()
+        if($(this).val() != $('#password1').val())
+        {
+          $('#ValidPass').append(`Di Equal`)
+          $('#ValidPass').css('color','red')
+        }
+        else if($(this).val() == $('#password1').val())
+        {
+          $('#ValidPass').append(`Equal`)
+          $('#ValidPass').css('color','green')
+        }
+        if($(this).val().length == 0)
+        {
+          $('#ValidPass').empty()
+        }
+      })
+    })
+
+    // USERNAME VALIDATION
+    $('#usernameReg').on('change paste keyup',function(){
+      $('#ValidUsername').empty()
+      var username = $(this).val()
+        if(username.length <= 5 )
+        {
+          $('#ValidUsername').append('your username is too short')
+          $('#ValidUsername').css('color','red')
+        }
+        if (username.length == 0)
+        {
+          $('#ValidUsername').empty()
+        }
+    })
+
+  //- REGISTRATION FOR LOYALTY
+  script.
+    $(document).ready(function(){
+      $('.loyaltyRegistrationButton').click(function(){
+        var cust_id = $(this).val()
+        var cust_name = $(`.name[id='${cust_id}']`).val()
+        $('#registerLoyalty').modal('show')
+        $('#titleCustomerName').append(`${cust_name}`)
+        $('#registerLoyalty').on('hidden.bs.modal', function (){
+        $('#titleCustomerName').empty()
+        });
+
+      // SUBMIT BUTTON
+      $('.buttonRegisterSubmit').click(function(){
+        var password1 = $('#password1').val()
+        var password3 = $('#password3').val()
+        var username = $('#usernameReg').val()
+        var scriptSession = !{JSON.stringify(reqSession)};
+        var membership_fee = scriptSession.utilities[0].membership_fee
+        var valid =  scriptSession.utilities[0].membership_validity
+        var validity = moment(new Date()).format('MMMM DD, YYYY')
+            validity = moment(validity).add(valid,'months').format('MMMM DD, YYYY')
+            
+            
+        if(password1 == password3 && password1 != 0 && password3 != 0)
+        {
+          swal({
+            title:'Are you sure?',
+            icon: 'warning'
+          }).then(function(submit){
+            if(submit)
+            {
+              swal({
+                title: "Pay now or Later?",
+                icon: 'info',
+                buttons: ['Pay Later',"Pay Now"]
+              }).then(function(PayNow){
+                if(PayNow)
+                {
+                  console.log(cust_name)
+                  $('#payment').modal('show')
+                  $('#customerName').append(`${cust_name}`)
+                  $('#TotalPrice').append(`Total Price: ₱${membership_fee}.00`)
+                  $('.totalPrice').val(membership_fee)
+
+                  $('.buttonDone').click(function(){
+                    if($('.amountReceived').val()==0)
+                    {
+                      swal({
+                        title: "Amount Received is 0",
+                        icon: 'warning'
+                      })
+                    }
+                    else if($('.amountReceived').val() < $('.totalPrice').val())
+                    {
+                      swal({
+                        title: "The Amount Received is Insuficient",
+                        icon: 'warning'
+                      })
+                    }
+                    else if($('.amountReceived').val() >= $('.totalPrice').val())
+                    {
+                      swal({
+                        title: "Are you sure?",
+                        icon: 'info'
+                      }).then(function(sure){
+                        if(sure)
+                        {
+                          $.post('./RegisterCommonToLoyaltyPaynow',{cust_id,username,password1,validity,membership_fee}).done(function(data){
+                            if(data.alertDesc==0)
+                            {
+                              swal({
+                                title: 'Success',
+                                text: cust_name+' is now a Loyalty Member',
+                                icon: 'success'
+                              }).then(function(){
+                                location.reload()
+                              })
+                            }
+                            else if(data.alertDesc == 1)
+                            {
+                              swal({
+                                title: 'ERROR',
+                                icon: 'error'
+                              })
+                            }
+                            else if(data.alertDesc==2)
+                            {
+                              swal({
+                                title:'Oops',
+                                text: username+' is already exist',
+                                icon: 'warning'
+                              })
+                            }
+                          })
+                        }
+                      })
+                    }
+                  })
+                }
+                else
+                {
+                  
+                  swal({
+                      title: "Are you sure?",
+                      icon: 'info'
+                    }).then(function(sure){
+                      if(sure)
+                      {
+                        $.post('./RegisterCommonToLoyalty',{cust_id,username,password1,validity,membership_fee}).done(function(data){
+                          if(data.alertDesc==0)
+                          {
+                            swal({
+                              title: 'Success',
+                              text: cust_name+' is now a Loyalty Member',
+                              icon: 'success'
+                            }).then(function(){
+                              location.reload()
+                            })
+                          }
+                          else if(data.alertDesc == 1)
+                          {
+                            swal({
+                              title: 'ERROR',
+                              icon: 'error'
+                            })
+                          }
+                          else if(data.alertDesc==2)
+                          {
+                            swal({
+                              title:'Oops',
+                              text: username+' is already exist',
+                              icon: 'warning'
+                            })
+                          }
+                        })
+                      }
+                    })
+                }
+              })
+            }
+            
+          })
+        }
+        if(password1 == 0 && password3 ==0 && username ==0 || password1 == 0 || password3 ==0 || username ==0)
+        {
+          swal({
+              title: 'Please double check the fields.',
+              text: 'Make sure all required fields have value.', 
+              icon: 'warning'
+            })
+        }
+    })
+      })
+    })
+
+  //- COMPUTATION FOR CHANGE
+  script.
+    $(document).ready(function(){
+      $('.amountReceived').on('change paste keyup',function(){
+        var totalPrice = $('.totalPrice').val()
+        var input = $('.amountReceived').val()
+        if($('.amountReceived').val()==0)
+          {
+            $('.change').val(0)
+          }
+        else
+        {
+          input -= parseInt(totalPrice)
+          $('.change').val(input)
+        }
+      })
+    })
+
+
+  //- AMENITY
   script.
     $(document).ready(function(){
       $('.amenityButton').click(function(){
@@ -508,8 +931,162 @@ html(lang='en')
         var cust_name = $(`.name[id='${id}'`).val()
         $('#amenityOnly').modal('show')
         $('#custName').append(`${cust_name}`)
+
+        // PROCEED
+        $('.proceedButton').click(function(){
+          var guest_quantity = $('.quantityGuest').val()
+          var scriptSession = !{JSON.stringify(reqSession)};
+          var entrance_fee = scriptSession.utilities[0].entrance_fee
+          swal({
+            title: guest_quantity+' Guest?',
+            text: ' Are You Sure?',
+            icon: 'info',
+            buttons: ['No','Yes'],
+          }).then(function(Yes){
+            if(Yes)
+            {
+              swal({
+                title: "Pay now or Later?",
+                icon: 'info',
+                buttons: ['Pay Later',"Pay Now"],
+              }).then(function(PayNow){
+                if(PayNow)
+                {
+                  $('#paynowAmenity').modal('show')
+                  $('#Name').append(`${cust_name}`)
+                  $('#numberOfGuest').append(`${guest_quantity} x `)
+                  $('#EntranceFee').append(`₱${entrance_fee}.00`)
+                  entrance_fee_total = parseInt(guest_quantity) * parseInt(entrance_fee)
+
+                  $('.totalAmenityPrice').val(entrance_fee_total)
+                  $('#TotalAmenityPrice').append(`Total Price: ₱${entrance_fee_total}.00`)
+
+                  // BUTTON AMENITY DONE
+
+                  $('.buttonAmenityDone').click(function(){
+                    var amount_received = $('.amountAmenityReceived').val()
+                    var total_price = $('.totalAmenityPrice').val()
+                    
+                    console.log('AMOUNT RECEIVED', amount_received)
+                    console.log('TOTAL PRICE', total_price)
+
+                    console.log(amount_received >= total_price)
+                    if(amount_received == 0)
+                    {
+                      swal({
+                        title: "Amount Received is 0",
+                        icon: 'warning'
+                      })
+                    }
+                    else if(amount_received < total_price)
+                    {
+                      swal({
+                        title: "The Amount Received is Insuficient",
+                        icon: 'warning'
+                      })
+                    }
+                    else if(parseInt(amount_received) >= parseInt(total_price))
+                    {
+                      swal({
+                        title: "Are you sure?",
+                        icon: 'info'
+                      }).then(function(sure){
+                        if(sure)
+                        {
+                          $.post('./AmenityPayNow',{
+                            cust_id: id,
+                            guest_quantity,
+                            entrance_fee_total
+                          }).done(function(data){
+                            if(data.alertDesc==0)
+                            {
+                              swal({
+                                title: "Success",
+                                icon: 'success'
+                              }).then(function(){
+                                location.reload();
+                              })
+                            }
+                            else
+                            {
+                              swal({
+                                title: "ERROR",
+                                icon: 'error'
+                              })
+                            }
+                          })
+                        }
+                      })
+                    }
+                  })
+
+                }
+                else
+                {
+                  $.post('./AmenityPayLater',{
+                            cust_id: id,
+                            guest_quantity,
+                            entrance_fee_total
+                          }).done(function(data){
+                            if(data.alertDesc==0)
+                            {
+                              swal({
+                                title: "Success",
+                                icon: 'success'
+                              }).then(function(){
+                                location.reload();
+                              })
+                            }
+                            else
+                            {
+                              swal({
+                                title: "ERROR",
+                                icon: 'error'
+                              })
+                            }
+                  })
+                }
+              })
+            }
+            else
+            {
+
+            }
+          })
+        })
+
+
+
+
+         $('#amenityOnly').on('hidden.bs.modal', function (){
+        $('#custName').empty()
+
+        
+        
+        });
       })
     })
+  
+  //- COMPUTATION FOR CHANGE[AMENITY]
+  script.
+    $(document).ready(function(){
+      $('.amountAmenityReceived').on('change paste keyup',function(){
+        var totalPrice = $('.totalAmenityPrice').val()
+        var input = $('.amountAmenityReceived').val()
+        if($('.amountAmenityReceived').val()==0)
+          {
+            $('.changeAmenity').val(0)
+          }
+        else
+        {
+          input -= parseInt(totalPrice)
+          $('.changeAmenity').val(input)
+        }
+      })
+    })
+
+
+  //- RESERVATION 
   script.
     $(document).ready(function(){
       $('.reserveButton').click(function(){
