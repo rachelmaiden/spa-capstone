@@ -5415,6 +5415,7 @@ img {
 .card-plain .card-header {
   padding-left: 5px;
   padding-right: 5px;
+  padding-top: 50px;
 }
 
 .card-plain .card-header:after {

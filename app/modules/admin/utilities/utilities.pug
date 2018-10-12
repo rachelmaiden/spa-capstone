@@ -244,7 +244,7 @@ html(lang='en')
                     .col-md-5
                       .form-group.has-default.bmd-form-group
                         h6.strong Company Logo
-                        button.btn.btn-warning.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
+                        button.btn.btn-info.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
                           span.btn-label
                             i.ti-pencil
                           | Edit 
@@ -281,7 +281,7 @@ html(lang='en')
                       .form-group.has-default.bmd-form-group
                         label Closing Time
                         input.timepicker.form-control(type='text', placeholder='Closing Time' value=`${utilities.closing_time}` id='closing_time')
-                    .col-md-3
+                    .col-md-4
                       .form-group.has-default.bmd-form-group
                         label Maximum Guest Per Reservation
                         input.form-control(type='number', placeholder='Maximum Guest Per Reservation' value=`${utilities.max_guest}` id='max_guest')
@@ -293,7 +293,7 @@ html(lang='en')
                           span.input-group-addon .00
 
                   .row
-                    .col-md-2
+                    .col-md-3
                           label Membership Validity
                           .input-group
                             input.form-control(type='number' value=`${utilities.membership_validity}` id='membership_validity')
@@ -315,13 +315,18 @@ html(lang='en')
                           label Time Allowance After Each Reservation
                           .input-group
                             input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
-                            span.input-group-addon minutes              
-                    .col-md-3
+                            span.input-group-addon minutes
+                    .col-md-4
+                          label Time Allowed To Change Therapist
+                          .input-group
+                            input.form-control(type='number' )
+                            span.input-group-addon minutes                      
+                    .col-md-4
                           label Therapist Commission Per Service
                           .input-group
                             input.form-control(type='number' value=`${utilities.therapist_commission}` id='therapist_commission')
                             span.input-group-addon %
-
+                    
                   .row
                     .col-md-4
                       h5
