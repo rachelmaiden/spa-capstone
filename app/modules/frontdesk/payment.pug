@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='/assets/paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='/assets/paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa
+    title #{reqSession.utilities[0].company_name}
     meta(property='og:site_name', content='Creative Tim')
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
@@ -29,6 +29,12 @@ html(lang='en')
         text-decoration:underline;
         cursor:pointer;
       }
+      
+      .dropdown-menu {
+        margin-left: -117px !important;
+      }
+
+      
   body.sidebar-mini
     .wrapper
       .sidebar(data-active-color='spa', style='color: white')
@@ -90,34 +96,7 @@ html(lang='en')
               a.navbar-brand(href='#Dashboard')
                 | Payment
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search/assets.')
               ul.nav.navbar-nav.navbar-right
-                li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
                 li
                   a.btn-rotate(href='#settings')
                     i.ti-settings
@@ -131,8 +110,7 @@ html(lang='en')
                   .row
                     div
                       .card-content
-                        center
-                          h2 Unpaid Customers
+                        
                   .content
                     .container-fluid
                       .row
@@ -141,86 +119,270 @@ html(lang='en')
                           br
                           .card
                             .card-content
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              .fresh-datatables
-                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                  thead
-                                    tr
-                                      th Name
-                                      th Membership Type
-                                      th Time
-                                      th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Name
-                                      th Membership Type
-                                      th Time
-                                      th Actions
-                                  tbody
-                                    each notpaid in notpaids
-                                      tr
-                                        td= notpaid.cust_fname+" "+notpaid.cust_lname
-                                        if(notpaid.cust_type==0)
-                                          td Common
-                                        else
-                                          td Loyalty
-                                        td= notpaid.walkin_start_time+" TO "+notpaid.walkin_end_time
-                                        td
-                                          button.btn.btn-info.btn-fill.btn-wd.checkoutButton(type='button' value=`${notpaid.walkin_id}`)
-                                            span.btn-label
-                                            | Checkout
-                  br
-                  br
-                  .content
-                    .container-fluid
-                      .row
-                        .col-md-12
-                          p.category  
-                          br
-                          .card
-                            .card-content
-                              center  
-                                h2 Paid Customers
-                              hr
-                              .toolbar
-                                // Here you can write extra buttons/actions for the toolbar
-                              .fresh-datatables
-                                table#datatables1.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                  thead
-                                    tr
-                                      th Membership Type
-                                      th Name
-                                      th.disabled-sorting
-                                      th.disabled-sorting
-                                      th Services
-                                  tfoot
-                                    tr
-                                      th Membership Type
-                                      th Name
-                                      th
-                                      th
-                                      th Services
+                              .nav-tabs-navigation
+                                .nav-tabs-wrapper
+                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                                    li.active
+                                      a(href='#reservation', data-toggle='tab') Reservation
+                                    li
+                                      a(href='#amenities', data-toggle='tab') Amenity
+                                    li
+                                      a(href='#loyalty', data-toggle='tab') Loyalty Membership 
+                              #my-tab-content.tab-content
+                                // RESERVATION TAB
+                                #reservation.tab-pane.active        
+                                  .toolbar
+                                    // Here you can write extra buttons/actions for the toolbar
+                                  center
+                                    h2 Unpaid Customers
+                                  .fresh-datatables
+                                    table#datatablesReservation.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Reservation Details
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Reservation Details
+                                          th Actions
+                                      tbody
+                                        tr
+                                          td
+                                          td
+                                          td
+                                          td 
+                                            .dropdown
+                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
+                                                    i.ti-settings
+                                                  ul.dropdown-menu
+                                                    li
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                        span.btn-label
+                                                        i.ti-calendar
+                                                        |  Pay Now
+                                                    li
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                        span.btn-label
+                                                        i.ti-eye
+                                                        | Details   
+                                  br
+                                  br
+                                  center
+                                    h2 Paid Customers
+                                  .fresh-datatables
+                                    table#datatablesReservation2.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th.disabled-sorting
+                                          th.disabled-sorting Actions
+                                          
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th
+                                          th Actions
+                                          
 
-                                  tbody
-                                    each paid in paids
-                                      tr
-                                        if(paid.cust_type==0)
-                                          td Common
-                                        else
-                                          td Loyalty
-                                        td= paid.cust_fname+" "+paid.cust_lname
-                                        td
-                                        td
-                                        td
-                                          if(paid.walkin_payment_status== 2)
-                                            button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
-                                                span.btn-label
-                                                | Refund
-                                          else
-                                            button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
-                                              span.btn-label
-                                              | View 
+                                      tbody
+                                        tr
+                                          td
+                                          td
+                                          td
+                                          td 
+                                            .dropdown
+                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
+                                                    i.ti-settings
+                                                  ul.dropdown-menu
+                                                    li
+                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                        span.btn-label
+                                                        i.ti-calendar
+                                                        |  Refund
+                                
+                                //- AMENITIES TAB
+                                #amenities.tab-pane    
+                                  .toolbar
+                                    center
+                                      h2 Unpaid Customers
+                                  .fresh-datatables
+                                    table#datatablesAmenity.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Date
+                                          th.disabled-sorting Total Guest
+                                          th.disabled-sorting Total
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Date
+                                          th Total Guest
+                                          th Total 
+                                          th Actions
+                                      tbody
+                                        each amenity in amenities
+                                          if(amenity.paid_status==0)
+                                            tr
+                                              td= amenity.cust_fname+' '+amenity.cust_mname+' '+amenity.cust_lname
+                                                input.amenityName(type='hidden' value=`${amenity.cust_fname} ${amenity.cust_mname} ${amenity.cust_lname}` id=`${amenity.cust_id}`)
+                                                input.amenityId(type='hidden' value=`${amenity.amenity_reservation_id}` id=`${amenity.cust_id}`)
+                                              if(amenity.cust_type==1)
+                                                td Loyalty
+                                              else
+                                                td Common
+                                              td= amenity.date
+                                              td= amenity.number_ofGuest
+                                                input.number_guest(type='hidden' value=`${amenity.number_ofGuest}` id=`${amenity.cust_id}`)
+                                              td= '₱'+amenity.total_fee+'.00'
+                                                input.total_fee(type='hidden' value=`${amenity.total_fee}` id=`${amenity.cust_id}`)
+                                              td
+                                                .dropdown(style="right: 10px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 5px')
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-info.payNowAmenityButton(data-toggle='modal', value=`${amenity.cust_id}`  style="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-calendar
+                                                          |  Pay Now          
+                                  hr
+                                  br
+                                  br
+                                  .toolbar
+                                    center
+                                      h2 Paid Customers
+                                  .fresh-datatables
+                                    table#datatablesAmenity2.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Date
+                                          th.disabled-sorting Total Guest
+                                          th.disabled-sorting Total
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th Membership Type
+                                          th Date
+                                          th Total Guest
+                                          th Total 
+                                          th Actions
+
+                                      tbody
+                                        each amenity in amenities
+                                          if(amenity.paid_status==1)
+                                            tr
+                                              td= amenity.cust_fname+' '+amenity.cust_mname+' '+amenity.cust_lname
+                                                input.amenityId(type='hidden' value=`${amenity.amenity_reservation_id}` id=`${amenity.cust_id}`)
+                                              if(amenity.cust_type==1)
+                                                td Loyalty
+                                              else
+                                                td Common
+                                              td= amenity.date
+                                                input.date(type='hidden' value=`${amenity.date}` id=`${amenity.cust_id}`)
+                                              td= amenity.number_ofGuest
+                                              td= '₱'+amenity.total_fee+'.00'
+                                              td   
+                                                .dropdown(style="right: 10px")
+                                                      button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 5px')
+                                                        i.ti-settings
+                                                      ul.dropdown-menu
+                                                        li
+                                                          button.btn.btn-simple.btn-info.amenityRefundButton(data-toggle='modal', value=`${amenity.cust_id}`  style="margin-right: 15px")
+                                                            span.btn-label
+                                                            i.ti-calendar
+                                                            |  Refund    
+                                //- LOYALTY TAB
+                                #loyalty.tab-pane      
+                                  .toolbar
+                                    center
+                                      h2 Unpaid Customers
+                                  .fresh-datatables
+                                    table#datatablesLoyalty.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      thead
+                                        tr
+                                          th Name
+                                          th.disabled-sorting
+                                          th.disabled-sorting
+                                          th.disabled-sorting Actions
+                                      tfoot
+                                        tr
+                                          th Name
+                                          th 
+                                          th 
+                                          th Actions
+                                      tbody
+                                        each loyalty in loyaltys
+                                          tr
+                                            td= loyalty.cust_fname+' '+loyalty.cust_mname+' '+loyalty.cust_lname
+                                              input.loyalty_name(type='hidden' value=`${loyalty.cust_fname} ${loyalty.cust_mname} ${loyalty.cust_lname}` id=`${loyalty.member_id}`)
+                                            td
+                                            td
+                                            td
+                                              .dropdown(style="right: 10px")
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 5px')
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-info.payNowButton(data-toggle='modal', value=`${loyalty.member_id}` style="margin-right: 15px")
+                                                          span.btn-label
+                                                          i.ti-calendar
+                                                          |  Pay Now
+                                            
+
+                                
+                                //- br
+                                //- br
+                                //- center
+                                //-   h2 Paid Customers
+                                //- .fresh-datatables
+                                //-   table#datatables3.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                //-     thead
+                                //-       tr
+                                //-         th Membership Type
+                                //-         th Name
+                                //-         th.disabled-sorting
+                                //-         th.disabled-sorting
+                                //-         th Services
+                                //-     tfoot
+                                //-       tr
+                                //-         th Membership Type
+                                //-         th Name
+                                //-         th
+                                //-         th
+                                //-         th Services
+
+                                //-     tbody
+                                //-       each paid in paids
+                                //-         tr
+                                //-           if(paid.cust_type==0)
+                                //-             td Common
+                                //-           else
+                                //-             td Loyalty
+                                //-           td= paid.cust_fname+" "+paid.cust_lname
+                                //-           td
+                                //-           td
+                                //-           td
+                                //-             if(paid.walkin_payment_status== 2)
+                                //-               button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
+                                //-                   span.btn-label
+                                //-                   | Refund
+                                //-             else
+                                //-               button.btn.btn-info.btn-fill.btn-wd.viewButton(type='button' value=`${paid.walkin_id}`)
+                                //-                 span.btn-label
+                                //-                 | View 
 
                   
                   
@@ -360,11 +522,101 @@ html(lang='en')
                               
                               
                               
+                              // PAYNOW
+                              #payment.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                                .modal-dialog(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      h5.modal-title
+                                        center Summary
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    .modal-body
+                                      .row
+                                        .col-md-8
+                                          h4
+                                            strong Name: 
+                                              a#customerName
+                                      hr
+                                      .row
+                                        .col-md-10
+                                          p Registration for Loyalty Membership
+                                      .row
+                                        .col-md-4
+                                        .col-md-6
+                                          h3
+                                            strong#TotalLoyaltyPrice
+                                            input.totalLoyaltyPrice(type='' value='')
+
+                                      hr
+                                      .row
+                                        .col-md-5
+                                          .form-group.has-default.bmd-form-group
+                                            label Amount Received:
+                                            .input-group
+                                              span.input-group-addon ₱  
+                                              input.form-control.amountLoyaltyReceived(type='number', placeholder='Amount Received')
+                                              span.input-group-addon .00
+                                        
+                                        .col-md-5
+                                          .form-group.has-default.bmd-form-group
+                                            label Change: 
+                                            .input-group
+                                              span.input-group-addon ₱ 
+                                              input.form-control.changeLoyalty(type='number', placeholder='Change' value='0' disabled)
+                                              span.input-group-addon .00
+                                      .modal-footer
+                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
+                                        button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                               
                               
                               
-                              
-                              
+                              // PAYNOW AMENITY
+                              #paynowAmenity.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
+                                .modal-dialog(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      h5.modal-title
+                                        center Summary
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                    .modal-body
+                                      .row
+                                        .col-md-10
+                                          h4
+                                            strong Name: 
+                                              a#Name
+                                      hr
+                                      .row
+                                        .col-md-10
+                                          h4 Total Guest: 
+                                              a#EntranceFee
+                                                strong#numberOfGuest 
+                                      .row
+                                        .col-md-4
+                                        .col-md-6
+                                          h3
+                                            strong#TotalAmenityPrice
+                                            input.totalAmenityPrice(type='hidden' value='')
+
+                                      hr
+                                      .row
+                                        .col-md-5
+                                          .form-group.has-default.bmd-form-group
+                                            label Amount Received:
+                                            .input-group
+                                              span.input-group-addon ₱  
+                                              input.form-control.amountAmenityReceived(type='number', placeholder='Amount Received')
+                                              span.input-group-addon .00
+                                        
+                                        .col-md-5
+                                          .form-group.has-default.bmd-form-group
+                                            label Change: 
+                                            .input-group
+                                              span.input-group-addon ₱ 
+                                              input.form-control.changeAmenity(type='number', placeholder='Change' value='0' disabled)
+                                              span.input-group-addon .00
+                                      .modal-footer
+                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonAmenityDone(type='button') Done
+                                        button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                               //- #summary.modal.fade(tabindex='-1', role='dialog' aria-labelledby='myModalLabel')
                               //-   .modal-dialog.modal-lg(role='document')
                               //-     .modal-content
@@ -454,6 +706,250 @@ html(lang='en')
     script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
     // Paper Dashboard PRO DEMO methods, don't include it in your project!
     script(src='/assets/paperDashboardPro/js/demo.js')
+    //- AMENITY PAYNOW
+    script.
+      $(document).ready(function(){
+        $('.payNowAmenityButton').click(function(){
+          var cust_id = $(this).val()
+          var amenity_id= $(`.amenityId[id='${cust_id}']`).val()
+          var name = $(`.amenityName[id='${cust_id}']`).val()
+          var guest_quantity = $(`.number_guest[id='${cust_id}']`).val()
+          var total_fee = $(`.total_fee[id='${cust_id}']`).val()  
+          var scriptSession = !{JSON.stringify(reqSession)};
+          var entrance_fee = scriptSession.utilities[0].entrance_fee
+
+          $('#paynowAmenity').modal('show')
+
+          $('#numberOfGuest').append(`${guest_quantity} x `)
+          $('#Name').append(`${name}`)
+          $('#EntranceFee').append(`₱${entrance_fee}.00`)
+          $('.totalAmenityPrice').val(total_fee)
+          $('#TotalAmenityPrice').append(`Total Price: ₱${total_fee}.00`)
+        
+
+
+        $('.buttonAmenityDone').click(function(){
+            var amount_received = $('.amountAmenityReceived').val()
+            var total_price = $('.totalAmenityPrice').val()
+            
+            console.log('AMOUNT RECEIVED', amount_received)
+            console.log('TOTAL PRICE', total_price)
+
+            console.log(amount_received >= total_price)
+            if(amount_received == 0)
+            {
+              swal({
+                title: "Amount Received is 0",
+                icon: 'warning'
+              })
+            }
+            else if(amount_received < total_price)
+            {
+              swal({
+                title: "The Amount Received is Insuficient",
+                icon: 'warning'
+              })
+            }
+            else if(parseInt(amount_received) >= parseInt(total_price))
+            {
+              swal({
+                title: "Are You Sure?",
+                icon: 'info',
+                buttons: ["No","Yes"]
+              }).then(function(yes){
+                  if(yes)
+                  {
+                    $.post('./AmenityLatePayment',{cust_id,amenity_id}).done(function(data){
+                      if(data.alertDesc==0)
+                      {
+                        swal({
+                          title: "Success",
+                          icon: 'success'
+                        }).then(function(){
+                          location.reload()
+                        })
+                      }
+                      else
+                      {
+                        swal({
+                          title: "ERROR",
+                          icon: 'error'
+                        })
+                      }
+                    })
+                  }
+                  else
+                  {
+
+                  }
+              })
+            }
+        })
+        $('#paynowAmenity').on('hidden.bs.modal', function (){
+          $('#Name').empty()
+          $('#EntranceFee').empty()
+          $('.totalAmenityPrice').empty()  
+          $('#TotalAmenityPrice').empty()        
+          $('#numberOfGuest').empty()
+        })
+        })
+
+      })
+    
+
+    //- COMPUTATION FOR CHANGE[AMENITY]
+    script.
+      $(document).ready(function(){
+        $('.amountAmenityReceived').on('change paste keyup',function(){
+          var totalPrice = $('.totalAmenityPrice').val()
+          var input = $('.amountAmenityReceived').val()
+          if($('.amountAmenityReceived').val()==0)
+            {
+              $('.changeAmenity').val(0)
+            }
+          else
+          {
+            input -= parseInt(totalPrice)
+            $('.changeAmenity').val(input)
+          }
+        })
+      })
+
+    //- AMENITY REFUND
+    script.
+      $(document).ready(function(){
+        $('.amenityRefundButton').click(function(){
+          var cust_id = $(this).val()
+          var date = $(`.date[id='${cust_id}'`).val()
+          var amenity_id= $(`.amenityId[id='${cust_id}']`).val()
+          var scriptSession = !{JSON.stringify(reqSession)};
+          var amenity_cancellation = scriptSession.utilities[0].amenity_cancellation
+          var timeNow = moment(new Date()).format('MMMM DD, YYYY hh:mm A')
+          var allowable_time = moment(date).add(amenity_cancellation,'minutes').format('MMMM DD, YYYY hh:mm A')
+          console.log('DATE', date)
+          console.log('ALLOWABLE TIME', allowable_time)
+
+          if(moment(timeNow).isSameOrAfter(allowable_time))
+          {
+            swal({
+              title: 'Ooops',
+              text: 'Sorry no refund',
+              icon:'error'
+            })
+          }
+          else
+          {
+            swal({
+              title: 'Refund? Are you Sure?',
+              text: "Once Done it can't be undo",
+              icon: 'warning',
+              buttons: ["No","Yes"]
+            }).then(function(yes){
+              if(yes)
+              {
+                $.post('./AmenityRefund',{cust_id,amenity_id}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: 'Success',
+                      text: ' ',
+                      icon: 'success'
+                    }).then(function(){
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title:'Error',
+                      icon:'error'
+                    })
+                  }
+                })
+              }
+            })
+          }
+        })
+      })
+
+    //- PAYMENT LOYALTY MEMBER
+    script.
+      $(document).ready(function(){
+        $('.payNowButton').click(function(){
+          var loyalty_id = $(this).val()
+          var cust_name = $(`.loyalty_name[id='${loyalty_id}']`).val()
+          var scriptSession = !{JSON.stringify(reqSession)};
+          var membership_fee = scriptSession.utilities[0].membership_fee
+          $('#payment').modal('show')
+          $('#customerName').append(`${cust_name}`)
+          $('#TotalLoyaltyPrice').append(`Total Price: ₱${membership_fee}.00`)
+          $('.totalLoyaltyPrice').val(membership_fee)
+
+          $('.buttonDone').click(function(){
+            if($('.amountLoyaltyReceived').val()==0)
+            {
+              swal({
+                title: "Amount Received is 0",
+                icon: 'warning'
+              })
+            }
+            else if($('.amountLoyaltyReceived').val() < $('.totalLoyaltyPrice').val())
+            {
+              swal({
+                title: "The Amount Received is Insuficient",
+                icon: 'warning'
+              })
+            }
+            else if($('.amountLoyaltyReceived').val() >= $('.totalLoyaltyPrice').val())
+            {
+              swal({
+                title: "Are you sure?",
+                icon: 'info'
+              }).then(function(sure){
+                if(sure)
+                {
+                  $.post('./LatePaymentForLoyalty',{loyalty_id,membership_fee}).done(function(data){
+                    if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: 'Success',
+                        text: cust_name+' is now Paid for his/her Loyalty Membership fee',
+                        icon: 'success'
+                      }).then(function(){
+                        location.reload()
+                      })
+                    }
+                    else if(data.alertDesc == 1)
+                    {
+                      swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                    }
+                  })
+                }
+              })
+            }
+          })
+        })
+      })
+    //- COMPUTATION FOR CHANGE
+    script.
+      $(document).ready(function(){
+        $('.amountLoyaltyReceived').on('change paste keyup',function(){
+          var totalPrice = $('.totalLoyaltyPrice').val()
+          var input = $('.amountLoyaltyReceived').val()
+          if($('.amountLoyaltyReceived').val()==0)
+            {
+              $('.changeLoyalty').val(0)
+            }
+          else
+          {
+            input -= parseInt(totalPrice)
+            $('.changeLoyalty').val(input)
+          }
+        })
+      })
     script.
       $(document).ready(function(){
         $('.amountReceived').on('change paste keyup',function(){
@@ -902,7 +1398,7 @@ html(lang='en')
       });
     script(type='text/javascript').
       $(document).ready(function() {
-      $('#datatables').DataTable({
+      $('#datatablesReservation').DataTable({
       "pagingType": "full_numbers",
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
       responsive: true,
@@ -914,7 +1410,7 @@ html(lang='en')
       });
     script.
       $(document).ready(function() {
-      $('#datatables1').DataTable({
+      $('#datatablesReservation2').DataTable({
       "pagingType": "full_numbers",
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
       responsive: true,
@@ -924,6 +1420,57 @@ html(lang='en')
       }
       });
       });
+    script.
+      $(document).ready(function() {
+      $('#datatablesAmenity').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      });  
+    script.
+      $(document).ready(function() {
+      $('#datatablesAmenity2').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      });  
+    script.
+      $(document).ready(function() {
+      $('#datatablesLoyalty').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      }); 
+    script.
+      $(document).ready(function() {
+      $('#datatablesLoyalty2').DataTable({
+      "pagingType": "full_numbers",
+      "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+      responsive: true,
+      language: {
+      search: "_INPUT_",
+      searchPlaceholder: "Search records",
+      }
+      });
+      });   
+  
+
+
     script(type='text/javascript').
       $(document).ready(function(){
       demo.initWizard();

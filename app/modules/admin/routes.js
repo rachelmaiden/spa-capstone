@@ -1770,7 +1770,8 @@ router.post('/utilities/updateLogo',upload.single('company_logo'),(req,res)=>{
   secondShift_timeStart="${req.body.secondShift_timeStart}",
   secondShift_timeEnd="${req.body.secondShift_timeEnd}",
   reservation_timeAllowance="${req.body.reservation_timeAllowance}",
-  therapist_commission="${req.body.therapist_commission}"
+  therapist_commission="${req.body.therapist_commission}",
+  amenity_cancellation='${req.body.amenity_cancellation}'
   WHERE utilities_id="${req.body.utilities_id}"
   `
 

@@ -18,6 +18,10 @@ router.get('/login',(req, res) => {
   res.render('customer/login')
 })
 
+router.get('/customerProfile',(req, res) => {
+  res.render('customer/custProfile')
+})
+
 
 // router.get('/custHome',mid.guestistnauthed,(req, res) => {
 // 	const query =`SELECT customer_tbl.*, loyalty_tbl.* 

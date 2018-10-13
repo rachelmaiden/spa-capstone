@@ -238,6 +238,9 @@ html(lang='en')
 
                   .row
                     .col-md-4
+                      h3 COMPANY
+                  .row
+                    .col-md-4
                       .form-group.has-default.bmd-form-group
                         label Company Name
                         input.form-control(type='text', placeholder='Company Name' value=`${utilities.company_name}` id='company_name')
@@ -281,47 +284,61 @@ html(lang='en')
                       .form-group.has-default.bmd-form-group
                         label Closing Time
                         input.timepicker.form-control(type='text', placeholder='Closing Time' value=`${utilities.closing_time}` id='closing_time')
+                  
+                  
+                  hr
+                  .row
                     .col-md-4
+                      h3 RESERVATION
+                  .row
+                    .col-md-3
                       .form-group.has-default.bmd-form-group
                         label Maximum Guest Per Reservation
                         input.form-control(type='number', placeholder='Maximum Guest Per Reservation' value=`${utilities.max_guest}` id='max_guest')
+                    .col-md-3
+                          label Reservation Forfeiture
+                          .input-group
+                            input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
+                            span.input-group-addon minutes
+                  .row 
+                    .col-md-3
+                          label Time Allowance After Each Reservation
+                    .col-md-3
+                          label Time Allowance For Changing Therapist     
+                  .row
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
+                        span.input-group-addon minutes   
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
+                        span.input-group-addon minutes                
+                  
+                  
+                  hr
+                  .row
+                    .col-md-4
+                      h3 LOYALTY MEMBERSHIP
+                  .row
                     .col-md-2
                         label Membership Fee
                         .input-group
                           span.input-group-addon ₱
                           input.form-control(type='number' value=`${utilities.membership_fee}` id='membership_fee')
                           span.input-group-addon .00
-
-                  .row
-                    .col-md-3
+                    .col-md-2
                           label Membership Validity
                           .input-group
                             input.form-control(type='number' value=`${utilities.membership_validity}` id='membership_validity')
                             span.input-group-addon months
-                    .col-md-2
-                        label Entrance Fee
-                        .input-group
-                          span.input-group-addon ₱
-                          input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
-                          span.input-group-addon .00
-                    .col-md-3
-                          label Reservation Forfeiture
-                          .input-group
-                            input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
-                            span.input-group-addon minutes
                     
-                  .row 
+                  hr  
+                  .row
                     .col-md-4
-                          label Time Allowance After Each Reservation
-                          .input-group
-                            input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
-                            span.input-group-addon minutes
-                    .col-md-4
-                          label Time Allowed To Change Therapist
-                          .input-group
-                            input.form-control(type='number' )
-                            span.input-group-addon minutes                      
-                    .col-md-4
+                      h3 THERAPIST
+                  .row
+                    .col-md-3
                           label Therapist Commission Per Service
                           .input-group
                             input.form-control(type='number' value=`${utilities.therapist_commission}` id='therapist_commission')
@@ -356,9 +373,25 @@ html(lang='en')
                       .form-group.has-default.bmd-form-group
                         label End Time
                         input.timepicker.form-control(type='text', value=`${utilities.secondShift_timeEnd}` id='secondShift_timeEnd' placeholder='End Time' )    
-
-
-
+                  hr
+                  .row
+                    .col-md-4
+                      h3 AMENITY
+                  .row
+                    .col-md-2
+                        label Entrance Fee
+                        .input-group
+                          span.input-group-addon ₱
+                          input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
+                          span.input-group-addon .00
+                  .row
+                    .col-md-4
+                      label Allowable Time for Cancellation 
+                  .row
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number', value=`${utilities.amenity_cancellation}` id='amenity_cancellation' placeholder='minutes' )
+                        .input-group-addon minutes
 
                   .row
                     button.btn.btn-info.btn-fill.btn-wd.pull-right.updateButton(type='button' value=`${utilities.utilities_id}`) Save
@@ -480,7 +513,8 @@ html(lang='en')
           secondShift_timeStart:$('#secondShift_timeStart').val(),
           secondShift_timeEnd:$('#secondShift_timeEnd').val(),
           reservation_timeAllowance: $('#timeAllowance').val(),
-          therapist_commission: $('#therapist_commission').val()
+          therapist_commission: $('#therapist_commission').val(),
+          amenity_cancellation: $('#amenity_cancellation').val()
         }).done(function(data){
             if(data.alertDesc==0)
               {
