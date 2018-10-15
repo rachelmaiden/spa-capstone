@@ -42,8 +42,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-            
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -673,31 +674,33 @@ html(lang='en')
      var docDefinition = {
     content: [
       	{text: 'MBAY Health Spa', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-        {text: '10/6/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: '10/6/18', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
+        {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0-10, 0, 8]},
+        {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
+        {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
+        {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
+        {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
         {
           style: 'tableExample',
           table: {
+            widths: [200, '*', 100, '*'], 
             headerRows: 1,
             body: [
               [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
-              ['Body Massage', '1', '1,500.00','3'],
-              ['Body Scrub ', '1', '1,000.00', '2'],
+              ['Body Massage', '1', '₱ 1,500.00','3'],
+              ['Body Scrub ', '1', '₱ 1,000.00', '2'],
             ]
           },
           layout: 'lightHorizontalLines'
         },
-        {text: 'Total: 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
+        {text: 'Total: ₱ 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
         {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
-        {text: 'Amount Received: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
-        {text: 'Change: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
+        {text: 'Amount Received:₱ 3000.00', fontSize: 15, bold: true, margin: [0, 30, 0, 8]},
+        {text: 'Change: ₱ 500.00', fontSize: 15, bold: true, margin: [350, -25, 0, 8]}
     ],
 
     	styles: {
+       
       header: {
         fontSize: 18,
         bold: true,

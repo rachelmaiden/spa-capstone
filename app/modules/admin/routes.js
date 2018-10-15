@@ -1852,5 +1852,8 @@ router.get('/packagesReport',(req, res) => {
   res.render('admin/reports/packagesReport')
 })
 
+router.get('/promosReport',(req, res) => {
+  res.render('admin/reports/promosReport')
+})
 
 exports.admin = router

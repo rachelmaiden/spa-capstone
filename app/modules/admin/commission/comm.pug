@@ -21,13 +21,8 @@ html(lang='en')
     link(href='https://fonts.googleapis.com/css?family=Muli:400,300', rel='stylesheet', type='text/css')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
     style.
-      .pull-right .dropdown-menu:after {
-        left: auto;
-        right: 10px;
-          }
-      .pull-right .dropdown-menu {
-          left: auto;
-          right: 0;
+      .dropdown-menu {
+        margin-left: -115px !important;
       }
   body
     .wrapper
@@ -43,6 +38,8 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
 
               a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
                 span
@@ -256,14 +253,9 @@ html(lang='en')
                                       th.disabled-sorting
                                       th.disabled-sorting
                                       th.disabled-sorting Total Commission
-                                  tfoot
-                                    tr
-                                      th Therapist Name
-                                      th
-                                      th
-                                      th
-                                      th
-                                      th Total Commission
+                                      th.disabled-sorting Actions
+                                      
+                                  
                                   tbody
                                     tr
                                       td Gramar Lacsina
@@ -273,6 +265,16 @@ html(lang='en')
                                       td
                                       td
                                       td 500
+                                      td
+                                        .dropdown(style="right: 10px")
+                                          button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown')
+                                            i.ti-settings
+                                          ul.dropdown-menu
+                                            li
+                                              button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                span.btn-label
+                                                i.ti-calendar
+                                                |  Release
                                          
                              
         footer.footer

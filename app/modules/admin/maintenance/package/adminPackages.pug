@@ -33,8 +33,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -261,16 +262,7 @@ html(lang='en')
                                       th Price
                                       th Available
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Name
-                                      th Services Included
-                                      th Points
-                                      th Person
-                                      th Duration
-                                      th Price
-                                      th Available
-                                      th Actions
+                                  
                                   tbody
                                     each pack in packages
                                       tr

@@ -45,8 +45,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -273,16 +274,7 @@ html(lang='en')
                                       th Skills
                                       th Available
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Name
-                                     
-                                      th Age
-                                      th Gender
-                                     
-                                      th Skills
-                                      th Available
-                                      th Actions
+                                  
                                   tbody
                                     each thera in theras
                                       tr
