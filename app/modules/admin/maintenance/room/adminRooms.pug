@@ -44,7 +44,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg') 
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINSTRATOR
               .clearfix
@@ -270,14 +272,7 @@ html(lang='en')
                                       th Fee
                                       th Available
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Type
-                                      th Name
-                                      th Bed Quantity
-                                      th Fee
-                                      th Available
-                                      th Actions
+                                 
                                   tbody
                                     each room in rooms
                                       tr
@@ -348,7 +343,7 @@ html(lang='en')
                                   star *
                                   .input-group
                                       span.input-group-addon ₱  
-                                      input.form-control(type='number', placeholder='Rate' name='room_rate' id='room_rate' required='true' aria-label='true')
+                                      input.form-control(type='number', placeholder='Fee' name='room_rate' id='room_rate' required='true' aria-label='true')
                                       span.input-group-addon .00
                             .row
                           .modal-footer

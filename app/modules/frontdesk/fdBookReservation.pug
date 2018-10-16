@@ -42,6 +42,8 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               
               a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 50px')
                 span
@@ -62,7 +64,17 @@ html(lang='en')
               a(href='./payment')
                 i.ti-credit-card
                 p
-                  | Payment      
+                  | Payment 
+            li
+              a(href='./therapist')
+                i.ti-user
+                p
+                  | Therapist Attendance    
+            li
+              a(href='./giftcert')
+                i.ti-gift
+                p
+                  | Gift Certification            
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -560,6 +572,8 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
+  script(src='/assets/pdfmake/pdfmake.js')
+  script(src='/assets/pdfmake/vfs_fonts.js')
   script.
     $(document).ready(function(){
       var datePicked = !{JSON.stringify(dateHello)}
@@ -3649,6 +3663,58 @@ html(lang='en')
           $('#RegisterModal').modal('hide')
           $('#checkout').modal('show')
         })
+
+    $(document).on(	'click', '#pdfButton', function(){ 
+      console.log('mamamo')
+      var docDefinition = {
+    content: [
+        {text: 'MBAY Health Spa', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+        {text: '10/6/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+        {
+          style: 'tableExample',
+          table: {
+            headerRows: 1,
+            body: [
+              [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
+              ['Body Massage', '1', '1,500.00','3'],
+              ['Body Scrub ', '1', '1,000.00', '2'],
+            ]
+          },
+          layout: 'lightHorizontalLines'
+        },
+        {text: 'Total: 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
+        {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
+        {text: 'Amount Received: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
+        {text: 'Change: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
+    ],
+
+      styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        margin: [0, 0, 0, 10]
+      },
+      subheader: {
+        fontSize: 16,
+        bold: true,
+        margin: [0, 10, 0, 5]
+      },
+      tableExample: {
+        margin: [0, 5, 0, 15]
+      },
+      tableHeader: {
+        bold: true,
+        fontSize: 13,
+        color: 'black'
+      }
+      }
+    };
+    pdfMake.createPdf(docDefinition).open(); 
       })
     })
 

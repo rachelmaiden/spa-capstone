@@ -43,6 +43,8 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
@@ -288,14 +290,7 @@ html(lang='en')
                                       th.disabled-sorting
                                       th.disabled-sorting
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Room Type
-                                      th
-                                      th
-                                      th
-                                      th
-                                      th Actions
+                                  
                                   tbody
                                     each rtyp in rtyps
                                       tr

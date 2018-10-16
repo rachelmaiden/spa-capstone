@@ -219,11 +219,11 @@ html(lang='en')
                       span.sidebar-mini 
                       span.sidebar-normal Services
                   li(style="margin-left: 30px;")
-                    a(href='../tables/datatables.net.html')
+                    a(href='./packagesReport')
                       span.sidebar-mini 
                       span.sidebar-normal Packages
                   li(style="margin-left: 30px;")
-                    a(href='../tables/datatables.net.html')
+                    a(href='./promosReport')
                       span.sidebar-mini 
                       span.sidebar-normal Promos
       .main-panel
@@ -266,6 +266,11 @@ html(lang='en')
                                 option(value='Daily') Daily
                                 option(value='Monthly') Monthly
                                 option(value='Monthly') Yearly
+                        .col-md-3
+                          select.selectpicker(multiple='', title='Filter', data-style='btn-info', data-size='7' )
+                              option(value='Service Type') Service Type
+                              option(value='Duration') Duration
+                              option(value='Price') Price         
 
                         .col-md-12
                           p.category 
@@ -293,8 +298,12 @@ html(lang='en')
                                         td 1,500.00
                                         td 60 minutes
                                         td 10
-                                        td 15,000.00
-                            
+                                        td ₱15,000.00
+                          .row
+                            .col-md-5
+                              h2(style='margin-left: 450px')  Total:   
+                            .col-md-5
+                              h2(style='margin-left: 160px')  ₱ 15,000.00              
                              
         footer.footer
           .container-fluid

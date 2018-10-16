@@ -44,7 +44,7 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/icon.jpg')
+                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
@@ -162,15 +162,15 @@ html(lang='en')
                 i.ti-settings
                 p
                   | Utilities
-            li.active
+            li
               a(data-toggle='collapse', href='#queries')
                 i.ti-notepad
                 p
                   | Queries
                   b.caret
-              #queries.collapse.in
+              #queries.collapse
                 ul.nav
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./customerList')
                       span.sidebar-mini 
                       span.sidebar-normal Customers
@@ -206,26 +206,26 @@ html(lang='en')
                 //-     a(href='./List')
                 //-       span.sidebar-mini 
                 //-       span.sidebar-normal         
-            li
-              a(data-toggle='collapse', href='#sales')
+            li.active
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse.in
                 ul.nav
-                  li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini D
-                      span.sidebar-normal Daily
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini M
-                      span.sidebar-normal Monthly
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Services
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Packages
+                  li(style="margin-left: 30px;").active
+                    a(href='./promosReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Promos                      
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -237,9 +237,8 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Queries
+                | Promos Reports
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
               
               ul.nav.navbar-nav.navbar-right
                 li
@@ -263,6 +262,16 @@ html(lang='en')
                   .content
                     .container-fluid
                       .row
+                        .col-md-2
+                           select.selectpicker(name='' title='Daily'  data-style='btn-info' )
+                                option(value='Daily') Daily
+                                option(value='Monthly') Monthly
+                                option(value='Monthly') Yearly
+                        .col-md-3
+                          select.selectpicker(multiple='', title='Filter', data-style='btn-info', data-size='7' )
+                              option(value='Duration') Duration
+                              option(value='Price') Price
+                      .row
                         .col-md-12
                           p.category  
                           br
@@ -274,25 +283,16 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Customer Name
-                                      th.disabled-sorting Age
-                                      th.disabled-sorting Customer Type
-                                      th.disabled-sorting Gender
-                                      th.disabled-sorting
-                                      th.disabled-sorting 
-                                  tfoot
-                                    tr
-                                      th Customer Name
-                                      th Age
-                                      th Customer Type
-                                      th Gender
-                                      th
-                                      th 
+                                      th.disabled-sorting Package Name
+                                      th.disabled-sorting Package Price
+                                      th.disabled-sorting Services Included
+                                      th.disabled-sorting Package Duration
+                                      th.disabled-sorting No. of Times Availed
+                                      th.disabled-sorting Total
                                   tbody
                                     
                                       tr
                                         td
-                                        input.name(type='hidden' value='' id='')
                                         td
                                         td
                                         td
@@ -312,7 +312,11 @@ html(lang='en')
                                         //-           span.btn-label
                                         //-           i.ti-trash
                                         //-           |  Delete
-                             
+                          .row
+                            .col-md-5
+                              h2(style='margin-left: 450px')  Total:   
+                            .col-md-5
+                              h2(style='margin-left: 160px')  ₱ 15,000.00      
         footer.footer
           .container-fluid
             .copyright.pull-right

@@ -43,8 +43,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-              
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -276,15 +277,8 @@ html(lang='en')
                                       th.disabled-sorting
                                       th.disabled-sorting Available
                                       th.disabled-sorting
-                                      th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Maximum Duration of Service
-                                      th
-                                      th
-                                      th Available
-                                      th
-                                      th Actions
+                                      th.disabled-sorting.pull-right Actions
+                                  
                                   tbody
                                     each duration in durations
                                       tr
