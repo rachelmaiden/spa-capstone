@@ -140,35 +140,43 @@ html(lang='en')
                                       thead
                                         tr
                                           th Name
-                                          th Membership Type
+                                          th
                                           th Reservation Details
                                           th.disabled-sorting Actions
                                       tfoot
                                         tr
                                           th Name
-                                          th Membership Type
+                                          th
                                           th Reservation Details
                                           th Actions
                                       tbody
-                                        tr
-                                          td
-                                          td
-                                          td
-                                          td 
-                                            .dropdown
-                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
-                                                    i.ti-settings
-                                                  ul.dropdown-menu
-                                                    li
-                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
-                                                        span.btn-label
-                                                        i.ti-calendar
-                                                        |  Pay Now
-                                                    li
-                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
-                                                        span.btn-label
-                                                        i.ti-eye
-                                                        | Details   
+                                        each notpaid in notpaids
+                                          tr
+                                            td= notpaid.cust_fname+' '+notpaid.cust_mname+' '+notpaid.cust_lname
+                                            td
+                                            td
+                                            if(notpaid.walkin_indicator==1)
+                                              td
+                                                button.btn.btn-simple.btn-warning.amenityButton( value='' style="margin-right: 15px")
+                                                    span.btn-label
+                                                    i.fa.fa-bed
+                                                    |  Inservice
+                                            else if(notpaid.walkin_indicator== 0 && 1)
+                                            td 
+                                              .dropdown
+                                                    button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
+                                                      i.ti-settings
+                                                    ul.dropdown-menu
+                                                      li
+                                                        button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                          span.btn-label
+                                                          i.ti-calendar
+                                                          |  Pay Now
+                                                      li
+                                                        button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                          span.btn-label
+                                                          i.ti-eye
+                                                          | Details   
                                   br
                                   br
                                   center
@@ -178,33 +186,43 @@ html(lang='en')
                                       thead
                                         tr
                                           th Name
-                                          th Membership Type
+                                          th 
                                           th.disabled-sorting
                                           th.disabled-sorting Actions
                                           
                                       tfoot
                                         tr
                                           th Name
-                                          th Membership Type
+                                          th 
                                           th
                                           th Actions
                                           
 
                                       tbody
-                                        tr
-                                          td
-                                          td
-                                          td
-                                          td 
-                                            .dropdown
-                                                  button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
-                                                    i.ti-settings
-                                                  ul.dropdown-menu
-                                                    li
-                                                      button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
-                                                        span.btn-label
-                                                        i.ti-calendar
-                                                        |  Refund
+                                        each paid in paids
+                                          tr
+                                            td=paid.cust_fname+' '+paid.cust_mname+' '+paid.cust_lname
+                                            td
+                                            td
+                                            if(paid.walkin_payment_status == 2 && paid.walkin_indicator==2)
+                                              td
+                                            else if(paid.walkin_payment_status == 2 && paid.walkin_indicator==1)
+                                              td
+                                                button.btn.btn-simple.btn-warning.amenityButton( value='' style="margin-right: 15px")
+                                                  span.btn-label
+                                                  i.fa.fa-bed
+                                                  |  Inservice
+                                            else if(paid.walkin_payment_status == 2 && paid.walkin_indicator==0)
+                                              td 
+                                                .dropdown
+                                                      button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' )
+                                                        i.ti-settings
+                                                      ul.dropdown-menu
+                                                        li
+                                                          button.btn.btn-simple.btn-info.reserveButton(data-toggle='modal')
+                                                            span.btn-label
+                                                            i.ti-calendar
+                                                            |  Refund
                                 
                                 //- AMENITIES TAB
                                 #amenities.tab-pane    

@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title MBAY Health Spa
+    title #{reqSession.utilities[0].company_name}
     
     // Bootstrap core CSS
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
@@ -27,7 +27,7 @@ html(lang='en')
           a.simple-text.logo-mini(href='')
             | 
           a.simple-text.logo-normal(href='./home')
-            | MBAY Health Spa
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
@@ -104,7 +104,7 @@ html(lang='en')
                                       th.disabled-sorting Membership Type
                                       th.disabled-sorting Reservation Details
                                       th Time
-                                      th.disabled-sorting Actions
+  
                                   tfoot
                                     tr
                                       th Name
@@ -112,7 +112,7 @@ html(lang='en')
                                       th Membership Type
                                       th Reservation Details
                                       th Time
-                                      th Actions
+
                                   tbody
                                     each reserv in reservs
                                       tr
@@ -123,14 +123,11 @@ html(lang='en')
                                         else
                                           td Loyalty
                                         td
-                                          button.btn.btn-info.btn-fill.btn-wd(data-toggle='modal', data-target='#viewDetails')
+                                          button.btn.btn-info.btn-fill.btn-wd.viewButton(data-toggle='modal' value=`${reserv.walkin_id}`)
                                             span.btn-label
                                             | View  Reservation Details
                                         td= reserv.walkin_start_time+" TO "+reserv.walkin_end_time
-                                        
-                                        td
-                                          a.btn.btn-simple.btn-info.btn-icon.like(href='#', rel='tooltip', title='Proceed To Service')
-                                            i.ti-angle-double-right
+
                                       
                               #viewDetails.modal.fade(tabindex='-1', role='dialog')
                                 .modal-dialog.modal-lg(role='document')
@@ -144,29 +141,34 @@ html(lang='en')
                                     .modal-footer
                                       // <button type="button" class="btn btn-secondary pull-left btn btn-info btn-fill btn-wd" ></button>
                                       button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Close
-                              .row
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .row
-                                .col-md-6
-                                  .card-header
-                                    h4.card-title
-                                  .card-content
-                                .col-md-6
-                                  .card-header
-                                  .card-content
-                              .card-header
-                                h4.card-title
-                              .card-content
-                                .row
-                                  .col-md-12
-                                .row
-                                  .col-md-12
-                                .row
+
+                            #viewServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+                                .modal-dialog(role='document')
+                                  .modal-content
+                                    .modal-header
+                                      button.close(type='button', data-dismiss='modal', aria-label='Close')
+                                        span(aria-hidden='true') ×
+                                      center
+                                        h4.modal-title#title
+                                    .modal-body 
+                                      .row
+                                        .col-md-12
+                                          .card-content
+                                            h4#therapist
+                                            .toolbar
+                                            .fresh-datatables
+                                            table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                              thead
+                                                tr
+                                                  th
+                                                    strong  Services 
+                                                  th
+                                                    strong  Quantity
+                                                  th
+                                                    strong Duration
+                                                  th
+                                                    strong Total Price 
+                                              tbody#viewServicesAvailed
                   footer.footer
                     .container-fluid
                       .copyright.pull-right
@@ -218,6 +220,34 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
+    $(document).ready(function(){
+        $('.viewButton').click(function(){
+          var table =$('#datatables').DataTable()
+          var id = $(this).val()
+          $.post('/receptionist/home/queue/viewServices',{id:id})
+            .done(data=>{
+                $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+                $('#therapist').append(`Therapist: 
+                <a>${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
+              for(var i=0; i<data.out1.length;i++){
+                var total_duration = moment.duration(data.out1[i].service_total_duration).asMinutes()
+                  $('#viewServicesAvailed').append(` 
+                  <tr>
+                  <td>${data.out1[i].service_name}</td>
+                  <td>${data.out1[i].service_total_quantity}</td>
+                  <td>${total_duration} minutes</td>
+                  <td>₱${data.out1[i].service_total_price}.00</td>`)
+                }
+          $('#viewServices').modal('show')
+          $('#viewServices').on('hidden.bs.modal', function (){
+            $('#viewServicesAvailed').empty()
+            $('#title').empty()
+            $('#therapist').empty()
+          })
+          }) 
+      })
+      })
+  script.
       $(document).ready(function(){
         $('.logout').click(function(){
               swal({
@@ -251,4 +281,19 @@ html(lang='en')
       searchPlaceholder: "Search records",
       }
       });
+      });
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      $('#calendar').val('')
       });
