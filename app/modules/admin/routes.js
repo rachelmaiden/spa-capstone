@@ -1856,4 +1856,16 @@ router.get('/promosReport',(req, res) => {
   res.render('admin/reports/promosReport')
 })
 
+router.get('/roomsReport',(req, res) => {
+  res.render('admin/reports/roomsReport')
+})
+
+router.get('/freebiesReport',(req, res) => {
+  res.render('admin/reports/freebiesReport')
+})
+
+router.get('/gcReports',(req, res) => {
+  res.render('admin/reports/gcReports')
+})
+
 exports.admin = router

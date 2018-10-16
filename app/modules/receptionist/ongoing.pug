@@ -105,14 +105,7 @@ html(lang='en')
                                       th.disabled-sorting Reservation Details
                                       th.disabled-sorting End Time
                                       th.disabled-sorting Action
-                                  tfoot
-                                    tr
-                                      th Name
-                                      th Gender
-                                      th Membership Type
-                                      th Reservation Details
-                                      th End Time
-                                      th Action
+                                  
                                   tbody
                                     each ongoing in ongoings
                                       tr
@@ -309,7 +302,7 @@ html(lang='en')
         $('.logout').click(function(){
               swal({
           title: "Are you sure?",
-          text: "Do you want to Log Out?",
+          text: "Do you want to log out?",
           icon: "warning",
           buttons: true,
           dangerMode: true,
