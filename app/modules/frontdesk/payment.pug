@@ -757,21 +757,21 @@ html(lang='en')
             if(amount_received == 0)
             {
               swal({
-                title: "Amount Received is 0",
+                title: "Amount Received is 0.",
                 icon: 'warning'
               })
             }
             else if(amount_received < total_price)
             {
               swal({
-                title: "The Amount Received is Insuficient",
+                title: "The amount received is insuficient.",
                 icon: 'warning'
               })
             }
             else if(parseInt(amount_received) >= parseInt(total_price))
             {
               swal({
-                title: "Are You Sure?",
+                title: "Are you sure?",
                 icon: 'info',
                 buttons: ["No","Yes"]
               }).then(function(yes){
@@ -858,8 +858,8 @@ html(lang='en')
           else
           {
             swal({
-              title: 'Refund? Are you Sure?',
-              text: "Once Done it can't be undo",
+              title: 'Refund? Are you sure?',
+              text: "Once done, it can't be undone.",
               icon: 'warning',
               buttons: ["No","Yes"]
             }).then(function(yes){
@@ -909,14 +909,14 @@ html(lang='en')
             if($('.amountLoyaltyReceived').val()==0)
             {
               swal({
-                title: "Amount Received is 0",
+                title: "Amount received is 0.",
                 icon: 'warning'
               })
             }
             else if(parseInt($('.amountLoyaltyReceived').val()) < parseInt($('.totalLoyaltyPrice').val()))
             {
               swal({
-                title: "The Amount Received is Insuficient",
+                title: "The Amount Received is insuficient.",
                 icon: 'warning'
               })
             }
@@ -933,7 +933,7 @@ html(lang='en')
                     {
                       swal({
                         title: 'Success',
-                        text: cust_name+' is now Paid for his/her Loyalty Membership fee',
+                        text: cust_name+' is now Paid for his/her loyalty membership fee.',
                         icon: 'success'
                       }).then(function(){
                         location.reload()
@@ -1100,7 +1100,7 @@ html(lang='en')
                     {
                       swal({
                         title:'Not Success', 
-                        text:'Username Already Exist', 
+                        text:'Username already exist.', 
                         icon:'warning'
                         }).then(function(){
                           $('#RegisterModal').modal('show')
@@ -1307,28 +1307,28 @@ html(lang='en')
           if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== false)
             {
               swal({
-                title: "Amount Received is 0",
+                title: "Amount received is 0.",
                 icon: 'warning'
               })
             }
           else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()) && $('.checkboxGC')[0].checked== false)
             {
               swal({
-                title: "Amount Received is insufficient",
+                title: "Amount received is insufficient.",
                 icon: 'warning'
               })
             }
           else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) < parseInt($('.totalPrice').val()))
           {
             swal({
-                title: "Amount Received is insufficient",
+                title: "Amount received is insufficient.",
                 icon: 'warning'
               })
           }
           else if($('.amountReceived').val()==0 && $('.checkboxGC')[0].checked== true && parseInt($('.totalGCval').val()) > parseInt($('.totalPrice').val()))
           {
             swal({
-                title: "The Gift certificate will not return any change",
+                title: "The gift certificate will not return any change.",
                 icon: 'warning'
               }).then(function(submit){
                 if(submit)

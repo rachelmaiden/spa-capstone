@@ -43,7 +43,7 @@ html(lang='en')
                 p
                   | Registration
             li
-              a(href='./reservation')
+              a(href='./fdReservation')
                 i.ti-calendar
                 p
                   | Reservation
@@ -77,34 +77,8 @@ html(lang='en')
               a.navbar-brand(href='#Dashboard')
                 | Overview
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search/assets.')
+              
               ul.nav.navbar-nav.navbar-right
-                li
-                  a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                    i.ti-panel
-                    p Stats
-                li.dropdown
-                  a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                    i.ti-bell
-                    span.notification 5
-                    p.hidden-md.hidden-lg
-                      | Notifications
-                      b.caret
-                  ul.dropdown-menu
-                    li
-                      a(href='#not1') Notification 1
-                    li
-                      a(href='#not2') Notification 2
-                    li
-                      a(href='#not3') Notification 3
-                    li
-                      a(href='#not4') Notification 4
-                    li
-                      a(href='#another') Another notification
                 li
                   a.btn-rotate(href='#settings')
                     i.ti-settings
@@ -398,7 +372,7 @@ html(lang='en')
 
         swal({
           title: 'Confirmation',
-          text: therapist_name+" is having a Break.",
+          text: therapist_name+" is having a break.",
           icon: 'warning'
         }).then(function(confirm){
           if(confirm)
@@ -437,7 +411,7 @@ html(lang='en')
         
         swal({
           title: 'Confirmation',
-          text: 'Is '+therapist_name+' is absent?',
+          text: 'Is '+therapist_name+' absent?',
           icon: 'warning'
         }).then(function(arrived){
           if(arrived)

@@ -80,34 +80,9 @@ html(lang='en')
                         a.navbar-brand(href='#Dashboard')
                           | Reservation
                       .collapse.navbar-collapse
-                        form.navbar-form.navbar-left.navbar-search-form(role='search')
-                          .input-group
-                            span.input-group-addon
-                              i.fa.fa-search
-                            input.form-control(type='text', value='', placeholder='Search...')
+                        
                         ul.nav.navbar-nav.navbar-right
-                          li
-                            a.dropdown-toggle.btn-magnify(href='#stats', data-toggle='dropdown')
-                              i.ti-panel
-                              p Stats
-                          li.dropdown
-                            a.dropdown-toggle.btn-rotate(href='#notifications', data-toggle='dropdown')
-                              i.ti-bell
-                              span.notification 5
-                              p.hidden-md.hidden-lg
-                                | Notifications
-                                b.caret
-                            ul.dropdown-menu
-                              li
-                                a(href='#not1') Notification 1
-                              li
-                                a(href='#not2') Notification 2
-                              li
-                                a(href='#not3') Notification 3
-                              li
-                                a(href='#not4') Notification 4
-                              li
-                                a(href='#another') Another notification
+                         
                           li
                             a.btn-rotate(href='#settings')
                               i.ti-settings
@@ -474,15 +449,15 @@ html(lang='en')
         {
           swal({
             title: 'Ooooopps! Sorry',
-            text: 'Your Reservation Exceed our Allowable time to change Therapist',
+            text: 'Your reservation exceed our allowable time to change therapists.',
             icon: 'error'
           })
         }
         else
         {
           swal({
-            title: 'Are You Sure?',
-            text: 'Change Therapist?',
+            title: 'Are you sure?',
+            text: 'Change therapist?',
             icon: 'warning'
           }).then(function(sure){
             if(sure)
@@ -513,7 +488,7 @@ html(lang='en')
                   {
                     swal({
                       title: therapist_name+' is not available',
-                      text: 'Choose another therapist'
+                      text: 'Choose another therapist.'
                     })
                     $('#change_therapist').val('default');
                     $('#change_therapist').selectpicker("refresh");
@@ -528,7 +503,7 @@ html(lang='en')
                   {
                     swal({
                       title: 'Success',
-                      text: 'The therapist is successfully changed',
+                      text: 'The therapist is successfully changed.',
                       icon: 'success'
                     }).then(function(){
                       $('#changeTherapist').modal('hide')
