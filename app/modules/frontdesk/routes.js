@@ -2015,8 +2015,9 @@ router.post('/AmenityPayNow',(req,res)=>{
   var alertSuccess=0
   var notSuccess=1
   var date = moment(new Date()).format('MMMM DD, YYYY hh:mm A')
-  const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date)
-  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",1,"${date}")`
+  var date_only = moment().format('MMMM DD, YYYY')
+  const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date,date_only)
+  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",1,"${date}","${date_only}")`
 
   db.query(query,(err,out)=>{
     if(err)
@@ -2037,8 +2038,9 @@ router.post('/AmenityPayLater',(req,res)=>{
   var alertSuccess=0
   var notSuccess=1
   var date = moment(new Date()).format('MMMM DD, YYYY hh:mm A')
-  const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date)
-  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",0,"${date}")`
+  var date_only = moment().format('MMMM DD, YYYY')
+  const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date,date_only)
+  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",1,"${date}","${date_only}")`
 
   db.query(query,(err,out)=>{
     if(err)

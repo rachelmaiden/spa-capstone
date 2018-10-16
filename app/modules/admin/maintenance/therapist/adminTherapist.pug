@@ -216,15 +216,11 @@ html(lang='en')
                   li(style="margin-left: 30px;")
                     a(href='./servicesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Services
+                      span.sidebar-normal Daily
                   li(style="margin-left: 30px;")
                     a(href='./packagesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Packages
-                  li(style="margin-left: 30px;")
-                    a(href='./promosReport')
-                      span.sidebar-mini 
-                      span.sidebar-normal Promos
+                      span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -282,7 +278,8 @@ html(lang='en')
                                           a.viewDetails(style='color: black; cursor: pointer' rel='tooltip' title='Click to view details' therapist_id=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
                                         input.name(type='hidden' value=`${thera.therapist_fname} ${thera.therapist_mname} ${thera.therapist_lname}` id=`${thera.therapist_id}`)
                                         
-                                        td.age(therapist_id=`${thera.therapist_id}` birthday=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
+                                        td= thera.therapist_birthYear
+                                        //- td.age(therapist_id=`${thera.therapist_id}` birthday=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
                                         input(type='hidden' value=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
                                         td= thera.therapist_gender
                                        

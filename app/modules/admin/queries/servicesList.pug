@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Online Booking and Spa Management System
+    title #{reqSession.utilities[0].company_name}
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -14,6 +14,8 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
     link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/buttons.dataTables.min.css', rel='stylesheet')
+
     // CSS for Demo Purpose, don't include it in your project
     link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
     // Fonts and icons
@@ -37,9 +39,8 @@ html(lang='en')
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
           a.simple-text.logo-mini(href='')
-            | MBAY
           a.simple-text.logo-normal(href='')
-            | MBAY Health Spa
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
@@ -217,15 +218,11 @@ html(lang='en')
                   li(style="margin-left: 30px;")
                     a(href='./servicesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Services
+                      span.sidebar-normal Daily
                   li(style="margin-left: 30px;")
                     a(href='./packagesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Packages
-                  li(style="margin-left: 30px;")
-                    a(href='./promosReport')
-                      span.sidebar-mini 
-                      span.sidebar-normal Promos
+                      span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -272,21 +269,29 @@ html(lang='en')
                               .fresh-datatables
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
-                                    tr
-                                      th.disabled-sorting  Service Type
+                                    th.disabled-sorting  Type
+                                    th.disabled-sorting  Name
+                                    th.disabled-sorting  Price
+                                    th.disabled-sorting  Duration
+                                    th.disabled-sorting  Points
+                                  
+                                  tfoot
+                                    th.disabled-sorting  Service Type
                                       th.disabled-sorting  Service Name
                                       th.disabled-sorting  Price
                                       th.disabled-sorting  Duration
                                       th.disabled-sorting  Points
+                                      
                                  
                                   tbody
-                                    
+                                    each service in services
                                       tr
-                                        td Body Massage
-                                        td Thai Massage
-                                        td 1000.00
-                                        td 60 mins
-                                        td 2
+                                        td= service.service_type_desc
+                                        td= service.service_name
+                                        td= '₱'+service.service_price+'.00'
+                                        td= service.service_duration_desc+' minutes'
+                                        td= service.service_points
+                                        
                       //- .row
                       //-   .col-md-4
                       //-     button.btn.btn-info.btn-fill.btn-wd#openPdf(data-toggle='modal', data-target='') Sample        
@@ -344,13 +349,49 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
-  script(src='/assets/pdfmake/pdfmake.js')
- 
+   script(src='/assets/paperDashboardPro/js/buttons.flash.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.html5.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.print.min.js')
+  script(src='/assets/paperDashboardPro/js/dataTables.buttons.min.js')
+  script(src='/assets/paperDashboardPro/js/jszip.min.js')
+  script(src='/assets/paperDashboardPro/js/vfs_fonts.js')
+  script(src='/assets/paperDashboardPro/js/jspdf.js')
+  //- script(src='/assets/paperDashboardPro/js/jquery-3.3.1.js')
+  
     
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
+    });
+  script.
+    $(document).ready(function() {  
+      $('#datatables').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            { extend:'copy', attr: { id: 'allan' } }, 'csv', 'excel', 'pdf', 'print'
+        ],
+          initComplete: function () {
+              this.api().columns().every( function () {
+                  var column = this;
+                  var select = $('<select><option value=""></option></select>')
+                      .appendTo( $(column.footer()).empty() )
+                      .on( 'change', function () {
+                          var val = $.fn.dataTable.util.escapeRegex(
+                              $(this).val()
+                          );
+  
+                          column
+                              .search( val ? '^'+val+'$' : '', true, false )
+                              .draw();
+                      });
+  
+                  column.data().unique().sort().each( function ( d, j ) {
+                      select.append( '<option value="'+d+'">'+d+'</option>' )
+                  });
+              });
+          }
+      });
     });
   script(type='text/javascript').
     $(document).ready(function() {
@@ -361,7 +402,8 @@ html(lang='en')
     language: {
     search: "_INPUT_",
     searchPlaceholder: "Search records",
-    }
+    },
+    retrieve:true
     });
     })
   script.

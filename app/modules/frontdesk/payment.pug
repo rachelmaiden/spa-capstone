@@ -467,7 +467,7 @@ html(lang='en')
                                         h5
                                           strong#custName
                                           br
-                                          button.hello(type='' value='') Register for Loyalty Membership
+                                          button.hello(type='hidden' value='') Register for Loyalty Membership
                                         h5
                                           strong#Room
                                           br
@@ -493,11 +493,11 @@ html(lang='en')
                                         .col-md-4
                                           h3
                                             strong#TotalPrice
-                                            input.totalPrice(type='' value='')
+                                            input.totalPrice(type='hidden' value='')
                                           h5
                                             strong#TotalPoints
                                             input.totalPoints(type='hidden' value='')
-                                            input.totalAmountReceived(type='' value='')
+                                            input.totalAmountReceived(type='hidden' value='')
                                         
                                         hr
                                         .row
@@ -510,7 +510,7 @@ html(lang='en')
                                                   label(for='checkbox_gc') Gift Certificate
                                                 .col-md-6
                                                   .category#totalGCval 
-                                                  input.totalGCval(type='' value='')
+                                                  input.totalGCval(type='hidden' value='')
                                               select.selectpicker.selectpickerGc(title='Select Gift Certificate', multiple data-style='btn-info', data-size='7' name='giftcert' id='giftcert' required='true' aria-label='true' disabled='disabled')
                                                 each gc in giftcerts
                                                   option(value=`${gc.gc_id}` gc_value=`${gc.gc_value}`)= gc.gc_refCode+" "+gc.gc_name
@@ -563,7 +563,7 @@ html(lang='en')
                                         .col-md-6
                                           h3
                                             strong#TotalLoyaltyPrice
-                                            input.totalLoyaltyPrice(type='' value='')
+                                            input.totalLoyaltyPrice(type='hidden' value='')
 
                                       hr
                                       .row
@@ -583,7 +583,7 @@ html(lang='en')
                                               input.form-control.changeLoyalty(type='number', placeholder='Change' value='0' disabled)
                                               span.input-group-addon .00
                                       .modal-footer
-                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
+                                        button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDoneLoyalty(type='button') Done
                                         button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                               
                               
@@ -903,7 +903,9 @@ html(lang='en')
           $('#TotalLoyaltyPrice').append(`Total Price: ₱${membership_fee}.00`)
           $('.totalLoyaltyPrice').val(membership_fee)
 
-          $('.buttonDone').click(function(){
+          $('.buttonDoneLoyalty').click(function(){
+            console.log($('.amountLoyaltyReceived').val())
+            console.log($('.totalLoyaltyPrice').val())
             if($('.amountLoyaltyReceived').val()==0)
             {
               swal({
@@ -911,14 +913,14 @@ html(lang='en')
                 icon: 'warning'
               })
             }
-            else if($('.amountLoyaltyReceived').val() < $('.totalLoyaltyPrice').val())
+            else if(parseInt($('.amountLoyaltyReceived').val()) < parseInt($('.totalLoyaltyPrice').val()))
             {
               swal({
                 title: "The Amount Received is Insuficient",
                 icon: 'warning'
               })
             }
-            else if($('.amountLoyaltyReceived').val() >= $('.totalLoyaltyPrice').val())
+            else if(parseInt($('.amountLoyaltyReceived').val()) >= parseInt($('.totalLoyaltyPrice').val()))
             {
               swal({
                 title: "Are you sure?",

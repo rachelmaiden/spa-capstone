@@ -14,6 +14,8 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
     link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/buttons.dataTables.min.css', rel='stylesheet')
+
     // CSS for Demo Purpose, don't include it in your project
     link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
     // Fonts and icons
@@ -214,30 +216,14 @@ html(lang='en')
                   b.caret
               #reports.collapse.in
                 ul.nav
-                  li(style="margin-left: 30px;").active
+                  li(style="margin-left: 30px;")
                     a(href='./servicesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Services
+                      span.sidebar-normal Daily
                   li(style="margin-left: 30px;")
                     a(href='./packagesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Packages
-                  li(style="margin-left: 30px;")
-                    a(href='./promosReport')
-                      span.sidebar-mini 
-                      span.sidebar-normal Promos
-                  li(style="margin-left: 30px;")
-                    a(href='./roomsReport')
-                      span.sidebar-mini 
-                      span.sidebar-normal Rooms 
-                  li(style="margin-left: 30px;")
-                    a(href='./freebiesReport')
-                      span.sidebar-mini 
-                      span.sidebar-normal Freebies
-                  li(style="margin-left: 30px;")
-                    a(href='./gcReports')
-                      span.sidebar-mini 
-                      span.sidebar-normal Gift Certificate      
+                      span.sidebar-normal Monthly  
       .main-panel
         nav.navbar.navbar-default
           
@@ -248,7 +234,7 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Services Reports
+                | Daily Reports
             .collapse.navbar-collapse
               
               ul.nav.navbar-nav.navbar-right
@@ -274,15 +260,15 @@ html(lang='en')
                     .container-fluid
                       .row
                         .col-md-2
-                           select.selectpicker(name='' title='Daily'  data-style='btn-info' )
-                                option(value='Daily') Daily
-                                option(value='Monthly') Monthly
-                                option(value='Monthly') Yearly
-                        .col-md-3
-                          select.selectpicker(multiple='', title='Filter', data-style='btn-info', data-size='7' )
-                              option(value='Service Type') Service Type
-                              option(value='Duration') Duration
-                              option(value='Price') Price         
+                           select.selectpicker.selectpickerChange(name='' title='Reports'  data-style='btn-info' )
+                                option(value='loyalty') Loyalty Registration
+                                option(value='amenity') Amenity
+                                option(value='reservation') Reservation
+                        //- .col-md-3
+                        //-   select.selectpicker(multiple='', title='Filter', data-style='btn-info', data-size='7' )
+                        //-       option(value='Service Type') Service Type
+                        //-       option(value='Duration') Duration
+                        //-       option(value='Price') Price         
 
                         .col-md-12
                           p.category 
@@ -294,28 +280,18 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting  Service Type
-                                      th.disabled-sorting  Service Name
-                                      th.disabled-sorting  Price
-                                      th.disabled-sorting  Duration
-                                      th.disabled-sorting  Number of Times Availed
+                                      th.disabled-sorting  Daily Report
+                                      th.disabled-sorting  
+                                      th.disabled-sorting  
+                                        center
+                                          h3#Name
+                                      th.disabled-sorting  
                                       th.disabled-sorting  Total
+                                      th.disabled-sorting  
                                       
                                  
-                                  tbody
-                                    
-                                      tr
-                                        td Body Massage
-                                        td Swedish Massage
-                                        td 1,500.00
-                                        td 60 minutes
-                                        td 10
-                                        td ₱15,000.00
-                          .row
-                            .col-md-5
-                              h2(style='margin-left: 450px')  Total:   
-                            .col-md-5
-                              h2(style='margin-left: 160px')  ₱ 15,000.00              
+                                  tbody#ReportChange
+                                             
                              
         footer.footer
           .container-fluid
@@ -371,31 +347,93 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
- 
+  script(src='/assets/paperDashboardPro/js/buttons.flash.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.html5.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.print.min.js')
+  script(src='/assets/paperDashboardPro/js/dataTables.buttons.min.js')
+  script(src='/assets/paperDashboardPro/js/jszip.min.js')
+  script(src='/assets/paperDashboardPro/js/vfs_fonts.js')
+  script(src='/assets/paperDashboardPro/js/jspdf.js')
+  //- script(src='/assets/paperDashboardPro/js/jquery-3.3.1.js')
+  
     
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
-  script(type='text/javascript').
-    $(document).ready(function() {
-    $('#datatables').DataTable({
-    "pagingType": "full_numbers",
-    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-    responsive: true,
-    language: {
-    search: "_INPUT_",
-    searchPlaceholder: "Search records",
-    }
-    });
-    })
-  script.
-    $().ready(function(){
-      $('#registerFormValidation').validate();
-      $('#loginFormValidation').validate();
-      $('#allInputsFormValidation').validate();
-        });  
 
-  
+  script.
+    $(document).ready(function(){
+      $('.selectpickerChange').on('change',function(){
+        var report_type = $(this).val()
+        $.post('./ChangeReport',{report_type}).done(function(data){
+          console.log(data)
+          if(report_type == 'loyalty')
+          {
+            $('#Name').append('Loyalty Membership')
+          }
+          else if(report_type == 'amenity')
+          {
+            $('#Name').append('Amenity')
+          }
+          else if(report_type == 'reservation')
+          {
+            $('#Name').append('Reservation')
+          }
+          for(var i=0;i<data.length;i++)
+          {
+            $('#ReportChange').append(`<tr>
+              <td>${data[i].payment_date}</td>
+              <td>
+              </td>
+              <td></td>
+              <td> </td>
+              <td>₱${data[i].Total}.00</td>
+              <td> </td>
+              </tr>`)
+          }
+        $('#datatables').DataTable({
+          "pagingType": "full_numbers",
+          "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+          responsive: true,
+          language: {
+          search: "_INPUT_",
+          searchPlaceholder: "Search records",
+          },
+          retrieve:true,
+          dom: 'Bfrtip',
+          buttons: [
+              { extend:'copy', attr: { id: 'allan' } }, 'csv', 'excel', 'pdf', 'print'
+          ],
+            
+          });
+           $('#datatables').DataTable({
+            initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            });
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        });
+                    });
+                },
+                retrieve:true
+        })
+
+        })
+        $('#ReportChange').empty()
+        $('#Name').empty()
+      })
     })

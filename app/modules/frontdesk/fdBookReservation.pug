@@ -116,11 +116,11 @@ html(lang='en')
                     br
                     strong Room Fee: 
                       a#roomRate
-                      input(type='' value='' id='rateNgRoom')
+                      input(type='hidden' value='' id='rateNgRoom')
                     br
                     strong Reservation Date: 
                       a#date 
-                    input(type="" value='' id='dateRes')
+                    input(type="hidden" value='' id='dateRes')
                     br
                     strong Reservation Time: 
                       a#time #{time}
@@ -406,7 +406,7 @@ html(lang='en')
                         strong#custName
                         br
                         button.hello(type='hidden' value='') Register for Loyalty Membership
-                        input.paid_stats(type='' value='')
+                        input.paid_stats(type='hidden' value='')
                       h5
                         strong#RoomAvailed
                         br
