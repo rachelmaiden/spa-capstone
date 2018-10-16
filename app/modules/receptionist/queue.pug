@@ -312,14 +312,14 @@ html(lang='en')
           if(moment(timeNow).isSameOrBefore(opening_time) && moment(timeNow).isSameOrBefore(allowable_time))
           {
             swal({
-              title: 'The Spa is not Open Yet',
+              title: 'The spa is not open yet.',
               icon: 'warning'
             })
           }
           else if(moment(timeNow).isBefore(startTime) && moment(timeNow).isSameOrAfter(allowable_time))
           {
               swal({
-                title: 'The Reservation Time of '+name+' is '+timeStart,
+                title: 'The reservation time of '+name+' is '+timeStart,
                 text: 'Proceed '+name+' to service? Are you sure?',
                 icon: "warning",
                 buttons: ["Cancel","Proceed"],
@@ -383,8 +383,8 @@ html(lang='en')
           else if(moment(timeNow).isSameOrAfter(forfeit_time))
           {
             swal({
-              title: 'THE CUSTOMER IS LATE',
-              text: 'The reservation is Void',
+              title: 'The customer is late.',
+              text: 'The reservation is alredy cancelled.',
               icon: 'warning'
             })
           }
@@ -395,7 +395,7 @@ html(lang='en')
         $('.logout').click(function(){
               swal({
           title: "Are you sure?",
-          text: "Do you want to Log Out?",
+          text: "Do you want to log out?",
           icon: "warning",
           buttons: true,
           dangerMode: true,

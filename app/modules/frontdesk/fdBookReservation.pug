@@ -656,7 +656,7 @@ html(lang='en')
               {
                 swal({
                   title: "ERROR",
-                  text: "The inputed number is invalid please try again",
+                  text: "The number entered is invalid. Please try again.",
                   icon: 'error'
                 }).then(function(){
                   e.target.checked=false
@@ -766,7 +766,7 @@ html(lang='en')
             if(currentPoints==0 && paid_stats==1)
             {
               swal({
-                title: 'Cannot Use Points As Payment',
+                title: 'Points cannot be used as payment method.',
                 text: 'Your Points is '+currentPoints,
                 icon: 'error'
               }).then(function(confirm){
@@ -782,8 +782,8 @@ html(lang='en')
             else if(currentPoints==0 && paid_stats == 0)
             {
               swal({
-                title: 'Cannot Use Points As Payment',
-                text: 'please pay the membership fee first',
+                title: 'Points cannot be used as payment method.',
+                text: 'Please pay the membership fee first.',
                 icon: 'error'
               }).then(function(confirm){
                 if(confirm)
@@ -1376,8 +1376,8 @@ html(lang='en')
         if(data.alertDesc==0)
         {
           swal({
-            title: therapist_name+' is not available',
-            text: 'Choose another therapist'
+            title: therapist_name+' is not available for your chosen time.',
+            text: 'Choose another therapist.'
           })
           $('#selected_therapist').val('default');
           $('#selected_therapist').selectpicker("refresh");
@@ -1413,7 +1413,7 @@ html(lang='en')
       if($('.checkbox:checked').length==0)
       {
         swal({
-          title: 'No Services Selected',
+          title: 'No services selected.',
           icon: 'warning'
         })
       }
@@ -1563,7 +1563,7 @@ html(lang='en')
                   {
                     swal({
                       title: 'Error',
-                      text: 'You must select therapist',
+                      text: 'You must select therapist.',
                       icon: 'warning'
                     })
                   }
@@ -1572,7 +1572,7 @@ html(lang='en')
                     var scriptSession = !{JSON.stringify(reqSession)};
                     var membership_fee= scriptSession.utilities[0].membership_fee
                       swal({
-                        title: 'Pay Now or Later?',
+                        title: 'Pay now or pay later?',
                         icon: 'info',
                         buttons: {paylater: {
                                       text: "Pay Later",
@@ -1765,14 +1765,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0",
+                                          title: "Amount received is 0.",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -1832,14 +1832,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0",
+                                          title: "Amount Received is 0.",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount Received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -1900,7 +1900,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount Received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -1909,7 +1909,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The Gift certificate will not return any change",
+                                        title: "The gift certificate will not return any change.",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2014,7 +2014,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2023,7 +2023,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The Gift certificate will not return any change",
+                                        title: "The gift certificate will not return any change.",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2132,7 +2132,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 1] if amount needed is not equal to 0 
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount Received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2193,7 +2193,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 2] if amount needed is not equal to 0 
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2257,7 +2257,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2320,7 +2320,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2385,7 +2385,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2449,7 +2449,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2513,7 +2513,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2600,14 +2600,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0",
+                                          title: "Amount Received is 0.",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2667,14 +2667,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0",
+                                          title: "Amount Received is 0.",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2735,7 +2735,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2744,7 +2744,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The Gift certificate will not return any change",
+                                        title: "The gift certificate will not return any change.",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2849,7 +2849,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -2858,7 +2858,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The Gift certificate will not return any change",
+                                        title: "The gift certificate will not return any change.",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2969,7 +2969,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -3032,7 +3032,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -3097,7 +3097,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient",
+                                        title: "Amount received is insufficient.",
                                         icon: 'warning'
                                       })
                                     }
@@ -3188,7 +3188,7 @@ html(lang='en')
                               {
                               swal({
                                 title:'Success', 
-                                text:'New Reservation Added', 
+                                text:'New reservation added.', 
                                 icon:'success'
                                 }).then(function(){
                                   location.href='/frontdesk/home'
@@ -3234,7 +3234,7 @@ html(lang='en')
                    {
                   swal({
                     title:'Success', 
-                    text:'New Reservation Added', 
+                    text:'New reservation added.', 
                     icon:'success'
                     }).then(function(){
                       location.href='/frontdesk/home'
@@ -3343,7 +3343,7 @@ html(lang='en')
       $('.logout').click(function(){
             swal({
         title: "Are you sure?",
-        text: "Do you want to Log Out?",
+        text: "Do you want to log out?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -3634,7 +3634,7 @@ html(lang='en')
                     {
                       swal({
                         title:'Not Success', 
-                        text:'Username Already Exist', 
+                        text:'Username already exist', 
                         icon:'warning'
                         })
                     }

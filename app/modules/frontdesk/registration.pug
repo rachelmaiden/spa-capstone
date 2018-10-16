@@ -781,7 +781,7 @@ html(lang='en')
             if(submit)
             {
               swal({
-                title: "Pay now or Later?",
+                title: "Pay now or pay later?",
                 icon: 'info',
                 buttons: ['Pay Later',"Pay Now"]
               }).then(function(PayNow){
@@ -797,14 +797,14 @@ html(lang='en')
                     if($('.amountReceived').val()==0)
                     {
                       swal({
-                        title: "Amount Received is 0",
+                        title: "Amount received is 0.",
                         icon: 'warning'
                       })
                     }
                     else if($('.amountReceived').val() < $('.totalPrice').val())
                     {
                       swal({
-                        title: "The Amount Received is Insuficient",
+                        title: "The amount received is insuficient.",
                         icon: 'warning'
                       })
                     }
@@ -821,7 +821,7 @@ html(lang='en')
                             {
                               swal({
                                 title: 'Success',
-                                text: cust_name+' is now a Loyalty Member',
+                                text: cust_name+' is now a loyalty member.',
                                 icon: 'success'
                               }).then(function(){
                                 location.reload()
@@ -838,7 +838,7 @@ html(lang='en')
                             {
                               swal({
                                 title:'Oops',
-                                text: username+' is already exist',
+                                text: username+' already exists.',
                                 icon: 'warning'
                               })
                             }
@@ -862,7 +862,7 @@ html(lang='en')
                           {
                             swal({
                               title: 'Success',
-                              text: cust_name+' is now a Loyalty Member',
+                              text: cust_name+' is now a loyalty member.',
                               icon: 'success'
                             }).then(function(){
                               location.reload()
@@ -879,7 +879,7 @@ html(lang='en')
                           {
                             swal({
                               title:'Oops',
-                              text: username+' is already exist',
+                              text: username+' already exist.',
                               icon: 'warning'
                             })
                           }
@@ -939,14 +939,14 @@ html(lang='en')
           var entrance_fee = scriptSession.utilities[0].entrance_fee
           swal({
             title: guest_quantity+' Guest?',
-            text: ' Are You Sure?',
+            text: ' Are you sure?',
             icon: 'info',
             buttons: ['No','Yes'],
           }).then(function(Yes){
             if(Yes)
             {
               swal({
-                title: "Pay now or Later?",
+                title: "Pay now or pay later?",
                 icon: 'info',
                 buttons: ['Pay Later',"Pay Now"],
               }).then(function(PayNow){
@@ -974,14 +974,14 @@ html(lang='en')
                     if(amount_received == 0)
                     {
                       swal({
-                        title: "Amount Received is 0",
+                        title: "Amount received is 0.",
                         icon: 'warning'
                       })
                     }
                     else if(amount_received < total_price)
                     {
                       swal({
-                        title: "The Amount Received is Insuficient",
+                        title: "The amount received is insuficient.",
                         icon: 'warning'
                       })
                     }
@@ -1130,7 +1130,7 @@ html(lang='en')
                if(total > max_guest)
                {
                 swal({
-                  title: "BAWAL",
+                  title: "Not allowed.",
                   icon: 'warning'
                 }).then(function(){
                 $('#reservationFooter').append(`
@@ -1196,7 +1196,7 @@ html(lang='en')
           if(willDelete)
           {
               swal({
-              title: 'Please enter the administrator password',
+              title: 'Please enter the administrator password.',
               icon: "warning",
               content: "input",
               buttons: [true,"Confirm"],
@@ -1220,7 +1220,7 @@ html(lang='en')
                   {
                     swal({
                       title: 'Error',
-                      text: cust_name+' is not Deleted',
+                      text: cust_name+' is not deleted.',
                       icon: 'error'
                     })
                   }
@@ -1228,7 +1228,7 @@ html(lang='en')
                   {
                     swal({
                       title: 'Error',
-                      text: 'The Administrator password is Incorrect',
+                      text: 'The administrator password is incorrect.',
                       icon: 'error'
                     })
                   }
@@ -1263,7 +1263,7 @@ html(lang='en')
       $('.logout').click(function(){
             swal({
         title: "Are you sure?",
-        text: "Do you want to Log Out?",
+        text: "Do you want to log out?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -1304,7 +1304,7 @@ html(lang='en')
           {
             swal({
               title:'Success', 
-              text:'New Guest Inserted', 
+              text:'New guest added.', 
               icon:'success'
               }).then(function(){
                 location.reload()
@@ -1314,7 +1314,7 @@ html(lang='en')
             {
               swal({
                 title:'Not Success', 
-                text:'Customer Already Exist', 
+                text:'Customer already exist.', 
                 icon:'warning'
                 })
             }
@@ -1351,7 +1351,7 @@ html(lang='en')
             {
               swal({
                 title:'Not Success', 
-                text:'Customer already exist', 
+                text:'Customer already exist.', 
                 icon:'warning'
                 })
             }
