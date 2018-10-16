@@ -155,35 +155,43 @@ html(lang='en')
                                             tbody
                                               each walkin in walkins
                                                 tr
+                                                  input.therapist_id(type='hidden' value=`${walkin.therapist_id}` id=`${walkin.walkin_id}`)
                                                   td= walkin.cust_fname+" "+walkin.cust_mname+" "+walkin.cust_lname
                                                   input.name(type='hidden' id=`${walkin.walkin_id}` value=`${walkin.cust_fname} ${walkin.cust_mname} ${walkin.cust_lname}`)
                                                   td
                                                     button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${walkin.walkin_id}`) View Services
                                                   td= walkin.room_name
                                                   td= walkin.walkin_date
+                                                    input.dateRes(type='hidden' value=`${walkin.walkin_date}` id=`${walkin.walkin_id}`)
                                                   td= walkin.walkin_start_time+" to "+walkin.walkin_end_time
                                                   input.startTime(type='hidden' value=`${walkin.walkin_start_time}` id=`${walkin.walkin_id}`)
                                                   input.endTime(type='hidden' value=`${walkin.walkin_end_time}` id=`${walkin.walkin_id}`)
                                                   td 
-                                                    if(walkin.status==0)
-                                                      span.label.label-success Going
-                                                    else if(walkin.status==1)
-                                                      span.label.label-warning Cancelled
-                                                  td
-                                                    .dropdown.pull-right(style="right: 20px")
-                                                      button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
-                                                        i.ti-settings
-                                                      ul.dropdown-menu
-                                                        li
-                                                          button.btn.btn-simple.btn-danger.cancelReservation(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
-                                                            span.btn-label
-                                                            i.ti-close
-                                                            |  Cancel Reservation
-                                                        li
-                                                          button.btn.btn-simple.btn-info(data-toggle='modal', data-target='#change',  style="margin-right: 15px")
-                                                            span.btn-label
-                                                            i.ti-exchange-vertical
-                                                            |  Change Therapist
+                                                    if(walkin.walkin_indicator==0)
+                                                      
+                                                    else if(walkin.walkin_indicator==1)
+                                                      span.label.label-warning Inservices
+                                                    else if(walkin.walkin_indicator==2)
+                                                      span.label.label-warning Finish
+                                                  if(walkin.walkin_indicator==0 || walkin.walkin_indicator==1)
+                                                    td
+                                                      .dropdown.pull-right(style="right: 20px")
+                                                        button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
+                                                          i.ti-settings
+                                                        ul.dropdown-menu
+                                                          li
+                                                            button.btn.btn-simple.btn-danger.cancelReservation(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
+                                                              span.btn-label
+                                                              i.ti-close
+                                                              |  Cancel Reservation
+                                                          li
+                                                            button.btn.btn-simple.btn-info.changeTherapist(data-toggle='modal', value=`${walkin.walkin_id}`  style="margin-right: 15px")
+                                                              span.btn-label
+                                                              i.ti-exchange-vertical
+                                                              |  Change Therapist
+                                                  else if(walkin.walkin_indicator==2)
+                                                    
+
                                                         //- li
                                                         //-   button.btn.btn-simple.btn-danger.deleteButton(data-toggle='modal', value=`${walkin.walkin_id}` stlye="margin-right: 15px")
                                                         //-     span.btn-label
@@ -284,7 +292,8 @@ html(lang='en')
                                                   strong Total Price 
                                             tbody#viewServicesAvailed
                                             #therapist
-                                  #change.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+
+                                  #changeTherapist.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                                     .modal-dialog(role='document')
                                       .modal-content
                                         .modal-header
@@ -292,16 +301,16 @@ html(lang='en')
                                             span(aria-hidden='true') ×
                                           center
                                             h4.modal-title Choose Therapist
-                                        .modal-body 
+                                        .modal-body
+                                          .row 
+                                            .col-md-7
+                                              label Change Therapist
                                           .row
-                                            .col-md-12
-                                              .form-group.has-default.bmd-form-group
-                                                label Therapist Name
-                                                select.selectpicker(multiple='', title='Select Therapist/s', data-style='btn-info', data-size='7' )
-                                                  option Blaster
+                                            .col-md-7#changeThera
+                                          
                                         .modal-footer
                                           button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(data-dismiss='modal') Cancel
-                                          button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right(data-dismiss='modal') Done          
+                                          button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.submitChange(type='button') Done          
                                                           
                                     //- .modal-footer
                                     //-   center
@@ -396,41 +405,148 @@ html(lang='en')
         var Name = $(`.name[id='${id}']`).val()
         var startTime = $(`.startTime[id='${id}']`).val()
         var endTime = $(`.endTime[id='${id}']`).val()
-        swal({
-          title: "Cancel "+Name+" Resevation? ",
-          text: "Are you sure?",
-          icon: "warning",
-          buttons: ["Cancel","Proceed"],
-          dangerMode: true
-          
-        }).then((proceed) => {
-          if(proceed)
-          {
-            $.post('/fdReservation/CancelReservation',{id:id,startTime:startTime,endTime:endTime})
-            .done(data=>{
-              if(data.alertSuccess==0)
+        var dateRes = moment($(`.dateRes[id='${id}']`).val()).format('MM-DD-YYYY')
+        var newStartTime = dateRes+' '+startTime 
+            newStartTime = moment(newStartTime).format('MM-DD-YYYY hh:mm A')
+
+            console.log(newStartTime)
+        var scriptSession = !{JSON.stringify(reqSession)};
+        var timeAllowed = scriptSession.utilities[0].reservation_forfeitTime
+        var dateNow = moment().format('MM-DD-YYYY hh:mm A')
+          swal({
+            title: "Cancel "+Name+" Resevation? ",
+            text: "Are you sure?",
+            icon: "warning",
+            buttons: ["Cancel","Proceed"],
+            dangerMode: true
+            
+          }).then((proceed) => {
+            if(proceed)
+            {
+              $.post('/fdReservation/CancelReservation',{id:id,startTime:startTime,endTime:endTime})
+              .done(data=>{
+                if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: Name+" reservation has been cancelled",
+                      icon: 'success'
+                    }).then(function(){
+                      location.href='/fdReservation'
+                    })
+                  }
+                else
                 {
                   swal({
-                    title: Name+" reservation has been cancelled",
-                    icon: 'success'
-                  }).then(function(){
-                    location.href='/fdReservation'
-                  })
+                      title: 'ERROR',
+                      icon: 'error'
+                    })
                 }
-              else
-              {
-                swal({
-                    title: 'ERROR',
-                    icon: 'error'
-                  })
-              }
-            })
-          }
-          else
-          {
+              })
+            }
+            else
+            {
 
-          }
-          });
+            }
+            });
+      })
+    })
+
+  script.
+    $(document).ready(function(){
+      $('.changeTherapist').click(function(){
+        var id = $(this).val()
+        var therapist_id = $(`.therapist_id[id='${id}']`).val()
+        var Name = $(`.name[id='${id}']`).val()
+        var startTime = $(`.startTime[id='${id}']`).val()
+        var endTime = $(`.endTime[id='${id}']`).val()
+        var dateRes = moment($(`.dateRes[id='${id}']`).val()).format('MM-DD-YYYY')
+        var newStartTime = dateRes+' '+startTime 
+            newStartTime = moment(newStartTime).format('MM-DD-YYYY hh:mm A')
+
+        var scriptSession = !{JSON.stringify(reqSession)};
+        var timeAllowed = scriptSession.utilities[0].reservation_forfeitTime
+            timeAllowed = moment(newStartTime).add(timeAllowed,'m').format('MM-DD-YYYY hh:mm A')
+            console.log(timeAllowed)
+        var dateNow = moment().format('MM-DD-YYYY hh:mm A')
+
+
+        if(moment(dateNow).isAfter(timeAllowed))
+        {
+          swal({
+            title: 'Ooooopps! Sorry',
+            text: 'Your Reservation Exceed our Allowable time to change Therapist',
+            icon: 'error'
+          })
+        }
+        else
+        {
+          swal({
+            title: 'Are You Sure?',
+            text: 'Change Therapist?',
+            icon: 'warning'
+          }).then(function(sure){
+            if(sure)
+            {
+              $.post('./Change/Therapist',{id,dateRes,startTime,therapist_id,endTime}).done(function(data){
+                $('#changeTherapist').modal('show')
+
+                $('#changeThera').append(`
+                 
+                        <select name="change_therapist" id="change_therapist" title="Therapist" data-style="btn-info" class="selectpicker">
+                        </select>
+
+                   `)
+
+                    for(var i=0; i<data.length;i++){
+                $('#change_therapist').append(`<option value="${data[i].therapist_id}"> ${data[i].therapist_fname} ${data[i].therapist_mname} ${data[i].therapist_lname}</option>`)
+              }
+                $('#change_therapist').selectpicker()
+              })
+
+              $(document).on('change',"#change_therapist",function(){
+                var therapist_id= $(this).val()
+                
+                $.post('./TherapistValidate',{therapist_id,walkin_date:dateRes,time_pick:startTime}).done(function(data){
+                  console.log(data)
+                  var therapist_name = data.out[0].therapist_fname+' '+data.out[0].therapist_mname+' '+data.out[0].therapist_lname
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: therapist_name+' is not available',
+                      text: 'Choose another therapist'
+                    })
+                    $('#change_therapist').val('default');
+                    $('#change_therapist').selectpicker("refresh");
+                  }
+                })
+              })
+              $('.submitChange').click(function(){
+                var therapist_id = $('#change_therapist').val()
+
+                $.post('./ChangeTherapist',{therapist_id,walkin_id:id}).done(function(data){
+                  if(data.alertDesc==0)
+                  {
+                    swal({
+                      title: 'Success',
+                      text: 'The therapist is successfully changed',
+                      icon: 'success'
+                    }).then(function(){
+                      $('#changeTherapist').modal('hide')
+                      location.reload()
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'ERROR',
+                      icon: 'error'
+                    })
+                  }
+                })
+              })
+            }
+          })
+        }
       })
     })
   script(type='text/javascript').
