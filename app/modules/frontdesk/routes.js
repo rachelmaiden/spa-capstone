@@ -908,7 +908,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                   {
                     for(var i=0;i<req.body.typeServ.length;i++)
                       {
-                        if(req.body.typeServ == 'service')
+                        if(req.body.typeServ[i] == 'service')
                         { 
                           for(var x=0;x<req.body.serviceId.length;x++)
                           {
@@ -924,7 +924,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
 
                         }
 
-                        else if(req.body.typeServ =='promo')
+                        else if(req.body.typeServ[i] =='promo')
                         {
                           for(var x=0;x<req.body.promoId.length;x++)
                           {
@@ -940,7 +940,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                           }
 
                         }
-                        else if(req.body.typeServ == 'package')
+                        else if(req.body.typeServ[i] == 'package')
                         {
                           for(var x=0;x<req.body.packageId.length;x++)
                           {
@@ -962,7 +962,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                   {
                     for(var i=0;i<req.body.typeServ.length;i++)
                       {
-                        if(req.body.typeServ == 'service')
+                        if(req.body.typeServ[i] == 'service')
                         {
                               const query1= `INSERT INTO walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
                               VALUES("${walkinId}","${req.body.serviceId[i]}","${out[o].room_id}","${req.body.serviceQuantity[i]}","${req.body.serviceNewDuration[i]}",
@@ -975,7 +975,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
 
                         }
 
-                        else if(req.body.typeServ =='promo')
+                        else if(req.body.typeServ[i] =='promo')
                         {
 
                             const query1= `INSERT INTO walkin_services_tbl(walkin_id,promobundle_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
@@ -988,7 +988,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                             })
 
                         }
-                        else if(req.body.typeServ == 'package')
+                        else if(req.body.typeServ[i] == 'package')
                         {
 
                             const query1= `INSERT INTO walkin_services_tbl(walkin_id,package_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
@@ -1043,7 +1043,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
           console.log(req.body.typeServ.length)
           for(var i=0;i<req.body.typeServ.length;i++)
                 {
-                  if(req.body.typeServ == 'service')
+                  if(req.body.typeServ[i] == 'service')
                   { 
                     for(var x=0;x<req.body.serviceId.length;x++)
                     {
@@ -1060,7 +1060,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
 
                   }
 
-                  else if(req.body.typeServ =='promo')
+                  else if(req.body.typeServ[i] =='promo')
                   {
                     for(var x=0;x<req.body.promoId.length;x++)
                     {
@@ -1077,7 +1077,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
                     }
 
                   }
-                  else if(req.body.typeServ == 'package')
+                  else if(req.body.typeServ[i] == 'package')
                   {
                     for(var x=0;x<req.body.packageId.length;x++)
                     {
