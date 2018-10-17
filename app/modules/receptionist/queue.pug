@@ -146,7 +146,7 @@ html(lang='en')
                                                   |  Change Therapist    
                               
                               #viewServices.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
-                                .modal-dialog(role='document')
+                                .modal-dialog.modal-lg(role='document')
                                   .modal-content
                                     .modal-header
                                       button.close(type='button', data-dismiss='modal', aria-label='Close')
@@ -154,13 +154,12 @@ html(lang='en')
                                       center
                                         h4.modal-title#title
                                     .modal-body 
-                                      .row
+                                      .row#Service
                                         .col-md-12
                                           .card-content
-                                            h4#therapist
                                             .toolbar
                                             .fresh-datatables
-                                            table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                            table#datatablesService.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                               thead
                                                 tr
                                                   th
@@ -172,6 +171,45 @@ html(lang='en')
                                                   th
                                                     strong Total Price 
                                               tbody#viewServicesAvailed
+                                              #therapist
+                                      hr
+                                      br
+                                      .row#Promo
+                                        .col-md-12
+                                          .card-content
+                                            .toolbar
+                                            .fresh-datatables
+                                            table#datatablesProm.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                              thead
+                                                tr
+                                                  th
+                                                    strong  Promo
+                                                  th
+                                                    strong  Quantity
+                                                  th
+                                                    strong Duration
+                                                  th
+                                                    strong Total Price 
+                                              tbody#viewServicesAvailedPromo
+                                      hr
+                                      br
+                                      .row#Package
+                                        .col-md-12
+                                          .card-content
+                                            .toolbar
+                                            .fresh-datatables
+                                            table#datatablesPack.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                              thead
+                                                tr
+                                                  th
+                                                    strong  Package 
+                                                  th
+                                                    strong  Quantity
+                                                  th
+                                                    strong Duration
+                                                  th
+                                                    strong Total Price 
+                                              tbody#viewServicesAvailedPackage
 
                               #change.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
                                 .modal-dialog(role='document')
@@ -246,30 +284,87 @@ html(lang='en')
     script.
       $(document).ready(function(){
         $('.viewButton').click(function(){
-          var table =$('#datatables').DataTable()
+        var table =$('#datatables').DataTable()
           var id = $(this).val()
-          $.post('/receptionist/home/queue/viewServices',{id:id})
+          $.post('/fdReservation/viewServices',{id:id})
             .done(data=>{
+              console.log(data)
+              console.log("NAME^")
                 $('#title').append(`<h5> ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
-                $('#therapist').append(`Therapist: 
-                <a>${data.out1[0].therapist_fname} ${data.out1[0].therapist_mname} ${data.out1[0].therapist_lname}`)
-              for(var i=0; i<data.out1.length;i++){
-                var total_duration = moment.duration(data.out1[i].service_total_duration).asMinutes()
-                  $('#viewServicesAvailed').append(` 
-                  <tr>
-                  <td>${data.out1[i].service_name}</td>
-                  <td>${data.out1[i].service_total_quantity}</td>
-                  <td>${total_duration} minutes</td>
-                  <td>₱${data.out1[i].service_total_price}.00</td>`)
-                }
+                $('#therapist').append(`<h5>Therapist: 
+                <a>${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}`)
+              if(data.out1.length != 0)
+              {
+                for(var i=0; i<data.out1.length;i++){
+                    var total_duration = moment.duration(data.out1[i].service_total_duration).asMinutes()
+                    $('#viewServicesAvailed').append(` 
+                    <tr>
+                    <td>${data.out1[i].service_name}</td>
+                    <td>${data.out1[i].service_total_quantity}</td>
+                    <td>${total_duration} minutes</td>
+                    <td>₱${data.out1[i].service_total_price}.00</td>`)
+                  }
+                  //- $('#datatablesService').dataTable()
+                  $('#Services').css('display','block')
+              }
+              else
+              {
+                $('#Services').css('display','none')
+                //- $('#datatablesServices').wrap('<div id="hide" style="display:none"/>');
+              }
+              console.log(data.outPromo.length != 0)
+              if(data.outPromo.length != 0)
+              {
+                for(var i=0; i<data.outPromo.length;i++){
+                    var total_duration = moment.duration(data.outPromo[i].service_total_duration).asMinutes()
+                    $('#viewServicesAvailedPromo').append(` 
+                    <tr>
+                    <td>${data.outPromo[i].promobundle_name}</td>
+                    <td>${data.outPromo[i].service_total_quantity}</td>
+                    <td>${total_duration} minutes</td>
+                    <td>₱${data.outPromo[i].service_total_price}.00</td>`)
+                  }
+                  //- $('#datatablesProm').dataTable()
+                  $('#Promo').css('display','block')
+              }
+              else
+              {
+                $('#Promo').css('display','none')
+                //- $('#datatablesPromo').wrap('<div id="hide" style="display:none"/>');
+              }
+              
+              if(data.outPackage.length != 0)
+              {
+                for(var i=0; i<data.outPackage.length;i++){
+                    var total_duration = moment.duration(data.outPackage[i].service_total_duration).asMinutes()
+                    $('#viewServicesAvailedPackage').append(` 
+                    <tr>
+                    <td>${data.outPackage[i].package_name}</td>
+                    <td>${data.outPackage[i].service_total_quantity}</td>
+                    <td>${total_duration} minutes</td>
+                    <td>₱${data.outPackage[i].service_total_price}.00</td>`)
+                  }
+                  //- $('#datatablesPack').dataTable()
+                  $('#Package').css('display','block')
+              }
+              else
+              {
+                $('#Package').css('display','none')
+                //- $('#datatablesPackage').wrap('<div id="hide" style="display:none"/>');
+              }
+
           $('#viewServices').modal('show')
           $('#viewServices').on('hidden.bs.modal', function (){
             $('#viewServicesAvailed').empty()
+            $('#viewServicesAvailedPackage').empty()
+            $('#viewServicesAvailedPromo').empty()
+            
             $('#title').empty()
             $('#therapist').empty()
           })
-          }) 
-      })
+          })
+          
+        })
       })
     script.
       $(document).ready(function(){
@@ -416,9 +511,8 @@ html(lang='en')
     script(type='text/javascript').
       $(document).ready(function() {
       $('#datatables').DataTable({
-      "pagingType": "full_numbers",
       "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-      responsive: true,
+      retrieve: true,
       language: {
       search: "_INPUT_",
       searchPlaceholder: "Search records",

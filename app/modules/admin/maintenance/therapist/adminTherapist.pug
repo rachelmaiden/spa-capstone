@@ -681,6 +681,7 @@ html(lang='en')
           var idNow = $(this).val();
             $.post('/admin/adminTherapist/query1',{id1:idNow})
           .done(data=>{
+            console.log(data)
             $('#title').append(`${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}`)
             $('#viewAppend').append(`
                   <div class="row">

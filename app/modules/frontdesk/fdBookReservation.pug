@@ -45,7 +45,7 @@ html(lang='en')
               .photo
                 img(src='/assets/paperDashboardPro/img/icon.jpg')
               
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 50px')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | Front Desk
               .clearfix
@@ -181,6 +181,7 @@ html(lang='en')
                                         tr
                                           td
                                             input.checkbox(type='checkbox' value=`${service.service_id}`)
+                                            input.typeServ(type='hidden' value ='service' id=`${service.service_id}`)
                                             
                                           td= service.service_name
                                             input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
@@ -235,6 +236,7 @@ html(lang='en')
                                         tr
                                           td
                                             input.checkbox(type='checkbox' value=`${pack.package_id}`)
+                                            input.typeServ(type='hidden' value ='package' id=`${pack.package_id}`)
                                             
                                           td= pack.package_name
                                             input.name(type='hidden' id= `${pack.package_id}` value=`${pack.package_name}`)
@@ -249,6 +251,7 @@ html(lang='en')
                                             span.quantity(service_id=`${pack.package_id}`) 0
                                           
                                           input.points(type='hidden' id=`${pack.package_id}` value=`${pack.package_points}`)
+                                          input.eqPoints(type='hidden' id=`${pack.package_id}` value=`${pack.equivalent_points}`)
                                           if(pack.package_points==1|| pack.package_points==0)
                                             td= pack.package_points+" "+"Point"
                                           else if(pack.package_points > 0)
@@ -291,6 +294,7 @@ html(lang='en')
                                         tr
                                           td
                                             input.checkbox(type='checkbox' value=`${promo.promobundle_id}`)
+                                            input.typeServ(type='hidden' value ='promo' id=`${promo.promobundle_id}`)
                                             
                                           td= promo.promobundle_name
                                             input.name(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_name}`)
@@ -305,6 +309,7 @@ html(lang='en')
                                             span.quantity(service_id=`${promo.promobundle_id}`) 0
                                           
                                           input.points(type='hidden' id=`${promo.promobundle_id}` value=`${promo.promobundle_points}`)
+                                          input.eqPoints(type='hidden' id=`${promo.promobundle_id}` value=`${promo.equivalent_points}`)
                                           if(promo.promobundle_points==1|| promo.promobundle_points==0)
                                             td= promo.promobundle_points+" "+"Point"
                                           else if(promo.promobundle_points > 0)
@@ -577,6 +582,8 @@ html(lang='en')
   script.
     $(document).ready(function(){
       var datePicked = !{JSON.stringify(dateHello)}
+      var restype = !{JSON.stringify(reservetype)}
+      console.log(restype)
       var FormatedDate = moment(datePicked).format('MMMM DD, YYYY')
 
       $('#date').text(FormatedDate)
@@ -656,7 +663,7 @@ html(lang='en')
               {
                 swal({
                   title: "ERROR",
-                  text: "The number entered is invalid. Please try again.",
+                  text: "The inputed number is invalid please try again",
                   icon: 'error'
                 }).then(function(){
                   e.target.checked=false
@@ -743,7 +750,7 @@ html(lang='en')
           if($('.amountNeeded').val()==0)
           {
             swal({
-                title: 'The balance is Complete keme?',
+                title: 'Is the balance complete?',
                 icon: 'info'
               }).then(function(){
                 $('.amountReceived').val(' ')
@@ -754,7 +761,7 @@ html(lang='en')
           else if($('.amountReceived').val() >= $('.amountNeeded').val())
           {
             swal({
-                title: 'The balance is Complete keme?',
+                title: 'Is the balance complete?',
                 icon: 'info'
               }).then(function(){
                 $('#checkboxPoints').prop('checked',false)
@@ -766,7 +773,7 @@ html(lang='en')
             if(currentPoints==0 && paid_stats==1)
             {
               swal({
-                title: 'Points cannot be used as payment method.',
+                title: 'Cannot Use Points As Payment',
                 text: 'Your Points is '+currentPoints,
                 icon: 'error'
               }).then(function(confirm){
@@ -782,8 +789,8 @@ html(lang='en')
             else if(currentPoints==0 && paid_stats == 0)
             {
               swal({
-                title: 'Points cannot be used as payment method.',
-                text: 'Please pay the membership fee first.',
+                title: 'Cannot Use Points As Payment',
+                text: 'please pay the membership fee first',
                 icon: 'error'
               }).then(function(confirm){
                 if(confirm)
@@ -1095,7 +1102,7 @@ html(lang='en')
               for(var i=0;i<giftcerts.length;i++)
               {
 
-                if($('.paid_stats').val() !=3 )
+                if($('.paid_stats').val() == 1 || $('.paid_stats').val() ==0 )
                 {
                   if($('#checkboxPoints')[0].checked == true)
                   {
@@ -1364,20 +1371,22 @@ html(lang='en')
     $(document).ready(function(){
       $('#selected_therapist').on('change',function(){
       var therapist_id= $(this).val()
+      var restype = !{JSON.stringify(reservetype)}
       var walkin_date = !{JSON.stringify(dateHello)}
           walkin_date= moment(walkin_date).format('YYYY-MM-DD')
       var time_pick = !{JSON.stringify(time)}
+      console.log('THERAPIST ID ',therapist_id)
       console.log('asd',walkin_date)
       console.log(time_pick)
       
-      $.post('./TherapistValidate',{therapist_id,walkin_date,time_pick}).done(function(data){
+      $.post('./TherapistValidate',{therapist_id,walkin_date,time_pick,restype}).done(function(data){
         console.log(data)
         var therapist_name = data.out[0].therapist_fname+' '+data.out[0].therapist_mname+' '+data.out[0].therapist_lname
         if(data.alertDesc==0)
         {
           swal({
-            title: therapist_name+' is not available for your chosen time.',
-            text: 'Choose another therapist.'
+            title: therapist_name+' is not available',
+            text: 'Choose another therapist'
           })
           $('#selected_therapist').val('default');
           $('#selected_therapist').selectpicker("refresh");
@@ -1413,7 +1422,7 @@ html(lang='en')
       if($('.checkbox:checked').length==0)
       {
         swal({
-          title: 'No services selected.',
+          title: 'No Services Selected',
           icon: 'warning'
         })
       }
@@ -1438,18 +1447,62 @@ html(lang='en')
               var serviceQuantity=[]
               var serviceNewDuration=[]
               var serviceTotal=[]
+              var idPromo =[]
+              var promoQuantity=[]
+              var promoNewDuration=[]
+              var promoTotal=[]
+              var idPackage =[]
+              var packageQuantity=[]
+              var packageNewDuration=[]
+              var packageTotal=[]
+              var typeServ=[]
+              var restype = !{JSON.stringify(reservetype)}
               console.log('serviceQuantity',serviceQuantity)
               console.log('serviceNewDuration',serviceNewDuration)
               console.log('serviceTotal',serviceTotal)
               console.log('idService',idService)
               console.log(serviceTotal)
+              console.log('promoQuantity',promoQuantity)
+              console.log('promoNewDuration',promoNewDuration)
+              console.log('promoTotal',promoTotal)
+              console.log('idPromo',idPromo)
+              console.log(promoTotal)
+              console.log('packageQuantity',packageQuantity)
+              console.log('packageNewDuration',packageNewDuration)
+              console.log('packageTotal',packageTotal)
+              console.log('idPackage',idPackage)
+              console.log(packageTotal)
+              console.log(typeServ)
                 for (var i=1;i<=pagelength;i++){
                   $('.checkbox:checked').each(function(){
                     var id = $(this).val()
-                    idService.push(id)
-                    serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
-                    serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                    serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    var type =$(`.typeServ[id='${id}']`).val()
+                    console.log(type)
+                    if(type == 'service')
+                    {
+
+                      typeServ.push(type)
+                      idService.push(id)
+                      serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                      serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                      serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    }
+                    else if(type=='package')
+                    {
+                      typeServ.push(type)
+                      idPackage.push(id)
+                      packageQuantity.push($(`.quantity[service_id='${id}'`).text())
+                      packageNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                      packageTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    }
+                    else if(type='promo')
+                    {
+                      typeServ.push(type)
+                      idPromo.push(id)
+                      promoQuantity.push($(`.quantity[service_id='${id}'`).text())
+                      promoNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                      promoTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    }
                     var serviceId = $(`.id[id='${id}']`).val()
                     var serviceName = $(`.name[id='${id}']`).val()
                     var quantity= $(`.quantity[service_id='${id}'`).text()
@@ -1546,7 +1599,7 @@ html(lang='en')
               else
               {
                 var hiddenTotal = $('.hiddenGrandTotal').val()
-                var rateNgRoom = $('.RateofRoom').val()
+                var rateNgRoom = $('.RateOfRoom').val()
 
                 var newTots = parseInt(hiddenTotal) + parseInt(rateNgRoom)
 
@@ -1563,7 +1616,7 @@ html(lang='en')
                   {
                     swal({
                       title: 'Error',
-                      text: 'You must select therapist.',
+                      text: 'You must select therapist',
                       icon: 'warning'
                     })
                   }
@@ -1572,7 +1625,7 @@ html(lang='en')
                     var scriptSession = !{JSON.stringify(reqSession)};
                     var membership_fee= scriptSession.utilities[0].membership_fee
                       swal({
-                        title: 'Pay now or pay later?',
+                        title: 'Pay Now or Later?',
                         icon: 'info',
                         buttons: {paylater: {
                                       text: "Pay Later",
@@ -1618,7 +1671,12 @@ html(lang='en')
                               }
                               else
                               {
-                                
+                                var buo = $('.RateOfRoom').val()
+                                    buo = parseInt(buo) + parseInt(hidden_finalTotal)
+                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('.totalPrice').val(`${buo}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.paid_stats').val(3)
                               }
                             }
                             else if (data[0].paid_status==0)
@@ -1765,14 +1823,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount received is 0.",
+                                          title: "Amount Received is 0",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -1789,12 +1847,22 @@ html(lang='en')
                                         var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
+                                          typeServ,
                                           serviceId: idService,
                                           serviceQuantity: serviceQuantity,
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           bed_quantity: bed_quantity,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
@@ -1832,14 +1900,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0.",
+                                          title: "Amount Received is 0",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -1856,13 +1924,23 @@ html(lang='en')
                                         var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
+                                          typeServ,
                                           serviceId: idService,
                                           serviceQuantity: serviceQuantity,
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -1900,7 +1978,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -1909,7 +1987,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The gift certificate will not return any change.",
+                                        title: "The Gift certificate will not return any change",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -1919,6 +1997,8 @@ html(lang='en')
                                           var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -1926,6 +2006,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -1970,6 +2058,8 @@ html(lang='en')
                                           var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -1977,6 +2067,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2014,7 +2112,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2023,7 +2121,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The gift certificate will not return any change.",
+                                        title: "The Gift certificate will not return any change",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2034,6 +2132,8 @@ html(lang='en')
                                     
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2041,7 +2141,15 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
-                                            therapist_id: $('#selected_therapist').val(),
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                              therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
                                             membership_fee,
@@ -2086,6 +2194,8 @@ html(lang='en')
                                     
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2093,6 +2203,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2132,7 +2250,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 1] if amount needed is not equal to 0 
                                     {
                                       swal({
-                                        title: "Amount Received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2150,6 +2268,8 @@ html(lang='en')
                                         alert('DONE')
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2157,6 +2277,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2193,7 +2321,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 2] if amount needed is not equal to 0 
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2213,6 +2341,8 @@ html(lang='en')
                                       
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2220,6 +2350,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2257,7 +2395,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2277,6 +2415,8 @@ html(lang='en')
           
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2284,6 +2424,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2320,7 +2468,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2340,6 +2488,8 @@ html(lang='en')
                                   
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2347,6 +2497,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2385,7 +2543,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2405,6 +2563,8 @@ html(lang='en')
                                     
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2412,6 +2572,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2449,7 +2617,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2469,6 +2637,8 @@ html(lang='en')
                           
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2476,6 +2646,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2513,7 +2691,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2532,6 +2710,8 @@ html(lang='en')
 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2539,6 +2719,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2600,14 +2788,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0.",
+                                          title: "Amount Received is 0",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2624,6 +2812,8 @@ html(lang='en')
                                         var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2631,6 +2821,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2667,14 +2865,14 @@ html(lang='en')
                                     if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
                                     {
                                         swal({
-                                          title: "Amount Received is 0.",
+                                          title: "Amount Received is 0",
                                           icon: 'warning'
                                         })
                                     }
                                     else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2691,6 +2889,8 @@ html(lang='en')
                                         var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2698,6 +2898,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -2735,7 +2943,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2744,7 +2952,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The gift certificate will not return any change.",
+                                        title: "The Gift certificate will not return any change",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2754,6 +2962,8 @@ html(lang='en')
                                           var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2761,6 +2971,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2805,6 +3023,8 @@ html(lang='en')
                                           var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2812,6 +3032,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2849,7 +3077,7 @@ html(lang='en')
                                     if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2858,7 +3086,7 @@ html(lang='en')
                                       if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
                                       {
                                         swal({
-                                        title: "The gift certificate will not return any change.",
+                                        title: "The Gift certificate will not return any change",
                                         text: "(Gift Certificate Only)",
                                         icon: 'warning'
                                       }).then(function(sure){
@@ -2869,6 +3097,8 @@ html(lang='en')
                                     
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2876,6 +3106,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2921,6 +3159,8 @@ html(lang='en')
                                     
                                           $.post('/payment/Early',{
                                             newPoints,
+                                            restype,
+                                            typeServ,
                                             amount: $('.totalPrice').val(),
                                             cust_id: $('.hello').val(),
                                             serviceId: idService,
@@ -2928,6 +3168,14 @@ html(lang='en')
                                             serviceNewDuration: serviceNewDuration,
                                             serviceTotal: serviceTotal,
                                             bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
                                             therapist_id: $('#selected_therapist').val(),
                                             timeStart : $('#timeStart').val(),
                                             paid_stats: $('.paid_stats').val(),
@@ -2969,7 +3217,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -2989,6 +3237,8 @@ html(lang='en')
           
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -2996,6 +3246,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -3032,7 +3290,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -3052,6 +3310,8 @@ html(lang='en')
                                   
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -3059,6 +3319,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -3097,7 +3365,7 @@ html(lang='en')
                                     if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                     {
                                       swal({
-                                        title: "Amount received is insufficient.",
+                                        title: "Amount Received is insufficient",
                                         icon: 'warning'
                                       })
                                     }
@@ -3116,6 +3384,8 @@ html(lang='en')
 
                                         $.post('/payment/Early',{
                                           newPoints,
+                                          restype,
+                                          typeServ,
                                           amount: $('.totalPrice').val(),
                                           cust_id: $('.hello').val(),
                                           serviceId: idService,
@@ -3123,6 +3393,14 @@ html(lang='en')
                                           serviceNewDuration: serviceNewDuration,
                                           serviceTotal: serviceTotal,
                                           bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
                                           therapist_id: $('#selected_therapist').val(),
                                           timeStart : $('#timeStart').val(),
                                           paid_stats: $('.paid_stats').val(),
@@ -3171,11 +3449,21 @@ html(lang='en')
                             console.log("TIME END "+timeEnd)
                             $.post('/bookreservation/addReservation',{
                             customerId :$('#customerId').val(),
+                            restype,
+                            typeServ,
                             serviceId: idService,
                             serviceQuantity: serviceQuantity,
                             serviceNewDuration: serviceNewDuration,
                             serviceTotal: serviceTotal,
                             bed_quantity: bed_quantity,
+                            packageId: idPackage,
+                            packageQuantity: packageQuantity,
+                            packageNewDuration: packageNewDuration,
+                            packageTotal: packageTotal,
+                            promoId: idPromo,
+                            promoQuantity: promoQuantity,
+                            promoNewDuration: promoNewDuration,
+                            promoTotal: promoTotal,
                             therapist_id: $('#selected_therapist').val(),
                             timeStart : $('#timeStart').val(),
                             timeEnd,
@@ -3188,7 +3476,7 @@ html(lang='en')
                               {
                               swal({
                                 title:'Success', 
-                                text:'New reservation added.', 
+                                text:'New Reservation Added', 
                                 icon:'success'
                                 }).then(function(){
                                   location.href='/frontdesk/home'
@@ -3215,10 +3503,19 @@ html(lang='en')
                 {            
                 $.post('/bookreservation/addReservation',{
                   customerId :$('#customerId').val(),
+                  typeServ,
                   serviceId: idService,
                   serviceQuantity: serviceQuantity,
                   serviceNewDuration: serviceNewDuration,
                   serviceTotal: serviceTotal,
+                  packageId: idPackage,
+                  packageQuantity: packageQuantity,
+                  packageNewDuration: packageNewDuration,
+                  packageTotal: packageTotal,
+                  promoId: idPromo,
+                  promoQuantity: promoQuantity,
+                  promoNewDuration: promoNewDuration,
+                  promoTotal: promoTotal,
                   bed_quantity: bed_quantity,
                   boys_quantity: bed_occupied_boys,
                   girls_quantity: bed_occupied_girls,
@@ -3234,7 +3531,7 @@ html(lang='en')
                    {
                   swal({
                     title:'Success', 
-                    text:'New reservation added.', 
+                    text:'New Reservation Added', 
                     icon:'success'
                     }).then(function(){
                       location.href='/frontdesk/home'
@@ -3343,7 +3640,7 @@ html(lang='en')
       $('.logout').click(function(){
             swal({
         title: "Are you sure?",
-        text: "Do you want to log out?",
+        text: "Do you want to Log Out?",
         icon: "warning",
         buttons: true,
         dangerMode: true,
@@ -3634,7 +3931,7 @@ html(lang='en')
                     {
                       swal({
                         title:'Not Success', 
-                        text:'Username already exist', 
+                        text:'Username Already Exist', 
                         icon:'warning'
                         })
                     }
@@ -3667,54 +3964,55 @@ html(lang='en')
     $(document).on(	'click', '#pdfButton', function(){ 
       console.log('mamamo')
       var docDefinition = {
-    content: [
-        {text: 'MBAY Health Spa', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-        {text: '10/6/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
-        {
-          style: 'tableExample',
-          table: {
-            headerRows: 1,
-            body: [
-              [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
-              ['Body Massage', '1', '1,500.00','3'],
-              ['Body Scrub ', '1', '1,000.00', '2'],
-            ]
+      content: [
+          {text: 'MBAY Health Spa', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
+          {text: '10/6/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, 0, 0, 8]},
+          {
+            style: 'tableExample',
+            table: {
+              headerRows: 1,
+              body: [
+                [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
+                ['Body Massage', '1', '1,500.00','3'],
+                ['Body Scrub ', '1', '1,000.00', '2'],
+              ]
+            },
+            layout: 'lightHorizontalLines'
           },
-          layout: 'lightHorizontalLines'
-        },
-        {text: 'Total: 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
-        {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
-        {text: 'Amount Received: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
-        {text: 'Change: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
-    ],
+          {text: 'Total: 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
+          {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
+          {text: 'Amount Received: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
+          {text: 'Change: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
+      ],
 
-      styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        margin: [0, 0, 0, 10]
-      },
-      subheader: {
-        fontSize: 16,
-        bold: true,
-        margin: [0, 10, 0, 5]
-      },
-      tableExample: {
-        margin: [0, 5, 0, 15]
-      },
-      tableHeader: {
-        bold: true,
-        fontSize: 13,
-        color: 'black'
-      }
-      }
-    };
-    pdfMake.createPdf(docDefinition).open(); 
+        styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          margin: [0, 0, 0, 10]
+        },
+        subheader: {
+          fontSize: 16,
+          bold: true,
+          margin: [0, 10, 0, 5]
+        },
+        tableExample: {
+          margin: [0, 5, 0, 15]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: 'black'
+        }
+        }
+      };
+      pdfMake.createPdf(docDefinition).open(); 
+        })
       })
     })
 

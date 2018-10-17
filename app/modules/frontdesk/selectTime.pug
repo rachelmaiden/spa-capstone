@@ -459,6 +459,9 @@ html(lang='en')
         console.log(opening_time+" "+closing_time)
         var customerId= $('#Id').val()
         var date = !{JSON.stringify(date)}
+        var reservetype = !{JSON.stringify(restype)}
+        var male = !{JSON.stringify(male)}
+        var female = !{JSON.stringify(female)}
         $('#fullCalendar').fullCalendar({
           header: {
               left:   'title',
@@ -499,7 +502,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}&reservetype=${reservetype}&male=${male}&female=${female}`
                 }
                 else
                 {
@@ -555,7 +558,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}&reservetype=${reservetype}&male=${male}&female=${female}`
                 }
                 else
                 {

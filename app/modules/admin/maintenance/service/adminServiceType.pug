@@ -323,8 +323,7 @@ html(lang='en')
                                           label Service Type
                                           star *
                                           input.form-control(type='text', placeholder='Service Type' name="service_type_desc" id='type_desc' required='true', aria-required='true')
-                                          br
-                                          button.btn.btn-secondary.btn.btn-success.btn-fill.btn-wd#pdfButton(type='button') Print
+                                         
                                   .modal-footer
                                     button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addServiceType(type='button') Add Service Type
                                     button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -665,61 +664,6 @@ html(lang='en')
                 });
             
         });
-    $(document).on(	'click', '#pdfButton', function(){ 
-    
-     var docDefinition = {
-    content: [
-      	{text: 'MBAY Health Spa', fontSize: 14, bold: true, margin: [0, 20, 0, 8]},
-        {text: '10/6/18', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
-        {text: 'Blaster Silonga', fontSize: 14, bold: true, margin: [0, 0-10, 0, 8]},
-        {text: 'Room: Common Room for Boys', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
-        {text: 'Room Fee: 0', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
-        {text: 'Reservation Date: 10/20/18', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
-        {text: 'Reservation Time: 2:00pm-4:00pm', fontSize: 14, bold: true, margin: [0, -10, 0, 8]},
-        {
-          style: 'tableExample',
-          table: {
-            widths: [200, '*', 100, '*'], 
-            headerRows: 1,
-            body: [
-              [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
-              ['Body Massage', '1', '₱ 1,500.00','3'],
-              ['Body Scrub ', '1', '₱ 1,000.00', '2'],
-            ]
-          },
-          layout: 'lightHorizontalLines'
-        },
-        {text: 'Total: ₱ 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
-        {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
-        {text: 'Amount Received:₱ 3000.00', fontSize: 15, bold: true, margin: [0, 30, 0, 8]},
-        {text: 'Change: ₱ 500.00', fontSize: 15, bold: true, margin: [350, -25, 0, 8]}
-    ],
-
-    	styles: {
-       
-      header: {
-        fontSize: 18,
-        bold: true,
-        margin: [0, 0, 0, 10]
-      },
-      subheader: {
-        fontSize: 16,
-        bold: true,
-        margin: [0, 10, 0, 5]
-      },
-      tableExample: {
-        margin: [0, 5, 0, 15]
-      },
-      tableHeader: {
-        bold: true,
-        fontSize: 13,
-        color: 'black'
-      }
-      }
-    };
-    pdfMake.createPdf(docDefinition).open();
-    
-    })
     })
 
   

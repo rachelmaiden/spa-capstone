@@ -1156,7 +1156,7 @@ html(lang='en')
                     $('.male').val('0')
                     $('.female').val('0')
                     $('#reservationFooter').append(`
-                    <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+                    <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single&male=0&female=0" stlye="margin-right: 15px">Next</a>
                     <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
                     }
                   })
@@ -1169,11 +1169,11 @@ html(lang='en')
           }
          }
         $('#reservationFooter').append(`
-        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single&male=0&female=0" stlye="margin-right: 15px">Next</a>
         <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
         })
         $('#reservationFooter').append(`
-        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single" stlye="margin-right: 15px">Next</a>
+        <a class="btn btn-secondary btn-info btn-fill" href="selectDate?id=${id}&reservetype=single&male=0&female=0" stlye="margin-right: 15px">Next</a>
         <button class="btn btn-secondary pull-left btn btn-danger btn-fill btn-wd" type="button" data-dismiss="modal">Cancel</button>`)
         $('#ReservationModal').on('hidden.bs.modal', function (){
           $('#reservationFooter').empty()

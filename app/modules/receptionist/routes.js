@@ -67,23 +67,43 @@ router.get('/home',mid.receptionistnauthed,(req, res) => {
 })
 // [QUEUE - VIEW SERVICES]
 router.post('/home/queue/viewServices',(req,res)=>{
-  console.log(req.body.id)
   const query = `SELECT * FROM walkin_queue_tbl
   JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  JOIN therapist_in_service_tbl ON therapist_in_service_tbl.walkin_id = walkin_queue_tbl.walkin_id
-  JOIN therapist_tbl ON therapist_tbl.therapist_id = therapist_in_service_tbl.therapist_id
-  WHERE walkin_queue_tbl.walkin_id= ?`
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
+  SELECT * FROM walkin_queue_tbl
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
+  JOIN promo_bundle_tbl ON promo_bundle_tbl.promobundle_id = walkin_services_tbl.promobundle_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
+  SELECT * FROM walkin_queue_tbl
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
+  JOIN package_tbl ON package_tbl.package_id = walkin_services_tbl.package_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}"
+  `
   
-  db.query(query,[req.body.id],(err,out)=>{
-    var out1= out;
-    const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl join customer_tbl
-    on walkin_queue_tbl.cust_id = customer_tbl.cust_id where walkin_queue_tbl.walkin_id =?`
+  db.query(query,(err,out)=>{
+    console.log(query)
+    var out1= out[0]
+    var outPromo= out[1]
+    var outPackage= out[2]
+    console.log(out)
+    const query1 = `SELECT * FROM walkin_queue_tbl 
+    JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id 
+    JOIN therapist_in_service_tbl ON therapist_in_service_tbl.walkin_id = walkin_queue_tbl.walkin_id
+    JOIN therapist_tbl ON therapist_tbl.therapist_id = therapist_in_service_tbl.therapist_id
+    where walkin_queue_tbl.walkin_id =?`
     db.query(query1,[req.body.id],(err,out)=>{
-      console.log(out)
-      return res.send({out1:out1, out2:out[0]})
+      return res.send({
+        out1:out1,
+        outPromo:outPromo,
+        outPackage:outPackage, 
+        out2:out[0]})
     })
   })
 })
