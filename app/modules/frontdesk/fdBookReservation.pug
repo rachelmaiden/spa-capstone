@@ -389,9 +389,11 @@ html(lang='en')
                   .col-md-4
                     h4 Total Price: 
                         a#finalTotal
+                        input.earlyHiddenTotal(type='' value='')
                         br
                         | Total  Points: 
                         a#finalPoints
+                        input.earlyHiddenPoints(type='' value='')
                             
               .modal-footer
                 button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book
@@ -939,7 +941,7 @@ html(lang='en')
                 if(amountNeeded == '0')
                 {
                   swal({
-                    title: 'The balance is Complete keme?',
+                    title: 'The balance is 0',
                     icon: 'info'
                   }).then(function(){
                     $('.amountReceived').val(' ')
@@ -993,7 +995,7 @@ html(lang='en')
                 if(amountNeeded == '0')
                 {
                   swal({
-                    title: 'The balance is Complete keme?',
+                    title: 'The balance is 0',
                     icon: 'info'
                   }).then(function(){
                     $('.amountReceived').val(' ')
@@ -1015,7 +1017,7 @@ html(lang='en')
           if($('.amountNeeded').val()==0)
           {
             swal({
-                title: 'The balance is Complete keme?',
+                title: 'The balance is 0',
                 icon: 'info'
               }).then(function(){
                 $('.amountReceived').val(' ')
@@ -1026,7 +1028,7 @@ html(lang='en')
           else if(parseInt($('.amountReceived').val()) >= $('.amountNeeded').val())
           {
             swal({
-                title: 'The balance is Complete keme?',
+                title: 'The balance is 0',
                 icon: 'info'
               }).then(function(){
                 $('.checkboxGc').prop('checked',false)
@@ -1508,7 +1510,8 @@ html(lang='en')
                     var quantity= $(`.quantity[service_id='${id}'`).text()
                     var totalPrice = $(`.total[service_id='${id}']`).text()
                     var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
-                    bagongDuration=moment.duration(bagongDuration).asMinutes()
+                    //- bagongDuration=moment.duration(bagongDuration).asMinutes()
+                    console.log('BG',bagongDuration)
                     $('#viewServices').append(`
                       <tr>
                       <td>${serviceName}</td>
@@ -1604,6 +1607,8 @@ html(lang='en')
                 var newTots = parseInt(hiddenTotal) + parseInt(rateNgRoom)
 
                 $('#finalTotal').text(`₱${newTots}.00`)
+                $('.earlyHiddenTotal').val(newTots)
+                $('.earlyHiddenPoints').val(finalPoints)
                 $('#finalPoints').text(finalPoints)
               }
             
@@ -3468,8 +3473,8 @@ html(lang='en')
                             timeStart : $('#timeStart').val(),
                             timeEnd,
                             date : $('#dateRes').val(),
-                            finalTotal : hidden_finalTotal,
-                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                            finalTotal : $('.earlyHiddenTotal').val(),
+                            finalPoints : $('.earlyHiddenPoints').val(),
                             roomId :$('#roomId').val()
                             }).done(function(data){
                               if(data.alertDesc==1)
@@ -3500,52 +3505,1938 @@ html(lang='en')
                   }
                 }
                 else if(restype=='multiple')
-                {            
-                $.post('/bookreservation/addReservation',{
-                  customerId :$('#customerId').val(),
-                  typeServ,
-                  serviceId: idService,
-                  serviceQuantity: serviceQuantity,
-                  serviceNewDuration: serviceNewDuration,
-                  serviceTotal: serviceTotal,
-                  packageId: idPackage,
-                  packageQuantity: packageQuantity,
-                  packageNewDuration: packageNewDuration,
-                  packageTotal: packageTotal,
-                  promoId: idPromo,
-                  promoQuantity: promoQuantity,
-                  promoNewDuration: promoNewDuration,
-                  promoTotal: promoTotal,
-                  bed_quantity: bed_quantity,
-                  boys_quantity: bed_occupied_boys,
-                  girls_quantity: bed_occupied_girls,
-                  therapist_id: $('#selected_therapist').val(),
-                  timeStart : $('#timeStart').val(),
-                  timeEnd: $('#timeEnd').val(),
-                  date : $('#dateRes').val(),
-                  finalTotal :$('.totalPrice').val(),
-                  finalPoints : $('#finalPoints').text().replace(/,/g,''),
-                  roomId :$('#roomId').val()
-                 }).done(function(data){
-                   if(data.alertDesc==1)
-                   {
-                  swal({
-                    title:'Success', 
-                    text:'New Reservation Added', 
-                    icon:'success'
-                    }).then(function(){
-                      location.href='/frontdesk/home'
-                    })
-                }
-                else
+                {
+                  if($('#selected_therapist').val()==0 || $('#selected_therapist').val()==null)
                   {
                     swal({
-                      title:'Not Success', 
-                      text:'', 
-                      icon:'warning'
-                      })
+                      title: 'Error',
+                      text: 'You must select therapist',
+                      icon: 'warning'
+                    })
                   }
-                 })
+                  else
+                  {
+                    var scriptSession = !{JSON.stringify(reqSession)};
+                    var membership_fee= scriptSession.utilities[0].membership_fee
+                      swal({
+                        title: 'Pay Now or Later?',
+                        icon: 'info',
+                        buttons: {paylater: {
+                                      text: "Pay Later",
+                                      value: "paylater",
+                                      ButtonColor: '#0000'
+                        },confirm:{
+                          text: "Pay Now",
+                          value: "paynow"
+                        }
+                        },
+                      }).then(function(value){
+                        console.log('value',value)
+                        if(value=='paynow')
+                        {
+                          $('#RoomAvailed').append(`Room: ${Room}`)
+                          if($('.RateOfRoom').val()==0)
+                          {
+                            $('#RoomRateAvailed').append(`Room Fee: FREE`)
+                          }
+                          else
+                          {
+                            var rateRate = $('.RateOfRoom').val()
+                            $('#RoomRateAvailed').append(`Room Fee: ₱${rateRate}.00`)
+                          }
+                          $('#DateReserv').append(`Reservation Date: ${Date}`)
+                          $('#TimeReserv').append(`Reservation Time: ${Time} to ${EndTime}`)
+                          $.post('./CheckCustomer/Details',{
+                            cust_id: $('#customerId').val()
+                          }).done(function(data){
+                            console.log(data)
+                            $('#checkout').modal('show')
+                            $('#reservationSummary').modal('hide')
+                            if(data[0].cust_type==0)
+                            {
+                              if($('.RateOfRoom').val()==0)
+                              {
+                                $('#TotalPrice').append(`Total: ${finalTotal}`)
+                                $('.totalPrice').val(`${hidden_finalTotal}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.paid_stats').val(3)
+
+          
+                              }
+                              else
+                              {
+                                var buo = $('.RateOfRoom').val()
+                                    buo = parseInt(buo) + parseInt(hidden_finalTotal)
+                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('.totalPrice').val(`${buo}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.paid_stats').val(3)
+                              }
+                            }
+                            else if (data[0].paid_status==0)
+                            {
+                              hidden_finalTotal=parseInt(hidden_finalTotal) + parseInt(membership_fee) 
+                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}.00`)
+                              $('.totalPrice').val(`${hidden_finalTotal}`)
+                              $('.totalAmountPoints').val(finalPoints)
+
+                              $('.paid_stats').val(data[0].paid_status)
+                            }
+                            else
+                            {
+                              if($('.RateOfRoom').val()==0)
+                              {
+                                $('#TotalPrice').append(`Total: ${finalTotal}`)
+                                $('.totalPrice').val(`${hidden_finalTotal}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.paid_stats').val(1)
+                              }
+                              else
+                              {
+                                var buo = $('.RateOfRoom').val()
+                                    buo = parseInt(buo) + parseInt(hidden_finalTotal)
+                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('.totalPrice').val(`${buo}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.paid_stats').val(1)
+                                
+                              }
+                            }
+                          
+                                $('#TotalPoints').append(`Total Points to be earned: ${finalPoints}`)
+                                $('.totalAmountPoints').val(finalPoints)
+                                $('.hello').val(data[0].cust_id)
+                                
+
+
+
+
+                            if(data[0].cust_type==0)
+                            {
+                            }
+                            else
+                            {
+                                $('.hello').addClass('hidden')
+                                $('.currentPoints').val(data[0].member_points)
+                                $('.newPoints').val(data[0].member_points)
+                                $('#appendDito').append(`
+                                  <div class="form-group has-default bmd-form-group">
+                                  <label> Current Points: ${data[0].member_points}
+                                    <div class="checkbox">
+                                      <input id="checkboxPoints" type="checkbox"/>
+                                      <label for="checkboxPoints">Pay using Points</label>
+                                    </div>
+                                </div>`)
+                            }
+
+                            $('#custName').append(`Customer Name: ${data[0].cust_fname} ${data[0].cust_mname} ${data[0].cust_lname}`)
+                                var table =$('#datatables').DataTable()
+                                var pagelength = table.page.info().pages
+                              for (var i=1;i<=pagelength;i++){
+                                    $('.checkbox:checked').each(function(){
+                                      var id = $(this).val()
+                                      //- idService.push(id)
+                                      //- serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                                      //- serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                                      //- serviceTotal.push($(`.total[service_id='${id}']`).text())
+                                      var serviceId = $(`.id[id='${id}']`).val()
+                                      var serviceName = $(`.name[id='${id}']`).val()
+                                      var quantity= $(`.quantity[service_id='${id}'`).text()
+                                      var totalPrice = $(`.total[service_id='${id}']`).text()
+                                      var hiddenTotal = $(`.hiddenTotal[id='${id}']`).val()
+                                      var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
+                                      var service_equivalentPoints = $(`.eqPoints[id='${id}']`).val()
+                                      var total_equivalentPoints = parseInt(quantity) * parseInt(service_equivalentPoints)
+                                      if($('.RateOfRoom').val()==0)
+                                      {
+                                        $('.amountNeeded').val(hidden_finalTotal)
+                                        $('#AmountNeeded').text('₱'+hidden_finalTotal+'.00')
+                                      }
+                                      else
+                                      {
+                                        var totalNew = $('.RateOfRoom').val()
+                                            totalNew = parseInt(totalNew) + parseInt(hidden_finalTotal)
+                                        $('.amountNeeded').val(totalNew)
+                                        $('#AmountNeeded').text('₱'+totalNew+'.00')
+                                      }
+                                      
+                                      $('#viewServicesAvailed').append(`
+                                        <tr>
+                                        <td>${serviceName}
+                                          <input class="servname" type='hidden' value="${serviceName}" id="${serviceId}">
+                                        </td>
+                                        <td>${quantity}
+                                          <input class="quantityTotal" type='hidden' value="${quantity}" id="${serviceId}">
+                                        </td>
+                                        <td>${totalPrice}
+                                          <input class="halaga" type='hidden' value="${hiddenTotal}" id="${serviceId}">
+                                          <input class="newhalaga" type='hidden' value="" id="${serviceId}">
+
+                                        </td>
+                                        <td>${total_equivalentPoints}
+                                          <input class="eqTotal" type='hidden' value="${total_equivalentPoints}" id="${serviceId}">
+                                          <input class="newPointsEq" type='hidden' value="" id="${serviceId}">
+                                        </td>
+                                        <td>
+                                          <input class="checkboxPayment" type="checkbox" value="${serviceId}" style='display:none' />
+                                        </td>
+                                        `)
+                                      $('#reservationSummary').on('hidden.bs.modal', function (){
+                                        $('#viewServices').empty()
+                                      })
+                                    })
+                          table.page('next').draw('page');
+                                  }
+                              $('#datatablesPaynow').DataTable()
+                          })
+                          $('#checkout').on('hidden.bs.modal', function (){
+                        $('#viewServicesAvailed').empty()
+                        $('#custName').empty()
+                        $('#TotalPrice').empty()
+                        $('.totalPrice').empty()  
+                        $('#TotalPoints').empty()
+                        $('#viewServicesAvailed').empty()
+                        $('#appendDito').empty()
+                        $('#RoomRate').empty()
+                        $('#DateReserv').empty()
+                        $('#TimeReserv').empty()
+                      })
+                        
+
+                      
+                      
+                              // [DONE - PAYMENT - SUBMIT]
+                              $('.buttonDone').click(function(){
+
+
+                                // FIRST VALIDATION
+                                if($('.paid_stats').val() !=3)
+                                {
+                                  if($('.checkboxGC')[0].checked== false && $('#checkboxPoints')[0].checked==false) // IF PAYMENT [CASH ONLY SCENE 1]
+                                  {
+                                    if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
+                                    {
+                                        swal({
+                                          title: "Amount Received is 0",
+                                          icon: 'warning'
+                                        })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) >= parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if SUCCESS
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          typeServ,
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          bed_quantity: bed_quantity,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if($('.checkboxGC')[0].checked== true && $('.selectpickerGc').val().length == 0 && $('#checkboxPoints')[0].checked==true && $('.checkboxPayment:checked').length==0) // IF PAYMENT [CASH ONLY SCENE 2]
+                                  {
+                                    if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
+                                    {
+                                        swal({
+                                          title: "Amount Received is 0",
+                                          icon: 'warning'
+                                        })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) >= parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if SUCCESS
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          typeServ,
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+
+                                  if($('.checkboxGC')[0].checked== true && $('#checkboxPoints')[0].checked==false && $('.amountReceived').val()==0) // IF PAYMENT [GIFT CERTIFICATE ONLY SCENE 1]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
+                                      {
+                                        swal({
+                                        title: "The Gift certificate will not return any change",
+                                        text: "(Gift Certificate Only)",
+                                        icon: 'warning'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                      else
+                                      {
+
+                                        swal({
+                                          title: "Are you sure?",
+                                          text: "(Gift Certificate Only)",
+                                          icon: 'info'
+                                        }).then(function(sure){
+                                          if(sure)
+                                          {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                    }
+                                  }
+                                  else if($('.checkboxGC')[0].checked== true && $('#checkboxPoints')[0].checked==true && $('.checkboxPayment:checked').length==0 && $('.amountReceived').val()==0) // IF PAYMENT [GIFT CERTIFICATE ONLY SCENE 2]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
+                                      {
+                                        swal({
+                                        title: "The Gift certificate will not return any change",
+                                        text: "(Gift Certificate Only)",
+                                        icon: 'warning'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                    
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                              therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                      else
+                                      {
+
+                                        swal({
+                                          title: "Are you sure?",
+                                          text: "(Gift Certificate Only)",
+                                          icon: 'info'
+                                        }).then(function(sure){
+                                          if(sure)
+                                          {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                    
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                    }
+                                  }
+
+                                  console.log( $('.amountReceived').val())
+                                  if($('#checkboxPoints')[0].checked == true && $('.checkboxGc')[0].checked == false && parseInt($('.amountReceived').val().length)==0 ) // IF PAYMENT [POINTS ONLY SCENE 1]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 1] if amount needed is not equal to 0 
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Points Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                        alert('DONE')
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if($('#checkboxPoints')[0].checked == true && $('.checkboxGc')[0].checked == true && $('.selectpickerGc').val().length == 0 && $('.amountReceived').val()==0) // IF PAYMENT [POINTS ONLY SCENE 2]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 )// [POINTS ONLY SCENE 2] if amount needed is not equal to 0 
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Points Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                      
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  
+                                  if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true && $('#checkboxPoints')[0].checked==false)
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Gift Certificate)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+          
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true && $('#checkboxPoints')[0].checked==true && $('.checkboxPayment:checked').length ==0)
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Gift Certificate)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                  
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  
+                                  if(parseInt($('.amountReceived').val()) != 0 && $('#checkboxPoints')[0].checked == true && $('.checkboxGc')[0].checked==false)
+                                  {
+                                    alert('pers')
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Points)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                    
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if(parseInt($('.amountReceived').val().length) != 0 && $('#checkboxPoints')[0].checked == true && $('.checkboxGc')[0].checked==true && $('.selectpickerGc').val().length ==0)
+                                  {
+                                    alert('secs')
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Points)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                          
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+
+                                  if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true && $('#checkboxPoints')[0].checked==true)
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Points, Gift Certificate, & Cash)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                else
+                                {
+                                    if($('.checkboxGC')[0].checked== false) // IF PAYMENT [CASH ONLY SCENE 1]
+                                  {
+                                    if($('.amountReceived').val()==0) // [CASH ONLY SCENE 1 ] if amount received = 0
+                                    {
+                                        swal({
+                                          title: "Amount Received is 0",
+                                          icon: 'warning'
+                                        })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if amount received is less than total price
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) >= parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 1 ] if SUCCESS
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if($('.checkboxGC')[0].checked== true && $('.selectpickerGc').val().length == 0 ) // IF PAYMENT [CASH ONLY SCENE 2]
+                                  {
+                                    if($('.amountReceived').val()==0) // [CASH ONLY SCENE 2] if amount received = 0
+                                    {
+                                        swal({
+                                          title: "Amount Received is 0",
+                                          icon: 'warning'
+                                        })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if amount received is less than total price
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else if(parseInt($('.amountReceived').val()) >= parseInt($('.totalPrice').val())) // [CASH ONLY SCENE 2 ] if SUCCESS
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash Only)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+
+                                  if($('.checkboxGC')[0].checked== true  && $('.amountReceived').val()==0) // IF PAYMENT [GIFT CERTIFICATE ONLY SCENE 1]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
+                                      {
+                                        swal({
+                                        title: "The Gift certificate will not return any change",
+                                        text: "(Gift Certificate Only)",
+                                        icon: 'warning'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                      else
+                                      {
+
+                                        swal({
+                                          title: "Are you sure?",
+                                          text: "(Gift Certificate Only)",
+                                          icon: 'info'
+                                        }).then(function(sure){
+                                          if(sure)
+                                          {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                    }
+                                  }
+                                  else if($('.checkboxGC')[0].checked== true && $('.amountReceived').val()==0) // IF PAYMENT [GIFT CERTIFICATE ONLY SCENE 2]
+                                  {
+                                    if(parseInt($('.amountNeeded').val()) !=0 ) // [GIFT CERTIFICATE ONLY SCENE 2] if amount needed val is not equal to 0
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      if(parseInt($('.gcTotal').val()) > parseInt($('.totalPrice').val()))
+                                      {
+                                        swal({
+                                        title: "The Gift certificate will not return any change",
+                                        text: "(Gift Certificate Only)",
+                                        icon: 'warning'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                    
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                      else
+                                      {
+
+                                        swal({
+                                          title: "Are you sure?",
+                                          text: "(Gift Certificate Only)",
+                                          icon: 'info'
+                                        }).then(function(sure){
+                                          if(sure)
+                                          {
+                                            
+                                          var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                    
+                                          $.post('/payment/Early',{
+                                            newPoints,
+                                            restype,
+                                            typeServ,
+                                            amount: $('.totalPrice').val(),
+                                            cust_id: $('.hello').val(),
+                                            serviceId: idService,
+                                            serviceQuantity: serviceQuantity,
+                                            serviceNewDuration: serviceNewDuration,
+                                            serviceTotal: serviceTotal,
+                                            bed_quantity: bed_quantity,
+                                            packageId: idPackage,
+                                            packageQuantity: packageQuantity,
+                                            packageNewDuration: packageNewDuration,
+                                            packageTotal: packageTotal,
+                                            promoId: idPromo,
+                                            promoQuantity: promoQuantity,
+                                            promoNewDuration: promoNewDuration,
+                                            promoTotal: promoTotal,
+                                            therapist_id: $('#selected_therapist').val(),
+                                            timeStart : $('#timeStart').val(),
+                                            paid_stats: $('.paid_stats').val(),
+                                            membership_fee,
+                                            EndTime,
+                                            date : $('#dateRes').val(),
+                                            finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                            roomId :$('#roomId').val()
+                                            }).done(function(data){
+                                              if(data.alertDesc==0)
+                                                {
+                                                  swal({
+                                                    title: "Success",
+                                                    icon: 'success'
+                                                  }).then(function(){
+                                                    location.href='/frontdesk/home'
+                                                  })
+                                                }
+                                              else
+                                                {
+                                                  swal({
+                                                    title: "ERROR",
+                                                    icon: 'error'
+                                                  })
+                                                }
+                                            
+                                            })
+                                          }
+                                        })
+                                      }
+                                    }
+                                  }
+
+                                  
+                                  
+                                  
+                                  if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true )
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Gift Certificate)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+          
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                  else if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true )
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Cash & Gift Certificate)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                  
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                 
+
+                                  if(parseInt($('.amountReceived').val().length) != 0 && $('.checkboxGc')[0].checked==true )
+                                  {
+                                    if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
+                                    {
+                                      swal({
+                                        title: "Amount Received is insufficient",
+                                        icon: 'warning'
+                                      })
+                                    }
+                                    else
+                                    {
+                                      swal({
+                                        title: "Are you sure?",
+                                        text: "(Points, Gift Certificate, & Cash)",
+                                        icon: 'info'
+                                      }).then(function(sure){
+                                        if(sure)
+                                        {
+                                          
+                                        var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                  
+
+                                        $.post('/payment/Early',{
+                                          newPoints,
+                                          restype,
+                                          typeServ,
+                                          amount: $('.totalPrice').val(),
+                                          cust_id: $('.hello').val(),
+                                          serviceId: idService,
+                                          serviceQuantity: serviceQuantity,
+                                          serviceNewDuration: serviceNewDuration,
+                                          serviceTotal: serviceTotal,
+                                          bed_quantity: bed_quantity,
+                                          packageId: idPackage,
+                                          packageQuantity: packageQuantity,
+                                          packageNewDuration: packageNewDuration,
+                                          packageTotal: packageTotal,
+                                          promoId: idPromo,
+                                          promoQuantity: promoQuantity,
+                                          promoNewDuration: promoNewDuration,
+                                          promoTotal: promoTotal,
+                                          therapist_id: $('#selected_therapist').val(),
+                                          timeStart : $('#timeStart').val(),
+                                          paid_stats: $('.paid_stats').val(),
+                                          membership_fee,
+                                          EndTime,
+                                          date : $('#dateRes').val(),
+                                          finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                                          roomId :$('#roomId').val()
+                                          }).done(function(data){
+                                            if(data.alertDesc==0)
+                                              {
+                                                swal({
+                                                  title: "Success",
+                                                  icon: 'success'
+                                                }).then(function(){
+                                                  location.href='/frontdesk/home'
+                                                })
+                                              }
+                                            else
+                                              {
+                                                swal({
+                                                  title: "ERROR",
+                                                  icon: 'error'
+                                                })
+                                              }
+                                          
+                                          })
+                                        }
+                                      })
+                                    }
+                                  }
+                                }
+                              
+                              })
+                          
+                        }
+                        else if(value=='paylater')
+                        {
+                            var scriptSession = !{JSON.stringify(reqSession)};
+                            console.log(scriptSession)
+                            var allowance_time = scriptSession.utilities[0].reservation_timeAllowance
+                            console.log(allowance_time)
+                            var timeEnd= $('#timeEnd').val()
+                            console.log(timeEnd)
+                                timeEnd = moment(timeEnd,'hh:mm A').add(allowance_time,'minutes').format('hh:mm A')
+                            console.log("TIME END "+timeEnd)
+                            $.post('/bookreservation/addReservation',{
+                            customerId :$('#customerId').val(),
+                            restype,
+                            typeServ,
+                            serviceId: idService,
+                            serviceQuantity: serviceQuantity,
+                            serviceNewDuration: serviceNewDuration,
+                            serviceTotal: serviceTotal,
+                            bed_quantity: bed_quantity,
+                            packageId: idPackage,
+                            packageQuantity: packageQuantity,
+                            packageNewDuration: packageNewDuration,
+                            packageTotal: packageTotal,
+                            promoId: idPromo,
+                            promoQuantity: promoQuantity,
+                            promoNewDuration: promoNewDuration,
+                            promoTotal: promoTotal,
+                            therapist_id: $('#selected_therapist').val(),
+                            timeStart : $('#timeStart').val(),
+                            timeEnd,
+                            date : $('#dateRes').val(),
+                            finalTotal : $('.earlyHiddenTotal').val(),
+                            finalPoints : $('.earlyHiddenPoints').val(),
+                            roomId :$('#roomId').val()
+                            }).done(function(data){
+                              if(data.alertDesc==1)
+                              {
+                              swal({
+                                title:'Success', 
+                                text:'New Reservation Added', 
+                                icon:'success'
+                                }).then(function(){
+                                  location.href='/frontdesk/home'
+                                })
+                            }
+                            else
+                              {
+                                swal({
+                                  title:'Not Success', 
+                                  text:'', 
+                                  icon:'warning'
+                                  })
+                              } 
+                            })
+                        }
+                        else
+                        {
+
+                        }
+                      })
+                  }            
+                //- $.post('/bookreservation/addReservation',{
+                //-   customerId :$('#customerId').val(),
+                //-   typeServ,
+                //-   serviceId: idService,
+                //-   serviceQuantity: serviceQuantity,
+                //-   serviceNewDuration: serviceNewDuration,
+                //-   serviceTotal: serviceTotal,
+                //-   packageId: idPackage,
+                //-   packageQuantity: packageQuantity,
+                //-   packageNewDuration: packageNewDuration,
+                //-   packageTotal: packageTotal,
+                //-   promoId: idPromo,
+                //-   promoQuantity: promoQuantity,
+                //-   promoNewDuration: promoNewDuration,
+                //-   promoTotal: promoTotal,
+                //-   bed_quantity: bed_quantity,
+                //-   boys_quantity: bed_occupied_boys,
+                //-   girls_quantity: bed_occupied_girls,
+                //-   therapist_id: $('#selected_therapist').val(),
+                //-   timeStart : $('#timeStart').val(),
+                //-   timeEnd: $('#timeEnd').val(),
+                //-   date : $('#dateRes').val(),
+                //-   finalTotal :$('.totalPrice').val(),
+                //-   finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                //-   roomId :$('#roomId').val()
+                //-  }).done(function(data){
+                //-    if(data.alertDesc==1)
+                //-    {
+                //-   swal({
+                //-     title:'Success', 
+                //-     text:'New Reservation Added', 
+                //-     icon:'success'
+                //-     }).then(function(){
+                //-       location.href='/frontdesk/home'
+                //-     })
+                //- }
+                //- else
+                //-   {
+                //-     swal({
+                //-       title:'Not Success', 
+                //-       text:'', 
+                //-       icon:'warning'
+                //-       })
+                //-   }
+                //-  })
                 }
             })
             

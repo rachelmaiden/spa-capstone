@@ -648,7 +648,7 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
           FROM therapist_tbl JOIN therapist_attendance_tbl
           ON therapist_tbl.therapist_id = therapist_attendance_tbl.therapist_id
           WHERE therapist_attendance_tbl.availability =1 AND therapist_tbl.therapist_shift='First'
-          ORDER BY therapist_attendance_tbl.therapist_datetime_in ASC`
+          ORDER BY therapist_attendance_tbl.therapist_datetime_in DESC`
       
           db.query(query,(err,out)=>{
             res.render('frontdesk/fdBookReservation',{
@@ -897,6 +897,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
           }
         }
     else if(restype=='multiple'){
+      console.log('pasok sa multiple')
       if(req.body.roomId == 'common')
       {
         const queryRoom = `SELECT * FROM room_tbl WHERE room_rate= 0` 
@@ -1006,6 +1007,7 @@ router.post('/bookreservation/addReservation',(req,res)=>{
             if(err)
               {
                 res.send({alertDesc: notSuccess})
+                console.log(err)
               }
               else
               {
@@ -1035,21 +1037,63 @@ router.post('/bookreservation/addReservation',(req,res)=>{
         }
         else
         {
-          const queryPrivate =`INSERT INTO walkin_services_tbl
-          (walkin_id, service_id,room_id, service_total_quantity, service_total_duration, bed_occupied, service_total_price)
-          VALUES ("${walkinId}", "${req.body.seriviceId}","${req.body.roomId}", "${req.body.serviceQuantity}","${req.body.serviceNewDuration}",
-          "${req.body.boys_quantity}","${req.body.serviceTotal}")`
+          console.log('SA PRIVATE')
+          console.log(req.body.roomId)
+          console.log(req.body.typeServ)
+          console.log(req.body.typeServ.length)
+          for(var i=0;i<req.body.typeServ.length;i++)
+                {
+                  if(req.body.typeServ == 'service')
+                  { 
+                    for(var x=0;x<req.body.serviceId.length;x++)
+                    {
+                      const query1= `INSERT INTO walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
+                      VALUES("${walkinId}","${req.body.serviceId[x]}","${req.body.roomId}","${req.body.serviceQuantity[x]}","${req.body.serviceNewDuration[x]}",
+                        "${req.body.boys_quantity}","${req.body.serviceTotal[x]}")`
+                        db.query(query1,(err,out)=>{
+                          console.log(query1)
+                          if(err){
+                            console.log(err)
+                          }
+                      })
+                    }
 
-          db.query(queryPrivate, (err,out)=>{
-            if(err)
-              {
-                res.send({alertDesc: notSuccess})
-              }
-              else
-              {
-                res.send({alertDesc:querySuccess})
-              }
-          })
+                  }
+
+                  else if(req.body.typeServ =='promo')
+                  {
+                    for(var x=0;x<req.body.promoId.length;x++)
+                    {
+                      const query1= `INSERT INTO walkin_services_tbl(walkin_id,promobundle_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
+                      VALUES("${walkinId}","${req.body.promoId[x]}","${req.body.roomId}","${req.body.promoQuantity[x]}","${req.body.promoNewDuration[x]}",
+                        "${req.body.boys_quantity}","${req.body.promoTotal[x]}")`
+                        db.query(query1,(err,out)=>{
+                          console.log(query1)
+                          if(err){
+                            console.log(err)
+                          }
+                      })
+
+                    }
+
+                  }
+                  else if(req.body.typeServ == 'package')
+                  {
+                    for(var x=0;x<req.body.packageId.length;x++)
+                    {
+                      const query1= `INSERT INTO walkin_services_tbl(walkin_id,package_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
+                      VALUES("${walkinId}","${req.body.packageId[x]}","${req.body.roomId}","${req.body.packageQuantity[x]}","${req.body.packageNewDuration[x]}",
+                        "${req.body.boys_quantity}","${req.body.packageTotal[x]}")`
+                        db.query(query1,(err,out)=>{
+                          console.log(query1)
+                          if(err){
+                            console.log(err)
+                          }
+                      })
+                    }
+
+                  }
+                }
         }
     }
   })
@@ -1247,24 +1291,37 @@ router.get('/payment',mid.frontdesknauthed, (req, res) => {
 
 // [PAYMENT - VIEW DETAILS]
 router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
-  const query = `SELECT walkin_queue_tbl.*, walkin_services_tbl.*, 
-  customer_tbl.cust_fname, customer_tbl.cust_lname, customer_tbl.cust_mname, 
-  services_tbl.service_name, services_tbl.service_price, 
-  room_tbl.room_name, room_tbl.room_rate, freebies_tbl.*
-    from walkin_queue_tbl 
-    join walkin_services_tbl on walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id 
-    join customer_tbl on customer_tbl.cust_id = walkin_queue_tbl.cust_id 
-    join services_tbl on services_tbl.service_id = walkin_services_tbl.service_id
-    JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
-    join room_tbl on room_tbl.room_id = walkin_services_tbl.room_id where walkin_services_tbl.walkin_id=?`
+  const query = `SELECT * FROM walkin_queue_tbl
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
+  JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  JOIN freebies_tbl ON freebies_tbl.service_id = services_tbl.service_id
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
+  SELECT * FROM walkin_queue_tbl
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
+  JOIN promo_bundle_tbl ON promo_bundle_tbl.promobundle_id = walkin_services_tbl.promobundle_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  JOIN freebies_promo_tbl ON freebies_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
+  SELECT * FROM walkin_queue_tbl
+  JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
+  JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
+  JOIN package_tbl ON package_tbl.package_id = walkin_services_tbl.package_id
+  JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  JOIN freebies_package_tbl ON freebies_package_tbl.package_id = package_tbl.package_id
+  WHERE walkin_queue_tbl.walkin_id= "${req.body.id}"`
   
-  db.query(query,[req.body.id],(err,out)=>{
-    var out1= out;
+  db.query(query,(err,out)=>{
+    var outServices= out[0];
+    var outPromo = out[1]
+    var outPackage = out[2]
     const custQuery =`SELECT walkin_queue_tbl.* , customer_tbl.* FROM walkin_queue_tbl
     JOIN customer_tbl ON customer_tbl.cust_id = walkin_queue_tbl.cust_id WHERE walkin_queue_tbl.walkin_id=?`
     
     db.query(custQuery,[req.body.id],(err,out)=>{
-      // console.log(out[0].cust_type)
+      console.log(out[0].cust_type)
       if(out[0].cust_type==0)
       {
         const query1 = `SELECT walkin_queue_tbl.*, customer_tbl.* from walkin_queue_tbl 
@@ -1272,7 +1329,11 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
         where walkin_queue_tbl.walkin_id =?`
         db.query(query1,[req.body.id],(err,out)=>{
           console.log(query1)
-          return res.send({out1:out1, out2:out[0]})
+          return res.send({
+            outServices:outServices,
+            outPromo: outPromo,
+            outPackage:outPackage,
+            out2:out[0]})
         }) 
       }
       else if(out[0].cust_type==1)

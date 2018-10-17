@@ -19,7 +19,7 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/themify-icons.css', rel='stylesheet')
     style.
       .dropdown-menu {
-        margin-left: -131px !important;
+        margin-left: -148px !important;
       }
   body.sidebar-mini
     .wrapper
@@ -978,7 +978,7 @@ html(lang='en')
                         icon: 'warning'
                       })
                     }
-                    else if(amount_received < total_price)
+                    else if(parseInt(amount_received) < parseInt(total_price))
                     {
                       swal({
                         title: "The amount received is insuficient.",
