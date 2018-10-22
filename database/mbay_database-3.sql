@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.7
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 23, 2018 at 05:01 PM
--- Server version: 10.1.28-MariaDB
--- PHP Version: 7.1.10
+-- Generation Time: Sep 30, 2018 at 11:10 PM
+-- Server version: 10.1.30-MariaDB
+-- PHP Version: 7.2.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,18 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `mbay_database`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `addons_reservation_tbl`
---
-
-CREATE TABLE `addons_reservation_tbl` (
-  `addons_id` int(11) NOT NULL,
-  `amenity_id` int(11) DEFAULT NULL,
-  `reservation_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -65,7 +53,8 @@ CREATE TABLE `admin_tbl` (
 
 INSERT INTO `admin_tbl` (`admin_id`, `admin_desc`, `admin_username`, `admin_password`) VALUES
 (1, 'main_admin', 'admin', 'admin'),
-(2, 'front_desk', 'admin', 'admin');
+(2, 'front_desk', 'admin', 'admin'),
+(3, 'receptionist', 'admin', 'admin');
 
 -- --------------------------------------------------------
 
@@ -108,9 +97,81 @@ CREATE TABLE `customer_tbl` (
 --
 
 INSERT INTO `customer_tbl` (`cust_id`, `cust_fname`, `cust_mname`, `cust_lname`, `cust_gender`, `cust_birthMonth`, `cust_birthDate`, `cust_birthYear`, `cust_contact_no`, `senior_citizen_id`, `delete_stats`, `medical_history`, `cust_address`, `cust_type`) VALUES
-(58, 'Crisaldo', 'Ibay', 'Santos', 'Male', '22', '1999', '01', '09132123123', NULL, 0, 'qewqewqe', '1811 Int. 36 Bo Sta Maria Pedro Gil Paco Manila', 1),
-(79, 'Rachel', 'Cabuso', 'Flores', 'Female', '09', '1999', '02', '09123123123', NULL, 0, 'oiqeqwioe', 'oipqiweiopqw', 0),
-(80, 'Rafhael', '', 'Pabustan', 'Male', '05', '1999', '07', '09237271821', NULL, 0, 'Sakit sa Ulo', 'Sa antipolo', 0);
+(58, 'Crisaldo', 'Ibay', 'Santos', 'Male', '01', '22', '1999', '09132123123', NULL, 0, 'qewqewqe', '1811 Int. 36 Bo Sta Maria Pedro Gil Paco Manila', 1),
+(79, 'Rachel', 'Cabuso', 'Flores', 'Female', '09', '02', '1999', '09123123123', NULL, 0, 'oiqeqwioe', 'oipqiweiopqw', 0),
+(80, 'Rafhael', '', 'Pabustan', 'Male', '05', '07', '1999', '09237271821', NULL, 0, 'Sakit sa Ulo', 'Sa antipolo', 0),
+(81, 'Yanie', 'Cacal', 'Exiomo', 'Female', '18', '05', '1999', '09123122312', NULL, 0, 'Sakit sdakitsakit', 'sa Pasig', 0),
+(89, 'joshua', '', 'macaya', 'Male', '08', '15', '1995', '09123123213', NULL, 0, '', 'sa tondo', 1),
+(90, 'Roberto', '', 'Zulueta', 'Male', '09', '17', '1997', '12458977985', NULL, 0, '', 'sa Bulacan', 1),
+(91, 'Patrick', '', 'Garcia', 'Male', '05', '03', '1996', '12312312323', NULL, 0, '', 'Pasay', 0),
+(92, 'qeqweqwe', '', 'qweqwe', 'Male', '08', '08', '1997', '12312312323', NULL, 1, 'asd', 'adasd', 0),
+(93, 'adqe', 'qeqwe', 'qeqwe', 'Male', '02', '28', '1996', '23123123213', NULL, 1, '', 'qeqwewqew', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freebies_package_tbl`
+--
+
+CREATE TABLE `freebies_package_tbl` (
+  `freebies_package_id` int(11) NOT NULL,
+  `package_id` int(11) DEFAULT NULL,
+  `equivalent_points` int(11) DEFAULT NULL,
+  `freebies_package_availability` tinyint(4) DEFAULT NULL,
+  `delete_stats` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `freebies_package_tbl`
+--
+
+INSERT INTO `freebies_package_tbl` (`freebies_package_id`, `package_id`, `equivalent_points`, `freebies_package_availability`, `delete_stats`) VALUES
+(1, 10, 110, 1, 0),
+(6, 15, 110, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freebies_promo_tbl`
+--
+
+CREATE TABLE `freebies_promo_tbl` (
+  `freebies_promo_id` int(11) NOT NULL,
+  `promobundle_id` int(11) DEFAULT NULL,
+  `equivalent_points` int(11) DEFAULT NULL,
+  `freebies_promo_availability` tinyint(4) DEFAULT NULL,
+  `delete_stats` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `freebies_promo_tbl`
+--
+
+INSERT INTO `freebies_promo_tbl` (`freebies_promo_id`, `promobundle_id`, `equivalent_points`, `freebies_promo_availability`, `delete_stats`) VALUES
+(2, 2, 110, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `freebies_tbl`
+--
+
+CREATE TABLE `freebies_tbl` (
+  `freebies_id` int(11) NOT NULL,
+  `service_id` int(11) NOT NULL,
+  `equivalent_points` varchar(45) DEFAULT NULL,
+  `freebies_availability` tinyint(4) DEFAULT NULL,
+  `delete_stats` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `freebies_tbl`
+--
+
+INSERT INTO `freebies_tbl` (`freebies_id`, `service_id`, `equivalent_points`, `freebies_availability`, `delete_stats`) VALUES
+(14, 43, '35', 0, 0),
+(15, 44, '25', 0, 0),
+(16, 45, '50', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -123,15 +184,20 @@ CREATE TABLE `loyalty_tbl` (
   `cust_id` int(11) DEFAULT NULL,
   `member_username` varchar(45) DEFAULT NULL,
   `member_password` varchar(45) DEFAULT NULL,
-  `member_points` int(11) DEFAULT NULL
+  `member_points` int(11) DEFAULT NULL,
+  `membership_validity` varchar(45) DEFAULT NULL,
+  `paid_status` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `loyalty_tbl`
 --
 
-INSERT INTO `loyalty_tbl` (`member_id`, `cust_id`, `member_username`, `member_password`, `member_points`) VALUES
-(1, 58, 'crissy', '1234', NULL);
+INSERT INTO `loyalty_tbl` (`member_id`, `cust_id`, `member_username`, `member_password`, `member_points`, `membership_validity`, `paid_status`) VALUES
+(1, 58, 'crissy', '1234', NULL, NULL, NULL),
+(5, 89, 'rae', 'rae', 0, 'September 17, 2020', 1),
+(6, 90, 'roberto', 'roberto', 0, 'September 22, 2020', 0),
+(7, 93, 'hello', 'hello', 0, 'September 30, 2020', 0);
 
 -- --------------------------------------------------------
 
@@ -144,6 +210,31 @@ CREATE TABLE `medical_history_tbl` (
   `cust_id` int(11) DEFAULT NULL,
   `med_history` text
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `package_tbl`
+--
+
+CREATE TABLE `package_tbl` (
+  `package_id` int(11) NOT NULL,
+  `package_name` varchar(45) DEFAULT NULL,
+  `package_price` int(11) DEFAULT NULL,
+  `package_availability` tinyint(4) DEFAULT NULL,
+  `delete_stats` tinyint(4) DEFAULT NULL,
+  `package_duration` varchar(45) DEFAULT NULL,
+  `package_points` int(11) DEFAULT NULL,
+  `package_maxPerson` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `package_tbl`
+--
+
+INSERT INTO `package_tbl` (`package_id`, `package_name`, `package_price`, `package_availability`, `delete_stats`, `package_duration`, `package_points`, `package_maxPerson`) VALUES
+(10, 'package#1', 2200, 0, 0, '210', 80, 1),
+(15, 'package#1', 2200, 0, 0, '210', 80, 2);
 
 -- --------------------------------------------------------
 
@@ -168,61 +259,21 @@ CREATE TABLE `promo_bundle_tbl` (
   `promobundle_id` int(11) NOT NULL,
   `promobundle_name` varchar(45) DEFAULT NULL,
   `promobundle_price` int(11) DEFAULT NULL,
-  `promobundle_validity` varchar(45) DEFAULT NULL,
+  `promobundle_valid_from` varchar(45) DEFAULT NULL,
+  `promobundle_valid_until` varchar(45) DEFAULT NULL,
   `promobundle_availability` tinyint(4) DEFAULT NULL,
+  `promobundle_maxPerson` int(11) DEFAULT NULL,
   `promobundle_duration` varchar(45) DEFAULT NULL,
-  `promobundle_amenity_usage` varchar(45) DEFAULT NULL,
-  `delete_stats` tinyint(4) DEFAULT NULL
+  `delete_stats` tinyint(4) DEFAULT NULL,
+  `promobundle_points` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `promo_bundle_tbl`
 --
 
-INSERT INTO `promo_bundle_tbl` (`promobundle_id`, `promobundle_name`, `promobundle_price`, `promobundle_validity`, `promobundle_availability`, `promobundle_duration`, `promobundle_amenity_usage`, `delete_stats`) VALUES
-(35, 'Rainy Days Promo', 2000, '07/25/2018', 0, '60 minutes', '60 minutes', 0),
-(36, 'Back to School Promo', 1500, '07/18/2018,', 0, '60 minutes', '60 minutes', 1),
-(37, 'sample', 3131, '07/18/2018,', 0, '60 minutes', '60 minutes', 1),
-(38, 'Sample', 1300, '08/29/2018,08/31/2018', 0, '60 minutes', '60 minutes', 0),
-(39, 'qweqwe', 123123, '08/30/2018,08/27/2018', 0, '90 minutes', '90 minutes', 1),
-(40, 'qweqw', 2323, '08/27/2018,08/20/2018', 0, '60 minutes', '60 minutes', 1),
-(41, 'qweq', 123, '08/22/2018,08/21/2018', 0, '60 minutes', '60 minutes', 0),
-(42, 'qwe', 23, '08/28/2018,08/20/2018', 0, '60 minutes', '60 minutes', 1),
-(43, 'qeqwe', 2222, '08/28/2018,08/20/2018', 0, '60 minutes', '60 minutes', 0),
-(44, 'we', 1213123, '10/05/2018,09/06/2018', 0, '60 minutes', '60 minutes', 0),
-(45, 'www', 222, '08/27/2018,08/27/2018', 0, '60 minutes', '60 minutes', 1),
-(46, 'shhgdhhgd', 600, '08/15/2018,08/24/2018', 0, '60 minutes', '60 minutes', 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reservation_appointments_tbl`
---
-
-CREATE TABLE `reservation_appointments_tbl` (
-  `reservation_id` int(11) NOT NULL,
-  `cust_id` int(11) DEFAULT NULL,
-  `reservation_start_time` datetime DEFAULT NULL,
-  `reservation_end_time` datetime DEFAULT NULL,
-  `reservation_status` tinyint(4) DEFAULT NULL,
-  `reservation_total_amount` int(11) DEFAULT NULL,
-  `reservation_locker_no` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `reservation_services_tbl`
---
-
-CREATE TABLE `reservation_services_tbl` (
-  `reserv_serv_id` int(11) NOT NULL,
-  `reservation_id` int(11) DEFAULT NULL,
-  `service_id` int(11) DEFAULT NULL,
-  `promobundle_id` int(11) DEFAULT NULL,
-  `therapist_id` int(11) DEFAULT NULL,
-  `room_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `promo_bundle_tbl` (`promobundle_id`, `promobundle_name`, `promobundle_price`, `promobundle_valid_from`, `promobundle_valid_until`, `promobundle_availability`, `promobundle_maxPerson`, `promobundle_duration`, `delete_stats`, `promobundle_points`) VALUES
+(2, 'promo#1', 2200, 'October 01, 2018', 'October 31, 2018', 0, 1, '210', 0, 79);
 
 -- --------------------------------------------------------
 
@@ -237,19 +288,20 @@ CREATE TABLE `room_tbl` (
   `room_rate` varchar(45) DEFAULT NULL,
   `room_availability` tinyint(4) DEFAULT NULL,
   `delete_stats` varchar(45) DEFAULT NULL,
-  `bed_qty` int(11) DEFAULT NULL
+  `bed_qty` int(11) DEFAULT NULL,
+  `room_gender` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `room_tbl`
 --
 
-INSERT INTO `room_tbl` (`room_id`, `room_name`, `room_type_id`, `room_rate`, `room_availability`, `delete_stats`, `bed_qty`) VALUES
-(8, 'Common Room for Girls', 2, '0', 0, '0', 17),
-(9, 'Common Room for Boys', 2, '0', 0, '0', 20),
-(10, 'Private Room for 2', 6, '150', 0, '0', 2),
-(11, 'Hexa Room', 6, '500', 0, '0', 6),
-(12, 'hexaaa', 6, '122', 1, '1', 1);
+INSERT INTO `room_tbl` (`room_id`, `room_name`, `room_type_id`, `room_rate`, `room_availability`, `delete_stats`, `bed_qty`, `room_gender`) VALUES
+(8, 'Common Room for Girls', 2, '0', 0, '0', 17, 2),
+(9, 'Common Room for Boys', 2, '0', 0, '0', 20, 1),
+(10, 'Private Room for 2', 6, '150', 0, '0', 2, 3),
+(11, 'Hexa Room', 6, '500', 0, '0', 6, 3),
+(13, 'wew', 6, '23', 1, '1', 2323, NULL);
 
 -- --------------------------------------------------------
 
@@ -276,7 +328,8 @@ INSERT INTO `room_type_tbl` (`room_type_id`, `room_type_desc`, `delete_stats`) V
 (6, 'Private Room', 0),
 (7, 'www', 1),
 (8, 'aaa', 1),
-(9, 'www', 1);
+(9, 'www', 1),
+(10, 'ass', 1);
 
 -- --------------------------------------------------------
 
@@ -311,17 +364,9 @@ CREATE TABLE `services_tbl` (
 --
 
 INSERT INTO `services_tbl` (`service_id`, `service_name`, `service_type_id`, `service_duration_id`, `service_price`, `service_availability`, `delete_stats`, `service_points`) VALUES
-(20, 'Body Scrub With Gluta', 2, 11, 800, 0, 0, 3),
-(21, 'Body Scrub (Salt Glow)', 2, 10, 1000, 0, 0, 2),
-(22, 'Special Massage', 2, 9, 1300, 0, 0, 1),
-(23, 'Therapeutic Massage( Meridian Parts of the Body)', 1, 11, 1200, 0, 0, 3),
-(32, 'Foot Massage', 3, 10, 800, 0, 0, 2),
-(33, 'Sample', 1, 10, 1300, 0, 0, 2),
-(34, 'Hand Massage', 3, 10, 900, 0, 0, 2),
-(35, 'Saample1', 1, 10, 800, 1, 1, 0),
-(37, 'Sample 1', 1, 10, 200, 1, 1, 0),
-(38, 'aaa', 1, 10, 232, 1, 1, 2),
-(39, 'aa', 2, 10, 213, 1, 1, 23);
+(43, 'Full Body Massage', 1, 10, 750, 0, 0, 25),
+(44, 'Half Body Massage ', 1, 10, 500, 0, 0, 15),
+(45, 'Body Scrub W/ Salt Glow', 15, 11, 1000, 0, 0, 30);
 
 -- --------------------------------------------------------
 
@@ -341,13 +386,34 @@ CREATE TABLE `service_duration_tbl` (
 --
 
 INSERT INTO `service_duration_tbl` (`service_duration_id`, `service_duration_desc`, `service_duration_availability`, `delete_stats`) VALUES
-(8, '50', NULL, 1),
-(9, '120 ', 0, 0),
+(9, '120 ', 1, 0),
 (10, '60', 0, 0),
 (11, '90', 0, 0),
-(16, '2', NULL, 1),
-(17, '2', NULL, 1),
-(18, '150', 1, 0);
+(20, '30', 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `service_in_package_tbl`
+--
+
+CREATE TABLE `service_in_package_tbl` (
+  `service_in_package_id` int(11) NOT NULL,
+  `service_id` int(11) DEFAULT NULL,
+  `package_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `service_in_package_tbl`
+--
+
+INSERT INTO `service_in_package_tbl` (`service_in_package_id`, `service_id`, `package_id`) VALUES
+(24, 43, 10),
+(25, 44, 10),
+(26, 45, 10),
+(39, 43, 15),
+(40, 44, 15),
+(41, 45, 15);
 
 -- --------------------------------------------------------
 
@@ -366,29 +432,9 @@ CREATE TABLE `service_in_promo_tbl` (
 --
 
 INSERT INTO `service_in_promo_tbl` (`service_in_promo_id`, `promobundle_id`, `service_id`) VALUES
-(75, 35, 20),
-(76, 35, 21),
-(77, 35, 23),
-(78, 35, 22),
-(93, 36, 20),
-(94, 36, 22),
-(96, 37, 20),
-(97, 37, 21),
-(98, 37, 22),
-(99, 37, 23),
-(100, 38, 20),
-(101, 38, 21),
-(102, 38, 22),
-(103, 39, 20),
-(104, 39, 22),
-(105, 39, 21),
-(112, 40, 20),
-(115, 42, 20),
-(116, 42, 21),
-(121, 45, 21),
-(122, 45, 20),
-(123, 46, 20),
-(124, 46, 21);
+(4, 2, 43),
+(5, 2, 45),
+(6, 2, 44);
 
 -- --------------------------------------------------------
 
@@ -409,17 +455,9 @@ CREATE TABLE `service_type_tbl` (
 
 INSERT INTO `service_type_tbl` (`service_type_id`, `service_type_desc`, `service_type_availability`, `delete_stats`) VALUES
 (1, 'Body Massage', 0, 0),
-(2, 'Body Scrub', 0, 0),
-(3, 'Add-ons Massage', 0, 0),
-(4, '', 0, 1),
-(5, 'aaa', 1, 1),
-(6, 'qweqwe', 1, 1),
-(7, 'qweqwe', 1, 1),
-(8, 'qwewqe', 1, 1),
-(9, 'aaa', 1, 1),
-(10, '', 1, 1),
-(11, 'Body Body', 1, 1),
-(12, 'Body Therapy', 0, 0);
+(2, 'Body Scrub', 1, 1),
+(3, 'Add-ons Massage', 1, 0),
+(15, 'Body Scrub', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -444,7 +482,41 @@ INSERT INTO `specialty_tbl` (`specialty_id`, `specialty_desc`, `delete_stats`) V
 (4, 'Hand Massage', 0),
 (12, 'wwww', 1),
 (13, 'aaaa', 1),
-(14, 'Ventosa', 0);
+(14, 'Ventosa', 1),
+(15, 'as', 1),
+(16, 'ventosa', 0),
+(17, 'Swedish Massage', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `therapist_attendance_tbl`
+--
+
+CREATE TABLE `therapist_attendance_tbl` (
+  `attendance_id` int(11) NOT NULL,
+  `therapist_id` int(11) DEFAULT NULL,
+  `therapist_datetime_in` varchar(45) DEFAULT NULL,
+  `therapist_reserved` tinyint(4) DEFAULT NULL,
+  `doneService_count` varchar(45) DEFAULT NULL,
+  `availability` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `therapist_attendance_tbl`
+--
+
+INSERT INTO `therapist_attendance_tbl` (`attendance_id`, `therapist_id`, `therapist_datetime_in`, `therapist_reserved`, `doneService_count`, `availability`) VALUES
+(4, 59, 'September 22, 2018 03:42 PM', NULL, '0', 1),
+(5, 60, 'September 22, 2018 03:41 PM', NULL, '0', 1),
+(6, 61, 'September 22, 2018 03:40 PM', NULL, '0', 1),
+(7, 62, NULL, NULL, NULL, 0),
+(8, 63, 'September 29, 2018 06:12 PM', NULL, '0', 3),
+(9, 64, NULL, NULL, NULL, 0),
+(10, 65, NULL, NULL, NULL, 0),
+(11, 66, NULL, NULL, NULL, 0),
+(12, 67, 'September 22, 2018 05:32 PM', NULL, '0', 1),
+(13, 68, 'September 29, 2018 03:16 PM', NULL, '0', 1);
 
 -- --------------------------------------------------------
 
@@ -463,19 +535,27 @@ CREATE TABLE `therapist_specialty_tbl` (
 --
 
 INSERT INTO `therapist_specialty_tbl` (`therapist_specialty_id`, `therapist_id`, `specialty_id`) VALUES
-(166, 49, 1),
-(167, 49, 3),
-(168, 50, 1),
-(169, 51, 1),
-(170, 51, 3),
-(171, 51, 4),
-(172, 52, 1),
-(173, 52, 3),
-(174, 52, 4),
-(175, 53, 1),
-(176, 53, 3),
-(177, 54, 1),
-(178, 54, 3);
+(185, 59, 1),
+(186, 59, 3),
+(187, 59, 4),
+(188, 60, 1),
+(189, 60, 3),
+(190, 61, 1),
+(191, 61, 4),
+(192, 62, 3),
+(193, 62, 1),
+(194, 63, 1),
+(195, 63, 3),
+(196, 63, 16),
+(197, 64, 3),
+(198, 65, 3),
+(199, 65, 4),
+(200, 66, 3),
+(201, 66, 4),
+(202, 67, 1),
+(203, 67, 3),
+(204, 68, 1),
+(205, 68, 3);
 
 -- --------------------------------------------------------
 
@@ -496,20 +576,57 @@ CREATE TABLE `therapist_tbl` (
   `therapist_availability` tinyint(4) DEFAULT NULL,
   `delete_stats` tinyint(4) DEFAULT NULL,
   `therapist_birthDate` varchar(45) DEFAULT NULL,
-  `therapist_birthYear` varchar(45) DEFAULT NULL
+  `therapist_birthYear` varchar(45) DEFAULT NULL,
+  `therapist_shift` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `therapist_tbl`
 --
 
-INSERT INTO `therapist_tbl` (`therapist_id`, `therapist_fname`, `therapist_mname`, `therapist_lname`, `therapist_contact_no`, `therapist_birthMonth`, `therapist_gender`, `therapist_address`, `therapist_specialty_id`, `therapist_availability`, `delete_stats`, `therapist_birthDate`, `therapist_birthYear`) VALUES
-(49, 'eqweqw', 'eqweqwe', 'qweqw', '21321321323', '01', 'Male', 'qwewqe', NULL, 1, 1, '02', '1995'),
-(50, 'qweqwe', 'qweqweqwe', 'qweqwe', '23123123232', '12', 'Male', 'qweqwe', NULL, 1, 1, '27', '1999'),
-(51, 'Rachel', 'Cabuso', 'Flores', '09123213232', '02', 'Female', 'sa Tondo', NULL, 1, 0, '09', '1999'),
-(52, 'qweqwe', 'qweqwe', 'qweqwe', '12321312232', '01', 'Male', 'qweqwe', NULL, 1, 0, '09', '1995'),
-(53, 'qeqweqweqw', 'qweqweqwe', 'weqweqw', '12312312232', '01', 'Male', '12qweqwe', NULL, 1, 0, '01', '2000'),
-(54, 'eqwieuiqwuieo', 'qweqwei', 'jeqwqewiuo', '12312312322', '01', 'Male', 'qweo', NULL, 1, 0, '01', '2000');
+INSERT INTO `therapist_tbl` (`therapist_id`, `therapist_fname`, `therapist_mname`, `therapist_lname`, `therapist_contact_no`, `therapist_birthMonth`, `therapist_gender`, `therapist_address`, `therapist_specialty_id`, `therapist_availability`, `delete_stats`, `therapist_birthDate`, `therapist_birthYear`, `therapist_shift`) VALUES
+(59, 'Rachel', '', 'Flores', '09131232232', '02', 'Female', '220 Int.60 Rodriguez St. Balut, Tondo Manila', NULL, 0, 0, '09', '1999', 'First'),
+(60, 'Crisaldo', '', 'Santos', '12321321323', '02', 'Male', 'Sa Paco', NULL, 0, 0, '07', '1995', 'Second'),
+(61, 'Rafhael', '', 'Pabustan', '12312323823', '07', 'Male', 'sa Antipolo', NULL, 0, 0, '05', '1995', 'First'),
+(62, 'Patrick', '', 'Garcia', '12313213232', '08', 'Male', 'sa Pasay', NULL, 0, 0, '06', '1997', 'Second'),
+(63, 'Joshua Rae', '', 'Macaya', '23213223223', '07', 'Male', 'sa Tondo', NULL, 0, 0, '11', '1996', 'First'),
+(64, 'Roberto', '', 'Zulueta', '22232232232', '07', 'Male', 'sa Bulacan', NULL, 0, 0, '03', '1995', 'Second'),
+(65, 'Gramar', '', 'Lacsina', '23123212312', '07', 'Male', 'Sa Punta', NULL, 0, 0, '04', '1996', 'Second'),
+(66, 'Loven', '', 'Bunque', '45467984578', '07', 'Male', 'sa Marikina', NULL, 0, 0, '12', '1995', 'Second'),
+(67, 'Jenhel', '', 'Santos', '45678524567', '02', 'Male', 'sa Quezon City', NULL, 0, 0, '08', '1995', 'Second'),
+(68, 'Crisaldo', '', 'Santos', '54654787877', '07', 'Male', 'sa Paco', NULL, 0, 0, '18', '1995', 'First');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `utilities_tbl`
+--
+
+CREATE TABLE `utilities_tbl` (
+  `utilities_id` int(11) NOT NULL,
+  `company_name` varchar(200) DEFAULT NULL,
+  `company_logo` varchar(200) DEFAULT NULL,
+  `opening_time` varchar(45) DEFAULT NULL,
+  `closing_time` varchar(45) DEFAULT NULL,
+  `max_guest` int(11) DEFAULT NULL,
+  `membership_validity` varchar(45) DEFAULT NULL,
+  `membership_fee` int(11) DEFAULT NULL,
+  `entrance_fee` int(11) DEFAULT NULL,
+  `reservation_forfeitTime` varchar(45) DEFAULT NULL,
+  `firstShift_timeStart` varchar(45) DEFAULT NULL,
+  `firstShift_timeEnd` varchar(45) DEFAULT NULL,
+  `secondShift_timeStart` varchar(45) DEFAULT NULL,
+  `secondShift_timeEnd` varchar(45) DEFAULT NULL,
+  `reservation_timeAllowance` varchar(45) DEFAULT NULL,
+  `therapist_commission` varchar(45) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='	';
+
+--
+-- Dumping data for table `utilities_tbl`
+--
+
+INSERT INTO `utilities_tbl` (`utilities_id`, `company_name`, `company_logo`, `opening_time`, `closing_time`, `max_guest`, `membership_validity`, `membership_fee`, `entrance_fee`, `reservation_forfeitTime`, `firstShift_timeStart`, `firstShift_timeEnd`, `secondShift_timeStart`, `secondShift_timeEnd`, `reservation_timeAllowance`, `therapist_commission`) VALUES
+(1, 'Mbay Health Spa', 'company_logo-1538039640172.jpg', '01:00', '1:00 AM', 6, '24', 600, 750, '30', '1:00 PM', '6:00 PM', '6:00 PM', '1:00 AM', '30', '30');
 
 -- --------------------------------------------------------
 
@@ -526,22 +643,10 @@ CREATE TABLE `walkin_queue_tbl` (
   `walkin_total_amount` int(11) DEFAULT NULL,
   `walkin_lock_no` int(11) DEFAULT NULL,
   `walkin_date` varchar(45) DEFAULT NULL,
-  `walkin_total_points` varchar(45) DEFAULT NULL
+  `walkin_total_points` varchar(45) DEFAULT NULL,
+  `walkin_payment_status` tinyint(4) DEFAULT NULL,
+  `walkin_indicator` tinyint(4) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `walkin_queue_tbl`
---
-
-INSERT INTO `walkin_queue_tbl` (`walkin_id`, `cust_id`, `walkin_start_time`, `walkin_end_time`, `walkin_status`, `walkin_total_amount`, `walkin_lock_no`, `walkin_date`, `walkin_total_points`) VALUES
-(33, 58, '01:30 PM', '04:00 PM', NULL, 1, NULL, '08-24-2018', '5'),
-(34, 58, '01:30 PM', '04:00 PM', NULL, 1, NULL, '08-24-2018', '5'),
-(35, 79, '02:10 PM', '03:10 PM', NULL, 1, NULL, '08-23-2018', '2'),
-(36, 80, '01:00 PM', '04:00 PM', NULL, 2, NULL, '08-23-2018', '6'),
-(37, 79, '02:00 PM', '04:00 PM', NULL, 1, NULL, '08-23-2018', '4'),
-(38, 79, '02:00 PM', '04:00 PM', NULL, 1, NULL, '08-23-2018', '4'),
-(39, 79, '02:00 PM', '04:00 PM', NULL, 1, NULL, '08-23-2018', '4'),
-(40, 79, '02:00 PM', '04:00 PM', NULL, 1, NULL, '08-23-2018', '4');
 
 -- --------------------------------------------------------
 
@@ -556,37 +661,15 @@ CREATE TABLE `walkin_services_tbl` (
   `promobundle_id` int(11) DEFAULT NULL,
   `therapist_id` int(11) DEFAULT NULL,
   `room_id` int(11) DEFAULT NULL,
-  `bed_occupied` int(11) DEFAULT NULL
+  `bed_occupied` int(11) DEFAULT NULL,
+  `service_total_quantity` int(11) DEFAULT NULL,
+  `service_total_duration` varchar(45) DEFAULT NULL,
+  `service_total_price` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `walkin_services_tbl`
---
-
-INSERT INTO `walkin_services_tbl` (`walkin_serv_id`, `walkin_id`, `service_id`, `promobundle_id`, `therapist_id`, `room_id`, `bed_occupied`) VALUES
-(35, 33, 21, NULL, NULL, 9, NULL),
-(36, 33, 20, NULL, NULL, 9, NULL),
-(37, 34, 21, NULL, NULL, 9, NULL),
-(38, 34, 20, NULL, NULL, 9, NULL),
-(39, 35, 21, NULL, NULL, 8, NULL),
-(40, 36, 32, NULL, NULL, 9, NULL),
-(41, 36, 33, NULL, NULL, 9, NULL),
-(42, 37, 32, NULL, NULL, 8, NULL),
-(43, 38, 32, NULL, NULL, 8, NULL),
-(44, 39, 32, NULL, NULL, 8, NULL),
-(45, 40, 32, NULL, NULL, 8, NULL);
 
 --
 -- Indexes for dumped tables
 --
-
---
--- Indexes for table `addons_reservation_tbl`
---
-ALTER TABLE `addons_reservation_tbl`
-  ADD PRIMARY KEY (`addons_id`),
-  ADD KEY `addons_reserv_amenity_id_idx` (`amenity_id`),
-  ADD KEY `addons_reserv_id_idx` (`reservation_id`);
 
 --
 -- Indexes for table `addons_walkin_tbl`
@@ -615,6 +698,27 @@ ALTER TABLE `customer_tbl`
   ADD PRIMARY KEY (`cust_id`);
 
 --
+-- Indexes for table `freebies_package_tbl`
+--
+ALTER TABLE `freebies_package_tbl`
+  ADD PRIMARY KEY (`freebies_package_id`),
+  ADD KEY `freebies_package_id_idx` (`package_id`);
+
+--
+-- Indexes for table `freebies_promo_tbl`
+--
+ALTER TABLE `freebies_promo_tbl`
+  ADD PRIMARY KEY (`freebies_promo_id`),
+  ADD KEY `promobundle_freebies_id_idx` (`promobundle_id`);
+
+--
+-- Indexes for table `freebies_tbl`
+--
+ALTER TABLE `freebies_tbl`
+  ADD PRIMARY KEY (`freebies_id`),
+  ADD KEY `service_id_idx` (`service_id`);
+
+--
 -- Indexes for table `loyalty_tbl`
 --
 ALTER TABLE `loyalty_tbl`
@@ -629,6 +733,12 @@ ALTER TABLE `medical_history_tbl`
   ADD KEY `cust_id_idx` (`cust_id`);
 
 --
+-- Indexes for table `package_tbl`
+--
+ALTER TABLE `package_tbl`
+  ADD PRIMARY KEY (`package_id`);
+
+--
 -- Indexes for table `payment_tbl`
 --
 ALTER TABLE `payment_tbl`
@@ -640,24 +750,6 @@ ALTER TABLE `payment_tbl`
 --
 ALTER TABLE `promo_bundle_tbl`
   ADD PRIMARY KEY (`promobundle_id`);
-
---
--- Indexes for table `reservation_appointments_tbl`
---
-ALTER TABLE `reservation_appointments_tbl`
-  ADD PRIMARY KEY (`reservation_id`),
-  ADD KEY `reserv_appointments_cust_id_idx` (`cust_id`);
-
---
--- Indexes for table `reservation_services_tbl`
---
-ALTER TABLE `reservation_services_tbl`
-  ADD PRIMARY KEY (`reserv_serv_id`),
-  ADD KEY `reserv_services_reservation_id_idx` (`reservation_id`),
-  ADD KEY `reserv_services_services_id_idx` (`service_id`),
-  ADD KEY `reserv_services_promobundle_id_idx` (`promobundle_id`),
-  ADD KEY `reserv_services_therapist_id_idx` (`therapist_id`),
-  ADD KEY `reserv_services_room_id_idx` (`room_id`);
 
 --
 -- Indexes for table `room_tbl`
@@ -694,6 +786,14 @@ ALTER TABLE `service_duration_tbl`
   ADD PRIMARY KEY (`service_duration_id`);
 
 --
+-- Indexes for table `service_in_package_tbl`
+--
+ALTER TABLE `service_in_package_tbl`
+  ADD PRIMARY KEY (`service_in_package_id`),
+  ADD KEY `service_id_idx` (`service_id`),
+  ADD KEY `package_id_idx` (`package_id`);
+
+--
 -- Indexes for table `service_in_promo_tbl`
 --
 ALTER TABLE `service_in_promo_tbl`
@@ -714,6 +814,13 @@ ALTER TABLE `specialty_tbl`
   ADD PRIMARY KEY (`specialty_id`);
 
 --
+-- Indexes for table `therapist_attendance_tbl`
+--
+ALTER TABLE `therapist_attendance_tbl`
+  ADD PRIMARY KEY (`attendance_id`),
+  ADD KEY `thera_id_idx` (`therapist_id`);
+
+--
 -- Indexes for table `therapist_specialty_tbl`
 --
 ALTER TABLE `therapist_specialty_tbl`
@@ -726,6 +833,12 @@ ALTER TABLE `therapist_specialty_tbl`
 --
 ALTER TABLE `therapist_tbl`
   ADD PRIMARY KEY (`therapist_id`);
+
+--
+-- Indexes for table `utilities_tbl`
+--
+ALTER TABLE `utilities_tbl`
+  ADD PRIMARY KEY (`utilities_id`);
 
 --
 -- Indexes for table `walkin_queue_tbl`
@@ -750,16 +863,10 @@ ALTER TABLE `walkin_services_tbl`
 --
 
 --
--- AUTO_INCREMENT for table `addons_reservation_tbl`
---
-ALTER TABLE `addons_reservation_tbl`
-  MODIFY `addons_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `admin_tbl`
 --
 ALTER TABLE `admin_tbl`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `amenities_tbl`
@@ -771,13 +878,31 @@ ALTER TABLE `amenities_tbl`
 -- AUTO_INCREMENT for table `customer_tbl`
 --
 ALTER TABLE `customer_tbl`
-  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
+  MODIFY `cust_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=94;
+
+--
+-- AUTO_INCREMENT for table `freebies_package_tbl`
+--
+ALTER TABLE `freebies_package_tbl`
+  MODIFY `freebies_package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `freebies_promo_tbl`
+--
+ALTER TABLE `freebies_promo_tbl`
+  MODIFY `freebies_promo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `freebies_tbl`
+--
+ALTER TABLE `freebies_tbl`
+  MODIFY `freebies_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `loyalty_tbl`
 --
 ALTER TABLE `loyalty_tbl`
-  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `member_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `medical_history_tbl`
@@ -786,34 +911,28 @@ ALTER TABLE `medical_history_tbl`
   MODIFY `medhist_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `package_tbl`
+--
+ALTER TABLE `package_tbl`
+  MODIFY `package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT for table `promo_bundle_tbl`
 --
 ALTER TABLE `promo_bundle_tbl`
-  MODIFY `promobundle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
-
---
--- AUTO_INCREMENT for table `reservation_appointments_tbl`
---
-ALTER TABLE `reservation_appointments_tbl`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `reservation_services_tbl`
---
-ALTER TABLE `reservation_services_tbl`
-  MODIFY `reserv_serv_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `promobundle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `room_tbl`
 --
 ALTER TABLE `room_tbl`
-  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `room_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `room_type_tbl`
 --
 ALTER TABLE `room_type_tbl`
-  MODIFY `room_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `room_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `services_availed_tbl`
@@ -825,66 +944,71 @@ ALTER TABLE `services_availed_tbl`
 -- AUTO_INCREMENT for table `services_tbl`
 --
 ALTER TABLE `services_tbl`
-  MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- AUTO_INCREMENT for table `service_duration_tbl`
 --
 ALTER TABLE `service_duration_tbl`
-  MODIFY `service_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `service_duration_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `service_in_package_tbl`
+--
+ALTER TABLE `service_in_package_tbl`
+  MODIFY `service_in_package_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `service_in_promo_tbl`
 --
 ALTER TABLE `service_in_promo_tbl`
-  MODIFY `service_in_promo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=125;
+  MODIFY `service_in_promo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `service_type_tbl`
 --
 ALTER TABLE `service_type_tbl`
-  MODIFY `service_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `service_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `specialty_tbl`
 --
 ALTER TABLE `specialty_tbl`
-  MODIFY `specialty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `specialty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT for table `therapist_attendance_tbl`
+--
+ALTER TABLE `therapist_attendance_tbl`
+  MODIFY `attendance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `therapist_specialty_tbl`
 --
 ALTER TABLE `therapist_specialty_tbl`
-  MODIFY `therapist_specialty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=179;
+  MODIFY `therapist_specialty_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- AUTO_INCREMENT for table `therapist_tbl`
 --
 ALTER TABLE `therapist_tbl`
-  MODIFY `therapist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `therapist_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `walkin_queue_tbl`
 --
 ALTER TABLE `walkin_queue_tbl`
-  MODIFY `walkin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `walkin_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `walkin_services_tbl`
 --
 ALTER TABLE `walkin_services_tbl`
-  MODIFY `walkin_serv_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `walkin_serv_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `addons_reservation_tbl`
---
-ALTER TABLE `addons_reservation_tbl`
-  ADD CONSTRAINT `addons_reserv_amenity_id` FOREIGN KEY (`amenity_id`) REFERENCES `amenities_tbl` (`amenity_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `addons_reserv_id` FOREIGN KEY (`reservation_id`) REFERENCES `reservation_appointments_tbl` (`reservation_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `addons_walkin_tbl`
@@ -892,6 +1016,24 @@ ALTER TABLE `addons_reservation_tbl`
 ALTER TABLE `addons_walkin_tbl`
   ADD CONSTRAINT `addons_walkin_amenity_id` FOREIGN KEY (`amenity_id`) REFERENCES `amenities_tbl` (`amenity_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `addons_walkin_id` FOREIGN KEY (`walkin_id`) REFERENCES `walkin_queue_tbl` (`walkin_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `freebies_package_tbl`
+--
+ALTER TABLE `freebies_package_tbl`
+  ADD CONSTRAINT `freebies_package_id` FOREIGN KEY (`package_id`) REFERENCES `package_tbl` (`package_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `freebies_promo_tbl`
+--
+ALTER TABLE `freebies_promo_tbl`
+  ADD CONSTRAINT `promobundle_freebies_id` FOREIGN KEY (`promobundle_id`) REFERENCES `promo_bundle_tbl` (`promobundle_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `freebies_tbl`
+--
+ALTER TABLE `freebies_tbl`
+  ADD CONSTRAINT `service_id` FOREIGN KEY (`service_id`) REFERENCES `services_tbl` (`service_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `loyalty_tbl`
@@ -912,22 +1054,6 @@ ALTER TABLE `payment_tbl`
   ADD CONSTRAINT `payment_services_availed_id` FOREIGN KEY (`services_availed_id`) REFERENCES `services_availed_tbl` (`service_availed_id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `reservation_appointments_tbl`
---
-ALTER TABLE `reservation_appointments_tbl`
-  ADD CONSTRAINT `reserv_appointments_cust_id` FOREIGN KEY (`cust_id`) REFERENCES `customer_tbl` (`cust_id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `reservation_services_tbl`
---
-ALTER TABLE `reservation_services_tbl`
-  ADD CONSTRAINT `reserv_services_promobundle_id` FOREIGN KEY (`promobundle_id`) REFERENCES `promo_bundle_tbl` (`promobundle_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `reserv_services_reservation_id` FOREIGN KEY (`reservation_id`) REFERENCES `reservation_appointments_tbl` (`reservation_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `reserv_services_room_id` FOREIGN KEY (`room_id`) REFERENCES `room_tbl` (`room_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `reserv_services_services_id` FOREIGN KEY (`service_id`) REFERENCES `services_tbl` (`service_id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `reserv_services_therapist_id` FOREIGN KEY (`therapist_id`) REFERENCES `therapist_tbl` (`therapist_id`) ON UPDATE CASCADE;
-
---
 -- Constraints for table `room_tbl`
 --
 ALTER TABLE `room_tbl`
@@ -937,7 +1063,6 @@ ALTER TABLE `room_tbl`
 -- Constraints for table `services_availed_tbl`
 --
 ALTER TABLE `services_availed_tbl`
-  ADD CONSTRAINT `service_availed_reservation_id` FOREIGN KEY (`transaction_id`) REFERENCES `reservation_appointments_tbl` (`reservation_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `service_availed_walkin_id` FOREIGN KEY (`transaction_id`) REFERENCES `walkin_queue_tbl` (`walkin_id`) ON UPDATE CASCADE;
 
 --
@@ -948,11 +1073,24 @@ ALTER TABLE `services_tbl`
   ADD CONSTRAINT `service_type_id` FOREIGN KEY (`service_type_id`) REFERENCES `service_type_tbl` (`service_type_id`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `service_in_package_tbl`
+--
+ALTER TABLE `service_in_package_tbl`
+  ADD CONSTRAINT `package_id` FOREIGN KEY (`package_id`) REFERENCES `package_tbl` (`package_id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `service_in_package_id` FOREIGN KEY (`service_id`) REFERENCES `services_tbl` (`service_id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `service_in_promo_tbl`
 --
 ALTER TABLE `service_in_promo_tbl`
   ADD CONSTRAINT `serv_in_promo_promobundle_id` FOREIGN KEY (`promobundle_id`) REFERENCES `promo_bundle_tbl` (`promobundle_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `serv_in_promo_service_id` FOREIGN KEY (`service_id`) REFERENCES `services_tbl` (`service_id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `therapist_attendance_tbl`
+--
+ALTER TABLE `therapist_attendance_tbl`
+  ADD CONSTRAINT `thera_id` FOREIGN KEY (`therapist_id`) REFERENCES `therapist_tbl` (`therapist_id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `therapist_specialty_tbl`
