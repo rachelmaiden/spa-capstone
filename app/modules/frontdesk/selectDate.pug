@@ -158,33 +158,76 @@ html(lang='en')
     $(document).ready(function(){
         var customerId= $('#Id').val()
         console.log(customerId)
-      $('#fullCalendar').fullCalendar({
-        dayClick: function(date, jsEvent, view) {
-          var now = moment().format('MM-DD-YYYY')
-          var clicked = date.format('MM-DD-YYYY')
-          if(moment(clicked).isSameOrAfter(now)){
-              swal({
-                title: "You Clicked " + date.format('MMMM DD, YYYY'),
-                text: "Are You Sure?",
-                icon: "info",
-                buttons: ["Cancel","Proceed"],
-                dangerMode: true
-                
-              }).then((proceed) => {
-                if(proceed)
-                {
-                  var newDate= date.format('MM-DD-YYYY')
-                  location.href= `/selectTime?date=${newDate}`
-                }
-                else
-                {
+          var reservetype = !{JSON.stringify(restype)}
+          var male = !{JSON.stringify(male)}
+          var female = !{JSON.stringify(female)}
+          if(reservetype=='single')
+          {
+            $('#fullCalendar').fullCalendar({
+              dayClick: function(date, jsEvent, view) {
+                var now = moment().format('MM-DD-YYYY')
+                var clicked = date.format('MM-DD-YYYY')
+                console.log(male)
+                console.log(female)
+                console.log(reservetype)
+                if(moment(clicked).isSameOrAfter(now)){
+                    swal({
+                      title: "You clicked " + date.format('MMMM DD, YYYY'),
+                      text: "Are you sure?",
+                      icon: "info",
+                      buttons: ["Cancel","Proceed"],
+                      dangerMode: true
+                      
+                    }).then((proceed) => {
+                      if(proceed)
+                      {
+                        var newDate= date.format('MM-DD-YYYY')
+                        location.href= `/selectTime?date=${newDate}&reservetype=${reservetype}&male=${male}&female=${female}`
+                      }
+                      else
+                      {
 
+                      }
+                      });
+                //- location.href= `/selectTime?date=${newDate}`
                 }
-                });
-          //- location.href= `/selectTime?date=${newDate}`
+              }
+            })
           }
-        }
-      })
+          else if(reservetype=='multiple')
+          {
+            
+            $('#fullCalendar').fullCalendar({
+              dayClick: function(date, jsEvent, view) {
+                var now = moment().format('MM-DD-YYYY')
+                var clicked = date.format('MM-DD-YYYY')
+                console.log(male)
+                console.log(female)
+                console.log(reservetype)
+                if(moment(clicked).isSameOrAfter(now)){
+                    swal({
+                      title: "You clicked " + date.format('MMMM DD, YYYY'),
+                      text: "Are you sure?",
+                      icon: "info",
+                      buttons: ["Cancel","Proceed"],
+                      dangerMode: true
+                      
+                    }).then((proceed) => {
+                      if(proceed)
+                      {
+                        var newDate= date.format('MM-DD-YYYY')
+                        location.href= `/selectTime?date=${newDate}&reservetype=${reservetype}&male=${male}&female=${female}`
+                      }
+                      else
+                      {
+
+                      }
+                      });
+                //- location.href= `/selectTime?date=${newDate}`
+                }
+              }
+            })
+          }
     });
   script.
     $(document).ready(function() {

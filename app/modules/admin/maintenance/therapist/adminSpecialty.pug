@@ -43,7 +43,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -201,24 +203,20 @@ html(lang='en')
                       span.sidebar-mini 
                       span.sidebar-normal Freebies          
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini D
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Daily
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini M
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
@@ -288,14 +286,7 @@ html(lang='en')
                                       th.disabled-sorting
                                       th.disabled-sorting
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Therapist Skills
-                                      th
-                                      th
-                                      th
-                                      th
-                                      th Actions
+                                 
                                   tbody
                                     each specialty in specialtys
                                       tr
@@ -463,12 +454,13 @@ html(lang='en')
               console.log(idNow)
               $.post('/admin/adminSpecialty/query',{id1:idNow})
           .done(data=>{
+            console.log(data)
               $('#updateAppend').append(`
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group has-default bmd-form-group">
                         <label>Therapist Specialty</label>
-                        <input type="text" id="specialty_desc" value='${data.specialty_desc}' placeholder="${data.specialty_desc}" class="form-control"/>
+                        <input type="text" id="specialty_desu" value='${data.specialty_desc}' placeholder="${data.specialty_desc}" class="form-control"/>
                       </div>
                     </div>
                   </div>`)
@@ -477,11 +469,12 @@ html(lang='en')
                 $('#updateAppend').empty()
                 });
               $('#cancelButton').click(function(){
-                $('#updateAppend').remove();
+                $('#updateAppend').empty();
               })
               $('#updateSubmitButton').click(function(){
+
                   $.post('/admin/adminSpecialty/update',{
-                  specialty_desc:$('#specialty_desc').val(),
+                  specialty_desc:$('#specialty_desu').val(),
                   
                   id:idNow
                   })

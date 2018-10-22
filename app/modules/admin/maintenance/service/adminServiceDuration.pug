@@ -43,8 +43,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-              
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -189,24 +190,20 @@ html(lang='en')
                       span.sidebar-normal Rooms    
                            
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini D
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Daily
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini M
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
@@ -276,15 +273,8 @@ html(lang='en')
                                       th.disabled-sorting
                                       th.disabled-sorting Available
                                       th.disabled-sorting
-                                      th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Maximum Duration of Service
-                                      th
-                                      th
-                                      th Available
-                                      th
-                                      th Actions
+                                      th.disabled-sorting.pull-right Actions
+                                  
                                   tbody
                                     each duration in durations
                                       tr

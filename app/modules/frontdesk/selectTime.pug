@@ -44,7 +44,7 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | Front Desk
@@ -459,6 +459,9 @@ html(lang='en')
         console.log(opening_time+" "+closing_time)
         var customerId= $('#Id').val()
         var date = !{JSON.stringify(date)}
+        var reservetype = !{JSON.stringify(restype)}
+        var male = !{JSON.stringify(male)}
+        var female = !{JSON.stringify(female)}
         $('#fullCalendar').fullCalendar({
           header: {
               left:   'title',
@@ -490,8 +493,8 @@ html(lang='en')
               var timePicked= date.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + date.format('hh:mm A')+" From "+resource.title,
-                text: "Are You Sure?",
+                title: "You clicked " + date.format('hh:mm A')+" From "+resource.title,
+                text: "Are you sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
                 dangerMode: true
@@ -499,7 +502,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}&reservetype=${reservetype}&male=${male}&female=${female}`
                 }
                 else
                 {
@@ -546,8 +549,8 @@ html(lang='en')
               var timePicked= eventObj.start.format('hh:mm A')
               var datePicked = !{JSON.stringify(date)}
               swal({
-                title: "You Clicked " + eventObj.start.format('hh:mm A')+" From "+eventObj.description+" "+eventObj.title3,
-                text: "Are You Sure?",
+                title: "You clicked " + eventObj.start.format('hh:mm A')+" From "+eventObj.description+" "+eventObj.title3,
+                text: "Are you sure?",
                 icon: "info",
                 buttons: ["Cancel","Proceed"],
                 dangerMode: true
@@ -555,7 +558,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
+                  location.href=`/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}&reservetype=${reservetype}&male=${male}&female=${female}`
                 }
                 else
                 {

@@ -45,8 +45,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -205,24 +206,20 @@ html(lang='en')
                       span.sidebar-mini 
                       span.sidebar-normal Freebies          
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='/assets/tables/regular.html')
-                      span.sidebar-mini D
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Daily
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini M
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
@@ -273,16 +270,7 @@ html(lang='en')
                                       th Skills
                                       th Available
                                       th.disabled-sorting Actions
-                                  tfoot
-                                    tr
-                                      th Name
-                                     
-                                      th Age
-                                      th Gender
-                                     
-                                      th Skills
-                                      th Available
-                                      th Actions
+                                  
                                   tbody
                                     each thera in theras
                                       tr
@@ -290,7 +278,8 @@ html(lang='en')
                                           a.viewDetails(style='color: black; cursor: pointer' rel='tooltip' title='Click to view details' therapist_id=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
                                         input.name(type='hidden' value=`${thera.therapist_fname} ${thera.therapist_mname} ${thera.therapist_lname}` id=`${thera.therapist_id}`)
                                         
-                                        td.age(therapist_id=`${thera.therapist_id}` birthday=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
+                                        td= thera.therapist_birthYear
+                                        //- td.age(therapist_id=`${thera.therapist_id}` birthday=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
                                         input(type='hidden' value=`${thera.therapist_birthMonth+'-'+thera.therapist_birthDate+'-'+thera.therapist_birthYear}`)
                                         td= thera.therapist_gender
                                        
@@ -401,7 +390,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label License Valid Until
                                   star *  
-                                input.form-control.datepicker(type='text' name='therapist_birthday' id="calendar" style='margin-top: -15px')           
+                                input.form-control.datepickerLicense(type='text' name='therapist_license' id="calendar" style='margin-top: -15px')           
                           .modal-footer
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
                             button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -692,6 +681,7 @@ html(lang='en')
           var idNow = $(this).val();
             $.post('/admin/adminTherapist/query1',{id1:idNow})
           .done(data=>{
+            console.log(data)
             $('#title').append(`${data.out2.therapist_fname} ${data.out2.therapist_mname} ${data.out2.therapist_lname}`)
             $('#viewAppend').append(`
                   <div class="row">
@@ -878,14 +868,22 @@ html(lang='en')
                     widgetPositioning:{"horizontal":"auto",
                     "vertical":"auto"}
                   });
+
               })
 
+          
                   
                 $('.datepicker').on('dp.hide', function(event){
                   setTimeout(function(){
                     $('.datepicker').data('DateTimePicker').viewMode('years');
                   },1);
                 });
+                $('.datepickerLicense').on('dp.hide', function(event){
+                  setTimeout(function(){
+                    $('.datepickerLicense').data('DateTimePicker').viewMode('years');
+                  },1);
+                });
+
 
 
                 
@@ -939,11 +937,31 @@ html(lang='en')
               })
 
           })
+
+
+          
   script(type='text/javascript').
     $(document).ready(function(){
     $('#calendar').val('')
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
+    $('.datepickerLicense').datetimepicker({
+        viewMode: 'years',
+        format: 'MMMM DD, YYYY',
+        icons: {
+          time: "fa fa-clock-o",
+          date: "fa fa-calendar",
+          up: "fa fa-chevron-up",
+          down: "fa fa-chevron-down",
+          previous: 'fa fa-chevron-left',
+          next: 'fa fa-chevron-right',
+          today: 'fa fa-screenshot',
+          clear: 'fa fa-trash',
+          close: 'fa fa-remove'
+          },
+          widgetPositioning:{"horizontal":"auto",
+          "vertical":"auto"}
+        });
     });
   script(type='text/javascript').
     $(document).ready(function() {

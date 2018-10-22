@@ -29,14 +29,15 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-           
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left: 30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
           ul.nav
             li
-              a(href='/admindashboard')
+              a(href='./admindashboard')
                 i.ti-dashboard
                 p
                   | Dashboard
@@ -192,25 +193,37 @@ html(lang='en')
                       span.sidebar-mini 
                       span.sidebar-normal Freebies           
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini D
-                      span.sidebar-normal Daily
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini M
-                      span.sidebar-normal Monthly
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Services
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Packages
+                  li(style="margin-left: 30px;")
+                    a(href='./promosReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Promos
+                  li(style="margin-left: 30px;")
+                    a(href='./roomsReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Rooms 
+                  li(style="margin-left: 30px;")
+                    a(href='./freebiesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Freebies
+                  li(style="margin-left: 30px;")
+                    a(href='./gcReports')
+                      span.sidebar-mini 
+                      span.sidebar-normal Gift Certificate
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -238,13 +251,16 @@ html(lang='en')
 
                   .row
                     .col-md-4
+                      h3 COMPANY
+                  .row
+                    .col-md-4
                       .form-group.has-default.bmd-form-group
                         label Company Name
                         input.form-control(type='text', placeholder='Company Name' value=`${utilities.company_name}` id='company_name')
                     .col-md-5
                       .form-group.has-default.bmd-form-group
                         h6.strong Company Logo
-                        button.btn.btn-warning.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
+                        button.btn.btn-info.btn-sm.btn-fill.btn-magnify(type='button' data-target='#editImage' data-toggle='modal')
                           span.btn-label
                             i.ti-pencil
                           | Edit 
@@ -281,47 +297,66 @@ html(lang='en')
                       .form-group.has-default.bmd-form-group
                         label Closing Time
                         input.timepicker.form-control(type='text', placeholder='Closing Time' value=`${utilities.closing_time}` id='closing_time')
+                  
+                  
+                  hr
+                  .row
+                    .col-md-4
+                      h3 RESERVATION
+                  .row
                     .col-md-3
                       .form-group.has-default.bmd-form-group
                         label Maximum Guest Per Reservation
                         input.form-control(type='number', placeholder='Maximum Guest Per Reservation' value=`${utilities.max_guest}` id='max_guest')
+                    .col-md-3
+                          label Reservation Forfeiture
+                          .input-group
+                            input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
+                            span.input-group-addon minutes
+                  .row 
+                    .col-md-3
+                          label Time Allowance After Each Reservation
+                    .col-md-3
+                          label Time Allowance For Changing Therapist     
+                  .row
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
+                        span.input-group-addon minutes   
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
+                        span.input-group-addon minutes                
+                  
+                  
+                  hr
+                  .row
+                    .col-md-4
+                      h3 LOYALTY MEMBERSHIP
+                  .row
                     .col-md-2
                         label Membership Fee
                         .input-group
                           span.input-group-addon ₱
                           input.form-control(type='number' value=`${utilities.membership_fee}` id='membership_fee')
                           span.input-group-addon .00
-
-                  .row
                     .col-md-2
                           label Membership Validity
                           .input-group
                             input.form-control(type='number' value=`${utilities.membership_validity}` id='membership_validity')
                             span.input-group-addon months
-                    .col-md-2
-                        label Entrance Fee
-                        .input-group
-                          span.input-group-addon ₱
-                          input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
-                          span.input-group-addon .00
-                    .col-md-3
-                          label Reservation Forfeiture
-                          .input-group
-                            input.form-control(type='number' value=`${utilities.reservation_forfeitTime}` id='reservation_forfeitTime')
-                            span.input-group-addon minutes
                     
-                  .row 
+                  hr  
+                  .row
                     .col-md-4
-                          label Time Allowance After Each Reservation
-                          .input-group
-                            input.form-control(type='number' value=`${utilities.reservation_timeAllowance}` id='timeAllowance')
-                            span.input-group-addon minutes              
+                      h3 THERAPIST
+                  .row
                     .col-md-3
                           label Therapist Commission Per Service
                           .input-group
                             input.form-control(type='number' value=`${utilities.therapist_commission}` id='therapist_commission')
                             span.input-group-addon %
-
+                    
                   .row
                     .col-md-4
                       h5
@@ -351,9 +386,25 @@ html(lang='en')
                       .form-group.has-default.bmd-form-group
                         label End Time
                         input.timepicker.form-control(type='text', value=`${utilities.secondShift_timeEnd}` id='secondShift_timeEnd' placeholder='End Time' )    
-
-
-
+                  hr
+                  .row
+                    .col-md-4
+                      h3 AMENITY
+                  .row
+                    .col-md-2
+                        label Entrance Fee
+                        .input-group
+                          span.input-group-addon ₱
+                          input.form-control(type='number' value=`${utilities.entrance_fee}` id='entrance_fee')
+                          span.input-group-addon .00
+                  .row
+                    .col-md-4
+                      label Allowable Time for Cancellation 
+                  .row
+                    .col-md-3
+                      .input-group
+                        input.form-control(type='number', value=`${utilities.amenity_cancellation}` id='amenity_cancellation' placeholder='minutes' )
+                        .input-group-addon minutes
 
                   .row
                     button.btn.btn-info.btn-fill.btn-wd.pull-right.updateButton(type='button' value=`${utilities.utilities_id}`) Save
@@ -368,7 +419,7 @@ html(lang='en')
               | , made with 
               i.fa.fa-heart.heart
               |  by 
-              a(href='#') TEAM RJPC
+              a(href='#') Team Mbay
       .fixed-plugin
   // Core JS Files. Extra: TouchPunch for touch library inside jquery-ui.min.js
   script(src='/assets/paperDashboardPro/js/jquery-3.1.1.min.js', type='text/javascript')
@@ -475,7 +526,8 @@ html(lang='en')
           secondShift_timeStart:$('#secondShift_timeStart').val(),
           secondShift_timeEnd:$('#secondShift_timeEnd').val(),
           reservation_timeAllowance: $('#timeAllowance').val(),
-          therapist_commission: $('#therapist_commission').val()
+          therapist_commission: $('#therapist_commission').val(),
+          amenity_cancellation: $('#amenity_cancellation').val()
         }).done(function(data){
             if(data.alertDesc==0)
               {

@@ -3,9 +3,9 @@ html(lang='en')
   head
     meta(charset='utf-8')
     link(rel='apple-touch-icon', sizes='76x76', href='../paperDashboardPro/img/apple-icon.png')
-    link(rel='icon', type='image/png', sizes='96x96', href='../paperDashboardPro/img/favicon.png')
+    link(rel='icon', type='image/png', sizes='96x96', href=`/upload/${reqSession.utilities[0].company_logo}`)
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title Online Booking and Spa Management System
+    title #{reqSession.utilities[0].company_name}
     // Canonical SEO
     link(rel='canonical', href='http://www.creative-tim.com/product/paper-dashboard-pro')
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
@@ -14,6 +14,7 @@ html(lang='en')
     link(href='/assets/paperDashboardPro/css/bootstrap.min.css', rel='stylesheet')
     // Paper Dashboard core CSS
     link(href='/assets/paperDashboardPro/css/paper-dashboard.css', rel='stylesheet')
+    link(href='/assets/paperDashboardPro/css/buttons.dataTables.min.css', rel='stylesheet')
     // CSS for Demo Purpose, don't include it in your project
     link(href='/assets/paperDashboardPro/css/demo.css', rel='stylesheet')
     // Fonts and icons
@@ -37,14 +38,13 @@ html(lang='en')
           Tip 2: you can change the color of the active button using the data-active-color="primary | info | success | warning | danger"
         .logo
           a.simple-text.logo-mini(href='')
-            | MBAY
           a.simple-text.logo-normal(href='')
-            | MBAY Health Spa
+            | #{reqSession.utilities[0].company_name}
         .sidebar-wrapper
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
@@ -207,24 +207,20 @@ html(lang='en')
                 //-       span.sidebar-mini 
                 //-       span.sidebar-normal         
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='../tables/regular.html')
-                      span.sidebar-mini D
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Daily
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini M
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
@@ -274,30 +270,29 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th Customer Name
+                                      th Name
+                                      th.disabled-sorting Address
                                       th.disabled-sorting Age
-                                      th.disabled-sorting Customer Type
                                       th.disabled-sorting Gender
-                                      th.disabled-sorting
-                                      th.disabled-sorting 
+                                      th.disabled-sorting Contact No
+                                      th.disabled-sorting Medical History
                                   tfoot
                                     tr
-                                      th Customer Name
+                                      th Name
                                       th Age
-                                      th Customer Type
                                       th Gender
                                       th
                                       th 
                                   tbody
-                                    
+                                    each cust in customers
                                       tr
-                                        td
+                                        td=cust.cust_fname+' '+cust.cust_mname+' '+cust.cust_lname
                                         input.name(type='hidden' value='' id='')
-                                        td
-                                        td
-                                        td
-                                        td
-                                        td
+                                        td= cust.cust_address
+                                        td= cust.cust_birthYear
+                                        td= cust.cust_gender
+                                        td= cust.cust_contact_no
+                                        td= cust.medical_history
                                         //-   .dropdown.pull-right(style="right: 138px")
                                         //-     button.btn.btn-simple.btn-info.btn-rotate(href='#', data-toggle='dropdown' style='left: auto; right: 13px')
                                         //-       i.ti-settings
@@ -349,14 +344,10 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/bootstrap-notify.js')
   // Sweet Alert 2 plugin
   script(src='/assets/paperDashboardPro/js/sweetalert.js')
-  // Vector Map plugin
-  script(src='/assets/paperDashboardPro/js/jquery-jvectormap.js')
-  // Google Maps Plugin
-  script(src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAFPQibxeDaLIUHsC6_KqDdFaUdhrbhZ3M')
   // Wizard Plugin
   script(src='/assets/paperDashboardPro/js/jquery.bootstrap.wizard.min.js')
   // Bootstrap Table Plugin
-  script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
+  //- script(src='/assets/paperDashboardPro/js/bootstrap-table.js')
   // Plugin for DataTables.net
   script(src='/assets/paperDashboardPro/js/jquery.datatables.js')
   // Full Calendar Plugin
@@ -367,13 +358,51 @@ html(lang='en')
   script(src='/assets/paperDashboardPro/js/jquery.sharrre.js')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
- 
+  script(src='/assets/paperDashboardPro/js/buttons.flash.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.html5.min.js')
+  script(src='/assets/paperDashboardPro/js/buttons.print.min.js')
+  script(src='/assets/paperDashboardPro/js/dataTables.buttons.min.js')
+  script(src='/assets/paperDashboardPro/js/jszip.min.js')
+  script(src='/assets/paperDashboardPro/js/vfs_fonts.js')
+  script(src='/assets/paperDashboardPro/js/jspdf.js')
+  //- script(src='/assets/paperDashboardPro/js/jquery-3.3.1.js')
+  
     
   script(type='text/javascript').
     $(document).ready(function(){
     demo.initOverviewDashboard();
     demo.initCirclePercentage();
     });
+  script.
+    $(document).ready(function() {  
+      $('#datatables').DataTable( {
+        dom: 'Bfrtip',
+        buttons: [
+            { extend:'copy', attr: { id: 'allan' } }, 'csv', 'excel', 'pdf', 'print'
+        ],
+          initComplete: function () {
+              this.api().columns().every( function () {
+                  var column = this;
+                  var select = $('<select><option value=""></option></select>')
+                      .appendTo( $(column.footer()).empty() )
+                      .on( 'change', function () {
+                          var val = $.fn.dataTable.util.escapeRegex(
+                              $(this).val()
+                          );
+  
+                          column
+                              .search( val ? '^'+val+'$' : '', true, false )
+                              .draw();
+                      });
+  
+                  column.data().unique().sort().each( function ( d, j ) {
+                      select.append( '<option value="'+d+'">'+d+'</option>' )
+                  });
+              });
+          }
+      });
+    });
+
   script(type='text/javascript').
     $(document).ready(function() {
     $('#datatables').DataTable({
@@ -383,7 +412,9 @@ html(lang='en')
     language: {
     search: "_INPUT_",
     searchPlaceholder: "Search records",
-    }
+    },
+    retrieve: true,
+  
     });
     })
   script.
@@ -392,6 +423,4 @@ html(lang='en')
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
         });  
-
-  
     })

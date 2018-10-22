@@ -42,7 +42,9 @@ html(lang='en')
         .sidebar-wrapper
           .user
             .info
-              a.collapsed(data-toggle='collapse', href='#collapseExample' style='left:30px')
+              .photo
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
+              a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
               .clearfix
@@ -168,17 +170,13 @@ html(lang='en')
                   b.caret
               #sales.collapse
                 ul.nav
-                  li
-                    a(href='/assets/tables/regular.html')
-                      span.sidebar-mini D
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Daily
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini M
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
                       span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
@@ -239,10 +237,7 @@ html(lang='en')
                                         input.name(type='hidden' value=`${service.service_name}` id=`${service.service_id}`)
                                         td= service.service_duration_desc+" "+"minutes"
                                         td= "₱"+service.service_price.toLocaleString()+".00"
-                                        if(service.service_points==1|| service.service_points==0)
-                                          td= service.service_points+" "+"Point"
-                                        else if(service.service_points > 0)
-                                          td= service.service_points+" "+"Points"
+                                        td= service.service_points
                                         td
                                           if(service.service_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
@@ -724,3 +719,4 @@ html(lang='en')
       $('#loginFormValidation').validate();
       $('#allInputsFormValidation').validate();
         });
+                

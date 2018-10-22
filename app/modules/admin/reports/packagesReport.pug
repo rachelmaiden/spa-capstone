@@ -44,7 +44,7 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
@@ -86,7 +86,7 @@ html(lang='en')
                         span.sidebar-mini T
                         | Therapist
                         b(style="margin-right: 30px").caret
-                    #therapist.collapse.in
+                    #therapist.collapse
                       ul.nav
                         li(style="margin-left: 30px")
                           a(href='./adminSpecialty')
@@ -217,15 +217,11 @@ html(lang='en')
                   li(style="margin-left: 30px;")
                     a(href='./servicesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Services
-                  li(style="margin-left: 30px;").active
-                    a(href='../tables/datatables.net.html')
-                      span.sidebar-mini 
-                      span.sidebar-normal Packages
+                      span.sidebar-normal Daily
                   li(style="margin-left: 30px;")
-                    a(href='../tables/datatables.net.html')
+                    a(href='./packagesReport')
                       span.sidebar-mini 
-                      span.sidebar-normal Promos
+                      span.sidebar-normal Monthly
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -237,7 +233,7 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Reports
+                | Monthly Reports
             .collapse.navbar-collapse
               
               ul.nav.navbar-nav.navbar-right
@@ -262,6 +258,15 @@ html(lang='en')
                   .content
                     .container-fluid
                       .row
+                        //- .col-md-2
+                        //-    select.selectpicker(name='' title='Daily'  data-style='btn-info' )
+                        //-         option(value='Daily') Daily
+                        //-         option(value='Monthly') Monthly
+                        //- .col-md-3
+                        //-   select.selectpicker(multiple='', title='Filter', data-style='btn-info', data-size='7' )
+                        //-       option(value='Duration') Duration
+                        //-       option(value='Price') Price
+                      .row
                         .col-md-12
                           p.category  
                           br
@@ -273,13 +278,13 @@ html(lang='en')
                                 table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                   thead
                                     tr
-                                      th.disabled-sorting Package Name
-                                      th.disabled-sorting Services Included
-                                      th.disabled-sorting Package Duration
-                                      th.disabled-sorting Available For
-                                      th.disabled-sorting Package Price
-                                      th.disabled-sorting No. of Times Availed
-                                      th.disabled-sorting Total
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
+                                      th.disabled-sorting 
                                  
                                   tbody
                                     
@@ -306,7 +311,11 @@ html(lang='en')
                                         //-           span.btn-label
                                         //-           i.ti-trash
                                         //-           |  Delete
-                             
+                          //- .row
+                          //-   .col-md-5
+                          //-     h2(style='margin-left: 450px')  Total:   
+                          //-   .col-md-5
+                          //-     h2(style='margin-left: 160px')  ₱ 15,000.00   
         footer.footer
           .container-fluid
             .copyright.pull-right

@@ -51,7 +51,7 @@ html(lang='en')
             span.navbar-toggler-bar.bar1
             span.navbar-toggler-bar.bar2
             span.navbar-toggler-bar.bar3
-        .collapse.navbar-collapse(data-nav-image='../assets/img/blurred-image-1.jpg', data-color='orange')
+        .collapse.navbar-collapse(data-nav-image='/assets/paperDashboardPro/img/cust.jpg', data-color='orange')
           ul.navbar-nav.ml-auto
             li.nav-item
               a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
@@ -66,32 +66,12 @@ html(lang='en')
             //-   a.nav-link(href='#', data-toggle='dropdown', aria-expanded='false')
             //-     | About Us
     .wrapper
-      .page-header(style="background-image: url('/assets/paperkit/assets/img/front.jpg');")
+      .page-header(style="background-image: url('/assets/paperDashboardPro/img/cust2.jpg');")
         .filter
         .container
           .row
-            .col-lg-6.col-md-6.col-sm-5.col-12.ml-auto
-              .info.info-horizontal
-                .icon
-                  i.fa.fa-umbrella
-                .description
-                  h3  We've got you covered 
-                  p
-                    | Book Reservations with just few clicks.
-              .info.info-horizontal
-                .icon
-                  i.fa.fa-star
-                .description
-                  h3  Gain Loyalty Points
-                  p
-                    | Use your loyalty points for awesome freebies!
-              .info.info-horizontal
-                .icon
-                  i.fa.fa-heart
-                .description
-                  h3  We Care For You
-                  p We ant to help you relax, so we made reservation arrangement easier for you!
-            .col-lg-6.col-md-6.col-sm-7.col-12.mr-auto
+            .col-md-4
+            .col-md-8
               .card.card-register
                 h3.text-center Login
                 form#loginFormValidation(method='POST', action='receptionist/login')
@@ -157,7 +137,7 @@ html(lang='en')
         {
           swal({
               title:'Oooopsss', 
-              text:'User is not found', 
+              text:'User not found.', 
               icon:'warning'
               }).then(function(){
                 location.href='/receptionist/receptionist'
@@ -167,7 +147,7 @@ html(lang='en')
         {
           swal({
               title:'Oooopsss', 
-              text:'Incorrect Password or Username', 
+              text:'Incorrect password or username.', 
               icon:'warning'
               })
         }

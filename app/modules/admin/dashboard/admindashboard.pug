@@ -35,7 +35,7 @@ html(lang='en')
           .user
             .info
               .photo
-                img(src='/assets/paperDashboardPro/img/faces/face-2.jpg')
+                img(src='/assets/paperDashboardPro/img/icon.jpg')
               a.collapsed(data-toggle='collapse', href='#collapseExample')
                 span
                   | ADMINISTRATOR
@@ -187,25 +187,37 @@ html(lang='en')
                       span.sidebar-mini 
                       span.sidebar-normal Freebies          
             li
-              a(data-toggle='collapse', href='#sales')
+              a(data-toggle='collapse', href='#reports')
                 i.ti-bar-chart-alt
                 p
-                  | Sales
+                  | Reports
                   b.caret
-              #sales.collapse
+              #reports.collapse
                 ul.nav
-                  li
-                    a(href='/assets/tables/regular.html')
-                      span.sidebar-mini D
-                      span.sidebar-normal Daily
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini W
-                      span.sidebar-normal Weekly
-                  li
-                    a(href='/assets/tables/datatables.net.html')
-                      span.sidebar-mini M
-                      span.sidebar-normal Monthly
+                  li(style="margin-left: 30px;")
+                    a(href='./servicesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Services
+                  li(style="margin-left: 30px;")
+                    a(href='./packagesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Packages
+                  li(style="margin-left: 30px;")
+                    a(href='./promosReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Promos
+                  li(style="margin-left: 30px;")
+                    a(href='./roomsReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Rooms 
+                  li(style="margin-left: 30px;")
+                    a(href='./freebiesReport')
+                      span.sidebar-mini 
+                      span.sidebar-normal Freebies
+                  li(style="margin-left: 30px;")
+                    a(href='./gcReports')
+                      span.sidebar-mini 
+                      span.sidebar-normal Gift Certificate     
       .main-panel
         nav.navbar.navbar-default
           .container-fluid
@@ -219,13 +231,9 @@ html(lang='en')
                 span.icon-bar.bar2
                 span.icon-bar.bar3
               a.navbar-brand(href='#Dashboard')
-                | Overview
+                | Dashboard
             .collapse.navbar-collapse
-              form.navbar-form.navbar-left.navbar-search-form(role='search')
-                .input-group
-                  span.input-group-addon
-                    i.fa.fa-search
-                  input.form-control(type='text', value='', placeholder='Search...')
+              
               ul.nav.navbar-nav.navbar-right
                 li
                   a.dropdown-toggle.btn-rotate(href='',data-toggle='dropdown')
@@ -239,138 +247,133 @@ html(lang='en')
         .content
           .container-fluid
             .row
-              .col-lg-3.col-sm-6
+              .col-lg-4.col-sm-6
                 .card
                   .card-content
                     .row
-                      .col-xs-5
+                      .col-xs-3
                         .icon-big.icon-warning.text-center
-                          i.ti-server
+                          i.ti-user
                       .col-xs-7
                         .numbers
-                          p Capacity
-                          | 	                                            105GB
+                          p Total Guests Today
+                          | 30 Guests
                   .card-footer
                     hr
                     .stats
-                      i.ti-reload
-                      |  Updated now
-              .col-lg-3.col-sm-6
+                      
+              .col-lg-5.col-sm-5
                 .card
                   .card-content
                     .row
-                      .col-xs-5
+                      .col-xs-3
                         .icon-big.icon-success.text-center
-                          i.ti-wallet
+                          i.ti-check
                       .col-xs-7
                         .numbers
-                          p Revenue
-                          | 	                                            $1,345
+                          p Available Therapists
+                          | 40 Therapists
                   .card-footer
                     hr
                     .stats
-                      i.ti-calendar
-                      |  Last day
               .col-lg-3.col-sm-6
                 .card
                   .card-content
                     .row
-                      .col-xs-5
-                        .icon-big.icon-danger.text-center
-                          i.ti-pulse
-                      .col-xs-7
-                        .numbers
-                          p Errors
-                          | 	                                            23
-                  .card-footer
-                    hr
-                    .stats
-                      i.ti-timer
-                      |  In the last hour
-              .col-lg-3.col-sm-6
-                .card
-                  .card-content
-                    .row
-                      .col-xs-5
+                      .col-xs-3
                         .icon-big.icon-info.text-center
-                          i.ti-twitter-alt
-                      .col-xs-7
+                          i.ti-home
+                      .col-xs-8
                         .numbers
-                          p Followers
-                          | +45
+                          p Amenity Users
+                          |23
                   .card-footer
                     hr
                     .stats
-                      i.ti-reload
-                      |  Updated now
-            .row
-              .col-lg-4.col-sm-6
-                .card
-                  .card-content
-                    .row
-                      .col-xs-7
-                        .numbers.pull-left
-                          | $34,657
-                      .col-xs-5
-                        .pull-right
-                          span.label.label-success
-                            | +18%
-                    h6.big-title
-                      | total earnings 
-                      span.text-muted in last
-                      |  ten 
-                      span.text-muted quarters
-                    #chartTotalEarnings
-                  .card-footer
-                    hr
-                    .footer-title Financial Statistics
-                    .pull-right
-                      button.btn.btn-info.btn-fill.btn-icon.btn-sm
-                        i.ti-plus
-              .col-lg-4.col-sm-6
-                .card
-                  .card-content
-                    .row
-                      .col-xs-7
-                        .numbers.pull-left
-                          | 169
-                      .col-xs-5
-                        .pull-right
-                          span.label.label-danger
-                            | -14%
-                    h6.big-title
-                      | total subscriptions 
-                      span.text-muted in last
-                      |  7 days
-                    #chartTotalSubscriptions
-                  .card-footer
-                    hr
-                    .footer-title View all members
-                    .pull-right
-                      button.btn.btn-default.btn-fill.btn-icon.btn-sm
-                        i.ti-angle-right
-              .col-lg-4.col-sm-6
-                .card
-                  .card-content
-                    .row
-                      .col-xs-7
-                        .numbers.pull-left
-                          | 8,960
-                      .col-xs-5
-                        .pull-right
-                          span.label.label-warning
-                            | ~51%
-                    h6.big-title
-                      | total downloads 
-                      span.text-muted in last
-                      |  6 years
-                    #chartTotalDownloads
-                  .card-footer
-                    hr
-                    .footer-title View more details
-                    .pull-right
-                      button.btn.btn-success.btn-fill.btn-icon.btn-sm
-                        i.ti-info
+              //- .col-lg-3.col-sm-6
+              //-   .card
+              //-     .card-content
+              //-       .row
+              //-         .col-xs-5
+              //-           .icon-big.icon-info.text-center
+              //-             i.ti-twitter-alt
+              //-         .col-xs-7
+              //-           .numbers
+              //-             p Followers
+              //-             | +45
+              //-     .card-footer
+              //-       hr
+              //-       .stats
+              //-         i.ti-reload
+              //-         |  Updated now
+            //- .row
+            //-   .col-lg-4.col-sm-6
+            //-     .card
+            //-       .card-content
+            //-         .row
+            //-           .col-xs-7
+            //-             .numbers.pull-left
+            //-               | $34,657
+            //-           .col-xs-5
+            //-             .pull-right
+            //-               span.label.label-success
+            //-                 | +18%
+            //-         h6.big-title
+            //-           | total earnings 
+            //-           span.text-muted in last
+            //-           |  ten 
+            //-           span.text-muted quarters
+            //-         #chartTotalEarnings
+            //-       .card-footer
+            //-         hr
+            //-         .footer-title Financial Statistics
+            //-         .pull-right
+            //-           button.btn.btn-info.btn-fill.btn-icon.btn-sm
+            //-             i.ti-plus
+            //-   .col-lg-4.col-sm-6
+            //-     .card
+            //-       .card-content
+            //-         .row
+            //-           .col-xs-7
+            //-             .numbers.pull-left
+            //-               | 169
+            //-           .col-xs-5
+            //-             .pull-right
+            //-               span.label.label-danger
+            //-                 | -14%
+            //-         h6.big-title
+            //-           | total subscriptions 
+            //-           span.text-muted in last
+            //-           |  7 days
+            //-         #chartTotalSubscriptions
+            //-       .card-footer
+            //-         hr
+            //-         .footer-title View all members
+            //-         .pull-right
+            //-           button.btn.btn-default.btn-fill.btn-icon.btn-sm
+            //-             i.ti-angle-right
+            //-   .col-lg-4.col-sm-6
+            //-     .card
+            //-       .card-content
+            //-         .row
+            //-           .col-xs-7
+            //-             .numbers.pull-left
+            //-               | 8,960
+            //-           .col-xs-5
+            //-             .pull-right
+            //-               span.label.label-warning
+            //-                 | ~51%
+            //-         h6.big-title
+            //-           | total downloads 
+            //-           span.text-muted in last
+            //-           |  6 years
+            //-         #chartTotalDownloads
+            //-       .card-footer
+            //-         hr
+            //-         .footer-title View more details
+            //-         .pull-right
+            //-           button.btn.btn-success.btn-fill.btn-icon.btn-sm
+            //-             i.ti-info
             .row
               .col-lg-3.col-sm-6
                 .card.card-circle-chart(data-background-color='blue')

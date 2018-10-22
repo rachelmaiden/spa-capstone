@@ -1140,6 +1140,10 @@ router.get('/adminTherapist',mid.adminnauthed,(req, res) => {
   SELECT * FROM utilities_tbl`
   db.query(query,(err,out) =>{
     req.session.utilities = out[2]
+    for(var i=0;i<out[0].length;i++)
+    {
+      out[0][i].therapist_birthYear = moment().diff(out[0][i].therapist_birthYear,'years')
+    }
     res.render('admin/maintenance/therapist/adminTherapist',{
       theras: out[0],
       specialtys: out[1],
@@ -1770,7 +1774,8 @@ router.post('/utilities/updateLogo',upload.single('company_logo'),(req,res)=>{
   secondShift_timeStart="${req.body.secondShift_timeStart}",
   secondShift_timeEnd="${req.body.secondShift_timeEnd}",
   reservation_timeAllowance="${req.body.reservation_timeAllowance}",
-  therapist_commission="${req.body.therapist_commission}"
+  therapist_commission="${req.body.therapist_commission}",
+  amenity_cancellation='${req.body.amenity_cancellation}'
   WHERE utilities_id="${req.body.utilities_id}"
   `
 
@@ -1808,15 +1813,50 @@ router.get('/commission',mid.adminnauthed, (req, res) => {
 //QUERIES
 
 router.get('/customerList',(req, res) => {
-  res.render('admin/queries/customerList')
+  const query = `SELECT * FROM customer_tbl WHERE delete_stats = 0;
+  SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[1]
+    for(var i=0;i<out[0].length;i++)
+    {
+      out[0][i].cust_birthYear = moment().diff(out[0][i].cust_birthYear,'years')
+    }
+    res.render('admin/queries/customerList',{
+      customers: out[0],
+      reqSession: req.session
+    })
+  })
 })
 
 router.get('/loyaltyMembers',(req, res) => {
-  res.render('admin/queries/loyaltyMembers')
+  const query = `SELECT * FROM customer_tbl 
+  JOIN loyalty_tbl ON customer_tbl.cust_id = loyalty_tbl.cust_id
+  WHERE customer_tbl.delete_stats= 0;
+  SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[1]
+    res.render('admin/queries/loyaltyMembers',{
+      loyaltys: out[0],
+      reqSession: req.session
+    })
+  })
 })
 
 router.get('/servicesList',(req, res) => {
-  res.render('admin/queries/servicesList')
+  const query =`select *
+  from services_tbl join service_duration_tbl on services_tbl.service_duration_id = service_duration_tbl.service_duration_id
+  join service_type_tbl on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats = 0;
+  SELECT * FROM utilities_tbl`
+
+  db.query(query,(err,out)=>{
+    req.session.utilities = out[1]
+    res.render('admin/queries/servicesList',{
+      services: out[0],
+      reqSession: req.session
+    })
+  })
 })
 
 router.get('/packagesList',(req, res) => {
@@ -1847,9 +1887,50 @@ router.get('/servicesReport',(req, res) => {
   res.render('admin/reports/servicesReport')
 })
 
+router.post('/ChangeReport',(req,res)=>{
+  if(req.body.report_type == 'loyalty')
+  {
+    const query =`SELECT *,SUM(payment_amount) As Total  FROM payment_loyalty_trans_tbl 
+    GROUP BY payment_date`
+  
+    db.query(query,(err,out)=>{
+      res.send(out)
+    })
+  }
+  else if(req.body.report_type == 'amenity')
+  {
+    const query =`SELECT *,SUM(total_fee) As Total, date_only AS payment_date FROM amenities_reservation_tbl WHERE paid_status = 1 
+    GROUP BY date_only
+    `
+  
+    db.query(query,(err,out)=>{
+      res.send(out)
+    })
+  }
+  else if(req.body.report_type == 'reservation')
+  {
+    
+  }
+})
+
 router.get('/packagesReport',(req, res) => {
   res.render('admin/reports/packagesReport')
 })
 
+// router.get('/promosReport',(req, res) => {
+//   res.render('admin/reports/promosReport')
+// })
+
+// router.get('/roomsReport',(req, res) => {
+//   res.render('admin/reports/roomsReport')
+// })
+
+// router.get('/freebiesReport',(req, res) => {
+//   res.render('admin/reports/freebiesReport')
+// })
+
+// router.get('/gcReports',(req, res) => {
+//   res.render('admin/reports/gcReports')
+// })
 
 exports.admin = router

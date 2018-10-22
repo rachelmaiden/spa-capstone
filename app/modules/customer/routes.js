@@ -18,6 +18,10 @@ router.get('/login',(req, res) => {
   res.render('customer/login')
 })
 
+router.get('/customerProfile',(req, res) => {
+  res.render('customer/custProfile')
+})
+
 
 // router.get('/custHome',mid.guestistnauthed,(req, res) => {
 // 	const query =`SELECT customer_tbl.*, loyalty_tbl.* 
@@ -181,38 +185,126 @@ router.post('/customerTime/addResource', mid.guestistnauthed,(req,res)=>{
 
 
 // BOOK RESERVATION
-router.get('/bookreservation',mid.guestistnauthed, (req, res) => {
-  date = req.query.date
-  time = req.query.time
+router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
+  var dateHello = req.query.date
+  var time = req.query.time
   room = req.query.room
   roomId = req.query.roomId
+  var date_time = moment(dateHello+' '+time).format('MM-DD-YYYY HH:mm')
+  console.log(dateHello+' '+time)
 
-  console.log('ID NI CUSTOMER')
-  console.log(customerId)
   const query = `
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc from services_tbl join service_duration_tbl 
-  on services_tbl.service_duration_id = service_duration_tbl.service_duration_id join service_type_tbl 
-  on services_tbl.service_type_id = service_type_tbl.service_type_id where services_tbl.delete_stats=0 and services_tbl.service_availability=0; 
-  SELECT * FROM promo_bundle_tbl where delete_stats = 0;
+  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+  JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
+  JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
+  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
+  WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
+  SELECT promo_bundle_tbl.*, services_tbl.*, service_in_promo_tbl.* FROM promo_bundle_tbl
+  JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
+  JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
+  WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0
+  GROUP BY service_in_promo_tbl.promobundle_id;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
-  SELECT * FROM therapist_tbl where delete_stats=0 and therapist_availability= 0;
-  SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId}`
+  SELECT * FROM customer_tbl where delete_stats=0 and cust_id=${customerId};
+  SELECT * FROM utilities_tbl;
+  SELECT package_tbl.*, services_tbl.*, service_in_package_tbl.* FROM package_tbl
+  JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
+  JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
+  WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0
+  GROUP BY service_in_package_tbl.package_id;
+  SELECT * FROM giftcertificate_tbl WHERE release_stats = 2 OR release_stats=4`
   
   db.query(query,(err,out) =>{
-      res.render('customer/book',{
-        services: out[0],
-        promos: out[1],
-        crooms: out[2],
-        prooms: out[3],
-        therapists: out[4],
-        customers: out[5],
-        date, time,room, roomId
-      })
-      console.log(date)
-      console.log(time)
+    req.session.utilities = out[5]
+    var services= out[0]
+    var promos= out[1]
+    var crooms= out[2]
+    var prooms= out[3]
+    var customers= out[4]
+    var packages = out[6]
+    var giftcerts = out[7]
+    // console.log(req.session.utilities)
+    // console.log(req.session.utilities[0].company_name)
+    var date = moment(new Date()).format('MM-DD-YYYY')
+      var firstShift_timeStart = date+" "+req.session.utilities[0].firstShift_timeStart
+      var firstShift_timeEnd = date+" "+req.session.utilities[0].firstShift_timeEnd
+      firstShift_timeStart = moment(firstShift_timeStart).format('MM-DD-YYYY HH:mm')
+      firstShift_timeEnd = moment(firstShift_timeEnd).format('MM-DD-YYYY HH:mm')
+      var secondShift_timeStart = date+" "+req.session.utilities[0].secondShift_timeStart
+      var secondShift_timeEnd = date+" "+req.session.utilities[0].secondShift_timeEnd
+      secondShift_timeStart = moment(secondShift_timeStart).format('MM-DD-YYYY HH:mm')
+      secondShift_timeEnd = moment(secondShift_timeEnd).format('MM-DD-YYYY HH:mm')
+      var date_timeNow = moment(new Date()).format('MM-DD-YYYY HH:mm ')
+      var dateHello = req.query.date
+    
+      // console.log(secondShift_timeStart)
+      // console.log(secondShift_timeEnd)
+      console.log("TIME PICK "+date_time)
+      console.log(secondShift_timeEnd)
+      console.log(moment(date_time).isSameOrAfter(firstShift_timeStart))
+      console.log(moment(date_time).isBefore(firstShift_timeEnd))
+      console.log(moment(date_time).isSameOrBefore(secondShift_timeStart))
+      console.log(moment(date_time).isSameOrAfter(secondShift_timeEnd))
+      console.log('=======================================================')
+      console.log(moment(date_time).isSameOrAfter(secondShift_timeStart))
+      console.log(moment(date_time).isSameOrAfter(secondShift_timeEnd))
+      console.log(moment(date_time).isSameOrAfter(firstShift_timeStart))
+      console.log(moment(date_time).isSameOrBefore(firstShift_timeEnd))
+      if(moment(date_time).isSameOrAfter(firstShift_timeStart) && moment(date_time).isBefore(firstShift_timeEnd) && moment(date_time).isSameOrBefore(secondShift_timeStart) && moment(date_time).isSameOrAfter(secondShift_timeEnd))
+      {
+        console.log('FIRST')
+        const query=`SELECT * FROM therapist_tbl WHERE therapist_shift = 'FIRST'`
+    
+        db.query(query,(err,out)=>{
+          res.render('customer/book',{
+            date, time,room, roomId,
+            reqSession: req.session,services,promos, crooms, prooms, customers,
+            therapist: out, packages,
+            datePick: dateHello, giftcerts
+          })
+        })
+      }
+      else if(moment(date_time).isSameOrAfter(secondShift_timeStart) && moment(date_time).isSameOrAfter(secondShift_timeEnd) && moment(date_time).isSameOrAfter(firstShift_timeStart) && moment(date_time).isSameOrAfter(firstShift_timeEnd))
+      {
+        console.log('SECOND')
+        const query=`SELECT * FROM therapist_tbl WHERE therapist_shift = 'SECOND'`
+    
+        db.query(query,(err,out)=>{
+          res.render('customer/book',{
+            date, time,room, roomId,
+            reqSession: req.session,services,promos, crooms, prooms, customers,
+            therapist: out,packages,
+            datePick: dateHello, giftcerts
+          })
+        })
+      }
     })
-})
+
+
+  })
+
+
+// [BOOK RESERVATION - CHECK ROOM DETAILS]
+router.post('/CheckRoomDetails',(req,res)=>{
+  if(req.body.room_id=='common')
+  {
+    const query = `SELECT * FROM room_tbl WHERE room_rate = 0 `
+
+    db.query(query,(err,out)=>{
+      res.send(out[0])
+    })
+  }
+  else
+  {
+    const query = `SELECT * FROM room_tbl WHERE room_id =${req.body.room_id}`
+  
+    db.query(query,(err,out)=>{
+      res.send(out[0])
+    })
+
+  }
+}) 
 
 router.post('/bookreservation/addReservation',(req,res)=>{
   var walkinId;

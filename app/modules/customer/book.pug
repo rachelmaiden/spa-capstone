@@ -66,181 +66,7 @@ html(lang='en')
     .wrapper.wrapper-full-page
       each customer in customers
         if(customer.cust_gender=='Male')
-          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))
-            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
-            .content
-              .container
-                .row
-                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
-                    .card(style="width: 80em; bottom: 30px; height: 85em;")
-                      .card-content
-                        .col-lg-12.col-md-12
-                            .card-header
-                              each customer in customers
-                                input.restype(type="hidden" id="restype" value=`${restype}`)
-                                h4.card-title
-                                  strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
-                                  input(type="hidden" value=`${customer.cust_id}` id='customerId')
-                                h5.category
-                                  strong#gender= "Gender: "+ customer.cust_gender
-                                  br
-                                  strong= "Medical History: "+customer.medical_history
-                              br
-                              input(type='' value=`${male}` id='male')
-                              br
-                              input.female(type='' value=`${female}` id='female')
-                              input(type='' value=`${roomId}` id='roomId')              
-
-
-                            .card-content
-                              .nav-tabs-navigation
-                                .nav-tabs-wrapper
-                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
-                                    li.active
-                                      a(href='#single', data-toggle='tab') Services
-                                    li
-                                      a(href='#multiple', data-toggle='tab') Promos
-                              #my-tab-content.tab-content
-                                #single.tab-pane.active
-                                  .content
-                                    .container-fluid
-                                      .row
-                                        .col-md-12
-                                          .card
-                                            .card-content
-                                              .toolbar
-                                                // Here you can write extra buttons/actions for the toolbar
-                                              .fresh-datatables
-                                                table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                                  thead
-                                                    tr
-                                                      th
-                                                      th
-                                                        strong  Services 
-                                                      th
-                                                        strong  Duration
-                                                      th
-                                                        strong Price
-                                                      th
-                                                        strong Quantity
-                                                      th
-                                                        strong Points
-                                                      th
-                                                        strong Total
-                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
-                                                      //-   strong Therapist
-                                                  tbody
-                                                    each service in services
-                                                      tr
-                                                        td
-                                                          input.checkbox(type='checkbox' value=`${service.service_id}`)
-                                                          
-                                                        td= service.service_name
-                                                          input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
-                                                          input.id(type='hidden' id= `${service.service_id}` value=`${service.service_id}`)
-                                                        td= service.service_duration_desc+" minutes"
-                                                          input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
-                                                          input.bagongDuration(type='hidden' value="" id=`${service.service_id}`)
-                                                        td
-                                                          input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
-                                                          span= service.service_price
-                                                        td
-                                                          span.quantity(service_id=`${service.service_id}`) 0
-                                                        
-                                                        input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
-                                                        if(service.service_points==1|| service.service_points==0)
-                                                          td= service.service_points+" "+"Point"
-                                                        else if(service.service_points > 0)
-                                                          td= service.service_points+" "+"Points"
-                                                        td
-                                                          span.total(service_id=`${service.service_id}`) 0.00
-                                                    strong#room= `Room: ${room}`
-                                                      input(type='hidden' value=`${roomId}` id="roomId")
-
-                                                  h4
-                                                    strong#date= `Date: ${date}`
-                                                    input(type="hidden" value=`${date}` id='dateRes')
-                                                    br
-                                                    strong#time= `Time: ${time}`
-                                                    input(type="hidden" value=`${time}`)
-                                                    br
-                                                    strong End Time: 
-                                                      a(id='totalDuration') 0  
-                                              h4
-                                                strong Total Price:  
-                                                  a(id="grandtotal") 0.00 
-                                                br
-                                                strong Total Points: 
-                                                  a(id="totalPoints") 0
-                                          
-                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                                          button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
-                                          // end card
-                                        // end col-md-12
-                                      // end row
-                                #multiple.tab-pane
-                                  p Here is your profile.
-                                #packages.tab-pane
-                                  p Here are your messages.
-                      #reservationSummary.modal.fade(tabindex='-1', role='dialog')
-                        .modal-dialog.modal-lg(role='document')
-                          .modal-content
-                            .modal-header
-                              h3.modal-title
-                                center Reservation Summary
-                              button.close(type='button', data-dismiss='modal', aria-label='Close')
-                            .modal-body
-                              .col-lg-12.col-md-12
-                                  h5
-                                    strong#Name= "Name: "
-                                    br
-                                    strong#Gender= "Gender: "
-                                    br
-                                    strong#Room= `Room:` 
-                                    br
-                                    strong#Date= `Date:`
-                                  .row
-                                    .form-group
-                                      .col-md-3
-                                        h5.category
-                                          strong#StartTime
-                                          input(type="hidden" value='' id="timeStart")
-                                      .col-md-3
-                                        h5.category
-                                          strong#EndTime
-                                          input(type="hidden" value='' id="timeEnd") 
-                                
-                                  h4 Total Price: 
-                                      a#finalTotal
-                                      br
-                                      | Total  Points: 
-                                      a#finalPoints
-                              .row
-                                  .col-md-12
-                                    .card-content
-                                      .toolbar
-                                      .fresh-datatables
-                                      table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
-                                        thead
-                                          tr
-                                            th
-                                            th
-                                              strong  Services 
-                                            th
-                                              strong  Quantity
-                                            th
-                                              strong Duration
-                                            th
-                                              strong Total Price 
-                                        tbody#viewServices
-                                          
-                            .modal-footer
-                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book Reservation
-                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                       
-        else
-          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
-            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/bluespa.jpg'); background-size: cover; background-repeat: no-repeat"))        
             .content
               .container
                 .row
@@ -251,13 +77,35 @@ html(lang='en')
                             .card-header
                               each customer in customers
                                 input.restype(type="hidden" id="restype" value=`${restype}`)
-                                h4.card-title
+                                h4
                                   strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
                                   input(type="hidden" value=`${customer.cust_id}` id='customerId')
-                                h5.category
+                                  br
                                   strong#gender= "Gender: "+ customer.cust_gender
                                   br
-                                  strong= "Medical History: "+customer.medical_history
+                                  if(restype=='single')
+                                    strong= "Medical History: "+customer.medical_history
+                                  else
+                                  
+                                h4
+                                  strong Selected Room: 
+                                    a#room #{room}
+                                  input(type='hidden' value=`${roomId}` id="roomId")
+                                  br
+                                  strong Room Fee: 
+                                    a#roomRate
+                                    input(type='hidden' value='' id='rateNgRoom')
+                                  br
+                                  strong Reservation Date: 
+                                    a#date #{date}
+                                  input(type="hidden" value=`${date}` id='dateRes')
+                                  br
+                                  strong Reservation Time: 
+                                    a#time #{time}
+                                  input(type="hidden" value=`${time}`)
+                                  br
+                                  strong End Time: 
+                                    a(id='totalDuration') 0  
                               br
                               input(type='hidden' value=`${male}` id='male')
                               br
@@ -272,8 +120,12 @@ html(lang='en')
                                     li.active
                                       a(href='#single', data-toggle='tab') Services
                                     li
-                                      a(href='#multiple', data-toggle='tab') Promos
+                                      a(href='#packages', data-toggle='tab') Package
+                                    li
+                                      a(href='#promo', data-toggle='tab') Promo
                               #my-tab-content.tab-content
+                                
+                                //- SERVICES
                                 #single.tab-pane.active
                                   .content
                                     .container-fluid
@@ -316,45 +168,141 @@ html(lang='en')
                                                           input.bagongDuration(type='hidden' value="" id=`${service.service_id}`)
                                                         td
                                                           input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
-                                                          span= service.service_price
+                                                          span= '₱'+service.service_price
                                                         td
                                                           span.quantity(service_id=`${service.service_id}`) 0
                                                         
                                                         input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
-                                                        if(service.service_points==1|| service.service_points==0)
-                                                          td= service.service_points+" "+"Point"
-                                                        else if(service.service_points > 0)
-                                                          td= service.service_points+" "+"Points"
+                                                        input.eqPoints(type='hidden' id=`${service.service_id}` value=`${service.equivalent_points}`)
+                                                        td= service.service_points
                                                         td
-                                                          span.total(service_id=`${service.service_id}`) 0.00
-                                                    strong#room= `Room: ${room}`
-                                                      input(type='hidden' value=`${roomId}` id="roomId")
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${service.service_id}`)
+                                                          span.total(service_id=`${service.service_id}`) ₱0.00
 
-                                                  h4
-                                                    strong#date= `Date: ${date}`
-                                                    input(type="hidden" value=`${date}` id='dateRes')
-                                                    br
-                                                    strong#time= `Time: ${time}`
-                                                    input(type="hidden" value=`${time}`)
-                                                    br
-                                                    strong End Time: 
-                                                      a(id='totalDuration') 0  
-                                              h4
-                                                strong Total Price:  
-                                                  a(id="grandtotal") 0.00 
-                                                br
-                                                strong Total Points: 
-                                                  a(id="totalPoints") 0
-                                          
-                                          button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
-                                          button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
-                                          // end card
-                                        // end col-md-12
-                                      // end row
-                                #multiple.tab-pane
-                                  p Here is your profile.
+                                //- [PACKAGES]
                                 #packages.tab-pane
-                                  p Here are your messages.
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatablesPackageMale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Packages 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each pack in packages
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${pack.package_id}`)
+                                                          
+                                                        td= pack.package_name
+                                                          input.name(type='hidden' id= `${pack.package_id}` value=`${pack.package_name}`)
+                                                          input.id(type='hidden' id= `${pack.package_id}` value=`${pack.package_id}`)
+                                                        td= pack.package_duration+" minutes"
+                                                          input.duration(type='hidden' value=`${pack.package_duration}` id=`${pack.package_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${pack.package_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${pack.package_id}` value=`${pack.package_price}`)
+                                                          span= '₱'+pack.package_price
+                                                        td
+                                                          span.quantity(service_id=`${pack.package_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${pack.package_id}` value=`${pack.package_points}`)
+                                                        if(pack.package_points==1|| pack.package_points==0)
+                                                          td= pack.package_points+" "+"Point"
+                                                        else if(pack.package_points > 0)
+                                                          td= pack.package_points+" "+"Points"
+                                                        td
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${pack.package_id}`)
+                                                          span.total(service_id=`${pack.package_id}`) ₱0.00
+                                
+                                //- [PROMO]
+                                #promo.tab-pane
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatablesPromoMale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Promos 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each promo in promos
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${promo.promobundle_id}`)
+                                                          
+                                                        td= promo.promobundle_name
+                                                          input.name(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_name}`)
+                                                          input.id(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_id}`)
+                                                        td= promo.promobundle_duration+" minutes"
+                                                          input.duration(type='hidden' value=`${promo.promobundle_duration}` id=`${promo.promobundle_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${promo.promobundle_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${promo.promobundle_id}` value=`${promo.promobundle_price}`)
+                                                          span= '₱'+promo.promobundle_price
+                                                        td
+                                                          span.quantity(service_id=`${promo.promobundle_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${promo.promobundle_id}` value=`${promo.promobundle_points}`)
+                                                        if(promo.promobundle_points==1|| promo.promobundle_points==0)
+                                                          td= promo.promobundle_points+" "+"Point"
+                                                        else if(promo.promobundle_points > 0)
+                                                          td= promo.promobundle_points+" "+"Points"
+                                                        td
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${promo.promobundle_id}`)
+                                                          span.total(service_id=`${promo.promobundle_id}`) ₱0.00
+                                                      input(type='hidden' value=`${roomId}` id="roomId")
+                              h4
+                                strong Total Price:  
+                                  a(id="grandtotal")  ₱0.00 
+                                  input.hiddenGrandTotal(type='hidden' value='')
+                                br
+                                strong Total Points: 
+                                  a(id="grandtotalPoints") 0
+                            
+                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
+                      
+                      
                       #reservationSummary.modal.fade(tabindex='-1', role='dialog')
                         .modal-dialog.modal-lg(role='document')
                           .modal-content
@@ -371,32 +319,41 @@ html(lang='en')
                                     br
                                     strong#Room= `Room:` 
                                     br
+                                    strong Room Fee: 
+                                      strong#RateOfRoom
+                                    br
                                     strong#Date= `Date:`
+                                    br
+                                    strong#ReservationTime
+                                    input(type="hidden" value='' id="timeStart")
+                                    input(type="hidden" value='' id="timeEnd") 
                                   .row
+                                    .panel-warning
+                                      .panel-heading 
+                                        center 
+                                          strong NOTE* 
+                                          p This will be remarks only we can't assure that your selected therapist will be available on the time of your reservation.
                                     .form-group
                                       .col-md-3
                                         h5.category
-                                          strong#StartTime
-                                          input(type="hidden" value='' id="timeStart")
-                                      .col-md-3
-                                        h5.category
-                                          strong#EndTime
-                                          input(type="hidden" value='' id="timeEnd") 
-                                
-                                  h4 Total Price: 
-                                      a#finalTotal
-                                      br
-                                      | Total  Points: 
-                                      a#finalPoints
+                                          strong Therapist
+                                  .row
+                                    if(restype=='single')
+                                        select.selectpicker(title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                                          each thera in therapist
+                                            option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                                    else if(restype=='multiple')
+                                        select.selectpicker(multiple='', title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                                          each thera in therapist
+                                            option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
                               .row
                                   .col-md-12
                                     .card-content
                                       .toolbar
                                       .fresh-datatables
-                                      table#datatables.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                      table#datatablesSummaryMale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
                                         thead
                                           tr
-                                            th
                                             th
                                               strong  Services 
                                             th
@@ -406,10 +363,336 @@ html(lang='en')
                                             th
                                               strong Total Price 
                                         tbody#viewServices
+                              .row
+                                .col-md-7
+                                .col-md-4
+                                  h4 Total Price: 
+                                      a#finalTotal
+                                      br
+                                      | Total  Points: 
+                                      a#finalPoints
                                           
                             .modal-footer
-                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book Reservation
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book
                               button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+                         
+
+
+
+
+        //- FEMALE
+        else
+          .full-page.login-page(data-color='black', style=("background-image: url('/assets/paperDashboardPro/img/pinkspa.jpg'); background-size: cover; background-repeat: no-repeat"))
+            // you can change the color of the filter page using: data-color="blue | azure | green | orange | red | purple"
+            .content
+              .container
+                .row
+                  .col-md-2.col-sm-1.col-md-offset-0.col-sm-offset-1
+                    .card(style="width: 80em; bottom: 30px; height: 80em;")
+                      .card-content
+                        .col-lg-12.col-md-12
+                            .card-header
+                              each customer in customers
+                                input.restype(type="hidden" id="restype" value=`${restype}`)
+                                h4
+                                  strong#name= "Name: "+ customer.cust_fname+" "+customer.cust_mname+" "+customer.cust_lname
+                                  input(type="hidden" value=`${customer.cust_id}` id='customerId')
+                                  br
+                                  strong#gender= "Gender: "+ customer.cust_gender
+                                  br
+                                  if(restype=='single')
+                                    strong= "Medical History: "+customer.medical_history
+                                  else
+                                  
+                                h4
+                                  strong Selected Room: 
+                                    a#room #{room}
+                                  input(type='hidden' value=`${roomId}` id="roomId")
+                                  br
+                                  strong Room Fee: 
+                                    a#roomRate
+                                    input(type='hidden' value='' id='rateNgRoom')
+                                  br
+                                  strong Reservation Date: 
+                                    a#date #{date}
+                                  input(type="hidden" value=`${date}` id='dateRes')
+                                  br
+                                  strong Reservation Time: 
+                                    a#time #{time}
+                                  input(type="hidden" value=`${time}`)
+                                  br
+                                  strong End Time: 
+                                    a(id='totalDuration') 0  
+                              br
+                              input(type='hidden' value=`${male}` id='male')
+                              br
+                              input.female(type='hidden' value=`${female}` id='female')
+                              input(type='hidden' value=`${roomId}` id='roomId')              
+
+
+                            .card-content
+                              .nav-tabs-navigation
+                                .nav-tabs-wrapper
+                                  ul#tabs.nav.nav-tabs(data-tabs='tabs')
+                                    li.active
+                                      a(href='#single', data-toggle='tab') Services
+                                    li
+                                      a(href='#packages', data-toggle='tab') Package
+                                    li
+                                      a(href='#promo', data-toggle='tab') Promo
+                              #my-tab-content.tab-content
+                                
+                                //- SERVICES
+                                #single.tab-pane.active
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatablesFemale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Services 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each service in services
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${service.service_id}`)
+                                                          
+                                                        td= service.service_name
+                                                          input.name(type='hidden' id= `${service.service_id}` value=`${service.service_name}`)
+                                                          input.id(type='hidden' id= `${service.service_id}` value=`${service.service_id}`)
+                                                        td= service.service_duration_desc+" minutes"
+                                                          input.duration(type='hidden' value=`${service.service_duration_desc}` id=`${service.service_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${service.service_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${service.service_id}` value=`${service.service_price}`)
+                                                          span= '₱'+service.service_price
+                                                        td
+                                                          span.quantity(service_id=`${service.service_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
+                                                        input.eqPoints(type='hidden' id=`${service.service_id}` value=`${service.equivalent_points}`)
+                                                        td= service.service_points
+                                                        td
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${service.service_id}`)
+                                                          span.total(service_id=`${service.service_id}`) ₱0.00
+
+                                //- [PACKAGES]
+                                #packages.tab-pane
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatablesPackageFemale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Packages 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each pack in packages
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${pack.package_id}`)
+                                                          
+                                                        td= pack.package_name
+                                                          input.name(type='hidden' id= `${pack.package_id}` value=`${pack.package_name}`)
+                                                          input.id(type='hidden' id= `${pack.package_id}` value=`${pack.package_id}`)
+                                                        td= pack.package_duration+" minutes"
+                                                          input.duration(type='hidden' value=`${pack.package_duration}` id=`${pack.package_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${pack.package_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${pack.package_id}` value=`${pack.package_price}`)
+                                                          span= '₱'+pack.package_price
+                                                        td
+                                                          span.quantity(service_id=`${pack.package_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${pack.package_id}` value=`${pack.package_points}`)
+                                                        if(pack.package_points==1|| pack.package_points==0)
+                                                          td= pack.package_points+" "+"Point"
+                                                        else if(pack.package_points > 0)
+                                                          td= pack.package_points+" "+"Points"
+                                                        td
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${pack.package_id}`)
+                                                          span.total(service_id=`${pack.package_id}`) ₱0.00
+                                
+                                //- [PROMO]
+                                #promo.tab-pane
+                                  .content
+                                    .container-fluid
+                                      .row
+                                        .col-md-12
+                                          .card
+                                            .card-content
+                                              .toolbar
+                                                // Here you can write extra buttons/actions for the toolbar
+                                              .fresh-datatables
+                                                table#datatablesPromoFemale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                                  thead
+                                                    tr
+                                                      th
+                                                      th
+                                                        strong  Promos 
+                                                      th
+                                                        strong  Duration
+                                                      th
+                                                        strong Price
+                                                      th
+                                                        strong Quantity
+                                                      th
+                                                        strong Points
+                                                      th
+                                                        strong Total
+                                                      //- th.text-center.disable-sorting(data-field='therapist', style='margin-right: 50px')
+                                                      //-   strong Therapist
+                                                  tbody
+                                                    each promo in promos
+                                                      tr
+                                                        td
+                                                          input.checkbox(type='checkbox' value=`${promo.promobundle_id}`)
+                                                          
+                                                        td= promo.promobundle_name
+                                                          input.name(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_name}`)
+                                                          input.id(type='hidden' id= `${promo.promobundle_id}` value=`${promo.promobundle_id}`)
+                                                        td= promo.promobundle_duration+" minutes"
+                                                          input.duration(type='hidden' value=`${promo.promobundle_duration}` id=`${promo.promobundle_id}`)
+                                                          input.bagongDuration(type='hidden' value="" id=`${promo.promobundle_id}`)
+                                                        td
+                                                          input.price(type="hidden" id=`${promo.promobundle_id}` value=`${promo.promobundle_price}`)
+                                                          span= '₱'+promo.promobundle_price
+                                                        td
+                                                          span.quantity(service_id=`${promo.promobundle_id}`) 0
+                                                        
+                                                        input.points(type='hidden' id=`${promo.promobundle_id}` value=`${promo.promobundle_points}`)
+                                                        if(promo.promobundle_points==1|| promo.promobundle_points==0)
+                                                          td= promo.promobundle_points+" "+"Point"
+                                                        else if(promo.promobundle_points > 0)
+                                                          td= promo.promobundle_points+" "+"Points"
+                                                        td
+                                                          input.hiddenTotal(type='hidden' value='0' id=`${promo.promobundle_id}`)
+                                                          span.total(service_id=`${promo.promobundle_id}`) ₱0.00
+                                                      input(type='hidden' value=`${roomId}` id="roomId")
+                              h4
+                                strong Total Price:  
+                                  a(id="grandtotal")  ₱0.00 
+                                  input.hiddenGrandTotal(type='hidden' value='')
+                                br
+                                strong Total Points: 
+                                  a(id="grandtotalPoints") 0
+                            
+                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.buttonSummary(type='button') Reserve
+                      
+                      
+                      #reservationSummary.modal.fade(tabindex='-1', role='dialog')
+                        .modal-dialog.modal-lg(role='document')
+                          .modal-content
+                            .modal-header
+                              h3.modal-title
+                                center Reservation Summary
+                              button.close(type='button', data-dismiss='modal', aria-label='Close')
+                            .modal-body
+                              .col-lg-12.col-md-12
+                                  h5
+                                    strong#Name= "Name: "
+                                    br
+                                    strong#Gender= "Gender: "
+                                    br
+                                    strong#Room= `Room:` 
+                                    br
+                                    strong Room Fee: 
+                                      strong#RateOfRoom
+                                    br
+                                    strong#Date= `Date:`
+                                    br
+                                    strong#ReservationTime
+                                    input(type="hidden" value='' id="timeStart")
+                                    input(type="hidden" value='' id="timeEnd") 
+                                  .row
+                                    .panel-info
+                                      .panel-heading 
+                                        center This will be remarks only we can't assure that your selected therapist will be available on the time of your reservation.
+                                    .form-group
+                                      .col-md-3
+                                        h5.category
+                                          strong Therapist
+                                  .row
+                                    if(restype=='single')
+                                        select.selectpicker(title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                                          each thera in therapist
+                                            option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                                    else if(restype=='multiple')
+                                        select.selectpicker(multiple='', title='Select Therapist', data-style='btn-info', data-size='7' name='selected_therapist' id='selected_therapist' required='true' aria-label='true')
+                                          each thera in therapist
+                                            option(value=`${thera.therapist_id}`)= thera.therapist_fname+" "+thera.therapist_mname+" "+thera.therapist_lname
+                              .row
+                                  .col-md-12
+                                    .card-content
+                                      .toolbar
+                                      .fresh-datatables
+                                      table#datatablesSummaryFemale.table.table-no-bordered.table-hover(cellspacing='0', width='100%', style='width:100%')
+                                        thead
+                                          tr
+                                            th
+                                              strong  Services 
+                                            th
+                                              strong  Quantity
+                                            th
+                                              strong Duration
+                                            th
+                                              strong Total Price 
+                                        tbody#viewServices
+                              .row
+                                .col-md-7
+                                .col-md-4
+                                  h4 Total Price: 
+                                      a#finalTotal
+                                      br
+                                      | Total  Points: 
+                                      a#finalPoints
+                                          
+                            .modal-footer
+                              button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Book
+                              button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+
+                        
 
         footer.footer.footer-transparent
           .container
@@ -466,352 +749,736 @@ html(lang='en')
   // Paper Dashboard PRO DEMO methods, don't include it in your project!
   script(src='/assets/paperDashboardPro/js/demo.js')
   script.
-      $('.buttonSummary').click(function(){
-        var restype = $('.restype[id="restype"]').val()
-        if(restype=='single')
-        {
-          var bed_quantity= 1
-        }
-        else if(restype='multiple')
-        {
-          var bed_occupied_boys = $('#male').val()
-          var bed_occupied_girls = $('#female').val()
-        }
-        var table =$('#datatables').DataTable()
-        var pagelength = table.page.info().pages
-          table.page(0).draw()
-        var idService =[]
-        var serviceQuantity=[]
-        var serviceNewDuration=[]
-        var serviceTotal=[]
+    function recalculate(){
+            var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY-MM-DD HH:mm')
+            var sum = 0;                                                          
+            var duration = 0
+            var table =$('#datatables').DataTable()
+            var pagelength = table.page.info().pages
+            table.page(0).draw()
+            var pinakaTotal = 0
+            var longest = []
+            var newHours = 0
+            var newMin = 0
+            var highest = 0
+      
           for (var i=1;i<=pagelength;i++){
-            $('.checkbox:checked').each(function(){
-              var id = $(this).val()
-              idService.push(id)
-              serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
-              serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-              serviceTotal.push($(`.total[service_id='${id}']`).text())
-              var serviceId = $(`.id[id='${id}']`).val()
-              var serviceName = $(`.name[id='${id}']`).val()
-              var quantity= $(`.quantity[service_id='${id}'`).text()
-              var totalPrice = $(`.total[service_id='${id}']`).text()
-              var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
-              $('#viewServices').append(`
-                <tr>
-                <td>
-                <input type='hidden' value="${serviceId}" id="serviceId"></input>
-                </td> 
-                <td>${serviceName}</td>
-                <td>${quantity}
-                </td>
-                <td>${bagongDuration}
-                </td>
-                <td>${totalPrice}
-                </input></td>
-                `)
-              $('#reservationSummary').on('hidden.bs.modal', function (){
-                $('#viewServices').empty()
-              })
-            })
-            table.page('next').draw('page');
-          }
-            console.log(serviceQuantity)
-            console.log(serviceNewDuration)
-            console.log(serviceTotal)
-            console.log(idService)
+            
+            $(".checkbox:checked").each(function(){
+            var id= $(this).val()
+            var quantity =$(`.quantity[service_id='${id}']`).text()
+            var restype = $('.restype[id="restype"]').val()
+            var totals = $(`.hiddenTotal[id='${id}'`).val()
+            var points = $(`.points[id='${id}']`).val()
+            points = points * quantity
+            if(restype=='single')
+              {
+                var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
+                var minutes = $(`.duration[id='${id}']`).val() % 60;
+                hours = hours * quantity;
+                minutes = minutes * quantity;
+                theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
+                $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
+                $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+              }
+                //- sum += parseInt(points)
+            else if(restype=='multiple')
+              {
+                var minutes = $(`.duration[id='${id}']`).val();
+                minutes = minutes * quantity;
 
-        $('#reservationSummary').modal('show')
-        $('#reservationSummary').on('hidden.bs.modal', function (){
-          var serviceQuantity = []
-          var serviceNewDuration = []
-          var serviceTotal = []
-          var idService = []
-          console.log(serviceQuantity)
-          console.log(serviceNewDuration)
-          console.log(serviceTotal)
-          console.log(idService)
-        })
-        
-        var Name = $('#name').text()
-        var Gender = $('#gender').text()
-        var Room = $('#room').text()
-        var Date = $('#date').text()
-        var Time = moment($("#time").text(),"hh:mm A").format('hh:mm A')
-        var EndTime = $('#totalDuration').text()
-        var finalTotal = $('#grandtotal').text()
-        var finalPoints = $('#totalPoints').text()
-        $('#timeStart').val(Time)
-        $('#timeEnd').val(EndTime)
-        $('#Name').text(Name)
-        $('#Gender').text(Gender)
-        $('#Room').text(Room)
-        $('#Date').text(Date)
-        $('#StartTime').text("Start Time: "+Time)
-        $('#EndTime').text("End Time: "+EndTime)
-        $('#finalTotal').text(finalTotal)
-        $('#finalPoints').text(finalPoints)
+                theFutureTime = moment(theFutureTime).add(highest, 'minutes')
 
-        $('.submitButton').click(function(){
-          //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
-          
-          if(restype =='single')
-          {
-            $.post('/customer/bookreservation/addReservation',{
-            customerId :$('#customerId').val(),
-            serviceId: idService,
-            serviceQuantity: serviceQuantity,
-            serviceNewDuration: serviceNewDuration,
-            serviceTotal: serviceTotal,
-            bed_quantity: bed_quantity,
-            timeStart : $('#timeStart').val(),
-            timeEnd: $('#timeEnd').val(),
-            date : $('#dateRes').val(),
-            finalTotal : $('#finalTotal').text().replace(/,/g,''),
-            finalPoints : $('#finalPoints').text().replace(/,/g,''),
-            roomId :$('#roomId').val()
-           }).done(function(data){
-             if(data.alertDesc==1)
-             {
-            swal({
-              title:'Success', 
-              text:'Your Reservation has been Added', 
-              icon:'success'
-              }).then(function(){
-                location.href='/customer/home'
-              })
+                $(`.bagongDuration[id='${id}']`).val(minutes)
+                longest.push($(`.bagongDuration[id='${id}']`).val())  
+
+              }
+              pinakaTotal = eval(pinakaTotal+"+"+totals);
+              $('#grandtotal').text('₱'+pinakaTotal.toLocaleString()+'.00')
+              $('.hiddenGrandTotal').val(pinakaTotal)
+            sum += parseInt(points)
+          });
+          if(i==pagelength){
+            
+            for(var j=0;j<longest.length;j++)
+              {
+                
+                
+
+                if((longest.length-1)==0)
+                  {
+
+                    highest= longest[j];
+                    newHours = Math.floor(highest / 60)
+                    newMin = highest % 60
+                    //- console.log("HOURS: "+newHours)
+                    //- console.log("MINUTES: "+newMin)
+
+                  }
+                else if(parseInt(longest[j]) > parseInt(highest))
+                  {
+
+                    highest = longest[j];
+                    newHours = Math.floor(highest / 60)
+                    newMin = highest % 60
+
+                  }
+                if(j == longest.length - 1){
+
+                  theFutureTime = moment(theFutureTime).add(newHours,'hours').add(newMin, 'minutes')
+                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
+                  table.page(0).draw()
+                  $('#grandtotalPoints').text(sum)
+                }   
+              }
+
           }
-          else
-            {
-              swal({
-                title:'Not Success', 
-                text:'', 
-                icon:'warning'
-                })
-            } 
-          })
+            $('#grandtotalPoints').text(sum)
+          table.page('next').draw('page');
           }
-          else if(restype=='multiple')
-          {            
-          $.post('/customer/bookreservation/addReservation',{
-            customerId :$('#customerId').val(),
-            serviceId: idService,
-            serviceQuantity: serviceQuantity,
-            serviceNewDuration: serviceNewDuration,
-            serviceTotal: serviceTotal,
-            bed_quantity: bed_quantity,
-            boys_quantity: bed_occupied_boys,
-            girls_quantity: bed_occupied_girls,
-            timeStart : $('#timeStart').val(),
-            timeEnd: $('#timeEnd').val(),
-            date : $('#dateRes').val(),
-            finalTotal : $('#finalTotal').text().replace(/,/g,''),
-            finalPoints : $('#finalPoints').text().replace(/,/g,''),
-            roomId :$('#roomId').val()
-           }).done(function(data){
-             if(data.alertDesc==1)
-             {
-            swal({
-              title:'Success', 
-              text:'New Reservation Added', 
-              icon:'success'
-              }).then(function(){
-                location.href='/frontdesk/home'
-              })
-          }
-          else
-            {
-              swal({
-                title:'Not Success', 
-                text:'', 
-                icon:'warning'
-                })
-            }
-           })
-          }
-      })
-      })
+          table.page(0).draw()
+        }
+
+  //- //- CHECK THERAPIST AVAILABILITY
+  //- script.
+  //-   $(document).ready(function(){
+  //-     $('#selected_therapist').on('change',function(){
+  //-     var therapist_id= $(this).val()
+  //-     var walkin_date = !{JSON.stringify(datePick)}
+  //-     var time_pick = !{JSON.stringify(time)}
+  //-     console.log('asd',walkin_date)
+  //-     console.log(time_pick)
+      
+  //-     $.post('./TherapistValidate',{therapist_id,walkin_date,time_pick}).done(function(data){
+  //-       console.log(data)
+  //-       var therapist_name = data.out[0].therapist_fname+' '+data.out[0].therapist_mname+' '+data.out[0].therapist_lname
+  //-       if(data.alertDesc==0)
+  //-       {
+  //-         swal({
+  //-           title: therapist_name+' is not available',
+  //-           text: 'Choose another therapist'
+  //-         })
+  //-         $('#selected_therapist').val('default');
+  //-         $('#selected_therapist').selectpicker("refresh");
+  //-       }
+  //-     })
+  //-     })
+  //-   })
+
   script.
-      $(document).ready(function(){
-        $('.checkbox').on('change.bootstrapSwitch', function(e){
-          if(e.target.checked==true)
-          {
-            var qnty
-            var y=$(this).val()
-            var price = $(`.price[id='${y}']`).val()
-            var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
-            var minutes = $(`.duration[id='${y}']`).val() % 60;
-            var points = $(`.points[id='${y}']`).val()
-            var duration = $(`.duration[id='${y}']`).val()
-            //- if(minutes==0)
-            //- {
-            //-   var newDuration = "0"+hours+":"+minutes+"0"
-            //- }
-            //- else
-            //- {
-            //-   var newDuration = "0"+hours+":"+minutes
-            //- }
-            var quantity = prompt("Quantity")
+    $(document).ready(function(){
+      var room_id = $('#roomId').val()
+      console.log(room_id)
+      $.post('./CheckRoomDetails',{room_id}).done(function(data){
+        if(data.room_rate==0)
+        {
+          $('#roomRate').append('FREE')
+          $('#rateNgRoom').val('FREE')
+        }
+        else
+        {
 
-            if (quantity==null || quantity=="")
+        }
+      })
+      var reservation_date = $('#dateRes').val()
+      $('#date').text(moment(reservation_date).format('MMMM DD, YYYY'))
+    })
+  
+  script.
+    //- [SUMMARY]
+    $('.buttonSummary').click(function(){
+
+      if($('.checkbox:checked').length==0)
+      {
+        swal({
+          title: 'No Services Selected',
+          icon: 'warning'
+        })
+      }
+      else
+      {
+
+              var restype = $('.restype[id="restype"]').val()
+              if(restype=='single')
+              {
+                var bed_quantity= 1
+              }
+              else if(restype='multiple')
+              {
+                var bed_occupied_boys = $('#male').val()
+                var bed_occupied_girls = $('#female').val()
+              }
+              var table =$('#datatables').DataTable()
+              var pagelength = table.page.info().pages
+                table.page(0).draw()
+              var idService =[]
+              var serviceQuantity=[]
+              var serviceNewDuration=[]
+              var serviceTotal=[]
+              console.log('serviceQuantity',serviceQuantity)
+              console.log('serviceNewDuration',serviceNewDuration)
+              console.log('serviceTotal',serviceTotal)
+              console.log('idService',idService)
+              console.log(serviceTotal)
+                for (var i=1;i<=pagelength;i++){
+                  $('.checkbox:checked').each(function(){
+                    var id = $(this).val()
+                    idService.push(id)
+                    serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                    serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                    serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    var serviceId = $(`.id[id='${id}']`).val()
+                    var serviceName = $(`.name[id='${id}']`).val()
+                    var quantity= $(`.quantity[service_id='${id}'`).text()
+                    var totalPrice = $(`.total[service_id='${id}']`).text()
+                    var bagongDuration=$(`.bagongDuration[id='${id}']`).val()
+                    bagongDuration=moment.duration(bagongDuration).asMinutes()
+                    $('#viewServices').append(`
+                      <tr>
+                      <td>${serviceName}</td>
+                        <input type='hidden' value="${serviceId}" id="serviceId"></input>
+                      <td>${quantity}
+                      </td>
+                      <td>${bagongDuration} minutes
+                      </td>
+                      <td>${totalPrice}</td>
+                      `)
+                    $('#reservationSummary').on('hidden.bs.modal', function (){
+                      $('#viewServices').empty()
+                      $('#Room').empty()
+                    })
+                  })
+                  table.page('next').draw('page');
+                }
+
+              $('#datatablesSummaryFemale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true})
+              $('#datatablesSummaryMale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true})
+              $('#reservationSummary').modal('show')
+              $('#reservationSummary').on('hidden.bs.modal', function (){
+
+              })
+                //- var serviceQuantity = []
+                //- var serviceNewDuration = []
+                //- var serviceTotal = []
+                //- var idService = []
+                
+              
+              var Name = $('#name').text()
+              var Gender = $('#gender').text()
+              var Room = $('#room').text()
+              var roomFee= $('#rateNgRoom').val()
+              var Date = $('#date').text()
+              var Time = moment($("#time").text(),"hh:mm A").format('hh:mm A')
+              var EndTime = $('#totalDuration').text()
+              var finalTotal = $('#grandtotal').text()
+              var hidden_finalTotal =$('.hiddenGrandTotal').val()
+              var finalPoints = $('#grandtotalPoints').text()
+              $('#timeStart').val(Time)
+              $('#timeEnd').val(EndTime)
+              $('#Name').text(Name)
+              $('#Gender').text(Gender)
+              $('#Room').text(Room)
+              $('#RateOfRoom').text(roomFee)
+              $('#Date').text('Date: '+moment(Date).format('MMMM DD, YYYY'))
+              $('#ReservationTime').text("Time: "+Time+" to "+EndTime)
+              $('#finalTotal').text(finalTotal)
+              $('#finalPoints').text(finalPoints)
+            
+              $('.submitButton').click(function(){
+                //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
+                
+                if(restype =='single')
+                {
+                  if($('#selected_therapist').val()==0 || $('#selected_therapist').val()==null)
+                  {
+                    swal({
+                      title: 'Error',
+                      text: 'You must select therapist',
+                      icon: 'warning'
+                    })
+                  }
+                  else
+                  {
+                    swal({
+                      title: 'Submit Your Reservation?',
+                      text: "Please Double check once done it can't undo",
+                      icon: 'warning'
+                    }).then(function(submit){
+                      if(submit)
+                      {
+                        alert('submit')
+                      }
+                      else
+                      {
+
+                      }
+                    })
+                  }
+                }
+                else if(restype=='multiple')
+                {            
+                $.post('/bookreservation/addReservation',{
+                  customerId :$('#customerId').val(),
+                  serviceId: idService,
+                  serviceQuantity: serviceQuantity,
+                  serviceNewDuration: serviceNewDuration,
+                  serviceTotal: serviceTotal,
+                  bed_quantity: bed_quantity,
+                  boys_quantity: bed_occupied_boys,
+                  girls_quantity: bed_occupied_girls,
+                  timeStart : $('#timeStart').val(),
+                  timeEnd: $('#timeEnd').val(),
+                  date : $('#dateRes').val(),
+                  finalTotal : $('#finalTotal').text().replace(/,/g,''),
+                  finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                  roomId :$('#roomId').val()
+                 }).done(function(data){
+                   if(data.alertDesc==1)
+                   {
+                  swal({
+                    title:'Success', 
+                    text:'New Reservation Added', 
+                    icon:'success'
+                    }).then(function(){
+                      location.href='/frontdesk/home'
+                    })
+                }
+                else
+                  {
+                    swal({
+                      title:'Not Success', 
+                      text:'', 
+                      icon:'warning'
+                      })
+                  }
+                 })
+                }
+            })
+            
+      }
+
+    })
+  script.
+    $(document).ready(function(){
+      $('.checkbox').on('change.bootstrapSwitch', function(e){
+        if(e.target.checked==true)
+        {
+          var id = $(this).val()
+          var service_name = $(`.name[id='${id}']`).val()
+          var qnty
+          var y=$(this).val()
+          var price = $(`.price[id='${y}']`).val()
+          var hours = Math.floor( $(`.duration[id='${y}']`).val() / 60);          
+          var minutes = $(`.duration[id='${y}']`).val() % 60;
+          var points = $(`.points[id='${y}']`).val()
+          var duration = $(`.duration[id='${y}']`).val()
+          swal({
+            title: 'How many '+service_name+'?',
+            content: "input",
+            buttons: [true,"Confirm"],
+          }).then(function(confirm){
+            $('.swal-content__input').attr('type', 'number')
+            var quantity = $('.swal-content__input').val()
+            if(confirm)
             {
-              e.target.checked=false;
+              if (quantity==null || quantity=="")
+              {
+                e.target.checked=false;
+              }
+              else
+              {
+                $(`.quantity[service_id='${y}']`).text(quantity)
+                total = quantity * price;
+                $(`.total[service_id='${y}']`).text('₱'+total.toLocaleString()+'.00')
+                $(`.hiddenTotal[id='${y}']`).val(total)
+                var table=$('#datatables').DataTable()
+                table.search('').draw()
+              }
+              recalculate()
             }
             else
             {
-              $(`.quantity[service_id='${y}']`).text(quantity)
-              total = quantity * price;
-             
+              e.target.checked=false;
             }
-              $(`.total[service_id='${y}']`).text(total.toLocaleString())
-              var table=$('#datatables').DataTable()
-              table.search('').draw()
-              
+          })
+        }
 
-              //- alert("Hours"+newHours+" Minutes: "+newMinutes)
-          }
-
-          else if(e.target.checked==false)
+        else if(e.target.checked==false)
+        {
+          var y=$(this).val()
+          var total = $(`.hiddenTotal[id='${y}']`).val()
+          var grandTotal = $('.hiddenGrandTotal').val()
+          var finalTotal = grandTotal - total
+          $(`.quantity[service_id='${y}']`).text("0")
+          $(`.total[service_id='${y}']`).text("₱0.00")
+          $(`.hiddenTotal[id='${y}']`).val(0)
+          $('#grandtotal').text(finalTotal.toLocaleString())
+          $(`.hiddenGrandTotal`).val(finalTotal)
+          if($(".checkbox:checked").length==0)
           {
-            var y=$(this).val()
-            var total = $(`.total[service_id='${y}']`).text()
-            var grandTotal = $('#grandtotal').text()
-            var finalTotal = grandTotal.replace(/,/g,"") - total.replace(/,/g,"")
-            $(`.quantity[service_id='${y}']`).text("0")
-            $(`.total[service_id='${y}']`).text("0.00")
-            $('#grandtotal').text(finalTotal.toLocaleString())
+            $('#grandtotal').text("₱0.00")
+            $(`.hiddenGrandTotal`).val(0)
           }
-        })
-        
+        }
       })
+      
+    })
 
+      
   script.
-      $(document).ready(function(){
-        $(".checkbox").change(function(){
-          recalculate()
-          console.log($(this)[0].checked)
-          if($(this)[0].checked==false)
-          {
-            var aydi = $(this).attr('value')
-            $(`.bagongDuration[id='${aydi}']`).val('')
-          }
-          var test = $(".checkbox:checked");
-          if(test.length == 0){
-            $('#totalDuration').text('0')
-          }
-          });
-        function recalculate(){
-              var theFutureTime = moment($("#time").text(),"hh:mm A").format('YYYY-MM-DD HH:mm')
-              var sum = 0;                                                          
-              var duration = 0
-              var table =$('#datatables').DataTable()
-              var pagelength = table.page.info().pages
-              table.page(0).draw()
-              var pinakaTotal = 0
-              var longest = []
-              var newHours 
-              var newMin
+    $(document).ready(function(){
+      $(".checkbox").change(function(){
+        recalculate()
         
-            for (var i=1;i<=pagelength;i++){
-              var highest
-              
-              $(".checkbox:checked").each(function(){
-              var id= $(this).val()
-              var quantity =$(`.quantity[service_id='${id}']`).text()
-              var restype = $('.restype[id="restype"]').val()
-              var totals = $(`.total[service_id='${id}'`).text()
-              var points = $(`.points[id='${id}']`).val()
-              points = points * quantity
-              if(restype=='single')
-                {
-                  console.log('single')
-                  var hours = Math.floor( $(`.duration[id='${id}']`).val() / 60);          
-                  var minutes = $(`.duration[id='${id}']`).val() % 60;
-                  hours = hours * quantity;
-                  minutes = minutes * quantity;
-                  theFutureTime = moment(theFutureTime).add(hours,'hours').add(minutes, 'minutes')
-                  $(`.bagongDuration[id='${id}']`).val(moment().hour(hours).minute(minutes).format('hh:mm'))
-                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
-                }
-              else if(restype=='multiple')
-                {
-                  var minutes = $(`.duration[id='${id}']`).val();
-                  minutes = minutes * quantity;
-                  //- newHours = Math.floor(highest / 60)
-                  //- newMin = highest % 60
-                  theFutureTime = moment(theFutureTime).add(highest, 'minutes')
-                  $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
-
-                  $(`.bagongDuration[id='${id}']`).val(minutes)
-                  longest.push($(`.bagongDuration[id='${id}']`).val())
-                  
-                  
-                  console.log(longest)
-                  console.log('galing sa labas '+highest)
-                  
-                  for(var j=0;j<longest.length;j++)
-                    {
-                      console.log(j)
-                      if((longest.length-1)==j)
-                        {
-                          console.log('pasok')
-                          highest= longest[j];
-                          newHours = Math.floor(highest / 60)
-                          newMin = highest % 60
-                          //- console.log("HOURS: "+newHours)
-                          //- console.log("MINUTES: "+newMin)
-                        }
-                      else if(longest[j] > highest)
-                        {
-                          console.log('from if '+highest)
-                          console.log('compare sa '+longest[j])
-                          console.log('pasok sa 2nd')
-                          highest = longest[j];
-                          newHours = Math.floor(highest / 60)
-                          newMin = highest % 60
-                          console.log('from else if '+highest)
-                        }
-                         
-                    }
-                          
-                    //- if(sample>=longest)
-                    //-   {
-                    //-     longest = sample
-                    //-     console.log("aa"+longest)
-                    //-   }
-
-                  //- $('#totalDuration').text(moment(theFutureTime).format('hh:mm A'))
-                }
-                pinakaTotal = eval(pinakaTotal+"+"+totals.replace(/,/g,""));
-              
-                //- alert(hours)
-                $('#grandtotal').text(pinakaTotal.toLocaleString())
-              sum += parseInt(points)
-            });
-            table.page('next').draw('page');
-            }
-              table.page(0).draw()
-              $('#totalPoints').text(sum)
-              
-          }
-      })
-  script.
-      $(document).ready(function(){
-        $('.logout').click(function(){
-              swal({
-          title: "Are you sure?",
-          text: "Do you want to Log Out?",
-          icon: "warning",
-          buttons: true,
-          dangerMode: true,
-        })
-        .then((willDelete) => {
-          if (willDelete) {
-            $.post('/customer/logout')
-            location.reload()
-          } 
+        if($(this)[0].checked==false)
+        {
+          var aydi = $(this).attr('value')
+          $(`.bagongDuration[id='${aydi}']`).val('')
+        }
+        var test = $(".checkbox:checked");
+        if(test.length == 0){
+          $('#totalDuration').text('0')
+        }
         });
+    })
+  script.
+    $(document).ready(function(){
+      $('.logout').click(function(){
+            swal({
+        title: "Are you sure?",
+        text: "Do you want to Log Out?",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      })
+      .then((willDelete) => {
+        if (willDelete) {
+          $.post('/frontdesk/logout')
+          location.reload()
+        } 
+      });
+      })
+    })
+  script.
+    $(document).ready(function() {
+      var interval = setInterval(function() {
+          var momentNow = moment();
+          $('#date-part').html(momentNow.format('YYYY MMMM DD') + ' '
+                              + momentNow.format('dddd')
+                              .substring(0,3).toUpperCase());
+          $('#time-part').html(momentNow.format('A hh:mm:ss'));
+      }, 100);
+      
+      $('#stop-interval').on('click', function() {
+          clearInterval(interval);
+      });
+      $('#calendar').val('')
+      });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    demo.initOverviewDashboard();
+    demo.initCirclePercentage();
+    });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    demo.initWizard();
+    });
+  script(type='text/javascript').
+    $(document).ready(function(){
+    demo.initFullCalendar();
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesPackageMale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesPromoMale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesFemale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesPackageFemale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+    });
+  script(type='text/javascript').
+    $(document).ready(function() {
+    $('#datatablesPromoFemale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+    });
+
+  script.
+    $(document).ready(function(){
+      //- $('.checkoutButton').click(function(){
+      //-   var id = $(this).val()
+      //-   $('#checkout').modal('show')
+      //-   $.post('/payment/query/CheckoutDets',{id:id})
+      //-   .done(data=>{
+      //-     console.log(data)
+      //-     $('#Room').append(`Room: ${data.out1[0].room_name}`)
+      //-     $('#RoomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
+          
+      //-     if(data.out2.paid_status==0)
+      //-     {
+      //-       total_amount= data.out2.walkin_total_amount + 600
+      //-       $('#TotalPrice').append(`Total: ${total_amount}`)
+      //-       $('.totalPrice').val(`${total_amount}`)
+      //-     }
+      //-     else if (data.out2.paid_status==0)
+      //-     {
+      //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+      //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+      //-     }
+      //-     else
+      //-     {
+      //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
+      //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
+      //-     }
+          
+      //-       $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
+      //-       $('.hello').val(data.out2.cust_id)
+      //-     if(data.out2.cust_type==0)
+      //-     {
+      //-     }
+      //-     else
+      //-     {
+      //-         $('.hello').addClass('hidden')
+      //-         $('#appendDito').append(`
+      //-           <div class="form-group has-default bmd-form-group">
+      //-           <label> Current Points: ${data.out2.member_points}
+      //-             <div class="checkbox">
+      //-               <input id="checkbox1" type="checkbox"/>
+      //-               <label for="checkbox1">Pay using Points</label>
+      //-             </div>
+      //-         </div>`)
+      //-     }
+
+      //-     $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+      //-     for(var i=0;i<data.out1.length;i++)
+      //-     {
+      //-     $('#viewServicesAvailed').append(`
+      //-       <tr>
+      //-       <td>${data.out1[i].service_name}</td>
+      //-       <td>${data.out1[i].service_total_quantity}</td>
+      //-       <td>${data.out1[i].service_total_price}</td>
+      //-       <td>${data.out1[i].equivalent_points}</td>
+      //-       </tr>
+      //-     `)
+      //-     }
+      //-     $('#checkout').on('hidden.bs.modal', function (){
+      //-   $('#viewServicesAvailed').empty()
+      //-   $('#custName').empty()
+      //-   $('#TotalPrice').empty()
+      //-   $('.totalPrice').empty()  
+      //- })
+      //-   })
+      
+      
+      
+      //- $('.buttonDone').click(function(){
+      //-   alert($('.amountReceived').val())
+      //-   alert($('.totalPrice').val())
+      //-   alert(1000 < 800)
+      //-   if($('.amountReceived').val()==0)
+      //-     {
+      //-       swal({
+      //-         title: "Amount Received is 0",
+      //-         icon: 'warning'
+      //-       })
+      //-     }
+      //-   else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
+      //-     {
+      //-       swal({
+      //-         title: "Amount Received is insufficient",
+      //-         icon: 'warning'
+      //-       })
+      //-     }
+      //-   else
+      //-     {
+      //-   $.post('/payment/Finish',{
+      //-     id:id,
+      //-     amount: $('.totalPrice').val(),
+      //-     cust_id: $('.hello').val() 
+      //-     }).done(function(data){
+      //-       if(data.alertDesc==0)
+      //-         {
+      //-           swal({
+      //-             title: "Success",
+      //-             icon: 'success'
+      //-           }).then(function(){
+      //-             location.reload()
+      //-           })
+      //-         }
+      //-       else
+      //-         {
+      //-           swal({
+      //-             title: "ERROR",
+      //-             icon: 'error'
+      //-           })
+      //-         }
+          
+      //-     })
+      //-     }
+      //- })
+      //- })
+    
+      $('.viewdetailsButton').click(function(){
+        var id = $(this).val()
+        $.post('/payment/query/CheckoutDets',{id:id})
+        .done(data=>{
+          $('#viewDetails').modal('show')
         })
       })
+    })
+
+
+
+  //- PASSWORD VALIDATION
+  script.
+    $(document).ready(function(){
+      // FIRST PASSWORD
+      $('#password1').on('change paste keyup', function(){
+        $('#ValidLength').empty()
+        if($(this).val() != 0)
+        {
+          $('#password2').attr('disabled',false)
+        }
+        else
+        {
+          $('#password2').attr('disabled',true)
+          $('#password2').val('')
+        }
+        if($(this).val().length == 7 || $(this).val().length == 8 || $(this).val().length == 9)
+        {
+          $('#ValidLength').append('your password is medium')
+          $('#ValidLength').css('color','orange')
+        }
+        else if($(this).val().length <= 7)
+        {
+          $('#ValidLength').append('your password is too short')
+          $('#ValidLength').css('color','red')
+          $('#password2').attr('disabled',true)
+        }
+        else if($(this).val().length >= 10 )
+        {
+          $('#ValidLength').append('your password is strong')
+          $('#ValidLength').css('color','green')
+        }
+
+        if($(this).val()==0)
+        {
+          $('#ValidLength').empty()
+          $('#ValidPass').empty()
+        }
+      })
+      // SECOND PASSWORD
+      $('#password2').on('change paste keyup', function(){
+          $('#ValidPass').empty()
+        if($(this).val() != $('#password1').val())
+        {
+          $('#ValidPass').append(`Di Equal`)
+          $('#ValidPass').css('color','red')
+        }
+        else if($(this).val() == $('#password1').val())
+        {
+          $('#ValidPass').append(`Equal`)
+          $('#ValidPass').css('color','green')
+        }
+        if($(this).val().length == 0)
+        {
+          $('#ValidPass').empty()
+        }
+      })
+    })
+
+    // USERNAME VALIDATION
+    $('#username').on('change paste keyup',function(){
+      $('#ValidUsername').empty()
+      var username = $(this).val()
+        if(username.length <= 5 )
+        {
+          $('#ValidUsername').append('your username is too short')
+          $('#ValidUsername').css('color','red')
+        }
+        if (username.length == 0)
+        {
+          $('#ValidUsername').empty()
+        }
+    })
+  script.
+    $(document).ready(function(){
+      $('.hello').click(function(){
+        var id = $(this).val()
+        var scriptSession = !{JSON.stringify(reqSession)}
+        var membership_fee = scriptSession.utilities[0].membership_fee
+        var membership_validity = scriptSession.utilities[0].membership_validity
+        var date_now = moment(new Date()).format('MMMM DD, YYYY')
+        var validity = moment(date_now).add(membership_validity,'months').format('MMMM DD, YYYY')
+          $('#RegisterModal').modal('show')
+          $('#fee').append(`₱${membership_fee}.00`)
+          $('#checkout').modal('hide')
+          $('.buttonRegister').click(function(){
+        var password1 = $('#password1').val()
+        var password2 = $('#password2').val()
+        var username = $('#username').val()
+            if(password1 == password2 && password1 != 0 && password2 != 0)
+            {
+              
+              $.post('/payment/register',{
+                username: $('#username').val(),
+                password: $('#password1').val(),
+                id:id})
+                .done(function(data){
+                  console.log(data)
+                  if(data.alertDesc==0)
+                    {
+                      swal({
+                        title: "Success",
+                        icon: "success"
+                      }).then(function(){
+                        $('#checkout').modal('show')
+                        $('#RegisterModal').modal('hide')
+                      })
+                    }
+                  else if(data.alertDesc==3)
+                    {
+                      swal({
+                        title:'Not Success', 
+                        text:'Username Already Exist', 
+                        icon:'warning'
+                        })
+                    }
+                  else if(data.alertDesc==1)
+                    {
+                      swal({
+                        title: 'ERROR',
+                        icon: 'error'
+                      })
+                    }
+                })
+            }
+            if(password1 == 0 && password2 ==0 && username ==0 || password1 == 0 || password2 ==0 || username ==0)
+            {
+                console.log(password1)
+                console.log(password2)
+                console.log(username)
+              swal({
+                  title: 'Please double check the fields.',
+                  text: 'Make sure all required fields have value.', 
+                  icon: 'warning'
+                })
+            }
+        })
+        $('.buttonClose').click(function(){
+          $('#RegisterModal').modal('hide')
+          $('#checkout').modal('show')
+        })
+      })
+    })
+
+
+
   script.
       $(document).ready(function() {
         var interval = setInterval(function() {
@@ -842,5 +1509,9 @@ html(lang='en')
       });
   script(type='text/javascript').
       $(document).ready(function() {
-      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]]});
+      $('#datatables').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
+      });
+  script(type='text/javascript').
+      $(document).ready(function() {
+      $('#datatablesFemale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true});
       });
