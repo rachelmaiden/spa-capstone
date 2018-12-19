@@ -270,7 +270,7 @@ html(lang='en')
                                         td= pack.package_points
                                         td= pack.package_maxPerson
                                         td= pack.package_duration+" "+"minutes"
-                                        td= "₱"+pack.package_price+".00"
+                                        td= "₱"+pack.package_price
                                         td
                                           if(pack.package_availability ==0)
                                             input.switch-icon(type='checkbox' checked value=`${pack.package_id}`)
@@ -322,14 +322,22 @@ html(lang='en')
                                                     .input-group
                                                       span.input-group-addon ₱  
                                                       input.form-control(type='number', placeholder='Package Price' id='package_price' name='price' required='true', aria-required='true' disabled)
-                                                      span.input-group-addon .00
                                                     .category#suggestedPrice
                                               .form-group.has-default.bmd-form-group
                                                 center
                                                   label Services Included*
                                                     select.selectpicker(multiple='', title='Select Service/s', id='services_included' data-style='btn-info', data-size='7' name='package')
                                                       each service in services
-                                                        option(value=`${service.service_id}` price=`${service.service_price}` service_name=`${service.service_name}` service_duration=`${service.service_duration_desc}` service_points=`${service.service_points}` equivalent_points=`${service.equivalent_points}`)= service.service_name+"("+service.service_duration_desc+" minutes) "+" ₱"+service.service_price+".00"
+                                                        option(value=`${service.service_id}` price=`${service.service_price}` service_name=`${service.service_name}` service_duration=`${service.service_duration_desc}` service_points=`${service.service_points}` equivalent_points=`${service.service_equivalentPoints}`)= service.service_name+"("+service.service_duration_desc+" minutes) "+" ₱"+service.service_price
+                                              .form-group.has-default.bmd-form-group
+                                                center
+                                                  label Room Included*
+                                                    select.selectpicker(title='Select Room', id='room_included' data-style='btn-info', data-size='7' name='room_included')
+                                                      each room in rooms
+                                                        if(room.room_rate == 0)
+                                                          option(value=`${room.room_id}` price=`${room.room_rate}` service_name=`${room.room_name}`)= room.room_name+" - FREE"
+                                                        else
+                                                          option(value=`${room.room_id}` price=`${room.room_rate}` service_name=`${room.room_name}`)= room.room_name+" - ₱"+room.room_rate+"/hour"
                                               .row
                                                 .col-md-6
                                                   .form-group.has-default.bmd-form-group
@@ -488,7 +496,7 @@ html(lang='en')
           $('#suggestedPrice').text(' ')
           $('#suggestedDuration').text(' ')
           $('#suggestedPoints').text(' ')
-          $('#package_Equivalentpoints').text(' ')
+          $('#suggestedEquivalentPoints').text(' ')
         }
       })
     })
@@ -505,31 +513,22 @@ html(lang='en')
         selected.each(function(){
           price_perService.push({
             name: this.getAttribute('service_name'),
-            price: parseInt(this.getAttribute('price')),
-            duration: parseInt(this.getAttribute('service_duration')),
-            points: parseInt(this.getAttribute('service_points')),
-            equivalent_points: parseInt(this.getAttribute('equivalent_points'))
+            price: parseFloat(this.getAttribute('price')),
+            duration: parseFloat(this.getAttribute('service_duration')),
+            points: parseFloat(this.getAttribute('service_points')),
+            equivalent_points: parseFloat(this.getAttribute('equivalent_points'))
           })
         })
         for(var i=0;i<price_perService.length;i++)
         {
-          console.log(price_perService.length)
-          if(selected.length==0)
-          {
-            $('#suggestedPrice').text(' ')
-            $('#suggestedDuration').text(' ')
-          }
-          else
-          {
             totalDuration = totalDuration + price_perService[i].duration 
             total = total + price_perService[i].price
             totalPoints = totalPoints + price_perService[i].points
             totalEquivalentPoints = totalEquivalentPoints + price_perService[i].equivalent_points
           $('#suggestedDuration').text('Suggested Duration is '+totalDuration+' minutes')
-          $('#suggestedPrice').text("Suggested Price is ₱"+total+".00")
+          $('#suggestedPrice').text("Suggested Price is ₱"+total)
           $('#suggestedPoints').text("Suggested Points is "+totalPoints+" points")
           $('#suggestedEquivalentPoints').text("Suggested Equivalent Points is "+totalEquivalentPoints+" points")
-          }
         }
       })
     })
@@ -546,6 +545,7 @@ html(lang='en')
         var package_points = $('#package_points').val()
         var equivalent_points = $('#package_Equivalentpoints').val()
         var package_maxPerson = $('#package_maxPerson').val()
+        var room_included = $('#room_included').val()
         if(package_name == 0 && package_price == 0 && package_points == 0 && equivalent_points == 0  && package_maxPerson ==0 || package_name == 0 || package_price == 0 || services_included == 0 || package_duration==0 || package_amenity_usage ==0 || package_points==0 || equivalent_points == 0  || package_maxPerson ==0)
         {
             swal({
@@ -562,8 +562,9 @@ html(lang='en')
             services_included: services_included,
             package_duration: package_duration,
             package_points: package_points,
-            equivalent_points: equivalent_points,
-            package_maxPerson: package_maxPerson
+            package_equivalentPoints: equivalent_points,
+            package_maxPerson: package_maxPerson,
+            room_included
           }).done(function(data){
             if(data.alertDesc ==0) // IF SUCCESS
             {

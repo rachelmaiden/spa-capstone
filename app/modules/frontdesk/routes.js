@@ -471,21 +471,21 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   roomId = req.query.roomId
   var date_time = moment(dateHello+' '+time).format('MM-DD-YYYY HH:mm')
   var reservetype = req.query.reservetype
+  var pickedDate = moment(dateHello).format('YYYYMMDD')
+  console.log(pickedDate)
   console.log('RESERVETYPE',reservetype)
   if(reservetype =='single')
   {
     const query = `
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+  SELECT * FROM services_tbl 
   JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
   JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
-  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
   WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
   SELECT * FROM promo_bundle_tbl
   JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
   JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
-  JOIN freebies_promo_tbl ON promo_bundle_tbl.promobundle_id = freebies_promo_tbl.promobundle_id
   WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 
-  AND promobundle_maxPerson = 1
+  AND promobundle_maxPerson = 1 AND promobundle_valid_from >= '${pickedDate}'AND promobundle_valid_until <= '${pickedDate}'
   GROUP BY service_in_promo_tbl.promobundle_id;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
@@ -494,7 +494,6 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   SELECT * FROM package_tbl
   JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
   JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
-  JOIN freebies_package_tbl ON package_tbl.package_id = freebies_package_tbl.package_id
   WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0 
   AND package_maxPerson = 1
   GROUP BY service_in_package_tbl.package_id;
@@ -582,16 +581,14 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     // console.log(dateHello+' jkjkjj '+time)
   
     const query = `
-    SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+    SELECT * FROM services_tbl 
     JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
     JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
-    JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
     WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
     SELECT * FROM promo_bundle_tbl
     JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
     JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
-    JOIN freebies_promo_tbl ON promo_bundle_tbl.promobundle_id = freebies_promo_tbl.promobundle_id
-    WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 AND promobundle_maxPerson = "${total_res}"
+    WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 AND promobundle_maxPerson = "${total_res}" AND promobundle_valid_from <= '${pickedDate}'AND promobundle_valid_until >= '${pickedDate}'
     GROUP BY service_in_promo_tbl.promobundle_id;
     SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
     SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
@@ -600,7 +597,6 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     SELECT * FROM package_tbl
     JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
     JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
-    JOIN freebies_package_tbl ON package_tbl.package_id = freebies_package_tbl.package_id
     WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0 
     AND package_maxPerson = "${total_res}"
     GROUP BY service_in_package_tbl.package_id ;

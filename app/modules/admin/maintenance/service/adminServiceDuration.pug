@@ -252,8 +252,8 @@ html(lang='en')
                                   span.input-group-addon minutes
                             .row
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addServiceDuration(type='button') Add Service Duration
-                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                            button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.addServiceDuration(type='button') Add Service Duration
+                            button.btn.btn-secondary.btn.pull-left.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
                   .content
                     .container-fluid
                       .row
@@ -320,8 +320,8 @@ html(lang='en')
                                     .modal-body#updateAppend
                                       
                                     .modal-footer
-                                      button.btn.btn-info.btn-fill.pull-left#updateSubmitButton(type='button') Update
-                                      button.btn.btn-danger.btn-fill.pull-right#cancelButton(type='button', data-dismiss='modal') Cancel
+                                      button.btn.btn-info.btn-fill.pull-right#updateSubmitButton(type='button') Update
+                                      button.btn.btn-danger.btn-fill.pull-left#cancelButton(type='button', data-dismiss='modal') Cancel
                                   
                                   
                                   
@@ -655,3 +655,17 @@ html(lang='en')
         });
             
         });
+  script.
+    $(document).ready(function() {
+    $('#datatables').DataTable({
+    "order": [[ 0, "desc" ]],
+    "pagingType": "full_numbers",
+    "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+    responsive: true,
+    language: {
+    search: "_INPUT_",
+    searchPlaceholder: "Search records",
+    }
+    });
+
+    });

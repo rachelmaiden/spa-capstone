@@ -278,7 +278,7 @@ html(lang='en')
                                         td
                                           button.btn.btn-fill.btn-info.viewButton(data-toggle='modal', value=`${promo.promobundle_id}`) View Services
                                         td= promo.promobundle_duration+" "+"minutes"
-                                        td= "₱"+promo.promobundle_price+".00"
+                                        td= "₱"+promo.promobundle_price
                                         td= promo.promobundle_points
                                         td= promo.promobundle_maxPerson
                                         td= promo.promobundle_valid_from+" to "+promo.promobundle_valid_until
@@ -325,15 +325,24 @@ html(lang='en')
                                   .input-group
                                       span.input-group-addon ₱  
                                       input.form-control(type='number', placeholder='Promo Bundle Price' id='price' name='price' required='true', aria-required='true' disabled)
-                                      span.input-group-addon .00
                                   span.help-block#suggestedPrice
                             .form-group.has-default.bmd-form-group
                               center
                                 label Services Included*
                                   select.selectpicker(multiple='', title='Select Service/s', data-style='btn-info', data-size='7' id='services_included' name='promos')
                                     each service in services
-                                      option(value=`${service.service_id}` price=`${service.service_price}` service_name=`${service.service_name}` service_duration=`${service.service_duration_desc}` service_points=`${service.service_points}` equivalent_points=`${service.equivalent_points}`)= service.service_name+"("+service.service_duration_desc+" minutes)"+" ₱"+service.service_price+'.00'
+                                      option(value=`${service.service_id}` price=`${service.service_price}` service_name=`${service.service_name}` service_duration=`${service.service_duration_desc}` service_points=`${service.service_points}` equivalent_points=`${service.service_equivalentPoints}`)= service.service_name+"("+service.service_duration_desc+" minutes)"+" ₱"+service.service_price
                               
+                            .form-group.has-default.bmd-form-group
+                              center
+                                label Room Included*
+                                  select.selectpicker(title='Select Room', id='room_included' data-style='btn-info', data-size='7' name='room_included')
+                                    each room in rooms
+                                      if(room.room_rate == 0)
+                                        option(value=`${room.room_id}` price=`${room.room_rate}` service_name=`${room.room_name}`)= room.room_name+" - FREE"
+                                      else
+                                        option(value=`${room.room_id}` price=`${room.room_rate}` service_name=`${room.room_name}`)= room.room_name+" - ₱"+room.room_rate+"/hour"
+                            
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -341,9 +350,7 @@ html(lang='en')
                                 .input-group
                                   input.form-control(type='number', placeholder='Promo Bundle Duration' id='duration' name='duration' required='true', aria-required='true' disabled)
                                   span.input-group-addon minutes
-                                //- select.selectpicker(name='duration' title='Select Duration' id='duration'  data-style='btn-info')
-                                //-   each duration in durations
-                                //-     option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
+                              
                                 .category#suggestedDuration
                               .col-md-6  
                                 .form-group.has-default.bmd-form-group
@@ -520,11 +527,12 @@ html(lang='en')
           $('#price').attr('disabled',true)
           $('#duration').attr('disabled',true)
           $('#points').attr('disabled',true)
-          $('#equivalent_points').attr('disabled',false)
+          $('#equivalent_points').attr('disabled',true)
+          
           $('#suggestedPrice').text(' ')
           $('#suggestedDuration').text(' ')
           $('#suggestedPoints').text(' ')
-          $('#equivalent_points').text(' ')
+          $('#suggestedEquivalentPoints').text(' ')
         }
       })
     })
@@ -540,30 +548,22 @@ html(lang='en')
         selected.each(function(){
           price_perService.push({
             name: this.getAttribute('service_name'),
-            price: parseInt(this.getAttribute('price')),
-            duration: parseInt(this.getAttribute('service_duration')),
-            points: parseInt(this.getAttribute('service_points')),
-            equivalent_points: parseInt(this.getAttribute('equivalent_points'))
+            price: parseFloat(this.getAttribute('price')),
+            duration: parseFloat(this.getAttribute('service_duration')),
+            points: parseFloat(this.getAttribute('service_points')),
+            equivalent_points: parseFloat(this.getAttribute('equivalent_points'))
           })
         })
         for(var i=0;i<price_perService.length;i++)
         {
-          if(selected==0)
-          {
-            $('#suggestedPrice').text(' ')
-            $('#suggestedDuration').text(' ')
-          }
-          else
-          {
             totalDuration = totalDuration + price_perService[i].duration
             total = total + price_perService[i].price
             totalPoints = totalPoints + price_perService[i].points
             totalEquivalentPoints = totalEquivalentPoints + price_perService[i].equivalent_points
             $('#suggestedDuration').text("Suggested Duration is "+totalDuration+" minutes")
-            $('#suggestedPrice').text("Suggested Price is ₱"+total+'.00')
+            $('#suggestedPrice').text("Suggested Price is ₱"+total)
             $('#suggestedPoints').text('Suggested Points is '+totalPoints+' points')
             $('#suggestedEquivalentPoints').text('Suggested Equivalent Points is '+totalEquivalentPoints+' points')
-          }
         }
       })
       function getSum(total,num){
@@ -584,8 +584,19 @@ html(lang='en')
         var promobundle_points = $('#points').val()
         var equivalent_points = $('#equivalent_points').val()
         var promobundle_maxPerson = $('#promobundle_maxPerson').val()
+        var promobundle_roomIncluded = $('#room_included').val()
         var pers = moment(promobundle_valid_from).format('MM-DD-YYYY')
         var secs = moment(promobundle_valid_until).format('MM-DD-YYYY')
+        if(promobundle_roomIncluded == ' ' || promobundle_roomIncluded == 0)
+        {
+          console.log('NULL')
+          promobundle_roomIncluded = 'NULL'
+        }
+        else
+        {
+          console.log('NOT NULL')
+          promobundle_roomIncluded = $('#room_included').val()
+        }
 
         if(promobundle_name==0 && promobundle_price ==0 && services_included ==0 && promobundle_duration ==0 && promobundle_person_count ==0
           && promobundle_valid_from ==0 && promobundle_valid_until==0 && promobundle_points==0 && equivalent_points ==0 && promobundle_maxPerson==0
@@ -611,8 +622,9 @@ html(lang='en')
               promobundle_person_count,
               promobundle_valid_from,
               promobundle_valid_until,
-              equivalent_points,
-              promobundle_maxPerson
+              promobundle_equivalentPoints: equivalent_points,
+              promobundle_maxPerson,
+              promobundle_roomIncluded
             }).done(function(data){
               if(data.alertDesc ==0) // IF SUCCESS
               {
@@ -646,7 +658,7 @@ html(lang='en')
           {
             swal({
               title: "Error",
-              text: promobundle_valid_from+" is more than "+promobundle_valid_until,
+              text: 'The promo validity cannot be more than or uqual',
               icon: 'error'
             })
           }
@@ -774,7 +786,10 @@ html(lang='en')
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
                         <label>Promo Bundle Price*</label>
-                        <input type="text" placeholder="${data.promobundle_price}" value="${data.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
+                        <div class="input-group">
+                          <span class="input-group-addon">₱ </span>
+                          <input type="text" placeholder="${data.promobundle_price}" value="${data.promobundle_price}" id="promobundle_price" name="promobundle_price" class="form-control"/>
+                        </div>
                       </div>
                     </div>
                   </div>

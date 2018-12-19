@@ -200,7 +200,7 @@ html(lang='en')
                                           td= service.service_points
                                           td
                                             input.hiddenTotal(type='hidden' value='0' id=`${service.service_id}`)
-                                            span.total(service_id=`${service.service_id}`) ₱0.00
+                                            span.total(service_id=`${service.service_id}`) ₱0
 
                   //- [PACKAGES]
                   #packages.tab-pane
@@ -258,7 +258,7 @@ html(lang='en')
                                             td= pack.package_points+" "+"Points"
                                           td
                                             input.hiddenTotal(type='hidden' value='0' id=`${pack.package_id}`)
-                                            span.total(service_id=`${pack.package_id}`) ₱0.00
+                                            span.total(service_id=`${pack.package_id}`) ₱0
                   
                   //- [PROMO]
                   #promo.tab-pane
@@ -316,11 +316,11 @@ html(lang='en')
                                             td= promo.promobundle_points+" "+"Points"
                                           td
                                             input.hiddenTotal(type='hidden' value='0' id=`${promo.promobundle_id}`)
-                                            span.total(service_id=`${promo.promobundle_id}`) ₱0.00
+                                            span.total(service_id=`${promo.promobundle_id}`) ₱0
                                         input(type='hidden' value=`${roomId}` id="roomId")
                 h4
                   strong Total Price:  
-                    a(id="grandtotal")  ₱0.00 
+                    a(id="grandtotal")  ₱0 
                     input.hiddenGrandTotal(type='hidden' value='')
                   br
                   strong Total Points: 
@@ -479,8 +479,8 @@ html(lang='en')
                           label Amount Received:
                           .input-group
                             span.input-group-addon ₱  
-                            input.form-control.amountReceived(type='number', placeholder='₱0.00')
-                            span.input-group-addon .00
+                            input.form-control.amountReceived(type='number', placeholder='₱0')
+                            span.input-group-addon 
                       
                       .col-md-3
                         .form-group.has-default.bmd-form-group
@@ -488,7 +488,7 @@ html(lang='en')
                           .input-group
                             span.input-group-addon ₱  
                             input.form-control.change(type='number', placeholder='Change' value='0' disabled)
-                            span.input-group-addon .00
+                            span.input-group-addon 
                     .modal-footer
                       button.btn.btn-secondary.pull-right.btn.btn-success.btn-fill.btn-wd.buttonDone(type='button') Done
                       button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
@@ -626,7 +626,7 @@ html(lang='en')
       })
         $('.newPoints').val(newPoints)
         $('.amountNeeded').val(newPrice)
-        $('#AmountNeeded').text('₱'+newPrice+'.00')
+        $('#AmountNeeded').text('₱'+newPrice+'')
 
     }
   script.
@@ -707,7 +707,7 @@ html(lang='en')
             newhalaga -= parseInt(newhalaga)
             $(`.newhalaga[id='${id}']`).val(newhalaga)
             $('.amountNeeded').val(total)
-            $('#AmountNeeded').text('₱'+total+'.00')
+            $('#AmountNeeded').text('₱'+total+'')
 
             var pointsTotal = eval(newPoints+'+'+newPointsEq)
             $('.newPoints').val(pointsTotal)
@@ -726,7 +726,7 @@ html(lang='en')
             newhalaga -= parseInt(newhalaga)
             $(`.newhalaga[id='${id}']`).val(newhalaga)
             $('.amountNeeded').val(total)
-            $('#AmountNeeded').text('₱'+total+'.00')
+            $('#AmountNeeded').text('₱'+total+'')
 
             var pointsTotal = eval(newPoints+'+'+newPointsEq)
             $('.newPoints').val(pointsTotal)
@@ -847,7 +847,7 @@ html(lang='en')
             }
             total = parseInt(amountNeeded)+parseInt(total)
             $('.amountNeeded').val(total)
-            $('#AmountNeeded').text('₱'+total+'.00')
+            $('#AmountNeeded').text('₱'+total+'')
             $('.newPoints').val($('.currentPoints').val())
           $('.checkboxPayment').prop('checked',false)
           $('.checkboxPayment').css('display','none')
@@ -1061,7 +1061,7 @@ html(lang='en')
                   if($('#checkboxPoints')[0].checked==false)
                   {
                     $('.amountNeeded').val($('.totalPrice').val())
-                    $('#AmountNeeded').text('₱'+$('.totalPrice').val()+'.00')
+                    $('#AmountNeeded').text('₱'+$('.totalPrice').val()+'')
                     $('.gcTotal').val(0)
                     $('#totalGCval').text(' ')
                   }
@@ -1069,7 +1069,7 @@ html(lang='en')
                   if($('#checkboxPoints')[0].checked==true && $('.checkboxPayment:checked').length==0)
                   {
                     $('.amountNeeded').val($('.totalPrice').val())
-                    $('#AmountNeeded').text('₱'+$('.totalPrice').val()+'.00')
+                    $('#AmountNeeded').text('₱'+$('.totalPrice').val()+'')
                     $('.gcTotal').val(0)
                     $('#totalGCval').text(' ')
                   }
@@ -1092,7 +1092,7 @@ html(lang='en')
                         var newtotal = parseInt(totalPrice) - total
                       }
                       $('.amountNeeded').val(newtotal)
-                      $('#AmountNeeded').text('₱'+newtotal+'.00')
+                      $('#AmountNeeded').text('₱'+newtotal+'')
                     $('.gcTotal').val(0)
                     $('#totalGCval').text(' ')
 
@@ -1115,16 +1115,16 @@ html(lang='en')
                     if(newTotal < 0 )
                     {
                       $('.amountNeeded').val(0)
-                      $('#AmountNeeded').text('₱'+0+'.00')
+                      $('#AmountNeeded').text('₱'+0+'')
                     }
                     else
                     {
                       $('.amountNeeded').val(newTotal)
-                      $('#AmountNeeded').text('₱'+newTotal+'.00')
+                      $('#AmountNeeded').text('₱'+newTotal+'')
 
                     }
-                    $('#totalGCval').text('Total: ₱'+total_value+'.00')
-                    $('#TotalAmountReceived').text('₱'+total_value+'.00')
+                    $('#totalGCval').text('Total: ₱'+total_value+'')
+                    $('#TotalAmountReceived').text('₱'+total_value+'')
                     $('.totalGCval').val(total_value)
                     $('.totalAmountReceived').val(total_value)
                   }
@@ -1138,15 +1138,15 @@ html(lang='en')
                     if(newTotal < 0 )
                     {
                       $('.amountNeeded').val(0)
-                      $('#AmountNeeded').text('₱'+0+'.00')
+                      $('#AmountNeeded').text('₱'+0+'')
                     }
                     else
                     {
-                      $('#AmountNeeded').text('₱'+newTotal+'.00')
+                      $('#AmountNeeded').text('₱'+newTotal+'')
                       $('.amountNeeded').val(newTotal)
                     }
-                    $('#totalGCval').text('Total: ₱'+total_value+'.00')
-                    $('#TotalAmountReceived').text('₱'+total_value+'.00')
+                    $('#totalGCval').text('Total: ₱'+total_value+'')
+                    $('#TotalAmountReceived').text('₱'+total_value+'')
                     $('.totalGCval').val(total_value)
                     $('.totalAmountReceived').val(total_value)
                   }
@@ -1161,15 +1161,15 @@ html(lang='en')
                     if(newTotal < 0 )
                     {
                       $('.amountNeeded').val(0)
-                      $('#AmountNeeded').text('₱'+0+'.00')
+                      $('#AmountNeeded').text('₱'+0+'')
                     }
                     else
                     {
-                      $('#AmountNeeded').text('₱'+newTotal+'.00')
+                      $('#AmountNeeded').text('₱'+newTotal+'')
                       $('.amountNeeded').val(newTotal)
                     }
-                    $('#totalGCval').text('Total: ₱'+total_value+'.00')
-                    $('#TotalAmountReceived').text('₱'+total_value+'.00')
+                    $('#totalGCval').text('Total: ₱'+total_value+'')
+                    $('#TotalAmountReceived').text('₱'+total_value+'')
                     $('.totalGCval').val(total_value)
                     $('.totalAmountReceived').val(total_value)
                 } 
@@ -1194,7 +1194,7 @@ html(lang='en')
               var gc_total = $('.gcTotal').val()
               var total = parseInt(gc_total) + parseInt(amountNeeded)
               $('.amountNeeded').val(total)
-              $('#AmountNeeded').text('₱'+total+'.00')
+              $('#AmountNeeded').text('₱'+total+'')
               $('.gcTotal').val(0)
             }
 
@@ -1204,7 +1204,7 @@ html(lang='en')
               var gc_total = $('.gcTotal').val()
               var total = parseInt(gc_total) + parseInt(amountNeeded)
               $('.amountNeeded').val(total)
-              $('#AmountNeeded').text('₱'+total+'.00')
+              $('#AmountNeeded').text('₱'+total+'')
               $('.gcTotal').val(0)
             }
             else if($('#checkboxPoints')[0].checked==true && $('.checkPayment:checked').length !=0)
@@ -1226,7 +1226,7 @@ html(lang='en')
                     var newtotal = parseInt(totalPrice) - total
                   }
                   $('.amountNeeded').val(newtotal)
-                  $('#AmountNeeded').text('₱'+newtotal+'.00')
+                  $('#AmountNeeded').text('₱'+newtotal+'')
                 $('.gcTotal').val(0)
                 $('#totalGCval').text(' ')
             }
@@ -1237,7 +1237,7 @@ html(lang='en')
             var gc_total = $('.gcTotal').val()
             var total = parseInt(gc_total) + parseInt(amountNeeded)
             $('.amountNeeded').val(total)
-            $('#AmountNeeded').text('₱'+total+'.00')
+            $('#AmountNeeded').text('₱'+total+'')
             $('.gcTotal').val(0)
           }
         }
@@ -1254,7 +1254,7 @@ html(lang='en')
             {
               var totalPrice = $('.totalPrice').val()
               $('.amountNeeded').val(totalPrice)
-              $('#AmountNeeded').text('₱'+totalPrice+'.00')
+              $('#AmountNeeded').text('₱'+totalPrice+'')
               $('.gcTotal').val(0)
             }
             else
@@ -1262,7 +1262,7 @@ html(lang='en')
               var gc_total = $('.gcTotal').val()
               var total = parseInt(gc_total) + parseInt(amountNeeded)
               $('.amountNeeded').val(total)
-              $('#AmountNeeded').text('₱'+total+'.00')
+              $('#AmountNeeded').text('₱'+total+'')
               $('.gcTotal').val(0)
             }
           }
@@ -1271,7 +1271,7 @@ html(lang='en')
              var gc_total = $('.gcTotal').val()
               var total = parseInt(gc_total) + parseInt(amountNeeded)
               $('.amountNeeded').val(total)
-              $('#AmountNeeded').text('₱'+total+'.00')
+              $('#AmountNeeded').text('₱'+total+'')
               $('.gcTotal').val(0)
           }
         }
@@ -1323,7 +1323,7 @@ html(lang='en')
 
               }
               pinakaTotal = eval(pinakaTotal+"+"+totals);
-              $('#grandtotal').text('₱'+pinakaTotal.toLocaleString()+'.00')
+              $('#grandtotal').text('₱'+pinakaTotal.toLocaleString()+'')
               $('.hiddenGrandTotal').val(pinakaTotal)
             sum += parseInt(points)
           });
@@ -1409,7 +1409,7 @@ html(lang='en')
         }
         else
         {
-          $('#roomRate').append('₱'+data.room_rate+'.00')
+          $('#roomRate').append('₱'+data.room_rate+'')
           $('#rateNgRoom').val(data.room_rate)
         }
       })
@@ -1586,7 +1586,7 @@ html(lang='en')
 
                     }
 
-                    $('#RateOfRoom').text(`₱${oras}.00`)
+                    $('#RateOfRoom').text(`₱${oras}`)
                     $('.RateofRoom').val(oras)
 
               }
@@ -1595,8 +1595,10 @@ html(lang='en')
               $('#ReservationTime').text("Time: "+Time+" to "+EndTime)
               if($('#rateNgRoom').val()==0)
               {
-                $('#finalTotal').text(`₱${hidden_finalTotal}.00`)
+                $('#finalTotal').text(`₱${hidden_finalTotal}`)
                 $('#finalPoints').text(finalPoints)
+                $('.earlyHiddenTotal').val(hidden_finalTotal)
+                $('.earlyHiddenPoints').val(finalPoints)
 
               }
               else
@@ -1606,7 +1608,7 @@ html(lang='en')
 
                 var newTots = parseInt(hiddenTotal) + parseInt(rateNgRoom)
 
-                $('#finalTotal').text(`₱${newTots}.00`)
+                $('#finalTotal').text(`₱${newTots}`)
                 $('.earlyHiddenTotal').val(newTots)
                 $('.earlyHiddenPoints').val(finalPoints)
                 $('#finalPoints').text(finalPoints)
@@ -1653,7 +1655,7 @@ html(lang='en')
                           else
                           {
                             var rateRate = $('.RateOfRoom').val()
-                            $('#RoomRateAvailed').append(`Room Fee: ₱${rateRate}.00`)
+                            $('#RoomRateAvailed').append(`Room Fee: ₱${rateRate}`)
                           }
                           $('#DateReserv').append(`Reservation Date: ${Date}`)
                           $('#TimeReserv').append(`Reservation Time: ${Time} to ${EndTime}`)
@@ -1678,7 +1680,7 @@ html(lang='en')
                               {
                                 var buo = $('.RateOfRoom').val()
                                     buo = parseInt(buo) + parseInt(hidden_finalTotal)
-                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('#TotalPrice').append(`Total: ₱${buo}`)
                                 $('.totalPrice').val(`${buo}`)
                                 $('.totalAmountPoints').val(finalPoints)
                                 $('.paid_stats').val(3)
@@ -1687,7 +1689,7 @@ html(lang='en')
                             else if (data[0].paid_status==0)
                             {
                               hidden_finalTotal=parseInt(hidden_finalTotal) + parseInt(membership_fee) 
-                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}.00`)
+                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
                               $('.totalAmountPoints').val(finalPoints)
 
@@ -1706,7 +1708,7 @@ html(lang='en')
                               {
                                 var buo = $('.RateOfRoom').val()
                                     buo = parseInt(buo) + parseInt(hidden_finalTotal)
-                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('#TotalPrice').append(`Total: ₱${buo}`)
                                 $('.totalPrice').val(`${buo}`)
                                 $('.totalAmountPoints').val(finalPoints)
                                 $('.paid_stats').val(1)
@@ -1761,14 +1763,14 @@ html(lang='en')
                                       if($('.RateOfRoom').val()==0)
                                       {
                                         $('.amountNeeded').val(hidden_finalTotal)
-                                        $('#AmountNeeded').text('₱'+hidden_finalTotal+'.00')
+                                        $('#AmountNeeded').text('₱'+hidden_finalTotal+'')
                                       }
                                       else
                                       {
                                         var totalNew = $('.RateOfRoom').val()
                                             totalNew = parseInt(totalNew) + parseInt(hidden_finalTotal)
                                         $('.amountNeeded').val(totalNew)
-                                        $('#AmountNeeded').text('₱'+totalNew+'.00')
+                                        $('#AmountNeeded').text('₱'+totalNew+'')
                                       }
                                       
                                       $('#viewServicesAvailed').append(`
@@ -3542,7 +3544,7 @@ html(lang='en')
                           else
                           {
                             var rateRate = $('.RateOfRoom').val()
-                            $('#RoomRateAvailed').append(`Room Fee: ₱${rateRate}.00`)
+                            $('#RoomRateAvailed').append(`Room Fee: ₱${rateRate}`)
                           }
                           $('#DateReserv').append(`Reservation Date: ${Date}`)
                           $('#TimeReserv').append(`Reservation Time: ${Time} to ${EndTime}`)
@@ -3567,7 +3569,7 @@ html(lang='en')
                               {
                                 var buo = $('.RateOfRoom').val()
                                     buo = parseInt(buo) + parseInt(hidden_finalTotal)
-                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('#TotalPrice').append(`Total: ₱${buo}`)
                                 $('.totalPrice').val(`${buo}`)
                                 $('.totalAmountPoints').val(finalPoints)
                                 $('.paid_stats').val(3)
@@ -3576,7 +3578,7 @@ html(lang='en')
                             else if (data[0].paid_status==0)
                             {
                               hidden_finalTotal=parseInt(hidden_finalTotal) + parseInt(membership_fee) 
-                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}.00`)
+                              $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
                               $('.totalAmountPoints').val(finalPoints)
 
@@ -3595,7 +3597,7 @@ html(lang='en')
                               {
                                 var buo = $('.RateOfRoom').val()
                                     buo = parseInt(buo) + parseInt(hidden_finalTotal)
-                                $('#TotalPrice').append(`Total: ₱${buo}.00`)
+                                $('#TotalPrice').append(`Total: ₱${buo}`)
                                 $('.totalPrice').val(`${buo}`)
                                 $('.totalAmountPoints').val(finalPoints)
                                 $('.paid_stats').val(1)
@@ -3650,14 +3652,14 @@ html(lang='en')
                                       if($('.RateOfRoom').val()==0)
                                       {
                                         $('.amountNeeded').val(hidden_finalTotal)
-                                        $('#AmountNeeded').text('₱'+hidden_finalTotal+'.00')
+                                        $('#AmountNeeded').text('₱'+hidden_finalTotal+'')
                                       }
                                       else
                                       {
                                         var totalNew = $('.RateOfRoom').val()
                                             totalNew = parseInt(totalNew) + parseInt(hidden_finalTotal)
                                         $('.amountNeeded').val(totalNew)
-                                        $('#AmountNeeded').text('₱'+totalNew+'.00')
+                                        $('#AmountNeeded').text('₱'+totalNew+'')
                                       }
                                       
                                       $('#viewServicesAvailed').append(`
@@ -5474,7 +5476,7 @@ html(lang='en')
               {
                 $(`.quantity[service_id='${y}']`).text(quantity)
                 total = quantity * price;
-                $(`.total[service_id='${y}']`).text('₱'+total.toLocaleString()+'.00')
+                $(`.total[service_id='${y}']`).text('₱'+total.toLocaleString()+'')
                 $(`.hiddenTotal[id='${y}']`).val(total)
                 var table=$('#datatables').DataTable()
                 table.search('').draw()
@@ -5495,13 +5497,13 @@ html(lang='en')
           var grandTotal = $('.hiddenGrandTotal').val()
           var finalTotal = grandTotal - total
           $(`.quantity[service_id='${y}']`).text("0")
-          $(`.total[service_id='${y}']`).text("₱0.00")
+          $(`.total[service_id='${y}']`).text("₱0")
           $(`.hiddenTotal[id='${y}']`).val(0)
           $('#grandtotal').text(finalTotal.toLocaleString())
           $(`.hiddenGrandTotal`).val(finalTotal)
           if($(".checkbox:checked").length==0)
           {
-            $('#grandtotal').text("₱0.00")
+            $('#grandtotal').text("₱0")
             $(`.hiddenGrandTotal`).val(0)
           }
         }
@@ -5793,7 +5795,7 @@ html(lang='en')
         var date_now = moment(new Date()).format('MMMM DD, YYYY')
         var validity = moment(date_now).add(membership_validity,'months').format('MMMM DD, YYYY')
           $('#RegisterModal').modal('show')
-          $('#fee').append(`₱${membership_fee}.00`)
+          $('#fee').append(`₱${membership_fee}`)
           $('#checkout').modal('hide')
           $('.buttonRegister').click(function(){
         var password1 = $('#password1').val()
@@ -5869,16 +5871,16 @@ html(lang='en')
               headerRows: 1,
               body: [
                 [{text: 'Services Availed', style: 'tableHeader'}, {text: 'Quantity', style: 'tableHeader'}, {text: 'Amount', style: 'tableHeader'}, {text: 'Equivalent Points', style: 'tableHeader'}],
-                ['Body Massage', '1', '1,500.00','3'],
-                ['Body Scrub ', '1', '1,000.00', '2'],
+                ['Body Massage', '1', '1,500','3'],
+                ['Body Scrub ', '1', '1,000', '2'],
               ]
             },
             layout: 'lightHorizontalLines'
           },
-          {text: 'Total: 2,500.00', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
+          {text: 'Total: 2,500', fontSize: 17, bold: true, margin: [350, 0, 0, 8]},
           {text: 'Points Earned: 5', fontSize: 15, bold: true, margin: [350, 0, 0, 8]},
-          {text: 'Amount Received: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
-          {text: 'Change: 3000.00', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
+          {text: 'Amount Received: 3000', fontSize: 15, bold: true, margin: [350, 30, 0, 8]},
+          {text: 'Change: 3000', fontSize: 15, bold: true, margin: [350, 30, 0, 8]}
       ],
 
         styles: {
