@@ -196,7 +196,7 @@ html(lang='en')
                                             span.quantity(service_id=`${service.service_id}`) 0
                                           
                                           input.points(type='hidden' id=`${service.service_id}` value=`${service.service_points}`)
-                                          input.eqPoints(type='hidden' id=`${service.service_id}` value=`${service.equivalent_points}`)
+                                          input.eqPoints(type='hidden' id=`${service.service_id}` value=`${service.service_equivalentPoints}`)
                                           td= service.service_points
                                           td
                                             input.hiddenTotal(type='hidden' value='0' id=`${service.service_id}`)
@@ -1325,7 +1325,7 @@ html(lang='en')
               pinakaTotal = eval(pinakaTotal+"+"+totals);
               $('#grandtotal').text('₱'+pinakaTotal.toLocaleString()+'')
               $('.hiddenGrandTotal').val(pinakaTotal)
-            sum += parseInt(points)
+            sum += parseFloat(points)
           });
           if(i==pagelength){
             
@@ -1606,7 +1606,7 @@ html(lang='en')
                 var hiddenTotal = $('.hiddenGrandTotal').val()
                 var rateNgRoom = $('.RateOfRoom').val()
 
-                var newTots = parseInt(hiddenTotal) + parseInt(rateNgRoom)
+                var newTots = parseFloat(hiddenTotal) + parseFloat(rateNgRoom)
 
                 $('#finalTotal').text(`₱${newTots}`)
                 $('.earlyHiddenTotal').val(newTots)
@@ -1679,7 +1679,7 @@ html(lang='en')
                               else
                               {
                                 var buo = $('.RateOfRoom').val()
-                                    buo = parseInt(buo) + parseInt(hidden_finalTotal)
+                                    buo = parseFloat(buo) + parseFloat(hidden_finalTotal)
                                 $('#TotalPrice').append(`Total: ₱${buo}`)
                                 $('.totalPrice').val(`${buo}`)
                                 $('.totalAmountPoints').val(finalPoints)
@@ -1688,7 +1688,7 @@ html(lang='en')
                             }
                             else if (data[0].paid_status==0)
                             {
-                              hidden_finalTotal=parseInt(hidden_finalTotal) + parseInt(membership_fee) 
+                              hidden_finalTotal=parseFloat(hidden_finalTotal) + parseFloat(membership_fee) 
                               $('#TotalPrice').append(`Total: ₱${hidden_finalTotal}`)
                               $('.totalPrice').val(`${hidden_finalTotal}`)
                               $('.totalAmountPoints').val(finalPoints)
@@ -5589,119 +5589,6 @@ html(lang='en')
 
   script.
     $(document).ready(function(){
-      //- $('.checkoutButton').click(function(){
-      //-   var id = $(this).val()
-      //-   $('#checkout').modal('show')
-      //-   $.post('/payment/query/CheckoutDets',{id:id})
-      //-   .done(data=>{
-      //-     console.log(data)
-      //-     $('#Room').append(`Room: ${data.out1[0].room_name}`)
-      //-     $('#RoomRate').append(`Room Rate: ${data.out1[0].room_rate}`)
-          
-      //-     if(data.out2.paid_status==0)
-      //-     {
-      //-       total_amount= data.out2.walkin_total_amount + 600
-      //-       $('#TotalPrice').append(`Total: ${total_amount}`)
-      //-       $('.totalPrice').val(`${total_amount}`)
-      //-     }
-      //-     else if (data.out2.paid_status==0)
-      //-     {
-      //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
-      //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
-      //-     }
-      //-     else
-      //-     {
-      //-       $('#TotalPrice').append(`Total: ${data.out2.walkin_total_amount}`)
-      //-       $('.totalPrice').val(`${data.out2.walkin_total_amount}`)
-      //-     }
-          
-      //-       $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
-      //-       $('.hello').val(data.out2.cust_id)
-      //-     if(data.out2.cust_type==0)
-      //-     {
-      //-     }
-      //-     else
-      //-     {
-      //-         $('.hello').addClass('hidden')
-      //-         $('#appendDito').append(`
-      //-           <div class="form-group has-default bmd-form-group">
-      //-           <label> Current Points: ${data.out2.member_points}
-      //-             <div class="checkbox">
-      //-               <input id="checkbox1" type="checkbox"/>
-      //-               <label for="checkbox1">Pay using Points</label>
-      //-             </div>
-      //-         </div>`)
-      //-     }
-
-      //-     $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
-      //-     for(var i=0;i<data.out1.length;i++)
-      //-     {
-      //-     $('#viewServicesAvailed').append(`
-      //-       <tr>
-      //-       <td>${data.out1[i].service_name}</td>
-      //-       <td>${data.out1[i].service_total_quantity}</td>
-      //-       <td>${data.out1[i].service_total_price}</td>
-      //-       <td>${data.out1[i].equivalent_points}</td>
-      //-       </tr>
-      //-     `)
-      //-     }
-      //-     $('#checkout').on('hidden.bs.modal', function (){
-      //-   $('#viewServicesAvailed').empty()
-      //-   $('#custName').empty()
-      //-   $('#TotalPrice').empty()
-      //-   $('.totalPrice').empty()  
-      //- })
-      //-   })
-      
-      
-      
-      //- $('.buttonDone').click(function(){
-      //-   alert($('.amountReceived').val())
-      //-   alert($('.totalPrice').val())
-      //-   alert(1000 < 800)
-      //-   if($('.amountReceived').val()==0)
-      //-     {
-      //-       swal({
-      //-         title: "Amount Received is 0",
-      //-         icon: 'warning'
-      //-       })
-      //-     }
-      //-   else if(parseInt($('.amountReceived').val()) < parseInt($('.totalPrice').val()))
-      //-     {
-      //-       swal({
-      //-         title: "Amount Received is insufficient",
-      //-         icon: 'warning'
-      //-       })
-      //-     }
-      //-   else
-      //-     {
-      //-   $.post('/payment/Finish',{
-      //-     id:id,
-      //-     amount: $('.totalPrice').val(),
-      //-     cust_id: $('.hello').val() 
-      //-     }).done(function(data){
-      //-       if(data.alertDesc==0)
-      //-         {
-      //-           swal({
-      //-             title: "Success",
-      //-             icon: 'success'
-      //-           }).then(function(){
-      //-             location.reload()
-      //-           })
-      //-         }
-      //-       else
-      //-         {
-      //-           swal({
-      //-             title: "ERROR",
-      //-             icon: 'error'
-      //-           })
-      //-         }
-          
-      //-     })
-      //-     }
-      //- })
-      //- })
-    
       $('.viewdetailsButton').click(function(){
         var id = $(this).val()
         $.post('/payment/query/CheckoutDets',{id:id})

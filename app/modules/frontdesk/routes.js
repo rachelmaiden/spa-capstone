@@ -1306,7 +1306,6 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN package_tbl ON package_tbl.package_id = walkin_services_tbl.package_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  JOIN freebies_package_tbl ON freebies_package_tbl.package_id = package_tbl.package_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}"`
   
   db.query(query,(err,out)=>{
@@ -2510,7 +2509,8 @@ router.get('/therapist', mid.frontdesknauthed,(req, res) => {
 
         })
       }
-      else if(therapist_date !='Invalid date' && moment(therapist_date).isAfter(current_date))
+      
+      if(therapist_date !='Invalid date' && moment(therapist_date).isBefore(current_date))
       {
         const query = `UPDATE therapist_attendance_tbl 
         SET therapist_datetime_in = NULL, 
@@ -2522,9 +2522,11 @@ router.get('/therapist', mid.frontdesknauthed,(req, res) => {
           
         })
       }
+      console.log(moment(therapist_date).isBefore(current_date))
+      console.log("-----------------------")
+      console.log(current_date)
+      console.log(therapist_date)
     }
-    console.log(current_date)
-    console.log(therapist_date)
   })
 })
 
@@ -2754,7 +2756,7 @@ router.post('/AmenityPayLater',(req,res)=>{
   var date = moment(new Date()).format('MMMM DD, YYYY hh:mm A')
   var date_only = moment().format('MMMM DD, YYYY')
   const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date,date_only)
-  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",1,"${date}","${date_only}")`
+  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",0,"${date}","${date_only}")`
 
   db.query(query,(err,out)=>{
     if(err)
@@ -2766,6 +2768,8 @@ router.post('/AmenityPayLater',(req,res)=>{
     else
     {
       res.send({alertDesc:alertSuccess})
+      console.log('QUERY DITO========')
+      console.log(query)
     }
   })
 })

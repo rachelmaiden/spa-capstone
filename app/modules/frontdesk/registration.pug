@@ -937,6 +937,7 @@ html(lang='en')
           var guest_quantity = $('.quantityGuest').val()
           var scriptSession = !{JSON.stringify(reqSession)};
           var entrance_fee = scriptSession.utilities[0].entrance_fee
+              entrance_fee_total = parseInt(guest_quantity) * parseFloat(entrance_fee)
           swal({
             title: guest_quantity+' Guest?',
             text: ' Are you sure?',
@@ -956,7 +957,6 @@ html(lang='en')
                   $('#Name').append(`${cust_name}`)
                   $('#numberOfGuest').append(`${guest_quantity} x `)
                   $('#EntranceFee').append(`₱${entrance_fee}.00`)
-                  entrance_fee_total = parseInt(guest_quantity) * parseFloat(entrance_fee)
 
                   $('.totalAmenityPrice').val(entrance_fee_total)
                   $('#TotalAmenityPrice').append(`Total Price: ₱${entrance_fee_total}.00`)
@@ -1023,6 +1023,7 @@ html(lang='en')
                 }
                 else
                 {
+                  alert("PAYLATER")
                   $.post('./AmenityPayLater',{
                             cust_id: id,
                             guest_quantity,
