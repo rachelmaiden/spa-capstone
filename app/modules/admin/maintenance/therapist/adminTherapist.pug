@@ -379,21 +379,22 @@ html(lang='en')
                                   star *
                                   input.form-control(type='number', placeholder='Mobile Number' id='therapist_contact_no' name='therapist_contact_no' required='true' aria-label='true'  minlength='11' maxlength='11')
                             .row
-                              .col-md-6
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label Skills
                                   star *
                                     select.selectpicker(multiple='', title='Select Skill/s', data-style='btn-info', data-size='7' name='therapist_specialty' id='therapist_specialty' required='true' aria-label='true')
                                       each specialty in specialtys
                                         option(value=`${specialty.specialty_id}`)= specialty.specialty_desc
-                              .col-md-6
+                              .col-md-1
+                              .col-md-4
                                 .form-group.has-default.bmd-form-group
                                   label License Valid Until
                                   star *  
-                                input.form-control.datepickerLicense(type='text' name='therapist_license' id="calendar" style='margin-top: -15px')           
+                                input.form-control.datepickerLicense(type='text' name='therapist_license' id="license" style='margin-top: -15px')           
                           .modal-footer
-                            button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
-                            button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
+                            button.btn.btn-secondary.pull-right.btn.btn-info.btn-fill.btn-wd.submitButton(type='button') Add Therapist
+                            button.btn.btn-secondary.pull-left.btn.btn-danger.btn-fill.btn-wd(type='button', data-dismiss='modal') Cancel
 
 
                   //UPDATE
@@ -546,9 +547,11 @@ html(lang='en')
           
           var birthday =data[0].therapist_birthMonth+'-'+data[0].therapist_birthDate+'-'+data[0].therapist_birthYear
             birthday = moment(birthday).format('MMMM DD, YYYY')
+          var therapist_licenseExpiration = moment(data[0].therapist_licenseExpiration).format('MMMM DD, YYYY')
           $('#Details').append(`<p>Address: ${data[0].therapist_address}
           <p>Birthday: ${birthday} 
-          <p>Contact No: ${data[0].therapist_contact_no}`)
+          <p>Contact No: ${data[0].therapist_contact_no}
+          <p>License Expiration Date: ${therapist_licenseExpiration}`)
         })
       $('#viewTherapistDetails').on('hidden.bs.modal', function (){
           $('#titleName').empty(),
@@ -569,8 +572,10 @@ html(lang='en')
         }
         else
         {
-
-       var newDate= $('#calendar').val()
+        var license = $('#license').val()
+            license = moment(license).format('YYYY-MM-DD')
+        var newDate= $('#calendar').val()
+            newDate = moment(newDate).format('MM-DD-YYYY')
           var vals = newDate.split('-');
           var year = vals[2];
           var month = vals[0];
@@ -585,6 +590,7 @@ html(lang='en')
             therapist_gender:$('#therapist_gender').val(),
             therapist_specialty: $('#therapist_specialty').val(),
             therapist_shift: $('#therapist_shift').val(),
+            therapist_licenseExpiration: license,
             newDate, year, month, date
           }).done(function(data){
           if(data.alertDesc == 1)
@@ -777,64 +783,71 @@ html(lang='en')
           .done(data=>{
             console.log(data)
               $('#updateAppend').append(`
-                  <div class="row">
-                    <div class="col-md-4">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Last Name</label>
-                        <star>*</star>
-                        <input class="form-control" type="text" id='lastname' placeholder="${data.therapist_lname}" name="therapist_lname" value='${data.therapist_lname}' required="true" aria-label="true"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>First Name</label>
-                        <star>*</star>
-                        <input class="form-control" type="text" id='firstname' placeholder="${data.therapist_fname}" name="therapist_fname" value='${data.therapist_fname}' required="true" aria-label="true"/>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="form-group has-default bmd-form-group">
-                        <label>Middle Name</label>
-                        <input class="form-control" type="text" id='middlename' placeholder="${data.therapist_mname}" name="therapist_mname" value='${data.therapist_mname}' aria-label="true"/>
-                      </div>
-                    </div>
-                      <div class="row">
-                          <div class="col-md-3">
-                            <div class="form-group has-default bmd-form-group">
-                              <label>Gender</label>
-                              <star>*</star>
-                              <select class="selectpicker" name="therapist_gender" id="gender" data-style="btn-info" required="true" aria-label="true">
-                              </select>
-                            </div>
-                          </div>
-                          <div class="col-md-1">
-                          </div>
-                          <div class="col-md-3">
-                            <div class="form-group has-default bmd-form-group">
-                              <label>Birthday</label>
-                              <star>*</star>
-                            </div>
-                            <input class="form-control datepicker" type="text" name="therapist_birthday" placeholder='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' value='${data.therapist_birthMonth}-${data.therapist_birthday}-${data.therapist_birthYear}' id="therapist_birthday" style="margin-top: -15px;"/>
-                          </div>
-                      </div>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group has-default bmd-form-group">
-                          <label>Address</label>
-                          <star>*</star>
-                          <input class="form-control" type="text" placeholder="${data.therapist_address}" id="address" name="therapist_address" value='${data.therapist_address}' required="true" aria-label="true"/>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group has-default bmd-form-group">
-                          <label>Mobile Number</label>
-                          <star>*</star>
-                          <input class="form-control" id='contact_no' type="number" placeholder="${data.therapist_contact_no}" id="therapist_contact_no" name="therapist_contact_no" value='${data.therapist_contact_no}' required="true" aria-label="true" minlength="11" maxlength="11"/>
-                        </div>
-                      </div>
+                 <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Last Name</label>
+                      <star>*</star>
+                      <input class="form-control" type="text" placeholder="${data.therapist_lname}" value="${data.therapist_lname}" name="therapist_lname" id="firstname" required="true" aria-label="true" />
                     </div>
                   </div>
-              </form>`)
+                  <div class="col-md-4">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>First Name</label>
+                      <star>*</star>
+                      <input class="form-control" type="text" placeholder="${data.therapist_fname}" value="${data.therapist_fname}" name="therapist_fname" id="firstname" required="true" aria-label="true" />
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Middle Name</label>
+                      <input class="form-control" type="text" placeholder="${data.therapist_mname}" value='${data.therapist_mname}' name="therapist_mname" id="middlename" aria-label="true" />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-3">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Gender</label>
+                      <star>*</star>
+                      <select class="selectpicker" name="therapist_gender" id="gender" data-style="btn-info" required="true" aria-label="true">
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-3">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Birthday</label>
+                      <star>*</star>
+                    </div>
+                    <input class="form-control datepicker" type="text" name="therapist_birthday" id="calendar_thera" style="margin-top: -15px;" />
+                  </div>
+                  <div class="col-md-1"></div>
+                  <div class="col-md-3">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Shift</label>
+                      <star>*</star>
+                      <select class="selectpicker" name="therapist_shift" title="Select Shift" id="thera_shift" data-style="btn-info" required="true" aria-label="true">
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Address</label>
+                      <star>*</star>
+                      <input class="form-control" type="text" placeholder="${data.therapist_address}" value='${data.therapist_address}' id="address" name="therapist_address" required="true" aria-label="true" />
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="form-group has-default bmd-form-group">
+                      <label>Mobile Number</label>
+                      <star>*</star>
+                      <input class="form-control" type="number" placeholder="${data.therapist_contact_no}" value='${data.therapist_contact_no}' id="ontact_no" name="therapist_contact_no" required="true" aria-label="true" minlength="11" maxlength="11" />
+                    </div>
+                  </div>
+                </div>`)
               if(data.therapist_gender == 'Male'){
                 $('#gender').append(`<option value="Male" selected>Male</option>
                     <option value="Female">Female</option>`
@@ -845,14 +858,30 @@ html(lang='en')
                     <option value="Female" selected>Female</option>`
                 )
               }
+              if(data.therapist_shift == 'First'){
+                $('#thera_shift').append(`<option value="First" selected>First</option>
+                    <option value="Second">Second</option>`
+                )
+              }
+              if(data.therapist_shift == 'Second'){
+                $('#thera_shift').append(`<option value="First">First</option>
+                    <option value="Second" selected>Second</option>`
+                )
+              }
+
+              //INIT
+              $('#updateModal').modal('show') 
+              $('#gender').selectpicker()
+              $('#therapist_specialty').selectpicker()
+              $('#thera_shift').selectpicker()
               $(function () {
                 var date = new Date()
                 var year = date.getFullYear()
                 var year2 = year - "18"
-                var year3 = new Date(year2, 00,01)
+                var year3 = new Date(year2, 12,00)
                 $('.datepicker').datetimepicker({
                   viewMode: 'years',
-                  format: 'MM-DD-YYYY',
+                  format: 'MMMM DD, YYYY',
                   maxDate: year3,
                   icons: {
                     time: "fa fa-clock-o",
@@ -868,38 +897,23 @@ html(lang='en')
                     widgetPositioning:{"horizontal":"auto",
                     "vertical":"auto"}
                   });
-
-              })
-
-          
-                  
-                $('.datepicker').on('dp.hide', function(event){
-                  setTimeout(function(){
-                    $('.datepicker').data('DateTimePicker').viewMode('years');
-                  },1);
-                });
-                $('.datepickerLicense').on('dp.hide', function(event){
-                  setTimeout(function(){
-                    $('.datepickerLicense').data('DateTimePicker').viewMode('years');
-                  },1);
-                });
+              var therapist_birthday = data.therapist_birthMonth+' '+data.therapist_birthDate+" "+data.therapist_birthYear
+                  therapist_birthday = moment(therapist_birthday).format('MMMM DD, YYYY')
+              $('#calendar_thera').val(therapist_birthday)
+              })            
 
 
-
-                
-
-              $('#updateModal').modal('show') 
-              $('#gender').selectpicker()
-              $('#therapist_specialty').selectpicker()
+              //WHEN THE MODAL IS HIDDEN
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
-                });
-               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#gender').empty()
-               }) 
+                });
               $('#cancelButton').click(function(){
                   ('#updateAppend').empty();
               })
+
+
+              //UPDATE BUTTOn
               $('#updateSubmitButton').click(function(){
                   var newDate= $('#therapist_birthday').val()
                   var vals = newDate.split('-');
@@ -996,10 +1010,10 @@ html(lang='en')
       var date = new Date()
       var year = date.getFullYear()
       var year2 = year - "18"
-      var year3 = new Date(year2, 00,01)
+      var year3 = new Date(year2, 12, 00)
       $('.datepicker').datetimepicker({
         viewMode: 'years',
-        format: 'MM-DD-YYYY',
+        format: 'MMMM DD, YYYY',
         maxDate: year3,
         icons: {
           time: "fa fa-clock-o",

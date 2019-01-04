@@ -471,21 +471,21 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   roomId = req.query.roomId
   var date_time = moment(dateHello+' '+time).format('MM-DD-YYYY HH:mm')
   var reservetype = req.query.reservetype
+  var pickedDate = moment(dateHello).format('YYYYMMDD')
+  console.log(pickedDate)
   console.log('RESERVETYPE',reservetype)
   if(reservetype =='single')
   {
     const query = `
-  SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+  SELECT * FROM services_tbl 
   JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
   JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
-  JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
   WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
   SELECT * FROM promo_bundle_tbl
   JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
   JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
-  JOIN freebies_promo_tbl ON promo_bundle_tbl.promobundle_id = freebies_promo_tbl.promobundle_id
   WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 
-  AND promobundle_maxPerson = 1
+  AND promobundle_maxPerson = 1 AND promobundle_valid_from >= '${pickedDate}'AND promobundle_valid_until <= '${pickedDate}'
   GROUP BY service_in_promo_tbl.promobundle_id;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
   SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
@@ -494,7 +494,6 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
   SELECT * FROM package_tbl
   JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
   JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
-  JOIN freebies_package_tbl ON package_tbl.package_id = freebies_package_tbl.package_id
   WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0 
   AND package_maxPerson = 1
   GROUP BY service_in_package_tbl.package_id;
@@ -582,16 +581,14 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     // console.log(dateHello+' jkjkjj '+time)
   
     const query = `
-    SELECT services_tbl.*, service_duration_tbl.service_duration_desc, service_type_tbl.service_type_desc , freebies_tbl.* FROM services_tbl 
+    SELECT * FROM services_tbl 
     JOIN service_duration_tbl ON services_tbl.service_duration_id = service_duration_tbl.service_duration_id 
     JOIN service_type_tbl ON services_tbl.service_type_id = service_type_tbl.service_type_id 
-    JOIN freebies_tbl ON services_tbl.service_id = freebies_tbl.service_id
     WHERE services_tbl.delete_stats=0 AND services_tbl.service_availability=0; 
     SELECT * FROM promo_bundle_tbl
     JOIN service_in_promo_tbl ON service_in_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
     JOIN services_tbl ON service_in_promo_tbl.service_id = services_tbl.service_id
-    JOIN freebies_promo_tbl ON promo_bundle_tbl.promobundle_id = freebies_promo_tbl.promobundle_id
-    WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 AND promobundle_maxPerson = "${total_res}"
+    WHERE promo_bundle_tbl.delete_stats= 0 AND promo_bundle_tbl.promobundle_availability=0 AND promobundle_maxPerson = "${total_res}" AND promobundle_valid_from <= '${pickedDate}'AND promobundle_valid_until >= '${pickedDate}'
     GROUP BY service_in_promo_tbl.promobundle_id;
     SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=2;
     SELECT * FROM room_tbl where delete_stats=0 and room_availability= 0 and room_type_id=6;
@@ -600,7 +597,6 @@ router.get('/bookreservation', mid.frontdesknauthed,(req, res) => {
     SELECT * FROM package_tbl
     JOIN service_in_package_tbl ON package_tbl.package_id = service_in_package_tbl.package_id
     JOIN services_tbl ON service_in_package_tbl.service_id = services_tbl.service_id
-    JOIN freebies_package_tbl ON package_tbl.package_id = freebies_package_tbl.package_id
     WHERE package_tbl.delete_stats= 0 AND package_tbl.package_availability = 0 
     AND package_maxPerson = "${total_res}"
     GROUP BY service_in_package_tbl.package_id ;
@@ -798,26 +794,25 @@ router.post('/CheckRoomDetails',(req,res)=>{
 }) 
 // [BOOK RESERVATION - ADD RESERVATION]
 router.post('/bookreservation/addReservation',(req,res)=>{
-  var walkinId;
   var datePicked = moment(req.body.date).format('YYYY-MM-DD')
-  console.log(req.body)
   const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
   values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${datePicked}",0,0)`
   db.query(query,(err,out)=>{
     var notSuccess=0;
     var querySuccess= 1
-    walkinId=out.insertId;
+    var walkinId = out.insertId;
     var restype = req.body.restype
+    console.log('WALKIN ID',walkinId)
     console.log('RESTYPE',restype)
     if(restype=='single')
+    {
+      console.log('PASOK SA SINGLE')
+      console.log(req.body.typeServ.length)
+      for(var i=0;i<req.body.typeServ.length;i++)
       {
-        console.log('PASOK SA SINGLE')
-        console.log(req.body.typeServ.length)
-          for(var i=0;i<req.body.typeServ.length;i++)
-          {
-            if(req.body.typeServ[i] == 'service')
-            {
-              console.log('PUMASOK SA SERVICE')
+        if(req.body.typeServ[i] == 'service')
+        {
+          console.log('PUMASOK SA SERVICE')
               for(var x=0;x<req.body.serviceId.length;x++)
               {
                 const query1= `INSERT INTO walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
@@ -1296,21 +1291,18 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  JOIN freebies_tbl ON freebies_tbl.service_id = services_tbl.service_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
   SELECT * FROM walkin_queue_tbl
   JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN promo_bundle_tbl ON promo_bundle_tbl.promobundle_id = walkin_services_tbl.promobundle_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  JOIN freebies_promo_tbl ON freebies_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
   SELECT * FROM walkin_queue_tbl
   JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN package_tbl ON package_tbl.package_id = walkin_services_tbl.package_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
-  JOIN freebies_package_tbl ON freebies_package_tbl.package_id = package_tbl.package_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}"`
   
   db.query(query,(err,out)=>{
@@ -1344,9 +1336,12 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
         join loyalty_tbl on loyalty_tbl.cust_id = customer_tbl.cust_id
         where walkin_queue_tbl.walkin_id =?`
         db.query(query1,[req.body.id],(err,out)=>{
-          return res.send({out1:out1, out2:out[0]})
+          return res.send({            
+            outServices:outServices,
+            outPromo: outPromo,
+            outPackage:outPackage, 
+            out2:out[0]})
       })
-      console.log('PASOK DITO')
       console.log(out)
     }  
   })
@@ -1665,7 +1660,6 @@ router.post('/payment/Finish',(req,res)=>{
 router.post('/payment/Early',(req,res)=>{
   var alertSuccess=0;
   var notSuccess= 1
-  var walkinId;
   console.log(req.body)
   var datePicked = moment(req.body.date).format('YYYY-MM-DD')
   if(req.body.paid_stats==0)
@@ -1674,11 +1668,12 @@ router.post('/payment/Early',(req,res)=>{
     const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
     values("${req.body.cust_id}","${req.body.timeStart}","${req.body.EndTime}","${amount}","${req.body.finalPoints}","${datePicked}",2,0)`
     db.query(query,(err,out)=>{
-      walkinId=out.insertId;
+      var walkinId=out.insertId;
       var restype = req.body.restype
       console.log('RESTYPE',restype)
       if(restype=='single')
-        {
+      {
+          console.log('Walkin Id',walkinId)
           console.log('PASOK SA SINGLE')
           console.log(req.body.typeServ.length)
             for(var i=0;i<req.body.typeServ.length;i++)
@@ -1920,7 +1915,7 @@ router.post('/payment/Early',(req,res)=>{
             })
           }
       }
-    })
+    }) 
   }
   else if(req.body.paid_stats == 1)
   {
@@ -1928,6 +1923,7 @@ router.post('/payment/Early',(req,res)=>{
     const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
     values("${req.body.cust_id}","${req.body.timeStart}","${req.body.EndTime}","${req.body.amount}","${req.body.finalPoints}","${datePicked}",2,0)`
     db.query(query,(err,out)=>{
+      var walkinId=out.insertId;
       var restype = req.body.restype
     console.log('RESTYPE',restype)
     if(restype=='single')
@@ -2514,7 +2510,8 @@ router.get('/therapist', mid.frontdesknauthed,(req, res) => {
 
         })
       }
-      else if(therapist_date !='Invalid date' && moment(therapist_date).isAfter(current_date))
+      
+      if(therapist_date !='Invalid date' && moment(therapist_date).isBefore(current_date))
       {
         const query = `UPDATE therapist_attendance_tbl 
         SET therapist_datetime_in = NULL, 
@@ -2526,9 +2523,11 @@ router.get('/therapist', mid.frontdesknauthed,(req, res) => {
           
         })
       }
+      console.log(moment(therapist_date).isBefore(current_date))
+      console.log("-----------------------")
+      console.log(current_date)
+      console.log(therapist_date)
     }
-    console.log(current_date)
-    console.log(therapist_date)
   })
 })
 
@@ -2758,7 +2757,7 @@ router.post('/AmenityPayLater',(req,res)=>{
   var date = moment(new Date()).format('MMMM DD, YYYY hh:mm A')
   var date_only = moment().format('MMMM DD, YYYY')
   const query = `INSERT INTO amenities_reservation_tbl(cust_id,number_ofGuest,total_fee,paid_status,date,date_only)
-  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",1,"${date}","${date_only}")`
+  VALUES("${req.body.cust_id}","${req.body.guest_quantity}","${req.body.entrance_fee_total}",0,"${date}","${date_only}")`
 
   db.query(query,(err,out)=>{
     if(err)
@@ -2770,6 +2769,8 @@ router.post('/AmenityPayLater',(req,res)=>{
     else
     {
       res.send({alertDesc:alertSuccess})
+      console.log('QUERY DITO========')
+      console.log(query)
     }
   })
 })

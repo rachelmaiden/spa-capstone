@@ -271,8 +271,9 @@ html(lang='en')
                           i.ti-check
                       .col-xs-7
                         .numbers
-                          p Available Therapists
-                          | 40 Therapists
+                          each therapist_count in therapist_counts
+                            p Available Therapists
+                            | #{therapist_count.total_therapist} therapist
                   .card-footer
                     hr
                     .stats

@@ -151,7 +151,7 @@ html(lang='en')
                     #gifc.collapse
                       ul.nav
                         li(style="margin-left: 30px")
-                          a(href='./giftcerticate')
+                          a(href='./giftcertificate')
                             span.sidebar-normal Gift Certificate                           
             li
               a(href="./commission")
@@ -276,7 +276,7 @@ html(lang='en')
                                         td= room.room_name
                                         input.name(type='hidden' id=`${room.room_id}` value=`${room.room_name}`)
                                         td= room.bed_qty
-                                        td= room.room_rate
+                                        td= '₱'+room.room_rate
                                         td
                                           if(room.room_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${room.room_id}`)
@@ -340,7 +340,15 @@ html(lang='en')
                                   .input-group
                                       span.input-group-addon ₱  
                                       input.form-control(type='number', placeholder='Fee' name='room_rate' id='room_rate' required='true' aria-label='true')
-                                      span.input-group-addon .00
+                            .row
+                              .col-md-6
+                                .form-group.has-default.bmd-form-group
+                                  label Gender
+                                  star *
+                                  select.selectpicker(name='gender' id='room_gender' title='Gender' data-style='btn-info' )
+                                    option(value='1') Boy Only
+                                    option(value='2') Girl Only
+                                    option(value='3') Both(Boy&Girl)
                             .row
                           .modal-footer
                             button.btn.btn-secondary.pull-left.btn.btn-info.btn-fill.btn-wd.addButton(type='button') Add Room
@@ -432,15 +440,15 @@ html(lang='en')
         var room_name = $('#room_name').val()
         var bed_qty = $('#bed_qty').val()
         var room_rate = $('#room_rate').val()
+        var room_gender = $('#room_gender').val()
 
-        if(room_type_id ==0 && room_name==0 && bed_qty ==0 || room_type_id ==0 || room_name==0 || bed_qty ==0 )
+        if(room_type_id ==0 && room_name==0 && bed_qty ==0 && room_gender==0 || room_type_id ==0 || room_name==0 || bed_qty ==0 || room_gender==0 )
         {
           swal({
             title: 'Please double check the fields.',
             text: 'Make sure all required fields have value.', 
             icon: 'warning'
           })
-          console.log(room_rate)
         }
         else
         {
@@ -448,13 +456,14 @@ html(lang='en')
             room_type_id,
             room_name,
             bed_qty,
-            room_rate
+            room_rate,
+            room_gender
           }).done(function(data){
              if(data.alertDesc== 0)
                 {
                   swal({
                     title: "Success",
-                    text: "New room duration has been added.",
+                    text: "New room has been added.",
                     icon: 'success'
                   }).then(function(){
                     location.reload();
@@ -656,6 +665,15 @@ html(lang='en')
                         <input type="text" placeholder="${data.room_name}" value="${data.room_name}" id="name" name="room_name" class="form-control"/>
                       </div>
                     </div>
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Room Rate</label>
+                        <div class="input-group">
+                        <span class="input-group-addon">₱ </span>
+                        <input type="number" placeholder="${data.room_rate}" value="${data.room_rate}" id="rate" class="form-control"/>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div class="row">
                     <div class="col-md-6">
@@ -666,26 +684,58 @@ html(lang='en')
                     </div>
                     <div class="col-md-6">
                       <div class="form-group has-default bmd-form-group">
-                        <label>Room Rate</label>
-                        <input type="number" placeholder="${data.room_rate}" value="${data.room_rate}" id="rate" class="form-control"/>
+                        <label>Gender</label>
+                        <star>*</star>
+                        <select class="selectpicker" name="gender_room" id='gender_room' data-style="btn-info" id="gender"></select>
                       </div>
                     </div>
                   </div>`)
+
+
+              if(data.room_gender == 1)
+              {
+                $('#gender_room').append(`
+                <option value='1' selected> Boy Only </option>
+                <option value='2'> Girl Only </option>
+                <option value='3'> Both(Boy&Girl) </option>`)
+              }
+              else if(data.room_gender == 2)
+              {
+                $('#gender_room').append(`
+                <option value='1'> Boy Only </option>
+                <option value='2' selected> Girl Only </option>
+                <option value='3'> Both(Boy&Girl) </option>`)
+              }
+              else if(data.room_gender == 3)
+              {
+                $('#gender_room').append(`
+                <option value='1'> Boy Only </option>
+                <option value='2'> Girl Only </option>
+                <option value='3' selected> Both(Boy&Girl) </option>`)
+              }
+              //INIT
               $('#updateModal').modal('show')
               $('#bed_qty').selectpicker();
               $('#room_type').selectpicker();
               $('#room_availability').selectpicker();
+              $('#gender_room').selectpicker()
+
+
+
               $('#updateModal').on('hidden.bs.modal', function (){
                 $('#updateAppend').empty()
                 });
               $('#cancelButton').click(function(){
                 $('#updateAppend').remove();
               })
+
+              //UPDATE or SUBMIT BUTTOn
               $('#updateSubmitButton').click(function(){
                   $.post('/admin/adminRooms/update',{
                   room_name:$('#name').val(),
                   room_rate:$('#rate').val(),
                   bed_qty:$('#quantity').val(),
+                  room_gender: $('#gender_room').val(),
                   
                   id:idNow
                   })
@@ -726,19 +776,11 @@ html(lang='en')
     responsive: true,
     language: {
     search: "_INPUT_",
-    searchPlaceholder: "Search records",
+    searchPlaceholder: "Search records"
     }
     });
-    //- $('#add').click(function(){
-    //- swal({
-    //-   title:'Success', 
-    //-   text:'New Room Added', 
-    //-   icon:'success'})
-    //-   .then(function(){
-    //-   location.reload();
-    //- })
-    //- });
-    //- });
+    })
+
   script.
     $().ready(function(){
       $('#registerFormValidation').validate();

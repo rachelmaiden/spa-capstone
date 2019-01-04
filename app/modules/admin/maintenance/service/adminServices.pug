@@ -226,6 +226,7 @@ html(lang='en')
                                       th Duration
                                       th Price
                                       th Points
+                                      th Equivalent Points
                                       th Available
                                       th.disabled-sorting Actions
                                   
@@ -236,8 +237,9 @@ html(lang='en')
                                         td= service.service_name
                                         input.name(type='hidden' value=`${service.service_name}` id=`${service.service_id}`)
                                         td= service.service_duration_desc+" "+"minutes"
-                                        td= "₱"+service.service_price.toLocaleString()+".00"
+                                        td= "₱"+service.service_price.toLocaleString()
                                         td= service.service_points
+                                        td= service.service_equivalentPoints
                                         td
                                           if(service.service_availability==0)
                                             input.switch-icon(type='checkbox' checked value=`${service.service_id}`)
@@ -280,7 +282,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Type
                                   star *
-                                    select.selectpicker(data-style='btn-info' name='service_type' id='service_type' required='true', aria-required='true')
+                                    select.selectpicker(data-style='btn-info' title='Type' name='service_type' id='service_type' required='true', aria-required='true')
                                       each typ in typs
                                         option(value=`${typ.service_type_id}`)= typ.service_type_desc
 
@@ -294,7 +296,7 @@ html(lang='en')
                                 .form-group.has-default.bmd-form-group
                                   label Service Duration
                                   star *
-                                    select.selectpicker(data-style='btn-info' name='service_duration' id='service_duration' required='true', aria-required='true')
+                                    select.selectpicker(data-style='btn-info' title='Duration' name='service_duration' id='service_duration' required='true', aria-required='true')
                                       each duration in durations
                                         option(value=`${duration.service_duration_id}`)= duration.service_duration_desc+" "+"minutes"
                                   //- input.form-control(type='text', placeholder='Service Duration' name='duration')
@@ -305,7 +307,6 @@ html(lang='en')
                                     .input-group
                                       span.input-group-addon ₱   
                                       input.form-control(type='text', number="true" placeholder='Service Price' name='service_price' id='service_price' required='true', aria-required='true')
-                                      span.input-group-addon .00
                             .row
                               .col-md-6
                                 .form-group.has-default.bmd-form-group
@@ -597,7 +598,6 @@ html(lang='en')
                           <div class ="input-group">
                           <span class="input-group-addon"> ₱</span>
                           <input type="text" id="price" value="${data.out1.service_price}" placeholder="${data.out1.service_price}" name="price" class="form-control"/>
-                          <span class="input-group-addon"> .00</span>
                         </div>
                       </div>
                     </div>
@@ -607,6 +607,13 @@ html(lang='en')
                       <div class="form-group has-default bmd-form-group">
                         <label>Service Point/s</label>
                         <input type="number" id='points' placeholder="${data.out1.service_points}" name="service_points" value="${data.out1.service_points}" class="form-control"/>
+                      </div>
+                    </div>
+                  
+                    <div class="col-md-6">
+                      <div class="form-group has-default bmd-form-group">
+                        <label>Equivalent Point/s</label>
+                        <input type="number" id='Eqpoints' placeholder="${data.out1.service_equivalentPoints}" name="service_equivalentPoints" value="${data.out1.service_equivalentPoints}" class="form-control"/>
                       </div>
                     </div>
                   </div>
@@ -626,6 +633,7 @@ html(lang='en')
                   service_name:$('#name').val(),
                   service_price:$('#price').val(),
                   service_points:$('#points').val(),
+                  service_equivalentPoints: $('#Eqpoints').val(),
                   id1:idNow
                   })
                   .done(data=>{

@@ -485,8 +485,11 @@ html(lang='en')
                           h4.modal-title#titleCustomerName
                       .modal-body
                         .row
-                          .col-md-10
-                            p About sa loyalty
+                          .col-md-15
+                            .panel-info
+                              .panel-heading 
+                                p The Perks of being loyalty member is you can earn points and use it as payment and you can have own account to monitor your Points, Reservations etc.
+                        br
                         .row
                           .col-md-6
                             .form-group
@@ -512,16 +515,13 @@ html(lang='en')
                               label.control-label Re-enter Password
                               star *
                               input.form-control(type='password', name='username', id="password3" placeholder='confim password' disabled)
-                              .category#ValidPass
+                            .category#ValidPass
                         .row
                         .row
                           .col-md-5
                             .form-group
                               h4 Fee: 
-                                a ₱#{reqSession.utilities[0].membership_fee}.00
-                          .col-md-5
-                            .form-group
-                              h4 Perks: freebies
+                                a ₱#{reqSession.utilities[0].membership_fee}
                       .modal-footer
                         button.btn.btn-secondary.btn.btn-info.btn-fill.btn-wd.pull-right.buttonRegisterSubmit(type='button') Submit
                         button.btn.btn-secondary.btn.btn-danger.btn-fill.btn-wd.pull-left(type='button') Cancel
@@ -558,7 +558,7 @@ html(lang='en')
                               label Amount Received:
                               .input-group
                                 span.input-group-addon ₱  
-                                input.form-control.amountReceived(type='number', placeholder='Amount Received')
+                                input.form-control.amountReceived(type='number', placeholder='Amount Received' data-mask='000.000.000.000.000,00' data-mask-reverse="true")
                                 span.input-group-addon .00
                           
                           .col-md-5
@@ -611,7 +611,7 @@ html(lang='en')
                               label Amount Received:
                               .input-group
                                 span.input-group-addon ₱  
-                                input.form-control.amountAmenityReceived(type='number', placeholder='Amount Received')
+                                input.form-control.amountAmenityReceived(type='number', placeholder='Amount Received' data-mask='000.000.000.000.000,00' data-mask-reverse="true")
                                 span.input-group-addon .00
                           
                           .col-md-5
@@ -692,18 +692,18 @@ html(lang='en')
         }
         if($(this).val().length == 7 || $(this).val().length == 8 || $(this).val().length == 9)
         {
-          $('#ValidLength').append('your password is medium')
+          $('#ValidLength').append('Passwords is medium')
           $('#ValidLength').css('color','orange')
         }
         else if($(this).val().length <= 7)
         {
-          $('#ValidLength').append('your password is too short')
+          $('#ValidLength').append('Passwords is too short')
           $('#ValidLength').css('color','red')
           $('#password3').attr('disabled',true)
         }
         else if($(this).val().length >= 10 )
         {
-          $('#ValidLength').append('your password is strong')
+          $('#ValidLength').append('Passwords is strong')
           $('#ValidLength').css('color','green')
         }
 
@@ -718,12 +718,12 @@ html(lang='en')
           $('#ValidPass').empty()
         if($(this).val() != $('#password1').val())
         {
-          $('#ValidPass').append(`Di Equal`)
+          $('#ValidPass').append(`Passwords is not match`)
           $('#ValidPass').css('color','red')
         }
         else if($(this).val() == $('#password1').val())
         {
-          $('#ValidPass').append(`Equal`)
+          $('#ValidPass').append(`Passwords is match`)
           $('#ValidPass').css('color','green')
         }
         if($(this).val().length == 0)
@@ -739,7 +739,7 @@ html(lang='en')
       var username = $(this).val()
         if(username.length <= 5 )
         {
-          $('#ValidUsername').append('your username is too short')
+          $('#ValidUsername').append('Username is too short')
           $('#ValidUsername').css('color','red')
         }
         if (username.length == 0)
@@ -916,7 +916,7 @@ html(lang='en')
           }
         else
         {
-          input -= parseInt(totalPrice)
+          input -= parseFloat(totalPrice)
           $('.change').val(input)
         }
       })
@@ -937,6 +937,7 @@ html(lang='en')
           var guest_quantity = $('.quantityGuest').val()
           var scriptSession = !{JSON.stringify(reqSession)};
           var entrance_fee = scriptSession.utilities[0].entrance_fee
+              entrance_fee_total = parseInt(guest_quantity) * parseFloat(entrance_fee)
           swal({
             title: guest_quantity+' Guest?',
             text: ' Are you sure?',
@@ -956,7 +957,6 @@ html(lang='en')
                   $('#Name').append(`${cust_name}`)
                   $('#numberOfGuest').append(`${guest_quantity} x `)
                   $('#EntranceFee').append(`₱${entrance_fee}.00`)
-                  entrance_fee_total = parseInt(guest_quantity) * parseInt(entrance_fee)
 
                   $('.totalAmenityPrice').val(entrance_fee_total)
                   $('#TotalAmenityPrice').append(`Total Price: ₱${entrance_fee_total}.00`)
@@ -978,14 +978,14 @@ html(lang='en')
                         icon: 'warning'
                       })
                     }
-                    else if(parseInt(amount_received) < parseInt(total_price))
+                    else if(parseFloat(amount_received) < parseFloat(total_price))
                     {
                       swal({
                         title: "The amount received is insuficient.",
                         icon: 'warning'
                       })
                     }
-                    else if(parseInt(amount_received) >= parseInt(total_price))
+                    else if(parseFloat(amount_received) >= parseFloat(total_price))
                     {
                       swal({
                         title: "Are you sure?",
@@ -1023,6 +1023,7 @@ html(lang='en')
                 }
                 else
                 {
+                  alert("PAYLATER")
                   $.post('./AmenityPayLater',{
                             cust_id: id,
                             guest_quantity,
@@ -1079,7 +1080,7 @@ html(lang='en')
           }
         else
         {
-          input -= parseInt(totalPrice)
+          input -= parseFloat(totalPrice)
           $('.changeAmenity').val(input)
         }
       })
