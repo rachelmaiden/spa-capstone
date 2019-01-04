@@ -129,7 +129,7 @@ html(lang='en')
                                     li
                                       a(href='#loyalty', data-toggle='tab') Loyalty Membership 
                               #my-tab-content.tab-content
-                                // RESERVATION TAB
+                                //-  RESERVATION TAB
                                 #reservation.tab-pane.active        
                                   .toolbar
                                   center
@@ -467,6 +467,7 @@ html(lang='en')
                                         h5
                                           strong#custName
                                           input.paid_stats(type='hidden' value='')
+                                          input.customer_id(type="" value="")
                                           br
                                           button.hello(type='hidden' value='') Register for Loyalty Membership
                                         h5
@@ -530,21 +531,21 @@ html(lang='en')
                                         .col-md-4
                                           h3
                                             strong#TotalPrice
-                                            input.totalPrice(type='hidden' value='')
+                                            input.totalPrice(type='' value='')
                                             br
                                             strong Balance: 
                                               a#AmountNeeded
-                                            input.amountNeeded(type='hidden' value='')
+                                            input.amountNeeded(type='' value='')
                                           h5
                                             strong#TotalPoints
-                                            input.totalAmountPoints(type='hidden' value='')
-                                            input.totalAmountReceived(type='hidden' value='')
+                                            input.totalAmountPoints(type='' value='')
+                                            input.totalAmountReceived(type='' value='')
                                         
                                       hr
                                       .row
                                         .col-md-3#appendDito
-                                          input.currentPoints(type='hidden' value='')
-                                          input.newPoints(type='hidden' value='')
+                                          input.currentPoints(type='' value='')
+                                          input.newPoints(type='' value='')
                                         .col-md-3
                                           .form-group.has-default.bmd-form-group
                                             .row
@@ -691,6 +692,7 @@ html(lang='en')
                                       div
                                         h5
                                           strong#CustName
+                                         
                                           br
                                         h5
                                           strong#room
@@ -1256,7 +1258,7 @@ html(lang='en')
             {
             $('#ViewServicesAvailed').append(`
               <tr>
-              <td>${data.out1[i].service_name}</td>
+              <td>${data.out1[i].service_name} </td>
               <td>${data.out1[i].service_total_quantity}</td>
               <td>${data.out1[i].service_total_price}</td>
               </tr>
@@ -1411,7 +1413,7 @@ html(lang='en')
                 $('.amountNeeded').val(`${data.out2.walkin_total_amount}`)
 
                 $('#TotalPoints').append(`Total Points to be earned: ${data.out2.walkin_total_points}`)
-                $('.totalPoints').val(data.out2.walkin_total_points)
+                $('.totalAmountPoints').val(data.out2.walkin_total_points)
                 $('.hello').val(data.out2.cust_id)
                 $('.paid_stats').val(1)
               }
@@ -1420,13 +1422,14 @@ html(lang='en')
             if(data.out2.cust_type==1)
             {
                 $('.hello').addClass('hidden')
+                $('.currentPoints').val(data.out2.member_points)
                 $('#appendDito').append(`
                   <div class="form-group has-default bmd-form-group">
-                  <label> Current Points: ${data.out2.member_points}
-                    <div class="checkbox">
-                      <input id="checkbox1" type="checkbox"/>
-                      <label for="checkbox1">Pay using Points</label>
-                    </div>
+                  <label id="CurrentPoints"> Current Points: ${data.out2.member_points} </label>
+                  <div class="checkbox">
+                    <input id="checkboxPoints" type="checkbox"/>
+                    <label for="checkboxPoints">Pay using Points</label>
+                  </div>
                 </div>`)
             }
             else
@@ -1435,19 +1438,37 @@ html(lang='en')
             }
 
             $('#custName').append(`Customer Name: ${data.out2.cust_fname} ${data.out2.cust_mname} ${data.out2.cust_lname}`)
+            $(".customer_id").val(id)
             console.log(data.outServices.length)
             
             if(data.outServices.length != 0)
             {
               for(var i=0;i<data.outServices.length;i++)
               {
-                var total_equivalent_points = parseInt(data.outServices[i].service_total_quantity) * parseInt(data.outServices[i].equivalent_points)
+                var total_equivalent_points = parseInt(data.outServices[i].service_total_quantity) * parseInt(data.outServices[i].service_equivalentPoints)
                 $('#viewServicesAvailedService').append(`
                   <tr>
-                  <td>${data.outServices[i].service_name}</td>
-                  <td>${data.outServices[i].service_total_quantity}</td>
-                  <td>${data.outServices[i].service_total_price}</td>
-                  <td>${data.outServices[i].equivalent_points}</td>
+                  <td>
+                    ${data.outServices[i].service_name} 
+                    <input class="service_name" id="${data.outServices[i].service_id}" type="" value="${data.outServices[i].service_name}"/> 
+                  </td>
+                  <td>
+                    ${data.outServices[i].service_total_quantity}
+                    <input class="service_total_quantity" id="${data.outServices[i].service_id}" type="" value="${data.outServices[i].service_total_quantity}"/>
+                  </td>
+                  <td>
+                    ${data.outServices[i].service_total_price}
+                    <input class="service_total_price" id="${data.outServices[i].service_id}" type="" value="${data.outServices[i].service_total_price}"/>
+                    <input class="newhalaga" type='' value="" id="${data.outServices[i].service_id}">
+                  </td>
+                  <td>
+                    ${total_equivalent_points}
+                    <input  class="total_equivalent_points" id="${data.outServices[i].service_id}" type="" value="${total_equivalent_points}"/>
+                    <input class="newPointsEq" type='' value="" id="${data.outServices[i].service_id}">
+                  </td>
+                  <td>
+                    <input class="checkboxPayment" type="checkbox" value="${data.outServices[i].service_id}" style='display:none' />
+                  </td>
                   </tr>
                 `)
               }
@@ -2235,7 +2256,6 @@ html(lang='en')
                               
                               if(parseInt($('.amountReceived').val()) != 0 && $('#checkboxPoints')[0].checked == true && $('.checkboxGC')[0].checked==false)
                               {
-                                alert('pers')
                                 if(parseInt($('.amountReceived').val()) < parseInt($('.amountNeeded').val()))
                                 {
                                   swal({
@@ -2252,57 +2272,31 @@ html(lang='en')
                                   }).then(function(sure){
                                     if(sure)
                                     {
+                                      var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
+                                      console.log("NEW TOTAL POINTS: ",newPoints)
+                                      console.log("CUSTOMER ID", $(".customer_id").val())
+                                    //- $.post('/payment/PayNow',{
+                                    //-   newPoints,
+                                    //-   custome_id: $(".customer_id").val(),
+                                    //-   }).done(function(data){
+                                    //-     if(data.alertDesc==0)
+                                    //-       {
+                                    //-         swal({
+                                    //-           title: "Success",
+                                    //-           icon: 'success'
+                                    //-         }).then(function(){
+                                    //-           location.href='/frontdesk/home'
+                                    //-         })
+                                    //-       }
+                                    //-     else
+                                    //-       {
+                                    //-         swal({
+                                    //-           title: "ERROR",
+                                    //-           icon: 'error'
+                                    //-         })
+                                    //-       }
                                       
-                                    var newPoints = parseInt($('.newPoints').val()) + parseInt($('.totalAmountPoints').val()) 
-                              
-
-                                
-                                    $.post('/payment/Early',{
-                                      newPoints,
-                                      restype,
-                                      typeServ,
-                                      amount: $('.totalPrice').val(),
-                                      cust_id: $('.hello').val(),
-                                      serviceId: idService,
-                                      serviceQuantity: serviceQuantity,
-                                      serviceNewDuration: serviceNewDuration,
-                                      serviceTotal: serviceTotal,
-                                      bed_quantity: bed_quantity,
-                                      packageId: idPackage,
-                                      packageQuantity: packageQuantity,
-                                      packageNewDuration: packageNewDuration,
-                                      packageTotal: packageTotal,
-                                      promoId: idPromo,
-                                      promoQuantity: promoQuantity,
-                                      promoNewDuration: promoNewDuration,
-                                      promoTotal: promoTotal,
-                                      therapist_id: $('#selected_therapist').val(),
-                                      timeStart : $('#timeStart').val(),
-                                      paid_stats: $('.paid_stats').val(),
-                                      membership_fee,
-                                      EndTime,
-                                      date : $('#dateRes').val(),
-                                      finalPoints : $('#finalPoints').text().replace(/,/g,''),
-                                      roomId :$('#roomId').val()
-                                      }).done(function(data){
-                                        if(data.alertDesc==0)
-                                          {
-                                            swal({
-                                              title: "Success",
-                                              icon: 'success'
-                                            }).then(function(){
-                                              location.href='/frontdesk/home'
-                                            })
-                                          }
-                                        else
-                                          {
-                                            swal({
-                                              title: "ERROR",
-                                              icon: 'error'
-                                            })
-                                          }
-                                      
-                                      })
+                                    //-   })
                                     }
                                   })
                                 }
@@ -3517,3 +3511,279 @@ html(lang='en')
           }
         })
       })
+
+//- POINTS CHECKBOX
+script.
+    $(document).ready(function(){
+      $(document).on('change.bootstrapSwitch','#checkboxPoints',function(e){
+        var currentPoints = $('.currentPoints').val()
+        var paid_stats = $('.paid_stats').val()
+        var newhalagaArray = []
+
+        if(e.target.checked==true)
+        {
+          if($('.amountNeeded').val()==0)
+          {
+            swal({
+                title: 'Is the balance complete?',
+                icon: 'info'
+              }).then(function(){
+                $('.amountReceived').val(' ')
+                $('.change').val(0)
+                $('#checkboxPoints').prop('checked',false)
+              })
+          }
+          else if($('.amountReceived').val() >= $('.amountNeeded').val())
+          {
+            swal({
+                title: 'Is the balance complete?',
+                icon: 'info'
+              }).then(function(){
+                $('#checkboxPoints').prop('checked',false)
+              })
+          }
+          else
+          {
+
+            if(currentPoints==0 && paid_stats==1)
+            {
+              swal({
+                title: 'Cannot Use Points As Payment',
+                text: 'Your Points is '+currentPoints,
+                icon: 'error'
+              }).then(function(confirm){
+                if(confirm)
+                {
+                  $('#checkboxPoints').prop('checked',false)
+                }
+                else
+                {
+                }
+              })
+            }
+            else if(currentPoints==0 && paid_stats == 0)
+            {
+              swal({
+                title: 'Cannot Use Points As Payment',
+                text: 'please pay the membership fee first',
+                icon: 'error'
+              }).then(function(confirm){
+                if(confirm)
+                {
+                  $('#checkboxPoints').prop('checked',false)
+                }
+                else
+                {
+                  
+                }
+              })
+            }
+            else
+            {
+              $('.amountReceived').val(' ')
+              $('.change').val(' ')
+              $('.checkboxPayment').css('display','block')
+            }
+
+            if($('#checkbox_gc')[0].checked==true && $('.selectpickerGc > option:selected').length==0)
+            {
+              $('#checkbox_gc').prop('checked',false)
+              $('.selectpickerGc').attr('disabled',true)
+              $('.selectpickerGc').val(0);
+              $('.selectpickerGc').selectpicker("refresh");
+            }
+          }
+
+        }
+        
+
+
+        else if(e.target.checked==false)
+        { 
+          var checkPayment = $('.checkboxPayment:checked')
+          var array = []
+          var total =0 
+          var amountNeeded = $('.amountNeeded').val()
+            $('.checkboxPayment:checked').each(function(){
+              var id = $(this).val()
+              array.push({
+                id:id,
+                newhalaga:$(`.newhalaga[id='${id}']`).val()
+                })
+            })
+
+            for(var i=0;i<array.length;i++)
+            {
+              total += parseInt(array[i].newhalaga)
+              $(`.newhalaga[id='${array[i].id}']`).val(0)
+              $(`.newPointsEq[id='${array[i].id}']`).val(0)
+            }
+            total = parseInt(amountNeeded)+parseInt(total)
+            $('.amountNeeded').val(total)
+            $('#AmountNeeded').text('₱'+total+'')
+            $('.newPoints').val($('.currentPoints').val())
+            $('#CurrentPoints').text("Current Points: "+$('.currentPoints').val())
+          $('.checkboxPayment').prop('checked',false)
+          $('.checkboxPayment').css('display','none')
+        }
+
+      })
+    })
+
+script.
+    $(document).ready(function(){
+      $(document).on('change.bootstrapSwitch','.checkboxPayment',function(e){
+        var id = $(this).val()
+        var quantity = $(`.service_total_quantity[id='${id}']`).val()
+        var name = $(`.service_name[id='${id}']`).val()
+        var price = $(`.service_total_price[id='${id}']`).val()
+        var points = $(`.total_equivalent_points[id='${id}']`).val()
+        console.log("ID", id)
+        console.log("QUANTITY", quantity)
+        console.log("NAME", name)
+        console.log("PRICE", price)
+        console.log("POINTS", points)
+        if(e.target.checked==true)
+        {
+          if(quantity ==1)
+          {
+            var pricePerServ = parseInt(price) / parseInt(quantity)
+            var computed_price = parseInt(quantity) * parseInt(pricePerServ)
+            console.log("Computed Price", computed_price)
+            $(`.newhalaga[id='${id}']`).val(computed_price)
+
+            var pointsPerServ = parseInt(points) / parseInt(quantity)
+            var computed_points = parseInt(quantity) * parseInt(pointsPerServ)
+            $(`.newPointsEq[id='${id}']`).val(computed_points)
+            $('#CurrentPoints').text("Current Points: "+computed_points)
+          }
+          else if(parseInt(quantity) > parseInt(1))
+          {
+            swal({
+              title: "How many "+name+" will pay using points?",
+              content: {
+              element: "input",
+              attributes: {
+                type: "number",
+                max: quantity,
+              },
+            },
+            }).then(function(value){
+              $('.swal-content__input').attr('type', 'number')
+              var value = $('.swal-content__input').val()
+              console.log("VALUE", value)
+              if(parseInt(value) > parseInt(quantity))
+              {
+                swal({
+                  title: "ERROR",
+                  text: "The inputed number is invalid please try again",
+                  icon: 'error'
+                }).then(function(){
+                  e.target.checked=false
+                })
+              }
+              else
+              {
+                var pricePerServ = parseInt(price) / parseInt(quantity)
+                var computed_price = parseInt(value) * parseInt(pricePerServ)
+                $(`.newhalaga[id='${id}']`).val(computed_price)
+
+                var pointsPerServ = parseInt(points) / parseInt(quantity)
+                var computed_points = parseInt(value) * parseInt(pointsPerServ)
+                $(`.newPointsEq[id='${id}']`).val(computed_points)
+                
+              }
+
+              if(value=='' || value==null)
+              {
+                 e.target.checked=false
+                $(`.newhalaga[id='${id}']`).val(0)
+                $(`.newPointsEq[id='${id}']`).val(0)
+              }
+            })
+          }
+              setTimeout(calculate,3000)
+        }
+        else
+        {
+          if($('#checkbox_gc')[0].checked==true)
+          {
+            var id = $(this).val()
+            var newPointsEq = $(`.newPointsEq[id='${id}']`).val()
+            var newPoints = $('.newPoints').val()
+            var newhalaga = $(`.newhalaga[id='${id}'`).val()
+            var amountNeeded = $('.amountNeeded').val()
+            var total = eval(amountNeeded+"+"+newhalaga)
+
+            newhalaga -= parseInt(newhalaga)
+            $(`.newhalaga[id='${id}']`).val(newhalaga)
+            $('.amountNeeded').val(total)
+            $('#AmountNeeded').text('₱'+total+'')
+
+            var pointsTotal = eval(newPoints+'+'+newPointsEq)
+            $('.newPoints').val(pointsTotal)
+            newPointsEq -= parseInt(newPointsEq)
+            $(`.newPointsEq[id='${id}']`).val(newPointsEq)
+          }
+          else
+          {
+            var id = $(this).val()
+            var newPointsEq = $(`.newPointsEq[id='${id}']`).val()
+            var newPoints = $('.newPoints').val()
+            var newhalaga = $(`.newhalaga[id='${id}'`).val()
+            var amountNeeded = $('.amountNeeded').val()
+            var total = eval(amountNeeded+"+"+newhalaga)
+
+            newhalaga -= parseInt(newhalaga)
+            $(`.newhalaga[id='${id}']`).val(newhalaga)
+            $('.amountNeeded').val(total)
+            $('#AmountNeeded').text('₱'+total+'')
+
+            var pointsTotal = eval(newPoints+'+'+newPointsEq)
+            $('.newPoints').val(pointsTotal)
+            $('#CurrentPoints').text("Current Points: "+pointsTotal)
+            newPointsEq -= parseInt(newPointsEq)
+            $(`.newPointsEq[id='${id}']`).val(newPointsEq)
+
+          }
+        }
+      })
+    })
+script.
+    function calculate(){
+      var totalPrice = $('.totalPrice').val()
+      var currentPoints = $('.currentPoints').val()
+      var amountNeeded = $('.amountNeeded').val()
+      var pointsTotal = 0;
+      var priceTotal = 0;
+      var newPrice
+      var newPoints
+      var newhalaga
+
+      $(".checkboxPayment:checked").each(function(){
+        var id = $(this).val()
+        //- console.log($(`.newhalaga[id='${id}']`)[0].value)
+        newhalaga = $(`.newhalaga[id='${id}']`).val()
+        var newPointsEq = $(`.newPointsEq[id='${id}']`).val()
+
+        if($('#checkbox_gc')[0].checked==true)
+        {
+          priceTotal = eval(newhalaga+"+"+priceTotal)
+          newPrice = parseInt(amountNeeded) - parseInt(priceTotal)
+          pointsTotal = eval(newPointsEq+'+'+pointsTotal)
+          newPoints = parseInt(currentPoints) - parseInt(pointsTotal)
+        }
+        else
+        {
+          priceTotal = eval(newhalaga+"+"+priceTotal)
+          newPrice = parseInt(totalPrice) - parseInt(priceTotal)
+          pointsTotal = eval(newPointsEq+'+'+pointsTotal)
+          newPoints = parseInt(currentPoints) - parseInt(pointsTotal)
+        }
+      })
+        $('.newPoints').val(newPoints)
+        $('#CurrentPoints').text("Current Points: "+newPoints)
+        $('.amountNeeded').val(newPrice)
+        $('#AmountNeeded').text('₱'+newPrice+'')
+
+    }
