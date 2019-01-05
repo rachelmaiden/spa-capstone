@@ -794,25 +794,26 @@ router.post('/CheckRoomDetails',(req,res)=>{
 }) 
 // [BOOK RESERVATION - ADD RESERVATION]
 router.post('/bookreservation/addReservation',(req,res)=>{
+  var walkinId;
   var datePicked = moment(req.body.date).format('YYYY-MM-DD')
+  console.log(req.body)
   const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
   values("${req.body.customerId}","${req.body.timeStart}","${req.body.timeEnd}","${req.body.finalTotal}","${req.body.finalPoints}","${datePicked}",0,0)`
   db.query(query,(err,out)=>{
     var notSuccess=0;
     var querySuccess= 1
-    var walkinId = out.insertId;
+    walkinId=out.insertId;
     var restype = req.body.restype
-    console.log('WALKIN ID',walkinId)
     console.log('RESTYPE',restype)
     if(restype=='single')
-    {
-      console.log('PASOK SA SINGLE')
-      console.log(req.body.typeServ.length)
-      for(var i=0;i<req.body.typeServ.length;i++)
       {
-        if(req.body.typeServ[i] == 'service')
-        {
-          console.log('PUMASOK SA SERVICE')
+        console.log('PASOK SA SINGLE')
+        console.log(req.body.typeServ.length)
+          for(var i=0;i<req.body.typeServ.length;i++)
+          {
+            if(req.body.typeServ[i] == 'service')
+            {
+              console.log('PUMASOK SA SERVICE')
               for(var x=0;x<req.body.serviceId.length;x++)
               {
                 const query1= `INSERT INTO walkin_services_tbl(walkin_id,service_id,room_id,service_total_quantity,service_total_duration,bed_occupied,service_total_price) 
@@ -1291,12 +1292,14 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN services_tbl ON services_tbl.service_id = walkin_services_tbl.service_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  JOIN freebies_tbl ON freebies_tbl.service_id = services_tbl.service_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
   SELECT * FROM walkin_queue_tbl
   JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
   JOIN customer_tbl ON walkin_queue_tbl.cust_id = customer_tbl.cust_id
   JOIN promo_bundle_tbl ON promo_bundle_tbl.promobundle_id = walkin_services_tbl.promobundle_id
   JOIN room_tbl ON room_tbl.room_id = walkin_services_tbl.room_id
+  JOIN freebies_promo_tbl ON freebies_promo_tbl.promobundle_id = promo_bundle_tbl.promobundle_id
   WHERE walkin_queue_tbl.walkin_id= "${req.body.id}";
   SELECT * FROM walkin_queue_tbl
   JOIN walkin_services_tbl ON walkin_queue_tbl.walkin_id = walkin_services_tbl.walkin_id
@@ -1336,12 +1339,9 @@ router.post('/payment/query/CheckoutDets',mid.frontdesknauthed, (req, res) => {
         join loyalty_tbl on loyalty_tbl.cust_id = customer_tbl.cust_id
         where walkin_queue_tbl.walkin_id =?`
         db.query(query1,[req.body.id],(err,out)=>{
-          return res.send({            
-            outServices:outServices,
-            outPromo: outPromo,
-            outPackage:outPackage, 
-            out2:out[0]})
+          return res.send({out1:out1, out2:out[0]})
       })
+      console.log('PASOK DITO')
       console.log(out)
     }  
   })
@@ -1660,6 +1660,7 @@ router.post('/payment/Finish',(req,res)=>{
 router.post('/payment/Early',(req,res)=>{
   var alertSuccess=0;
   var notSuccess= 1
+  var walkinId;
   console.log(req.body)
   var datePicked = moment(req.body.date).format('YYYY-MM-DD')
   if(req.body.paid_stats==0)
@@ -1668,12 +1669,11 @@ router.post('/payment/Early',(req,res)=>{
     const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
     values("${req.body.cust_id}","${req.body.timeStart}","${req.body.EndTime}","${amount}","${req.body.finalPoints}","${datePicked}",2,0)`
     db.query(query,(err,out)=>{
-      var walkinId=out.insertId;
+      walkinId=out.insertId;
       var restype = req.body.restype
       console.log('RESTYPE',restype)
       if(restype=='single')
-      {
-          console.log('Walkin Id',walkinId)
+        {
           console.log('PASOK SA SINGLE')
           console.log(req.body.typeServ.length)
             for(var i=0;i<req.body.typeServ.length;i++)
@@ -1915,7 +1915,7 @@ router.post('/payment/Early',(req,res)=>{
             })
           }
       }
-    }) 
+    })
   }
   else if(req.body.paid_stats == 1)
   {
@@ -1923,7 +1923,6 @@ router.post('/payment/Early',(req,res)=>{
     const query= `INSERT INTO walkin_queue_tbl(cust_id, walkin_start_time, walkin_end_time, walkin_total_amount, walkin_total_points,walkin_date,walkin_payment_status,walkin_indicator)
     values("${req.body.cust_id}","${req.body.timeStart}","${req.body.EndTime}","${req.body.amount}","${req.body.finalPoints}","${datePicked}",2,0)`
     db.query(query,(err,out)=>{
-      var walkinId=out.insertId;
       var restype = req.body.restype
     console.log('RESTYPE',restype)
     if(restype=='single')

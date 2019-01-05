@@ -97,8 +97,8 @@ html(lang='en')
                                     input(type='hidden' value='' id='rateNgRoom')
                                   br
                                   strong Reservation Date: 
-                                    a#date #{dateRes}
-                                  input(type="hidden" value=`${dateRes}` id='dateRes')
+                                    a#date #{date}
+                                  input(type="hidden" value=`${date}` id='dateRes')
                                   br
                                   strong Reservation Time: 
                                     a#time #{time}
@@ -796,7 +796,7 @@ html(lang='en')
               pinakaTotal = eval(pinakaTotal+"+"+totals);
               $('#grandtotal').text('₱'+pinakaTotal.toLocaleString()+'.00')
               $('.hiddenGrandTotal').val(pinakaTotal)
-            sum += parseFloat(points)
+            sum += parseInt(points)
           });
           if(i==pagelength){
             
@@ -838,6 +838,33 @@ html(lang='en')
           }
           table.page(0).draw()
         }
+
+  //- //- CHECK THERAPIST AVAILABILITY
+  //- script.
+  //-   $(document).ready(function(){
+  //-     $('#selected_therapist').on('change',function(){
+  //-     var therapist_id= $(this).val()
+  //-     var walkin_date = !{JSON.stringify(datePick)}
+  //-     var time_pick = !{JSON.stringify(time)}
+  //-     console.log('asd',walkin_date)
+  //-     console.log(time_pick)
+      
+  //-     $.post('./TherapistValidate',{therapist_id,walkin_date,time_pick}).done(function(data){
+  //-       console.log(data)
+  //-       var therapist_name = data.out[0].therapist_fname+' '+data.out[0].therapist_mname+' '+data.out[0].therapist_lname
+  //-       if(data.alertDesc==0)
+  //-       {
+  //-         swal({
+  //-           title: therapist_name+' is not available',
+  //-           text: 'Choose another therapist'
+  //-         })
+  //-         $('#selected_therapist').val('default');
+  //-         $('#selected_therapist').selectpicker("refresh");
+  //-       }
+  //-     })
+  //-     })
+  //-   })
+
   script.
     $(document).ready(function(){
       var room_id = $('#roomId').val()
@@ -854,13 +881,13 @@ html(lang='en')
         }
       })
       var reservation_date = $('#dateRes').val()
-      alert($('#dateRes').val())
       $('#date').text(moment(reservation_date).format('MMMM DD, YYYY'))
     })
   
   script.
     //- [SUMMARY]
     $('.buttonSummary').click(function(){
+
       if($('.checkbox:checked').length==0)
       {
         swal({
@@ -870,7 +897,8 @@ html(lang='en')
       }
       else
       {
-          var restype = $('.restype[id="restype"]').val()
+
+              var restype = $('.restype[id="restype"]').val()
               if(restype=='single')
               {
                 var bed_quantity= 1
@@ -887,64 +915,18 @@ html(lang='en')
               var serviceQuantity=[]
               var serviceNewDuration=[]
               var serviceTotal=[]
-              var idPromo =[]
-              var promoQuantity=[]
-              var promoNewDuration=[]
-              var promoTotal=[]
-              var idPackage =[]
-              var packageQuantity=[]
-              var packageNewDuration=[]
-              var packageTotal=[]
-              var typeServ=[]
               console.log('serviceQuantity',serviceQuantity)
               console.log('serviceNewDuration',serviceNewDuration)
               console.log('serviceTotal',serviceTotal)
               console.log('idService',idService)
               console.log(serviceTotal)
-              console.log('promoQuantity',promoQuantity)
-              console.log('promoNewDuration',promoNewDuration)
-              console.log('promoTotal',promoTotal)
-              console.log('idPromo',idPromo)
-              console.log(promoTotal)
-              console.log('packageQuantity',packageQuantity)
-              console.log('packageNewDuration',packageNewDuration)
-              console.log('packageTotal',packageTotal)
-              console.log('idPackage',idPackage)
-              console.log(packageTotal)
-              console.log(typeServ)
-                for (var i=1;i<=pagelength;i++)
-                {
+                for (var i=1;i<=pagelength;i++){
                   $('.checkbox:checked').each(function(){
                     var id = $(this).val()
-                    if(type == 'service')
-                    {
-
-                      typeServ.push(type)
-                      idService.push(id)
-                      serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
-                      serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                      serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
-                    }
-                    else if(type=='package')
-                    {
-                      typeServ.push(type)
-                      idPackage.push(id)
-                      packageQuantity.push($(`.quantity[service_id='${id}'`).text())
-                      packageNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                      packageTotal.push($(`.hiddenTotal[id='${id}']`).val())
-                    }
-                    else if(type='promo')
-                    {
-                      typeServ.push(type)
-                      idPromo.push(id)
-                      promoQuantity.push($(`.quantity[service_id='${id}'`).text())
-                      promoNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                      promoTotal.push($(`.hiddenTotal[id='${id}']`).val())
-                    }
-                    //- idService.push(id)
-                    //- serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
-                    //- serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
-                    //- serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
+                    idService.push(id)
+                    serviceQuantity.push($(`.quantity[service_id='${id}'`).text())
+                    serviceNewDuration.push($(`.bagongDuration[id='${id}']`).val())
+                    serviceTotal.push($(`.hiddenTotal[id='${id}']`).val())
                     var serviceId = $(`.id[id='${id}']`).val()
                     var serviceName = $(`.name[id='${id}']`).val()
                     var quantity= $(`.quantity[service_id='${id}'`).text()
@@ -973,6 +955,7 @@ html(lang='en')
               $('#datatablesSummaryMale').DataTable({"lengthMenu": [[5, 25, 50, -1], [5, 25, 50, "All"]],retrieve: true})
               $('#reservationSummary').modal('show')
               $('#reservationSummary').on('hidden.bs.modal', function (){
+
               })
                 //- var serviceQuantity = []
                 //- var serviceNewDuration = []
@@ -1002,9 +985,8 @@ html(lang='en')
               $('#finalPoints').text(finalPoints)
             
               $('.submitButton').click(function(){
-                alert($('#selected_therapist').val()==0) 
-                var restype = $('#restype').val()
-                alert(restype)             
+                //- var finalTotal= $('#finalTotal').text().replace(/,/g,'')
+                
                 if(restype =='single')
                 {
                   if($('#selected_therapist').val()==0 || $('#selected_therapist').val()==null)
@@ -1024,52 +1006,7 @@ html(lang='en')
                     }).then(function(submit){
                       if(submit)
                       {
-                        $.post('/bookreservation/addReservation',{
-                        customerId :$('#customerId').val(),
-                        typeServ,
-                        serviceId: idService,
-                        serviceQuantity: serviceQuantity,
-                        serviceNewDuration: serviceNewDuration,
-                        serviceTotal: serviceTotal,
-                        bed_quantity: bed_quantity,
-                        boys_quantity: bed_occupied_boys,
-                        girls_quantity: bed_occupied_girls,
-                        packageId: idPackage,
-                        packageQuantity: packageQuantity,
-                        packageNewDuration: packageNewDuration,
-                        packageTotal: packageTotal,
-                        promoId: idPromo,
-                        promoQuantity: promoQuantity,
-                        promoNewDuration: promoNewDuration,
-                        promoTotal: promoTotal,
-                        therapist_id: $('#selected_therapist').val(),
-                        restype: $('.restype').val(),
-                        timeStart : $('#timeStart').val(),
-                        timeEnd: $('#timeEnd').val(),
-                        date : $('#dateRes').val(),
-                        finalTotal : $('#finalTotal').text().replace(/,/g,''),
-                        finalPoints : $('#finalPoints').text().replace(/,/g,''),
-                        roomId :$('#roomId').val()
-                        }).done(function(data){
-                        if(data.alertDesc==1)
-                          {
-                            swal({
-                              title:'Success', 
-                              text:'New Reservation Added', 
-                              icon:'success'
-                              }).then(function(){
-                                location.href='/frontdesk/home'
-                              })
-                          }
-                          else
-                          {
-                            swal({
-                              title:'Not Success', 
-                              text:'', 
-                              icon:'warning'
-                              })
-                          }
-                        })
+                        alert('submit')
                       }
                       else
                       {
@@ -1077,54 +1014,50 @@ html(lang='en')
                       }
                     })
                   }
-              }
-
-
-
+                }
                 else if(restype=='multiple')
                 {            
-                  $.post('/bookreservation/addReservation',{
-                    customerId :$('#customerId').val(),
-                    serviceId: idService,
-                    serviceQuantity: serviceQuantity,
-                    serviceNewDuration: serviceNewDuration,
-                    serviceTotal: serviceTotal,
-                    bed_quantity: bed_quantity,
-                    boys_quantity: bed_occupied_boys,
-                    restype: $('.restype').val(),
-                    girls_quantity: bed_occupied_girls,
-                    timeStart : $('#timeStart').val(),
-                    timeEnd: $('#timeEnd').val(),
-                    date : $('#dateRes').val(),
-                    finalTotal : $('#finalTotal').text().replace(/,/g,''),
-                    finalPoints : $('#finalPoints').text().replace(/,/g,''),
-                    roomId :$('#roomId').val()
-                  }).done(function(data){
-                    if(data.alertDesc==1)
-                    {
-                      swal({
-                        title:'Success', 
-                        text:'New Reservation Added', 
-                        icon:'success'
-                        }).then(function(){
-                          location.href='/frontdesk/home'
-                        })
-                    }
-                    else
-                      {
-                        swal({
-                          title:'Not Success', 
-                          text:'', 
-                          icon:'warning'
-                          })
-                      }
+                $.post('/bookreservation/addReservation',{
+                  customerId :$('#customerId').val(),
+                  serviceId: idService,
+                  serviceQuantity: serviceQuantity,
+                  serviceNewDuration: serviceNewDuration,
+                  serviceTotal: serviceTotal,
+                  bed_quantity: bed_quantity,
+                  boys_quantity: bed_occupied_boys,
+                  girls_quantity: bed_occupied_girls,
+                  timeStart : $('#timeStart').val(),
+                  timeEnd: $('#timeEnd').val(),
+                  date : $('#dateRes').val(),
+                  finalTotal : $('#finalTotal').text().replace(/,/g,''),
+                  finalPoints : $('#finalPoints').text().replace(/,/g,''),
+                  roomId :$('#roomId').val()
+                 }).done(function(data){
+                   if(data.alertDesc==1)
+                   {
+                  swal({
+                    title:'Success', 
+                    text:'New Reservation Added', 
+                    icon:'success'
+                    }).then(function(){
+                      location.href='/frontdesk/home'
                     })
                 }
-              })
-              }
+                else
+                  {
+                    swal({
+                      title:'Not Success', 
+                      text:'', 
+                      icon:'warning'
+                      })
+                  }
+                 })
+                }
+            })
+            
+      }
+
     })
-
-
   script.
     $(document).ready(function(){
       $('.checkbox').on('change.bootstrapSwitch', function(e){

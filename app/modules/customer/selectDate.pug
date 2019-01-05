@@ -75,7 +75,7 @@ html(lang='en')
                     .card(style="width: 80em; bottom: 30px; height: 80em;")
                       .card-content
                         input(value=`${customerId}` id="Id")
-                        input.restype(value=`${restype}`)
+                        input(value=`${restype}`)
                         input(value=`Male: ${male}`)
                         input(value=`Female: ${female}`)
                         center  
@@ -157,7 +157,7 @@ html(lang='en')
   script.
     $(document).ready(function(){
         var customerId= $('#Id').val()
-        var restype = $('.restype').val()
+        console.log(customerId)
       $('#fullCalendar').fullCalendar({
         dayClick: function(date, jsEvent, view) {
           var now = moment().format('MM-DD-YYYY')
@@ -174,7 +174,7 @@ html(lang='en')
                 if(proceed)
                 {
                   var newDate= date.format('MM-DD-YYYY')
-                  location.href= `/customer/customerTime?date=${newDate}&reservetype=${restype}`
+                  location.href= `/customer/customerTime?date=${newDate}`
                 }
                 else
                 {

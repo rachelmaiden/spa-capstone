@@ -553,7 +553,6 @@ html(lang='en')
   script.
       $(document).ready(function(){
         var customerId= $('#Id').val()
-        var restype = $('#restype').val()
         var date = !{JSON.stringify(date)}
         $('#fullCalendar').fullCalendar({
           header: {
@@ -595,7 +594,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}&restype=${restype}`
+                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${resource.title}&roomId=${resource.id}`
                 }
                 else
                 {
@@ -651,7 +650,7 @@ html(lang='en')
               }).then((proceed) => {
                 if(proceed)
                 {
-                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}&restype=${restype}`
+                  location.href=`/customer/bookreservation?time=${timePicked}&date=${datePicked.date}&room=${eventObj.description}&roomId=${eventObj.resourceId}`
                 }
                 else
                 {
